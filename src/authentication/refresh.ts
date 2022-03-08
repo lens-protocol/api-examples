@@ -31,11 +31,11 @@ export const refresh = async () => {
   const accessTokens = await login(address);
 
   const newAccessToken = await refreshAuth(
-    accessTokens.data.authenticate.refreshToken
+    accessTokens.authenticate.refreshToken
   );
-  console.log('refresh: result', newAccessToken);
+  console.log('refresh: result', newAccessToken.data);
 
-  return newAccessToken;
+  return newAccessToken.data;
 };
 
 (async () => {

@@ -50,9 +50,9 @@ export const login = async (address = getAddressFromSigner()) => {
   const signature = await signText(challengeResponse.data.challenge.text);
 
   const accessTokens = await authenticate(address, signature);
-  console.log('login: result', accessTokens);
+  console.log('login: result', accessTokens.data);
 
-  return accessTokens;
+  return accessTokens.data;
 };
 
 (async () => {
