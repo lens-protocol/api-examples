@@ -27,7 +27,6 @@ export const refresh = async () => {
   const address = getAddressFromSigner();
   console.log('refresh: address', address);
 
-  // we request a challenge from the server
   const accessTokens = await login(address);
 
   const newAccessToken = await refreshAuth(

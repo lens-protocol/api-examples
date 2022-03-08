@@ -24,7 +24,6 @@ export const verifyRequest = async () => {
   const address = getAddressFromSigner();
   console.log('verify: address', address);
 
-  // we request a challenge from the server
   const accessTokens = await login(address);
 
   const result = await verify(accessTokens.authenticate.accessToken);
