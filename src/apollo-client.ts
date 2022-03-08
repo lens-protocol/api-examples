@@ -5,6 +5,7 @@ import {
   InMemoryCache,
 } from '@apollo/client/core';
 import fetch from 'cross-fetch';
+import { getAuthenticationToken } from './state';
 
 // const customFetch = (uri: string, options: any) => {
 //   return fetch(uri, options).then((response) => {
@@ -23,9 +24,8 @@ const httpLink = new HttpLink({
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 const authLink = new ApolloLink((operation, forward) => {
-  // Retrieve the authorization token from local storage.
-  // const token = localStorage.getItem('auth_token');
-  const token = null;
+  const token = getAuthenticationToken();
+  console.log('jwt token:', token);
 
   // Use the setContext method to set the HTTP headers.
   operation.setContext({
