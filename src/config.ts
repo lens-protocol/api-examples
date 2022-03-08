@@ -7,6 +7,14 @@ const getParamOrExit = (name: string) => {
   return param;
 };
 
+const getParam = (name: string) => {
+  const param = process.env[name];
+  if (!param) {
+    return null;
+  }
+  return param;
+};
+
 export const argsBespokeInit = () => {
   return process.argv.find((c) => c === '--init') !== undefined;
 };
@@ -14,6 +22,8 @@ export const argsBespokeInit = () => {
 export const PK = getParamOrExit('PK');
 
 export const ETHEREUM_RPC_URL = getParamOrExit('ETHEREUM_RPC_URL');
+
+export const PROFILE_ID = getParam('PROFILE_ID');
 
 export const LENS_HUB_ABI = [
   {
