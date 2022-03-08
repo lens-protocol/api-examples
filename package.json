@@ -5,7 +5,8 @@
   "scripts": {
     "authentication:login": "env-cmd -f .env ts-node ./src/authentication/login --init",
     "authentication:refresh": "env-cmd -f .env ts-node ./src/authentication/refresh",
-    "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify"
+    "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
+    "claim:claimable-handles": "env-cmd -f .env ts-node ./src/claim/claimable-handles"
   },
   "author": "joshstevens19@hotmail.co.uk",
   "dependencies": {
