@@ -3,6 +3,8 @@ import {
   TypedDataField,
 } from '@ethersproject/abstract-signer';
 import { ethers, utils, Wallet } from 'ethers';
+// @ts-ignore
+import omitDeep from 'omit-deep';
 import { ETHEREUM_RPC_URL, PK } from './config';
 
 export const ethersProvider = new ethers.providers.JsonRpcProvider(
@@ -10,7 +12,7 @@ export const ethersProvider = new ethers.providers.JsonRpcProvider(
 );
 
 export const getSigner = () => {
-  return new Wallet(PK);
+  return new Wallet(PK, ethersProvider);
 };
 
 export const getAddressFromSigner = () => {
@@ -23,7 +25,12 @@ export const signedTypeData = (
   value: Record<string, any>
 ) => {
   const signer = getSigner();
-  return signer._signTypedData(domain, types, value);
+  // remove the __typedname from the signature!
+  return signer._signTypedData(
+    omitDeep(domain, '__typename'),
+    omitDeep(types, '__typename'),
+    omitDeep(value, '__typename')
+  );
 };
 
 export const splitSignature = (signature: string) => {
