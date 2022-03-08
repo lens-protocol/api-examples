@@ -7,7 +7,8 @@
     "authentication:refresh": "env-cmd -f .env ts-node ./src/authentication/refresh",
     "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
     "claim:claimable-handles": "env-cmd -f .env ts-node ./src/claim/claimable-handles",
-    "claim:claimed-handles": "env-cmd -f .env ts-node ./src/claim/claimed-handles"
+    "claim:claimed-handles": "env-cmd -f .env ts-node ./src/claim/claimed-handles",
+    "claim:claim-handle": "env-cmd -f .env ts-node ./src/claim/claim-handle"
   },
   "author": "joshstevens19@hotmail.co.uk",
   "dependencies": {
