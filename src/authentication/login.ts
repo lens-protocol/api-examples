@@ -2,6 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
+import { prettyJSON } from '../helpers';
 import { setAuthenticationToken } from '../state';
 
 const GET_CHALLENGE = `
@@ -52,7 +53,7 @@ export const login = async (address = getAddressFromSigner()) => {
   const signature = await signText(challengeResponse.data.challenge.text);
 
   const accessTokens = await authenticate(address, signature);
-  console.log('login: result', accessTokens.data);
+  prettyJSON('login: result', accessTokens.data);
 
   setAuthenticationToken(accessTokens.data.authenticate.accessToken);
 

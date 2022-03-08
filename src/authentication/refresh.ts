@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
+import { prettyJSON } from '../helpers';
 import { login } from './login';
 
 const REFRESH_AUTHENTICATION = `
@@ -32,7 +33,7 @@ export const refresh = async () => {
   const newAccessToken = await refreshAuth(
     accessTokens.authenticate.refreshToken
   );
-  console.log('refresh: result', newAccessToken.data);
+  prettyJSON('refresh: result', newAccessToken.data);
 
   return newAccessToken.data;
 };

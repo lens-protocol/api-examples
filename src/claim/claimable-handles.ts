@@ -2,6 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
+import { prettyJSON } from '../helpers';
 
 const CLAIMABLE_HANDLES = `
   query {
@@ -27,7 +28,7 @@ export const claimableHandles = async () => {
   await login(address);
 
   const result = await getClaimableHandles();
-  console.log('claimable handles: result', result.data);
+  prettyJSON('claimable handles: result', result.data);
 
   return result.data;
 };

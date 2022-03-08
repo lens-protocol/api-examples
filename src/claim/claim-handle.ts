@@ -2,6 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
+import { prettyJSON } from '../helpers';
 
 const CLAIM_HANDLE = `
   mutation($request: ClaimHandleRequest!) { 
@@ -36,9 +37,8 @@ export const claim = async () => {
 
   await login(address);
 
-  //
   const result = await claimHandle(1);
-  console.log('claim: result', result.data);
+  prettyJSON('claim: result', result.data);
 
   return result.data;
 };

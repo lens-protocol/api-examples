@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
+import { prettyJSON } from '../helpers';
 import { login } from './login';
 
 const VERIFY = `
@@ -27,7 +28,7 @@ export const verifyRequest = async () => {
   const accessTokens = await login(address);
 
   const result = await verify(accessTokens.authenticate.accessToken);
-  console.log('verify: result', result.data);
+  prettyJSON('verify: result', result.data);
 
   return result.data;
 };
