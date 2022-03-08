@@ -40,9 +40,8 @@ export const authenticate = (address: string, signature: string) => {
   });
 };
 
-export const login = async () => {
-  const address = getAddressFromSigner();
-  console.log('address', address);
+export const login = async (address = getAddressFromSigner()) => {
+  console.log('login: address', address);
 
   // we request a challenge from the server
   const challengeResponse = await generateChallenge(address);
@@ -51,7 +50,7 @@ export const login = async () => {
   const signature = await signText(challengeResponse.data.challenge.text);
 
   const accessTokens = await authenticate(address, signature);
-  console.log(accessTokens);
+  console.log('login: result', accessTokens);
 
   return accessTokens;
 };
