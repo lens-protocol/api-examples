@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { prettyJSON } from '../helpers';
 
@@ -134,5 +135,7 @@ export const pendingApprovals = async () => {
 };
 
 (async () => {
-  await pendingApprovals();
+  if (argsBespokeInit()) {
+    await pendingApprovals();
+  }
 })();
