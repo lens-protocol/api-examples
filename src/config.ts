@@ -1,11 +1,15 @@
-function getParamOrExit(name: string): string {
+const getParamOrExit = (name: string) => {
   const param = process.env[name];
   if (!param) {
     console.error(`Required config param '${name}' missing`);
     process.exit(1);
   }
   return param;
-}
+};
+
+export const argsBespokeInit = () => {
+  return process.argv.find((c) => c === '--init') !== undefined;
+};
 
 export const PK = getParamOrExit('PK');
 

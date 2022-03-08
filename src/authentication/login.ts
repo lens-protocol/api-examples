@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
+import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
 
 const GET_CHALLENGE = `
@@ -56,5 +57,7 @@ export const login = async (address = getAddressFromSigner()) => {
 };
 
 (async () => {
-  await login();
+  if (argsBespokeInit()) {
+    await login();
+  }
 })();
