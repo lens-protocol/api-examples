@@ -9,7 +9,8 @@
     "claim:claimable-handles": "env-cmd -f .env ts-node ./src/claim/claimable-handles",
     "claim:claimed-handles": "env-cmd -f .env ts-node ./src/claim/claimed-handles",
     "claim:claim-handle": "env-cmd -f .env ts-node ./src/claim/claim-handle",
-    "dispatcher:set-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/set-dispatcher"
+    "dispatcher:set-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/set-dispatcher",
+    "explore:explore-publications": "env-cmd -f .env ts-node ./src/explore/explore-publications"
   },
   "author": "joshstevens19@hotmail.co.uk",
   "dependencies": {
