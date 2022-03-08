@@ -11,6 +11,7 @@
     "claim:claim-handle": "env-cmd -f .env ts-node ./src/claim/claim-handle",
     "dispatcher:set-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/set-dispatcher",
     "explore:explore-publications": "env-cmd -f .env ts-node ./src/explore/explore-publications",
+    "follow:does-follow": "env-cmd -f .env ts-node ./src/follow/does-follow",
     "follow:follow": "env-cmd -f .env ts-node ./src/follow/follow",
     "follow:set-follow-module": "env-cmd -f .env ts-node ./src/follow/set-follow-module",
     "follow:pending-approval-follows": "env-cmd -f .env ts-node ./src/follow/pending-approval-follows",
