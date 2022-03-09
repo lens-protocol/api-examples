@@ -23,6 +23,8 @@ export const PK = getParamOrExit('PK');
 
 export const ETHEREUM_RPC_URL = getParamOrExit('ETHEREUM_RPC_URL');
 
+export const LENS_API = getParamOrExit('LENS_API');
+
 export const PROFILE_ID = getParam('PROFILE_ID');
 
 export const LENS_FOLLOW_NFT_ABI = [

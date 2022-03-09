@@ -5,10 +5,11 @@ import {
   InMemoryCache,
 } from '@apollo/client/core';
 import fetch from 'cross-fetch';
+import { LENS_API } from './config';
 import { getAuthenticationToken } from './state';
 
 const httpLink = new HttpLink({
-  uri: 'http://localhost:4000/',
+  uri: LENS_API,
   fetch,
 });
 
