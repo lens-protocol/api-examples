@@ -35,6 +35,7 @@
     "profile:set-profile-image-uri-normal": "env-cmd -f .env ts-node ./src/profile/set-profile-image-uri-normal",
     "publications:comment": "env-cmd -f .env ts-node ./src/publications/comment",
     "publications:mirror": "env-cmd -f .env ts-node ./src/publications/mirror",
+    "publications:get-publication": "env-cmd -f .env ts-node ./src/publications/get-publication",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post"
   },
   "author": "joshstevens19@hotmail.co.uk",
