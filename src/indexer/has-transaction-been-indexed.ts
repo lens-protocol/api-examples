@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { follow } from '../follow/follow';
 import { prettyJSON, sleep } from '../helpers';
@@ -77,7 +78,7 @@ const HAS_TX_BEEN_INDEXED = `
   }
 `;
 
-export const hasTxBeenIndexed = (txHash: string) => {
+const hasTxBeenIndexed = (txHash: string) => {
   return apolloClient.query({
     query: gql(HAS_TX_BEEN_INDEXED),
     variables: {
@@ -128,5 +129,7 @@ export const testTransaction = async () => {
 };
 
 (async () => {
-  await testTransaction();
+  if (argsBespokeInit()) {
+    await testTransaction();
+  }
 })();
