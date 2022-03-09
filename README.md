@@ -2,6 +2,8 @@
 
 This repo has running code which you can execute to help you understand how to interact with the Lens API.
 
+Lens API is beta at the moment and can change without warning! 
+
 Full documentation is available at [https://lens.dev/v1.0.1/introduction](https://lens.dev/v1.0.1/introduction).
 
 ## Setup
