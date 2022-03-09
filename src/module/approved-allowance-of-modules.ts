@@ -3,6 +3,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
 import { prettyJSON } from '../helpers';
+import { enabledCurrencies } from './enabled-modules-currencies';
 
 const ALLOWANCE = `
   query($request: ApprovedModuleAllowanceAmountRequest!) {
@@ -35,11 +36,10 @@ export const allowance = async () => {
 
   await login(address);
 
+  const currencies = await enabledCurrencies();
+
   const result = await allowanceRequest({
-    currencies: [
-      '0x3C68CE8504087f89c640D02d133646d98e64ddd9',
-      '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
-    ],
+    currencies: currencies.enabledModuleCurrencies.map((c: any) => c.address),
     collectModules: [
       'LimitedFeeCollectModule',
       'FeeCollectModule',

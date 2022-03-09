@@ -44,12 +44,12 @@ export const authenticate = (address: string, signature: string) => {
 };
 
 export const login = async (address = getAddressFromSigner()) => {
-  console.log('login: address', address);
-
   if (getAuthenticationToken()) {
     console.log('login: already logged in');
     return;
   }
+
+  console.log('login: address', address);
 
   // we request a challenge from the server
   const challengeResponse = await generateChallenge(address);
