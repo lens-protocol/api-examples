@@ -53,7 +53,7 @@ export const enableDispatcherWithTypedData = (
   });
 };
 
-export const disableDispatcherWithTypedData = (profileId: string) => {
+const disableDispatcherWithTypedData = (profileId: string) => {
   return apolloClient.mutate({
     mutation: gql(CREATE_SET_DISPATCHER_TYPED_DATA),
     variables: {

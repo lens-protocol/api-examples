@@ -297,7 +297,7 @@ fragment CommentMirrorOfFields on Comment {
 `;
 
 // TODO typings
-export const searchRequest = (request: { query: string; type: string }) => {
+const searchRequest = (request: { query: string; type: string }) => {
   return apolloClient.query({
     query: gql(SEARCH),
     variables: {

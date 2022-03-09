@@ -15,7 +15,7 @@ const MODULE_APPROVAL_DATA = `
 `;
 
 // TODO typings!
-export const getModuleApprovalData = (moduleApprovalRequest: any) => {
+const getModuleApprovalData = (moduleApprovalRequest: any) => {
   return apolloClient.query({
     query: gql(MODULE_APPROVAL_DATA),
     variables: {

@@ -296,7 +296,7 @@ const GET_PUBLICATIONS = `
 `;
 
 // TODO types
-export const getPublicationsRequest = (getPublicationQuery: any) => {
+const getPublicationsRequest = (getPublicationQuery: any) => {
   return apolloClient.query({
     query: gql(GET_PUBLICATIONS),
     variables: {

@@ -89,7 +89,7 @@ const GET_FOLLOWERS = `
   }
 `;
 
-export const followersRequest = (profileId: string) => {
+const followersRequest = (profileId: string) => {
   return apolloClient.query({
     query: gql(GET_FOLLOWERS),
     variables: {

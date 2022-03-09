@@ -39,7 +39,7 @@ const CREATE_FOLLOW_TYPED_DATA = `
 `;
 
 // TODO sort typed!
-export const createFollowTypedData = (followRequestInfo: any) => {
+const createFollowTypedData = (followRequestInfo: any) => {
   return apolloClient.mutate({
     mutation: gql(CREATE_FOLLOW_TYPED_DATA),
     variables: {

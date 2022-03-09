@@ -8,7 +8,7 @@ const GET_PING = `
   }
 `;
 
-export const pingRequest = () => {
+const pingRequest = () => {
   return apolloClient.query({
     query: gql(GET_PING),
   });

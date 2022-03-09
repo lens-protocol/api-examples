@@ -10,7 +10,7 @@ const APPROVE_FOLLOW = `
  }
 `;
 
-export const approveFollowRequest = (profileId: string) => {
+const approveFollowRequest = (profileId: string) => {
   return apolloClient.mutate({
     mutation: gql(APPROVE_FOLLOW),
     variables: {

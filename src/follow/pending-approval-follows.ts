@@ -111,7 +111,7 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
   }
 `;
 
-export const pendingApprovalFollows = () => {
+const pendingApprovalFollows = () => {
   return apolloClient.query({
     query: gql(GET_PENDING_APPROVAL_FOLLOWS),
     variables: {

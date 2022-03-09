@@ -15,7 +15,7 @@ const CLAIMED_HANDLES = `
   }
 `;
 
-export const getClaimedHandles = () => {
+const getClaimedHandles = () => {
   return apolloClient.query({
     query: gql(CLAIMED_HANDLES),
   });

@@ -109,7 +109,7 @@ const GET_FOLLOWING = `
   }
 `;
 
-export const followingRequest = (walletAddress: string) => {
+const followingRequest = (walletAddress: string) => {
   return apolloClient.query({
     query: gql(GET_FOLLOWING),
     variables: {

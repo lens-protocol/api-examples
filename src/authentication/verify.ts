@@ -10,7 +10,7 @@ const VERIFY = `
   }
 `;
 
-export const verify = (accessToken: string) => {
+const verify = (accessToken: string) => {
   return apolloClient.query({
     query: gql(VERIFY),
     variables: {

@@ -11,7 +11,7 @@ const GET_FOLLOWER_NFT_TOKEN_IDS = `
   }
 `;
 
-export const getFollowerNFTTokenIds = (address: string, profileId: string) => {
+const getFollowerNFTTokenIds = (address: string, profileId: string) => {
   return apolloClient.query({
     query: gql(GET_FOLLOWER_NFT_TOKEN_IDS),
     variables: {

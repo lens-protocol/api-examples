@@ -12,7 +12,7 @@ const DOES_FOLLOW = `
   }
 `;
 
-export const doesFollowRequest = (
+const doesFollowRequest = (
   followInfos: { followerAddress: string; profileId: string }[]
 ) => {
   return apolloClient.query({

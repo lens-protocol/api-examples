@@ -31,7 +31,7 @@ const AUTHENTICATION = `
  }
 `;
 
-export const authenticate = (address: string, signature: string) => {
+const authenticate = (address: string, signature: string) => {
   return apolloClient.mutate({
     mutation: gql(AUTHENTICATION),
     variables: {

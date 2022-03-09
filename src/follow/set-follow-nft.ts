@@ -38,7 +38,7 @@ const CREATE_SET_FOLLOW_NFT_URI_TYPED_DATA = `
  }
 `;
 
-export const createSetFollowNFTUriTypedData = (setFollowNFTUriRequest: {
+const createSetFollowNFTUriTypedData = (setFollowNFTUriRequest: {
   profileId: string;
   followNFTURI?: string | undefined;
 }) => {

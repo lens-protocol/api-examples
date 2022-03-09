@@ -114,7 +114,7 @@ export const pollUntilIndexed = async (txHash: string) => {
   }
 };
 
-export const testTransaction = async () => {
+const testTransaction = async () => {
   const address = getAddressFromSigner();
   console.log('testTransaction: address', address);
 

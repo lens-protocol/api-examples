@@ -60,7 +60,7 @@ const ENABLED_MODULES = `
 	}
 `;
 
-export const enabledModulesRequest = () => {
+const enabledModulesRequest = () => {
   return apolloClient.query({
     query: gql(ENABLED_MODULES),
   });

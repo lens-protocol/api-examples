@@ -40,7 +40,7 @@ const CREATE_SET_FOLLOW_MODULE_TYPED_DATA = `
 `;
 
 // TODO: sort typed
-export const createSetFollowModuleTypedData = (setFollowModuleRequest: any) => {
+const createSetFollowModuleTypedData = (setFollowModuleRequest: any) => {
   return apolloClient.mutate({
     mutation: gql(CREATE_SET_FOLLOW_MODULE_TYPED_DATA),
     variables: {

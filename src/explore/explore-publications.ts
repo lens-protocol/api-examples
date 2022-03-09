@@ -315,7 +315,7 @@ const EXPLORE_PUBLICATIONS = `
   }
 `;
 
-export const explorePublications = (explorePublicationQueryRequest: {
+const explorePublications = (explorePublicationQueryRequest: {
   sortCriteria: string;
   limit: number;
 }) => {

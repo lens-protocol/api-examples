@@ -20,7 +20,7 @@ const CLAIM_HANDLE = `
 
 // handleId = the id returned from the claimable handle to use
 // it is not the handle itself!
-export const claimHandle = (handleId: number) => {
+const claimHandle = (handleId: number) => {
   return apolloClient.mutate({
     mutation: gql(CLAIM_HANDLE),
     variables: {

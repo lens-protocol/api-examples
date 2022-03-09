@@ -40,7 +40,7 @@ const CREATE_UNFOLLOW_TYPED_DATA = `
  }
 `;
 
-export const createUnfollowTypedData = (profile: string) => {
+const createUnfollowTypedData = (profile: string) => {
   return apolloClient.mutate({
     mutation: gql(CREATE_UNFOLLOW_TYPED_DATA),
     variables: {
