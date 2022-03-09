@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { argsBespokeInit } from '../config';
 import {
   getAddressFromSigner,
   signedTypeData,
@@ -49,7 +50,7 @@ export const createFollowTypedData = (followRequestInfo: any) => {
   });
 };
 
-export const follow = async () => {
+export const follow = async (profileId: string = '0x01') => {
   const address = getAddressFromSigner();
   console.log('follow: address', address);
 
@@ -58,7 +59,7 @@ export const follow = async () => {
   // hard coded to make the code example clear
   const followRequest = [
     {
-      profile: '0x01',
+      profile: profileId,
     },
   ];
 
@@ -89,8 +90,11 @@ export const follow = async () => {
     },
   });
   console.log('follow: tx hash', tx.hash);
+  return tx.hash;
 };
 
 (async () => {
-  await follow();
+  if (argsBespokeInit()) {
+    await follow();
+  }
 })();

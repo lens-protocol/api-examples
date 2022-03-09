@@ -3,7 +3,7 @@ import { apolloClient } from '../apollo-client';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
 import { prettyJSON } from '../helpers';
-import { setAuthenticationToken } from '../state';
+import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
 const GET_CHALLENGE = `
   query($request: ChallengeRequest!) {
@@ -45,6 +45,11 @@ export const authenticate = (address: string, signature: string) => {
 
 export const login = async (address = getAddressFromSigner()) => {
   console.log('login: address', address);
+
+  if (getAuthenticationToken()) {
+    console.log('login: already logged in');
+    return;
+  }
 
   // we request a challenge from the server
   const challengeResponse = await generateChallenge(address);
