@@ -64,13 +64,14 @@ export const setFollowModule = async () => {
   const setFollowModuleRequest = {
     profileId,
     followModule: {
-      feeFollowModule: {
-        amount: {
-          currency: '0x3C68CE8504087f89c640D02d133646d98e64ddd9',
-          value: '0.01',
-        },
-        recipient: address,
-      },
+      emptyFollowModule: true,
+      // feeFollowModule: {
+      //   amount: {
+      //     currency: '0x3C68CE8504087f89c640D02d133646d98e64ddd9',
+      //     value: '0.01',
+      //   },
+      //   recipient: address,
+      // },
     },
   };
 

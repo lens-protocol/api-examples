@@ -34,7 +34,7 @@ export const approveModule = async () => {
   const generateApprovalModuleData = {
     currency: currencies.enabledModuleCurrencies.map((c: any) => c.address)[0],
     value: '10',
-    collectModule: 'LimitedFeeCollectModule',
+    collectModule: 'FeeCollectModule',
   };
 
   const result = await getModuleApprovalData(generateApprovalModuleData);

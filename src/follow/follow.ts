@@ -50,7 +50,7 @@ const createFollowTypedData = (followRequestInfo: any) => {
   });
 };
 
-export const follow = async (profileId: string = '0x01') => {
+export const follow = async (profileId: string = '0x032f1a') => {
   const address = getAddressFromSigner();
   console.log('follow: address', address);
 

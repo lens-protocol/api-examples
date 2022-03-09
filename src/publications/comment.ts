@@ -83,7 +83,7 @@ export const createComment = async () => {
           )[0],
           value: '0.01',
         },
-        recipient: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+        recipient: address,
         referralFee: 10.5,
       },
     },
