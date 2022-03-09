@@ -7,16 +7,6 @@ import {
 import fetch from 'cross-fetch';
 import { getAuthenticationToken } from './state';
 
-// const customFetch = (uri: string, options: any) => {
-//   return fetch(uri, options).then((response) => {
-//     if (response.status >= 500) {
-//       // or handle 400 errors
-//       return Promise.reject(response.status);
-//     }
-//     return response;
-//   });
-// };
-
 const httpLink = new HttpLink({
   uri: 'http://localhost:4000/',
   fetch,

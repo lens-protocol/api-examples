@@ -22,7 +22,8 @@
     "follow:pending-approval-follows": "env-cmd -f .env ts-node ./src/follow/pending-approval-follows --init",
     "follow:unfollow": "env-cmd -f .env ts-node ./src/follow/unfollow",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping",
-    "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed"
+    "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed",
+    "module:approved-allowance-of-modules": "env-cmd -f .env ts-node ./src/module/approved-allowance-of-modules"
   },
   "author": "joshstevens19@hotmail.co.uk",
   "dependencies": {
