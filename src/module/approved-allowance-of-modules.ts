@@ -39,7 +39,7 @@ export const allowance = async () => {
   const currencies = await enabledCurrencies();
 
   const result = await allowanceRequest({
-    currencies: currencies.enabledModuleCurrencies.map((c: any) => c.address),
+    currencies: ['0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'],
     collectModules: [
       'LimitedFeeCollectModule',
       'FeeCollectModule',

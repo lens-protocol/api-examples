@@ -7,7 +7,7 @@ const GET_FOLLOWER_NFT_TOKEN_IDS = `
     followerNftOwnedTokenIds(request: $request) { 
         followerNftAddress
         tokensIds
-	}
+	  }
   }
 `;
 
@@ -25,8 +25,8 @@ const getFollowerNFTTokenIds = (address: string, profileId: string) => {
 
 export const followerNFTTokenIds = async () => {
   const result = await getFollowerNFTTokenIds(
-    '0x2376e9C7C604D1827bA9aCb1293Dc8b4DA2f0DB3',
-    '0x01'
+    '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+    '0x032f1a'
   );
   prettyJSON('followerNFTTokenIds: result', result.data);
 

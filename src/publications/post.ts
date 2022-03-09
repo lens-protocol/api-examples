@@ -70,16 +70,17 @@ export const createPost = async () => {
   const createPostRequest = {
     profileId,
     // this content is just a mock ipfs change this to point to real metadata!
-    contentURI: 'ipfs://QmPogtffEF3oAbKERsoR4Ky8aTvLgBF5totp5AuF8YN6vl.json',
+    contentURI:
+      'https://lens.mypinata.cloud/ipfs/QmXgMpAekEakSfJhXSMq11gJSm4f18WCk3enUpoCWFwp6e',
     collectModule: {
-      timedFeeCollectModule: {
+      feeCollectModule: {
         amount: {
           currency: currencies.enabledModuleCurrencies.map(
             (c: any) => c.address
           )[0],
-          value: '0.01',
+          value: '0.000001',
         },
-        recipient: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+        recipient: address,
         referralFee: 10.5,
       },
     },
