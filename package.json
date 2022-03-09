@@ -39,7 +39,8 @@
     "publications:get-publications": "env-cmd -f .env ts-node ./src/publications/get-publications",
     "publications:has-mirrored-publication": "env-cmd -f .env ts-node ./src/publications/has-mirrored-publication",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post",
-    "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication"
+    "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
+    "revenue:user-revenue": "env-cmd -f .env ts-node ./src/revenue/user-revenue"
   },
   "author": "joshstevens19@hotmail.co.uk",
   "dependencies": {
