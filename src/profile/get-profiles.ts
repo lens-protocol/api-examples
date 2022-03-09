@@ -1,6 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { prettyJSON } from '../helpers';
 
@@ -85,12 +86,14 @@ const GET_PROFILES = `
   }
 `;
 
-const getProfilesRequest = (request: {
+export interface ProfilesRequest {
   profileIds?: string[];
   ownedBy?: string;
   handles?: string[];
   whoMirroredPublicationId?: string;
-}) => {
+}
+
+const getProfilesRequest = (request: ProfilesRequest) => {
   return apolloClient.query({
     query: gql(GET_PROFILES),
     variables: {
@@ -99,7 +102,9 @@ const getProfilesRequest = (request: {
   });
 };
 
-export const profiles = async () => {
+export const profiles = async (
+  request: ProfilesRequest = { profileIds: ['0x04', '0x05'] }
+) => {
   const address = getAddressFromSigner();
   console.log('profiles: address', address);
 
@@ -107,9 +112,7 @@ export const profiles = async () => {
 
   // only showing one example to query but you can see from request
   // above you can query many
-  const profilesFromProfileIds = await getProfilesRequest({
-    profileIds: ['0x04', '0x05'],
-  });
+  const profilesFromProfileIds = await getProfilesRequest(request);
 
   prettyJSON('profiles: result', profilesFromProfileIds.data);
 
@@ -117,5 +120,7 @@ export const profiles = async () => {
 };
 
 (async () => {
-  await profiles();
+  if (argsBespokeInit()) {
+    await profiles();
+  }
 })();
