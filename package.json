@@ -26,7 +26,8 @@
     "module:approve-module": "env-cmd -f .env ts-node ./src/module/approve-module --init",
     "module:approved-allowance-of-modules": "env-cmd -f .env ts-node ./src/module/approved-allowance-of-modules",
     "module:enabled-modules-currencies": "env-cmd -f .env ts-node ./src/module/enabled-modules-currencies --init",
-    "module:enabled-modules": "env-cmd -f .env ts-node ./src/module/enabled-modules --init"
+    "module:enabled-modules": "env-cmd -f .env ts-node ./src/module/enabled-modules --init",
+    "nfts:get-users-nfts": "env-cmd -f .env ts-node ./src/nfts/get-users-nfts"
   },
   "author": "joshstevens19@hotmail.co.uk",
   "dependencies": {
