@@ -23,6 +23,7 @@
     "follow:unfollow": "env-cmd -f .env ts-node ./src/follow/unfollow",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping",
     "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed",
+    "module:approve-module": "env-cmd -f .env ts-node ./src/module/approve-module --init",
     "module:approved-allowance-of-modules": "env-cmd -f .env ts-node ./src/module/approved-allowance-of-modules",
     "module:enabled-modules-currencies": "env-cmd -f .env ts-node ./src/module/enabled-modules-currencies --init",
     "module:enabled-modules": "env-cmd -f .env ts-node ./src/module/enabled-modules --init"
