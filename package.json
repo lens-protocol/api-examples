@@ -20,6 +20,7 @@
     "follow:set-follow-module": "env-cmd -f .env ts-node ./src/follow/set-follow-module",
     "follow:set-follow-nft": "env-cmd -f .env ts-node ./src/follow/set-follow-nft",
     "follow:pending-approval-follows": "env-cmd -f .env ts-node ./src/follow/pending-approval-follows --init",
+    "follow:unfollow": "env-cmd -f .env ts-node ./src/follow/unfollow",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping"
   },
   "author": "joshstevens19@hotmail.co.uk",
