@@ -18,6 +18,7 @@
     "follow:followers": "env-cmd -f .env ts-node ./src/follow/followers",
     "follow:following": "env-cmd -f .env ts-node ./src/follow/following",
     "follow:set-follow-module": "env-cmd -f .env ts-node ./src/follow/set-follow-module",
+    "follow:set-follow-nft": "env-cmd -f .env ts-node ./src/follow/set-follow-nft",
     "follow:pending-approval-follows": "env-cmd -f .env ts-node ./src/follow/pending-approval-follows --init",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping"
   },
