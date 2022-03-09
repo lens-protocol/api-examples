@@ -93,7 +93,7 @@ export const createComment = async () => {
   };
 
   const result = await createCommentTypedData(createCommentRequest);
-  console.log('create comment: enableDispatcherWithTypedData', result);
+  console.log('create comment: createCommentTypedData', result);
 
   const typedData = result.data.createCommentTypedData.typedData;
   console.log('create comment: typedData', typedData);

@@ -89,7 +89,7 @@ export const createPost = async () => {
   };
 
   const result = await createPostTypedData(createPostRequest);
-  console.log('create post: enableDispatcherWithTypedData', result);
+  console.log('create post: createPostTypedData', result);
 
   const typedData = result.data.createPostTypedData.typedData;
   console.log('create post: typedData', typedData);
