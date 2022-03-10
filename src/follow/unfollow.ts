@@ -1,14 +1,14 @@
-import { gql } from '@apollo/client/core';
-import { ethers } from 'ethers';
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { LENS_FOLLOW_NFT_ABI } from '../config';
+import { gql } from "@apollo/client/core";
+import { ethers } from "ethers";
+import { apolloClient } from "../apollo-client";
+import { login } from "../authentication/login";
+import { LENS_FOLLOW_NFT_ABI } from "../config";
 import {
   getAddressFromSigner,
   getSigner,
   signedTypeData,
   splitSignature,
-} from '../ethers.service';
+} from "../ethers.service";
 
 // NOT WORKING!
 
@@ -53,24 +53,24 @@ const createUnfollowTypedData = (profile: string) => {
 
 export const unfollow = async () => {
   const address = getAddressFromSigner();
-  console.log('unfollow: address', address);
+  console.log("unfollow: address", address);
 
   await login(address);
 
   // hard coded to make the code example clear
-  const unfollowProfileId = '0x01';
+  const unfollowProfileId = "0x01";
   const result = await createUnfollowTypedData(unfollowProfileId);
-  console.log('unfollow: result', result);
+  console.log("unfollow: result", result);
 
   const typedData = result.data.createUnfollowTypedData.typedData;
-  console.log('unfollow: typedData', typedData);
+  console.log("unfollow: typedData", typedData);
 
   const signature = await signedTypeData(
     typedData.domain,
     typedData.types,
     typedData.value
   );
-  console.log('unfollow: signature', signature);
+  console.log("unfollow: signature", signature);
 
   const { v, r, s } = splitSignature(signature);
 
@@ -89,7 +89,7 @@ export const unfollow = async () => {
   };
 
   const tx = await followNftContract.burnWithSig(typedData.value.tokenId, sig);
-  console.log('follow: tx hash', tx.hash);
+  console.log("follow: tx hash", tx.hash);
 };
 
 (async () => {
