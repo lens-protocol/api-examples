@@ -39,6 +39,7 @@
     "publications:comment": "env-cmd -f .env ts-node ./src/publications/comment",
     "publications:mirror": "env-cmd -f .env ts-node ./src/publications/mirror",
     "publications:get-publication": "env-cmd -f .env ts-node ./src/publications/get-publication",
+    "publications:has-collected-publication": "env-cmd -f .env ts-node ./src/publications/has-collected-publication",
     "publications:get-publications": "env-cmd -f .env ts-node ./src/publications/get-publications",
     "publications:has-mirrored-publication": "env-cmd -f .env ts-node ./src/publications/has-mirrored-publication",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post",
