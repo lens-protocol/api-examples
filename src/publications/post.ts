@@ -7,6 +7,7 @@ import {
   signedTypeData,
   splitSignature,
 } from '../ethers.service';
+import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
 
@@ -66,12 +67,13 @@ export const createPost = async () => {
 
   const currencies = await enabledCurrencies();
 
+  const ipfsResult = await uploadIpfs();
+  console.log('create post: ipfs result', ipfsResult);
+
   // hard coded to make the code example clear
   const createPostRequest = {
     profileId,
-    // this content is just a mock ipfs change this to point to real metadata!
-    contentURI:
-      'https://lens.mypinata.cloud/ipfs/QmXgMpAekEakSfJhXSMq11gJSm4f18WCk3enUpoCWFwp6e',
+    contentURI: 'ipfs://' + ipfsResult.path,
     collectModule: {
       feeCollectModule: {
         amount: {

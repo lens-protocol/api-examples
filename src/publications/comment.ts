@@ -7,6 +7,7 @@ import {
   signedTypeData,
   splitSignature,
 } from '../ethers.service';
+import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
 
@@ -68,13 +69,15 @@ export const createComment = async () => {
 
   const currencies = await enabledCurrencies();
 
+  const ipfsResult = await uploadIpfs();
+  console.log('create comment: ipfs result', ipfsResult);
+
   // hard coded to make the code example clear
   const createCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
     publicationId: `0x032f1a-0x02`,
-    // this content is just a mock ipfs change this to point to real metadata!
-    contentURI: 'ipfs://QmPogtffEF3oAbKERsoR4Ky8aTvLgBF5totp5AuF8YN6vm.json',
+    contentURI: 'ipfs://' + ipfsResult.path,
     collectModule: {
       timedFeeCollectModule: {
         amount: {
