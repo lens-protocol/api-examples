@@ -63,12 +63,6 @@ export const collect = async () => {
   // this currency on the module
   const collectRequest = {
     publicationId: '0x032f1a-0x0a',
-    feeCollectModule: {
-      amount: {
-        currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
-        value: '0.000001',
-      },
-    },
   };
 
   const result = await createCollectTypedData(collectRequest);
