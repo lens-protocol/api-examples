@@ -2,7 +2,7 @@
 
 This repo has running code which you can execute to help you understand how to interact with the Lens API.
 
-Lens API is beta at the moment and can change without warning! 
+Lens API is beta at the moment and can change without warning!
 
 Full documentation is available at [https://docs.lens.dev/docs/introduction](https://docs.lens.dev/docs/introduction).
 
@@ -36,6 +36,7 @@ $ npm run authentication:login
     "authentication:login": "env-cmd -f .env ts-node ./src/authentication/login --init",
     "authentication:refresh": "env-cmd -f .env ts-node ./src/authentication/refresh",
     "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
+    "attach:get-file": "env-cmd -f .env ts-node ./src/attach/attach-file",
     "claim:claimable-handles": "env-cmd -f .env ts-node ./src/claim/claimable-handles",
     "claim:claimed-handles": "env-cmd -f .env ts-node ./src/claim/claimed-handles",
     "claim:claim-handle": "env-cmd -f .env ts-node ./src/claim/claim-handle",
@@ -68,6 +69,7 @@ $ npm run authentication:login
     "publications:comment": "env-cmd -f .env ts-node ./src/publications/comment",
     "publications:mirror": "env-cmd -f .env ts-node ./src/publications/mirror",
     "publications:get-publication": "env-cmd -f .env ts-node ./src/publications/get-publication",
+    "publications:has-collected-publication": "env-cmd -f .env ts-node ./src/publications/has-collected-publication",
     "publications:get-publications": "env-cmd -f .env ts-node ./src/publications/get-publications",
     "publications:has-mirrored-publication": "env-cmd -f .env ts-node ./src/publications/has-mirrored-publication",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post",
