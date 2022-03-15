@@ -12,7 +12,7 @@ for the scripts to run you need to create a `.env` file with these variables:
 
 ```
 PK=YOUR_PK
-ETHEREUM_RPC_URL=RPC_URL
+ETHEREUM_RPC_URL=https://rpc-mumbai.matic.today
 PROFILE_ID=PROFILE_ID
 LENS_API=https://api-mumbai.lens.dev/
 ```
