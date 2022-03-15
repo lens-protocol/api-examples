@@ -7,6 +7,7 @@ const GET_FOLLOWING = `
   query($request: FollowingRequest!) {
     following(request: $request) { 
 			    items {
+            profile {
               id
               name
               bio
@@ -99,6 +100,8 @@ const GET_FOLLOWING = `
                   recipient
                 }
             }
+          }
+          totalAmountOfTimesFollowing
         }
        pageInfo {
           prev
