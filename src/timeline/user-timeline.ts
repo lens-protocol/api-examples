@@ -1,9 +1,9 @@
-import { gql } from '@apollo/client/core';
-import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
-import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
+import { gql } from "@apollo/client/core";
+import { apolloClient } from "../apollo-client";
+import { login } from "../authentication/login";
+import { PROFILE_ID } from "../config";
+import { getAddressFromSigner } from "../ethers.service";
+import { prettyJSON } from "../helpers";
 
 const GET_TIMELINE = `
   query($request: TimelineRequest!) {
@@ -347,18 +347,19 @@ const getTimelineRequest = (profileId: string) => {
 export const timeline = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
+    throw new Error("Must define PROFILE_ID in the .env to run this");
   }
 
   const address = getAddressFromSigner();
-  console.log('timeline: address', address);
+  console.log("timeline: address", address);
 
   await login(address);
-
-  const result = await getTimelineRequest(profileId);
-  prettyJSON('ping: result', result.data);
-
-  return result.data;
+  for (var i = 0; 1000 > i; i++) {
+    console.time("r:" + i);
+    const result = await getTimelineRequest(profileId);
+    console.timeEnd("r:" + i);
+  }
+  // prettyJSON('ping: result', result.data);
 };
 
 (async () => {
