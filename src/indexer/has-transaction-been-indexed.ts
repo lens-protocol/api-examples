@@ -40,6 +40,10 @@ const HAS_TX_BEEN_INDEXED = `
                     logIndex
                 }
             }
+            metadataStatus {
+              status
+              reason
+            }
         }
         ... on TransactionError {
             reason
@@ -98,8 +102,23 @@ export const pollUntilIndexed = async (txHash: string) => {
     const response = result.data.hasTxHashBeenIndexed;
     if (response.__typename === 'TransactionIndexedResult') {
       console.log('pool until indexed: indexed', response.indexed);
-      if (response.indexed) {
-        return true;
+      console.log(
+        'pool until metadataStatus: metadataStatus',
+        response.metadataStatus
+      );
+
+      if (response.metadataStatus) {
+        if (response.metadataStatus.status === 'SUCCESS') {
+          return true;
+        }
+
+        if (response.metadataStatus.status === 'METADATA_VALIDATION_FAILED') {
+          throw new Error(response.metadataStatus.reason);
+        }
+      } else {
+        if (response.indexed) {
+          return true;
+        }
       }
 
       console.log(
