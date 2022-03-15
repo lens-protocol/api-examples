@@ -1,14 +1,9 @@
-import {
-  TypedDataDomain,
-  TypedDataField,
-} from '@ethersproject/abstract-signer';
+import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer';
 import { ethers, utils, Wallet } from 'ethers';
-import { ETHEREUM_RPC_URL, PK } from './config';
+import { MUMBAI_RPC_URL, PK } from './config';
 import { omit } from './helpers';
 
-export const ethersProvider = new ethers.providers.JsonRpcProvider(
-  ETHEREUM_RPC_URL
-);
+export const ethersProvider = new ethers.providers.JsonRpcProvider(MUMBAI_RPC_URL);
 
 export const getSigner = () => {
   return new Wallet(PK, ethersProvider);
