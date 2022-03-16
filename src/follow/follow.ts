@@ -2,11 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
-import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
 const CREATE_FOLLOW_TYPED_DATA = `
@@ -69,11 +65,7 @@ export const follow = async (profileId: string = '0x032f1a') => {
   const typedData = result.data.createFollowTypedData.typedData;
   console.log('follow: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('follow: signature', signature);
 
   const { v, r, s } = splitSignature(signature);

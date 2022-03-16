@@ -102,14 +102,11 @@ export const pollUntilIndexed = async (txHash: string) => {
     const response = result.data.hasTxHashBeenIndexed;
     if (response.__typename === 'TransactionIndexedResult') {
       console.log('pool until indexed: indexed', response.indexed);
-      console.log(
-        'pool until metadataStatus: metadataStatus',
-        response.metadataStatus
-      );
+      console.log('pool until metadataStatus: metadataStatus', response.metadataStatus);
 
       if (response.metadataStatus) {
         if (response.metadataStatus.status === 'SUCCESS') {
-          return true;
+          return response;
         }
 
         if (response.metadataStatus.status === 'METADATA_VALIDATION_FAILED') {
@@ -117,15 +114,13 @@ export const pollUntilIndexed = async (txHash: string) => {
         }
       } else {
         if (response.indexed) {
-          return true;
+          return response;
         }
       }
 
-      console.log(
-        'pool until indexed: sleep for 500 milliseconds then try again'
-      );
+      console.log('pool until indexed: sleep for 500 milliseconds then try again');
       // sleep for a second before trying again
-      await sleep(500);
+      await sleep(1500);
     } else {
       // it got reverted and failed!
       throw new Error(response.reason);
