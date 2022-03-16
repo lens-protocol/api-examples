@@ -102,13 +102,15 @@ const getProfilesRequest = (request: ProfilesRequest) => {
   });
 };
 
-export const profiles = async (
-  request: ProfilesRequest = { profileIds: ['0x04', '0x05'] }
-) => {
+export const profiles = async (request?: ProfilesRequest) => {
   const address = getAddressFromSigner();
   console.log('profiles: address', address);
 
   await login(address);
+
+  if (!request) {
+    request = { ownedBy: address };
+  }
 
   // only showing one example to query but you can see from request
   // above you can query many
