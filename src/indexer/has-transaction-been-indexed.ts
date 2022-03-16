@@ -118,7 +118,7 @@ export const pollUntilIndexed = async (txHash: string) => {
         }
       }
 
-      console.log('pool until indexed: sleep for 500 milliseconds then try again');
+      console.log('pool until indexed: sleep for 1500 milliseconds then try again');
       // sleep for a second before trying again
       await sleep(1500);
     } else {
