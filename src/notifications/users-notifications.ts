@@ -216,7 +216,6 @@ fragment Wallet on Wallet {
   defaultProfile {
     ...CompactProfile
   }
-  totalAmountOfProfiles
 }
 `;
 

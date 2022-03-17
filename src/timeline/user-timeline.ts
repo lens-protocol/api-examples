@@ -328,7 +328,6 @@ const GET_TIMELINE = `
    defaultProfile {
     ...ProfileFields
    }
-   totalAmountOfProfiles
 	}
 `;
 

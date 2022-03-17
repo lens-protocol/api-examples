@@ -76,7 +76,6 @@ const GET_FOLLOWERS = `
               }
             }
           }
-          totalAmountOfProfiles
         }
         totalAmountOfTimesFollowed
       }
