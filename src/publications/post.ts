@@ -2,11 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
-import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
@@ -75,16 +71,17 @@ export const createPost = async () => {
     profileId,
     contentURI: 'ipfs://' + ipfsResult.path,
     collectModule: {
-      feeCollectModule: {
-        amount: {
-          currency: currencies.enabledModuleCurrencies.map(
-            (c: any) => c.address
-          )[0],
-          value: '0.000001',
-        },
-        recipient: address,
-        referralFee: 10.5,
-      },
+      // feeCollectModule: {
+      //   amount: {
+      //     currency: currencies.enabledModuleCurrencies.map(
+      //       (c: any) => c.address
+      //     )[0],
+      //     value: '0.000001',
+      //   },
+      //   recipient: address,
+      //   referralFee: 10.5,
+      // },
+      revertCollectModule: true,
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
@@ -97,11 +94,7 @@ export const createPost = async () => {
   const typedData = result.data.createPostTypedData.typedData;
   console.log('create post: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('create post: signature', signature);
 
   const { v, r, s } = splitSignature(signature);
