@@ -3,11 +3,12 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { profiles } from './get-profiles';
 
 const UPDATE_PROFILE = `
   mutation($request: UpdateProfileRequest!) { 
-    updateProfile(request: $request)
+    updateProfile(request: $request) {
+      id
+  }
  }
 `;
 
@@ -42,7 +43,7 @@ export const updateProfile = async () => {
     coverPicture: null,
   });
 
-  await profiles({ profileIds: [profileId] });
+  // await profiles({ profileIds: [profileId] });
 };
 
 (async () => {
