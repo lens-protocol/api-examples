@@ -8,13 +8,14 @@ Full documentation is available at [https://docs.lens.dev/docs/introduction](htt
 
 ## Setup
 
-for the scripts to run you need to create a `.env` file with these variables:
+for the scripts to run you need to create a `.env` (or copy the template `cp .env.template .env`) file with these variables:
 
 ```
 PK=YOUR_PK
 MUMBAI_RPC_URL=https://rpc-mumbai.matic.today
 PROFILE_ID=PROFILE_ID
 LENS_API=https://api-mumbai.lens.dev/
+LENS_HUB_CONTRACT=0xd7B3481De00995046C7850bCe9a5196B7605c367
 ```
 
 note `PROFILE_ID` is optional but required on some endpoints!
