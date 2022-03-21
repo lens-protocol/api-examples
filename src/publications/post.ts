@@ -82,6 +82,15 @@ export const createPost = async () => {
       //   referralFee: 10.5,
       // },
       revertCollectModule: true,
+      // limitedFeeCollectModule: {
+      //   amount: {
+      //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      //     value: '2',
+      //   },
+      //   collectLimit: '20000',
+      //   recipient: '0x3A5bd1E37b099aE3386D13947b6a90d97675e5e3',
+      //   referralFee: 0,
+      // },
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
