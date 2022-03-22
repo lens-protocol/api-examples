@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
+import { PROFILE_ID } from '../config';
 import { prettyJSON } from '../helpers';
 
 const GET_PUBLICATIONS = `
@@ -306,8 +307,13 @@ const getPublicationsRequest = (getPublicationQuery: any) => {
 };
 
 export const getPublications = async () => {
+  const profileId = PROFILE_ID;
+  if (!profileId) {
+    throw new Error('Must define PROFILE_ID in the .env to run this');
+  }
+
   const result = await getPublicationsRequest({
-    profileId: '0x032f1a',
+    profileId,
     publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
   });
   prettyJSON('publications: result', result.data);
