@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client/core';
+import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
@@ -118,6 +120,39 @@ export const createComment = async () => {
     },
   });
   console.log('create comment: tx hash', tx.hash);
+
+  console.log('create comment: poll until indexed');
+  const indexedResult = await pollUntilIndexed(tx.hash);
+
+  console.log('create comment: profile has been indexed', result);
+
+  const logs = indexedResult.txReceipt.logs;
+
+  console.log('create comment: logs', logs);
+
+  const topicId = utils.id(
+    'CommentCreated(uint256,uint256,string,uint256,uint256,address,bytes,address,bytes,uint256)'
+  );
+  console.log('topicid we care about', topicId);
+
+  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
+  console.log('create comment: created log', profileCreatedLog);
+
+  let profileCreatedEventLog = profileCreatedLog.topics;
+  console.log('create comment: created event logs', profileCreatedEventLog);
+
+  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
+
+  console.log(
+    'create comment: contract publication id',
+    BigNumber.from(publicationId).toHexString()
+  );
+  console.log(
+    'create comment: internal publication id',
+    profileId + '-' + BigNumber.from(publicationId).toHexString()
+  );
+
+  return result.data;
 };
 
 (async () => {
