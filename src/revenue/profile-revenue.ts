@@ -5,9 +5,9 @@ import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { prettyJSON } from '../helpers';
 
-const GET_REVENUE = `
-  query($request: RevenueQueryRequest!) {
-    revenue(request: $request) {
+const GET_PROFILE_REVENUE = `
+  query($request: ProfileRevenueQueryRequest!) {
+    profileRevenue(request: $request) {
       items {
         publication {
           __typename 
@@ -329,9 +329,9 @@ const GET_REVENUE = `
   }
 `;
 
-const getRevenueRequest = (profileId: string) => {
+const getProfileRevenueRequest = (profileId: string) => {
   return apolloClient.query({
-    query: gql(GET_REVENUE),
+    query: gql(GET_PROFILE_REVENUE),
     variables: {
       request: {
         profileId,
@@ -340,24 +340,24 @@ const getRevenueRequest = (profileId: string) => {
   });
 };
 
-export const revenue = async () => {
+export const profileRevenue = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
   const address = getAddressFromSigner();
-  console.log('revenue: address', address);
+  console.log('profile revenue: address', address);
 
   await login(address);
 
-  const result = await getRevenueRequest(profileId);
+  const result = await getProfileRevenueRequest(profileId);
 
-  prettyJSON('revenue: result', result.data);
+  prettyJSON('profile revenue: result', result.data);
 
   return result.data;
 };
 
 (async () => {
-  await revenue();
+  await profileRevenue();
 })();

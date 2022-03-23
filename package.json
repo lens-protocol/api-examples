@@ -45,7 +45,7 @@
     "publications:has-mirrored-publication": "env-cmd -f .env ts-node ./src/publications/has-mirrored-publication",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post",
     "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
-    "revenue:user-revenue": "env-cmd -f .env ts-node ./src/revenue/user-revenue",
+    "revenue:profile-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-revenue",
     "search:search-profiles-or-publications": "env-cmd -f .env ts-node ./src/search/search-profiles-or-publications",
     "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline"
   },
