@@ -2,11 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
-import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
@@ -76,19 +72,18 @@ export const createComment = async () => {
   const createCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x032f1a-0x02`,
+    publicationId: `0x13-0x3e`,
     contentURI: 'ipfs://' + ipfsResult.path,
     collectModule: {
-      timedFeeCollectModule: {
-        amount: {
-          currency: currencies.enabledModuleCurrencies.map(
-            (c: any) => c.address
-          )[0],
-          value: '0.01',
-        },
-        recipient: address,
-        referralFee: 10.5,
-      },
+      // timedFeeCollectModule: {
+      //   amount: {
+      //     currency: currencies.enabledModuleCurrencies.map((c: any) => c.address)[0],
+      //     value: '0.01',
+      //   },
+      //   recipient: address,
+      //   referralFee: 10.5,
+      // },
+      revertCollectModule: true,
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
@@ -101,11 +96,7 @@ export const createComment = async () => {
   const typedData = result.data.createCommentTypedData.typedData;
   console.log('create comment: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('create comment: signature', signature);
 
   const { v, r, s } = splitSignature(signature);
