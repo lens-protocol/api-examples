@@ -1,38 +1,30 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
-import { PROFILE_ID } from '../config';
 import { prettyJSON } from '../helpers';
 
-const GET_PROFILE_REVENUE = `
-  query($request: ProfileRevenueQueryRequest!) {
-    profileRevenue(request: $request) {
-      items {
-        publication {
-          __typename 
-          ... on Post {
+const GET_PUBLICATION_REVENUE = `
+  query($request: PublicationRevenueQueryRequest!) {
+    publicationRevenue(request: $request) {
+      publication {
+        __typename 
+        ... on Post {
             ...PostFields
-          }
-          ... on Comment {
+        }
+        ... on Comment {
             ...CommentFields
-          }
-          ... on Mirror {
+        }
+        ... on Mirror {
             ...MirrorFields
-          }
-      	}
-        earnings {
-          asset {
-            name
-            symbol
-            decimals
-            address
-          }
-          value
         }
       }
-      pageInfo {
-        prev
-        next
-        totalCount
+      earnings {
+        asset {
+          name
+          symbol
+          decimals
+          address
+        }
+        value
       }
     }
   }
@@ -327,30 +319,25 @@ const GET_PROFILE_REVENUE = `
   }
 `;
 
-const getProfileRevenueRequest = (profileId: string) => {
+export const getPublicationRevenueRequest = (publicationId: string) => {
   return apolloClient.query({
-    query: gql(GET_PROFILE_REVENUE),
+    query: gql(GET_PUBLICATION_REVENUE),
     variables: {
       request: {
-        profileId,
+        publicationId,
       },
     },
   });
 };
 
-export const profileRevenue = async () => {
-  const profileId = PROFILE_ID;
-  if (!profileId) {
-    throw new Error('Must define PROFILE_ID in the .env to run this');
-  }
+export const publicationRevenue = async () => {
+  const result = await getPublicationRevenueRequest('0x12-0x05');
 
-  const result = await getProfileRevenueRequest(profileId);
-
-  prettyJSON('profile revenue: result', result.data);
+  prettyJSON('publication revenue: result', result.data);
 
   return result.data;
 };
 
 (async () => {
-  await profileRevenue();
+  await publicationRevenue();
 })();
