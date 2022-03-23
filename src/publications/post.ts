@@ -1,8 +1,10 @@
 import { gql } from '@apollo/client/core';
+import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
@@ -123,6 +125,36 @@ export const createPost = async () => {
     },
   });
   console.log('create post: tx hash', tx.hash);
+
+  console.log('create post: poll until indexed');
+  const indexedResult = await pollUntilIndexed(tx.hash);
+
+  console.log('create post: profile has been indexed', result);
+
+  const logs = indexedResult.txReceipt.logs;
+
+  console.log('create post: logs', logs);
+
+  const topicId = utils.id(
+    'PostCreated(uint256,uint256,string,address,bytes,address,bytes,uint256)'
+  );
+  console.log('topicid we care about', topicId);
+
+  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
+  console.log('create post: created log', profileCreatedLog);
+
+  let profileCreatedEventLog = profileCreatedLog.topics;
+  console.log('create post: created event logs', profileCreatedEventLog);
+
+  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
+
+  console.log('create post: contract publication id', BigNumber.from(publicationId).toHexString());
+  console.log(
+    'create post: internal publication id',
+    profileId + '-' + BigNumber.from(publicationId).toHexString()
+  );
+
+  return result.data;
 };
 
 (async () => {
