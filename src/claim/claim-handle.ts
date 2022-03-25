@@ -13,7 +13,7 @@ const CLAIM_HANDLE = `
       ... on RelayError {
         reason
       }
-			__typename
+      __typename
     }
  }
 `;
