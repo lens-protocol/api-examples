@@ -300,7 +300,7 @@ const getPublicationRequest = (publicationId: string) => {
 };
 
 export const getPublication = async () => {
-  const result = await getPublicationRequest('0x12-0x01');
+  const result = await getPublicationRequest('0x023d-0x08');
   prettyJSON('publication: result', result.data);
 
   return result.data;

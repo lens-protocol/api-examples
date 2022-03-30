@@ -83,7 +83,8 @@ export const createPost = async () => {
       //   recipient: address,
       //   referralFee: 10.5,
       // },
-      revertCollectModule: true,
+      // revertCollectModule: true,
+      emptyCollectModule: true,
       // limitedFeeCollectModule: {
       //   amount: {
       //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',

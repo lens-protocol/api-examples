@@ -1,11 +1,7 @@
 import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { prettyJSON } from '../helpers';
 import { lensHub } from '../lens-hub';
 
@@ -62,7 +58,7 @@ export const collect = async () => {
   // remember you must make sure you approved allowance of
   // this currency on the module
   const collectRequest = {
-    publicationId: '0x032f1a-0x0a',
+    publicationId: '0x11-0x15',
   };
 
   const result = await createCollectTypedData(collectRequest);
@@ -71,11 +67,7 @@ export const collect = async () => {
   const typedData = result.data.createCollectTypedData.typedData;
   prettyJSON('collect: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('collect: signature', signature);
 
   const { v, r, s } = splitSignature(signature);
