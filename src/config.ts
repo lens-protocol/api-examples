@@ -904,6 +904,11 @@ export const LENS_HUB_ABI = [
   },
   {
     inputs: [],
+    name: 'ProfileImageURILengthInvalid',
+    type: 'error',
+  },
+  {
+    inputs: [],
     name: 'PublicationDoesNotExist',
     type: 'error',
   },
@@ -1362,6 +1367,25 @@ export const LENS_HUB_ABI = [
   {
     inputs: [
       {
+        internalType: 'address',
+        name: 'wallet',
+        type: 'address',
+      },
+    ],
+    name: 'defaultProfile',
+    outputs: [
+      {
+        internalType: 'uint256',
+        name: '',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
         internalType: 'uint256',
         name: 'profileId',
         type: 'uint256',
@@ -1418,6 +1442,25 @@ export const LENS_HUB_ABI = [
     name: 'emitFollowNFTTransferEvent',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'tokenId',
+        type: 'uint256',
+      },
+    ],
+    name: 'exists',
+    outputs: [
+      {
+        internalType: 'bool',
+        name: '',
+        type: 'bool',
+      },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -2500,6 +2543,71 @@ export const LENS_HUB_ABI = [
       },
     ],
     name: 'setApprovalForAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: 'profileId',
+        type: 'uint256',
+      },
+    ],
+    name: 'setDefaultProfile',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'wallet',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'profileId',
+            type: 'uint256',
+          },
+          {
+            components: [
+              {
+                internalType: 'uint8',
+                name: 'v',
+                type: 'uint8',
+              },
+              {
+                internalType: 'bytes32',
+                name: 'r',
+                type: 'bytes32',
+              },
+              {
+                internalType: 'bytes32',
+                name: 's',
+                type: 'bytes32',
+              },
+              {
+                internalType: 'uint256',
+                name: 'deadline',
+                type: 'uint256',
+              },
+            ],
+            internalType: 'struct DataTypes.EIP712Signature',
+            name: 'sig',
+            type: 'tuple',
+          },
+        ],
+        internalType: 'struct DataTypes.SetDefaultProfileWithSigData',
+        name: 'vars',
+        type: 'tuple',
+      },
+    ],
+    name: 'setDefaultProfileWithSig',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
