@@ -1,12 +1,24 @@
 import {
   ApolloClient,
   ApolloLink,
+  DefaultOptions,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client/core';
 import fetch from 'cross-fetch';
 import { LENS_API } from './config';
 import { getAuthenticationToken } from './state';
+
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+};
 
 const httpLink = new HttpLink({
   uri: LENS_API,
@@ -32,4 +44,5 @@ const authLink = new ApolloLink((operation, forward) => {
 export const apolloClient = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
+  defaultOptions: defaultOptions,
 });
