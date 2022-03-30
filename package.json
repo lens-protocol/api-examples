@@ -45,6 +45,7 @@
     "publications:has-collected-publication": "env-cmd -f .env ts-node ./src/publications/has-collected-publication",
     "publications:get-publications": "env-cmd -f .env ts-node ./src/publications/get-publications",
     "publications:has-mirrored-publication": "env-cmd -f .env ts-node ./src/publications/has-mirrored-publication",
+    "publications:hide-publication": "env-cmd -f .env ts-node ./src/publications/hide-publication",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post",
     "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
     "revenue:profile-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-revenue",
