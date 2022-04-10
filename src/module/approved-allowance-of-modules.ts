@@ -45,7 +45,7 @@ export const allowance = async () => {
       'FeeCollectModule',
       'LimitedTimedFeeCollectModule',
       'TimedFeeCollectModule',
-      'EmptyCollectModule',
+      'FreeCollectModule',
       'RevertCollectModule',
     ],
     followModules: ['FeeFollowModule'],

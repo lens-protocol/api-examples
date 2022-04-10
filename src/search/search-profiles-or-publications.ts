@@ -161,8 +161,10 @@ fragment Erc20Fields on Erc20 {
 
 fragment CollectModuleFields on CollectModule {
   __typename
-  ... on EmptyCollectModuleSettings {
+  ... on FreeCollectModuleSettings {
     type
+    followerOnly
+    contractAddress
   }
   ... on FeeCollectModuleSettings {
     type

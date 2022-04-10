@@ -126,8 +126,10 @@ const GET_PUBLICATIONS = `
 
   fragment CollectModuleFields on CollectModule {
     __typename
-    ... on EmptyCollectModuleSettings {
+    ... on FreeCollectModuleSettings {
       type
+      followerOnly
+      contractAddress
     }
     ... on FeeCollectModuleSettings {
       type
