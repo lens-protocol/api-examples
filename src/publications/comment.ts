@@ -5,9 +5,11 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
+import { v4 as uuidv4 } from 'uuid';
 
 const CREATE_COMMENT_TYPED_DATA = `
   mutation($request: CreatePublicCommentRequest!) { 
@@ -67,7 +69,25 @@ export const createComment = async () => {
 
   const currencies = await enabledCurrencies();
 
-  const ipfsResult = await uploadIpfs();
+  const ipfsResult = await uploadIpfs<Metadata>({
+    version: '1.0.0',
+    metadata_id: uuidv4(),
+    description: 'Description',
+    content: 'Content',
+    external_url: null,
+    image: null,
+    imageMimeType: null,
+    name: 'Name',
+    attributes: [],
+    media: [
+      // {
+      //   item: 'https://scx2.b-cdn.net/gfx/news/hires/2018/lion.jpg',
+      //   // item: 'https://assets-global.website-files.com/5c38aa850637d1e7198ea850/5f4e173f16b537984687e39e_AAVE%20ARTICLE%20website%20main%201600x800.png',
+      //   type: 'image/jpeg',
+      // },
+    ],
+    appId: 'testing123',
+  });
   console.log('create comment: ipfs result', ipfsResult);
 
   // hard coded to make the code example clear
