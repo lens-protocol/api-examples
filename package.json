@@ -22,6 +22,7 @@
     "follow:set-follow-nft": "env-cmd -f .env ts-node ./src/follow/set-follow-nft",
     "follow:pending-approval-follows": "env-cmd -f .env ts-node ./src/follow/pending-approval-follows --init",
     "follow:unfollow": "env-cmd -f .env ts-node ./src/follow/unfollow",
+    "follow:toggle": "env-cmd -f .env ts-node ./src/follow/toggle-follow",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping",
     "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed --init",
     "module:approve-module": "env-cmd -f .env ts-node ./src/module/approve-module --init",
