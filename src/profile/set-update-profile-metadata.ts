@@ -5,20 +5,18 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
-import { enabledCurrencies } from '../module/enabled-modules-currencies';
 import { v4 as uuidv4 } from 'uuid';
-
-const CREATE_COMMENT_TYPED_DATA = `
-  mutation($request: CreatePublicCommentRequest!) { 
-    createCommentTypedData(request: $request) {
+import { ProfileMetadata } from '../interfaces/profile-metadata';
+const CREATE_SET_PROFILE_METADATA_TYPED_DATA = `
+  mutation($request: CreatePublicSetProfileMetadataURIRequest!) { 
+    createSetProfileMetadataTypedData(request: $request) {
       id
       expiresAt
       typedData {
         types {
-          CommentWithSig {
+          SetProfileMetadataUTIWithSig {
             name
             type
           }
@@ -47,51 +45,52 @@ const CREATE_COMMENT_TYPED_DATA = `
 `;
 
 // TODO types
-const createCommentTypedData = (createCommentTypedDataRequest: any) => {
+const createSetUpdateProfileTypedData = (createCommentTypedDataRequest: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_COMMENT_TYPED_DATA),
+    mutation: gql(CREATE_SET_PROFILE_METADATA_TYPED_DATA),
     variables: {
       request: createCommentTypedDataRequest,
     },
   });
 };
 
-export const createComment = async () => {
+export const setUpdateProfile = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
   const address = getAddressFromSigner();
-  console.log('create comment: address', address);
+  console.log('create profile: address', address);
 
   await login(address);
 
-  const currencies = await enabledCurrencies();
-
-  const ipfsResult = await uploadIpfs<Metadata>({
+  const ipfsResult = await uploadIpfs<ProfileMetadata>({
+    name: 'LensProtocol.eth',
+    social: [
+      {
+        traitType: 'string',
+        value: 'https://lens.dev',
+        key: 'website',
+      },
+      {
+        traitType: 'string',
+        value: 'LensProtocol',
+        key: 'twitter',
+      },
+    ],
+    bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.  ',
+    cover_picture: 'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
+    location: 'Metaverse',
+    attributes: [], // Optional
     version: '1.0.0',
     metadata_id: uuidv4(),
-    description: 'Description',
-    content: 'Content',
-    external_url: null,
-    image: null,
-    imageMimeType: null,
-    name: 'Name',
-    attributes: [],
-    media: [
-      // {
-      //   item: 'https://scx2.b-cdn.net/gfx/news/hires/2018/lion.jpg',
-      //   // item: 'https://assets-global.website-files.com/5c38aa850637d1e7198ea850/5f4e173f16b537984687e39e_AAVE%20ARTICLE%20website%20main%201600x800.png',
-      //   type: 'image/jpeg',
-      // },
-    ],
     appId: 'testing123',
   });
-  console.log('create comment: ipfs result', ipfsResult);
+  console.log('create profile: ipfs result', ipfsResult);
 
   // hard coded to make the code example clear
-  const createCommentRequest = {
+  const createProfileMetadataRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
     publicationId: `0x13-0x3e`,
@@ -112,14 +111,14 @@ export const createComment = async () => {
     },
   };
 
-  const result = await createCommentTypedData(createCommentRequest);
-  console.log('create comment: createCommentTypedData', result);
+  const result = await createSetUpdateProfileTypedData(createProfileMetadataRequest);
+  console.log('create profile: createSetUpdateProfileTypedData', result);
 
-  const typedData = result.data.createCommentTypedData.typedData;
-  console.log('create comment: typedData', typedData);
+  const typedData = result.data.createSetUpdateProfileTypedData.typedData;
+  console.log('create profile: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create comment: signature', signature);
+  console.log('create profile: signature', signature);
 
   const { v, r, s } = splitSignature(signature);
 
@@ -176,5 +175,5 @@ export const createComment = async () => {
 };
 
 (async () => {
-  await createComment();
+  await setUpdateProfile();
 })();
