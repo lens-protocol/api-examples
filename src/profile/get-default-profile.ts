@@ -11,7 +11,7 @@ const GET_DEFAULT_PROFILES = `
       bio
       location
       website
-      twitterUrl
+      twitter
       picture {
         ... on NftImage {
           contractAddress

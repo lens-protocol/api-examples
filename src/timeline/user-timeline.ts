@@ -41,7 +41,7 @@ const GET_TIMELINE = `
     bio
     location
     website
-    twitterUrl
+    twitter
     handle
     picture {
       ... on NftImage {

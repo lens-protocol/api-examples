@@ -15,7 +15,7 @@ const GET_FOLLOWERS = `
             bio
             location
             website
-            twitterUrl
+            twitter
             handle
             picture {
               ... on NftImage {

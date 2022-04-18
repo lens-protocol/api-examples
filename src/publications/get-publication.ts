@@ -29,7 +29,7 @@ const GET_PUBLICATION = `
     bio
     location
     website
-    twitterUrl
+    twitter
     handle
     picture {
       ... on NftImage {

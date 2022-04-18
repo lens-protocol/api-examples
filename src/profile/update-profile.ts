@@ -23,6 +23,7 @@ const updateProfileRequest = (profileInfo: any) => {
 };
 
 export const updateProfile = async () => {
+  throw new Error('DEPRECTATED');
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');

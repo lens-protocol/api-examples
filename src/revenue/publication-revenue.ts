@@ -42,7 +42,7 @@ const GET_PUBLICATION_REVENUE = `
     bio
     location
     website
-    twitterUrl
+    twitter
     handle
     picture {
       ... on NftImage {
