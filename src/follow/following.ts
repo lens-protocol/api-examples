@@ -13,7 +13,7 @@ const GET_FOLLOWING = `
               bio
               location
               website
-              twitterUrl
+              twitter
               handle
               picture {
                 ... on NftImage {

@@ -72,7 +72,7 @@ fragment ProfileFields on Profile {
   bio
   location
   website
-  twitterUrl
+  twitter
   handle
   picture {
     ... on NftImage {
@@ -310,8 +310,8 @@ const searchRequest = (request: { query: string; type: string }) => {
 
 export const search = async () => {
   const result = await searchRequest({
-    query: 'josh',
-    type: 'PROFILE',
+    query: 'adeilaide',
+    type: 'PUBLICATION',
   });
   prettyJSON('search: result', result.data);
 

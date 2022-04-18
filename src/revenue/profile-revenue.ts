@@ -50,7 +50,7 @@ const GET_PROFILE_REVENUE = `
     bio
     location
     website
-    twitterUrl
+    twitter
     handle
     picture {
       ... on NftImage {

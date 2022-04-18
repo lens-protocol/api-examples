@@ -14,7 +14,7 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
             bio
             location
             website
-            twitterUrl
+            twitter
             handle
             picture {
               ... on NftImage {
