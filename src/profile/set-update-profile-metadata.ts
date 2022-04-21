@@ -87,7 +87,6 @@ export const setProfileMetadata = async () => {
     ],
     version: '1.0.0',
     metadata_id: uuidv4(),
-    appId: 'testing123',
   });
   console.log('create profile: ipfs result', ipfsResult);
 
