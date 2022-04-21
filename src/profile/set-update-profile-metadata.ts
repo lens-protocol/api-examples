@@ -78,7 +78,13 @@ export const setProfileMetadata = async () => {
     bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.  ',
     cover_picture: 'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
     location: 'Metaverse',
-    attributes: [], // Optional
+    attributes: [
+      {
+        traitType: 'string',
+        value: 'yes this is custom',
+        key: 'custom_field',
+      },
+    ],
     version: '1.0.0',
     metadata_id: uuidv4(),
     appId: 'testing123',
