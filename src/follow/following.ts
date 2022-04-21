@@ -14,6 +14,14 @@ const GET_FOLLOWING = `
               location
               website
               twitter
+              attributes {
+                displayType
+                traitType
+                key
+                value
+              }
+              metadata
+              isDefault
               handle
               picture {
                 ... on NftImage {

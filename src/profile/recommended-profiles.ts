@@ -13,6 +13,14 @@ const RECOMMENDED_PROFILES = `
         location
         website
         twitter
+        attributes {
+          displayType
+          traitType
+          key
+          value
+        }
+        metadata
+        isDefault
         picture {
           ... on NftImage {
             contractAddress

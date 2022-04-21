@@ -15,6 +15,14 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
             location
             website
             twitter
+            attributes {
+              displayType
+              traitType
+              key
+              value
+            }
+            metadata
+            isDefault
             handle
             picture {
               ... on NftImage {

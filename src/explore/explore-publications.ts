@@ -39,6 +39,14 @@ const EXPLORE_PUBLICATIONS = `
     location
     website
     twitter
+    attributes {
+      displayType
+      traitType
+      key
+      value
+    }
+    metadata
+    isDefault
     handle
     picture {
       ... on NftImage {

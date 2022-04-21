@@ -30,6 +30,14 @@ const GET_PUBLICATION = `
     location
     website
     twitter
+    attributes {
+      displayType
+      traitType
+      key
+      value
+    }
+    metadata
+    isDefault
     handle
     picture {
       ... on NftImage {

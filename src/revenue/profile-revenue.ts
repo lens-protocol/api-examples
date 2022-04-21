@@ -51,6 +51,14 @@ const GET_PROFILE_REVENUE = `
     location
     website
     twitter
+    attributes {
+      displayType
+      traitType
+      key
+      value
+    }
+    metadata
+    isDefault
     handle
     picture {
       ... on NftImage {
