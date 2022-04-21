@@ -2,11 +2,7 @@ import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
-import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
 const CREATE_SET_FOLLOW_MODULE_TYPED_DATA = `
@@ -64,7 +60,7 @@ export const setFollowModule = async () => {
   const setFollowModuleRequest = {
     profileId,
     followModule: {
-      emptyFollowModule: true,
+      freeFollowModule: true,
       // feeFollowModule: {
       //   amount: {
       //     currency: '0x3C68CE8504087f89c640D02d133646d98e64ddd9',
@@ -81,11 +77,7 @@ export const setFollowModule = async () => {
   const typedData = result.data.createSetFollowModuleTypedData.typedData;
   console.log('set follow module: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('set follow module: signature', signature);
 
   const { v, r, s } = splitSignature(signature);
