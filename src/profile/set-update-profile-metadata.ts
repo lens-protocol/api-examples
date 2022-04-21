@@ -1,14 +1,13 @@
 import { gql } from '@apollo/client/core';
-import { BigNumber, utils } from 'ethers';
+import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { uploadIpfs } from '../ipfs';
-import { lensHub, lensPeriphery } from '../lens-hub';
-import { v4 as uuidv4 } from 'uuid';
 import { ProfileMetadata } from '../interfaces/profile-metadata';
+import { uploadIpfs } from '../ipfs';
+import { lensPeriphery } from '../lens-hub';
 
 const CREATE_SET_PROFILE_METADATA_TYPED_DATA = `
   mutation($request: CreatePublicSetProfileMetadataURIRequest!) { 
@@ -39,17 +38,19 @@ const CREATE_SET_PROFILE_METADATA_TYPED_DATA = `
   }
 `;
 
-// TODO types
-const createSetProfileMetadataTypedData = (createCommentTypedDataRequest: any) => {
+const createSetProfileMetadataTypedData = (profileId: string, metadata: string) => {
   return apolloClient.mutate({
     mutation: gql(CREATE_SET_PROFILE_METADATA_TYPED_DATA),
     variables: {
-      request: createCommentTypedDataRequest,
+      request: {
+        profileId,
+        metadata,
+      },
     },
   });
 };
 
-export const setProfileMetadataTypedData = async () => {
+export const setProfileMetadata = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -90,7 +91,10 @@ export const setProfileMetadataTypedData = async () => {
     metadata: 'ipfs://' + ipfsResult.path,
   };
 
-  const result = await createSetProfileMetadataTypedData(createProfileMetadataRequest);
+  const result = await createSetProfileMetadataTypedData(
+    createProfileMetadataRequest.profileId,
+    createProfileMetadataRequest.metadata
+  );
   console.log('create profile: createSetProfileMetadataTypedData', result);
 
   const typedData = result.data.createSetProfileMetadataTypedData.typedData;
@@ -127,5 +131,5 @@ export const setProfileMetadataTypedData = async () => {
 };
 
 (async () => {
-  await setProfileMetadataTypedData();
+  await setProfileMetadata();
 })();
