@@ -24,6 +24,18 @@ const GET_NOTIFICATIONS = `
         ... on NewCommentNotification {
             ...NewCommentNotificationFields
         }
+
+        ... on NewMentionNotification {
+          mentionPublication {
+            ... on Post {
+                ...CompactPost
+              }
+              ... on Comment {
+                ...CompactComment
+              }
+          }
+          createdAt
+        }
       }
       pageInfo {
         ...CommonPaginatedResultInfo
