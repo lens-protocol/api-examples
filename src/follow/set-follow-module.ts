@@ -28,7 +28,7 @@ const CREATE_SET_FOLLOW_MODULE_TYPED_DATA = `
         deadline
         profileId
         followModule
-        followModuleData
+        followModuleInitData
       }
      }
    }
@@ -60,7 +60,7 @@ export const setFollowModule = async () => {
   const setFollowModuleRequest = {
     profileId,
     followModule: {
-      freeFollowModule: true,
+      // freeFollowModule: true,
       // feeFollowModule: {
       //   amount: {
       //     currency: '0x3C68CE8504087f89c640D02d133646d98e64ddd9',
@@ -69,7 +69,7 @@ export const setFollowModule = async () => {
       //   recipient: address,
       // },
       // revertFollowModule: true,
-      // profileFollowModule: true,
+      profileFollowModule: true,
     },
   };
 
@@ -87,7 +87,7 @@ export const setFollowModule = async () => {
   const tx = await lensHub.setFollowModuleWithSig({
     profileId: typedData.value.profileId,
     followModule: typedData.value.followModule,
-    followModuleData: typedData.value.followModuleData,
+    followModuleInitData: typedData.value.followModuleInitData,
     sig: {
       v,
       r,

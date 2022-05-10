@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client/core';
 import { BigNumber, utils } from 'ethers';
+import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
@@ -9,7 +10,6 @@ import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
-import { v4 as uuidv4 } from 'uuid';
 
 const CREATE_COMMENT_TYPED_DATA = `
   mutation($request: CreatePublicCommentRequest!) { 
@@ -37,8 +37,9 @@ const CREATE_COMMENT_TYPED_DATA = `
         pubIdPointed
         contentURI
         collectModule
-        collectModuleData
+        collectModuleInitData
         referenceModule
+        referenceModuleInitData
         referenceModuleData
       }
      }
@@ -94,7 +95,7 @@ export const createComment = async () => {
   const createCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x13-0x3e`,
+    publicationId: `0x0f-0x01`,
     contentURI: 'ipfs://' + ipfsResult.path,
     collectModule: {
       // timedFeeCollectModule: {
@@ -129,8 +130,9 @@ export const createComment = async () => {
     profileIdPointed: typedData.value.profileIdPointed,
     pubIdPointed: typedData.value.pubIdPointed,
     collectModule: typedData.value.collectModule,
-    collectModuleData: typedData.value.collectModuleData,
+    collectModuleInitData: typedData.value.collectModuleInitData,
     referenceModule: typedData.value.referenceModule,
+    referenceModuleInitData: typedData.value.referenceModuleInitData,
     referenceModuleData: typedData.value.referenceModuleData,
     sig: {
       v,
@@ -151,7 +153,7 @@ export const createComment = async () => {
   console.log('create comment: logs', logs);
 
   const topicId = utils.id(
-    'CommentCreated(uint256,uint256,string,uint256,uint256,address,bytes,address,bytes,uint256)'
+    'CommentCreated(uint256,uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)'
   );
   console.log('topicid we care about', topicId);
 
