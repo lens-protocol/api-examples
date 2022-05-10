@@ -68,6 +68,8 @@ export const setFollowModule = async () => {
       //   },
       //   recipient: address,
       // },
+      // revertFollowModule: true,
+      // profileFollowModule: true,
     },
   };
 

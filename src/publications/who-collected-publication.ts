@@ -11,9 +11,6 @@ const WHO_COLLECTED = `
           id
           name
           bio
-          location
-          website
-          twitter
           isDefault
           attributes {
             displayType
@@ -54,7 +51,7 @@ const WHO_COLLECTED = `
             }
           }
           ownedBy
-          depatcher {
+          dispatcher {
             address
             canUseRelay
           }
@@ -81,6 +78,12 @@ const WHO_COLLECTED = `
                 value
               }
               recipient
+            }
+            ... on ProfileFollowModuleSettings {
+              type
+            }
+            ... on RevertFollowModuleSettings {
+              type
             }
           }
         }

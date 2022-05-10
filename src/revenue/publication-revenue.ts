@@ -40,9 +40,6 @@ const GET_PUBLICATION_REVENUE = `
     id
     name
     bio
-    location
-    website
-    twitter
     attributes {
       displayType
       traitType
@@ -91,7 +88,7 @@ const GET_PUBLICATION_REVENUE = `
       }
     }
     ownedBy
-    depatcher {
+    dispatcher {
       address
     }
     stats {
@@ -116,6 +113,12 @@ const GET_PUBLICATION_REVENUE = `
           value
         }
         recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
       }
     }
   }

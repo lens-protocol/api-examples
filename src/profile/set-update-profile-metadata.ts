@@ -63,21 +63,8 @@ export const setProfileMetadata = async () => {
 
   const ipfsResult = await uploadIpfs<ProfileMetadata>({
     name: 'LensProtocol.eth',
-    social: [
-      {
-        traitType: 'string',
-        value: 'https://lens.dev',
-        key: 'website',
-      },
-      {
-        traitType: 'string',
-        value: 'LensProtocol',
-        key: 'twitter',
-      },
-    ],
-    bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.  ',
+    bio: 'A permissionless, composable, & decentralized social graph that makes building a Web3 social platform easy.',
     cover_picture: 'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',
-    location: 'Metaverse',
     attributes: [
       {
         traitType: 'string',

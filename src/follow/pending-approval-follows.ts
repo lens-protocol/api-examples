@@ -12,9 +12,6 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
             id
             name
             bio
-            location
-            website
-            twitter
             attributes {
               displayType
               traitType
@@ -81,7 +78,7 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
               }
             }
             ownedBy
-            depatcher {
+            dispatcher {
               address
               canUseRelay
             }
@@ -107,6 +104,12 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
                   value
                 }
                 recipient
+              }
+              ... on ProfileFollowModuleSettings {
+                type
+              }
+              ... on RevertFollowModuleSettings {
+                type
               }
             }
           }

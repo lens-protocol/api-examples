@@ -70,9 +70,6 @@ fragment ProfileFields on Profile {
   profileId: id,
   name
   bio
-  location
-  website
-  twitter
   attributes {
     displayType
     traitType
@@ -109,7 +106,7 @@ fragment ProfileFields on Profile {
     }
   }
   ownedBy
-  depatcher {
+  dispatcher {
     address
   }
   stats {
@@ -134,6 +131,12 @@ fragment ProfileFields on Profile {
         value
       }
       recipient
+    }
+    ... on ProfileFollowModuleSettings {
+      type
+    }
+    ... on RevertFollowModuleSettings {
+      type
     }
   }
 }

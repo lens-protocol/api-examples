@@ -9,9 +9,6 @@ const GET_DEFAULT_PROFILES = `
       id
       name
       bio
-      location
-      website
-      twitter
       attributes {
         displayType
         traitType
@@ -52,7 +49,7 @@ const GET_DEFAULT_PROFILES = `
         __typename
       }
       ownedBy
-      depatcher {
+      dispatcher {
         address
         canUseRelay
       }
@@ -79,7 +76,12 @@ const GET_DEFAULT_PROFILES = `
           }
           recipient
         }
-        __typename
+        ... on ProfileFollowModuleSettings {
+          type
+        }
+        ... on RevertFollowModuleSettings {
+          type
+        }
       }
     }
   }
