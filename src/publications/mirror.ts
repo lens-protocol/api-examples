@@ -86,9 +86,9 @@ export const createMirror = async () => {
     profileId: typedData.value.profileId,
     profileIdPointed: typedData.value.profileIdPointed,
     pubIdPointed: typedData.value.pubIdPointed,
+    referenceModuleData: typedData.value.referenceModuleData,
     referenceModule: typedData.value.referenceModule,
-    referenceModuleInitData: typedData.value.referenceModuleData,
-    referenceModuleData: '0x',
+    referenceModuleInitData: typedData.value.referenceModuleInitData,
     sig: {
       v,
       r,
