@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client/core';
 import { BigNumber, utils } from 'ethers';
+import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
@@ -9,7 +10,6 @@ import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { enabledCurrencies } from '../module/enabled-modules-currencies';
-import { v4 as uuidv4 } from 'uuid';
 
 const CREATE_POST_TYPED_DATA = `
   mutation($request: CreatePublicPostRequest!) { 
@@ -35,9 +35,9 @@ const CREATE_POST_TYPED_DATA = `
         profileId
         contentURI
         collectModule
-        collectModuleData
+        collectModuleInitData
         referenceModule
-        referenceModuleData
+        referenceModuleInitData
       }
     }
   }
@@ -135,9 +135,9 @@ export const createPost = async () => {
     profileId: typedData.value.profileId,
     contentURI: typedData.value.contentURI,
     collectModule: typedData.value.collectModule,
-    collectModuleData: typedData.value.collectModuleData,
+    collectModuleInitData: typedData.value.collectModuleInitData,
     referenceModule: typedData.value.referenceModule,
-    referenceModuleData: typedData.value.referenceModuleData,
+    referenceModuleInitData: typedData.value.referenceModuleInitData,
     sig: {
       v,
       r,

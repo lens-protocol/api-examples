@@ -12,9 +12,6 @@ const GET_PROFILES = `
         id
         name
         bio
-        location
-        website
-        twitter
         attributes {
           displayType
           traitType
@@ -55,7 +52,7 @@ const GET_PROFILES = `
           __typename
         }
         ownedBy
-        depatcher {
+        dispatcher {
           address
           canUseRelay
         }
@@ -82,7 +79,12 @@ const GET_PROFILES = `
             }
             recipient
           }
-          __typename
+          ... on ProfileFollowModuleSettings {
+            type
+          }
+          ... on RevertFollowModuleSettings {
+            type
+          }
         }
       }
       pageInfo {

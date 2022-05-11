@@ -10,9 +10,6 @@ const RECOMMENDED_PROFILES = `
         id
         name
         bio
-        location
-        website
-        twitter
         attributes {
           displayType
           traitType
@@ -81,7 +78,7 @@ const RECOMMENDED_PROFILES = `
           __typename
         }
         ownedBy
-        depatcher {
+        dispatcher {
           address
           canUseRelay
         }
@@ -108,7 +105,12 @@ const RECOMMENDED_PROFILES = `
             }
             recipient
           }
-          __typename
+          ... on ProfileFollowModuleSettings {
+            type
+          }
+          ... on RevertFollowModuleSettings {
+            type
+          }
         }
   	}
   }

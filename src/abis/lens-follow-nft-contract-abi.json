@@ -391,16 +391,6 @@
         "internalType": "uint256",
         "name": "profileId",
         "type": "uint256"
-      },
-      {
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "symbol",
-        "type": "string"
       }
     ],
     "name": "initialize",

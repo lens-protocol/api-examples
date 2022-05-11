@@ -48,7 +48,7 @@ export const allowance = async () => {
       'FreeCollectModule',
       'RevertCollectModule',
     ],
-    followModules: ['FeeFollowModule'],
+    followModules: ['FeeFollowModule', 'RevertFollowModule', 'ProfileFollowModule'],
     referenceModules: ['FollowerOnlyReferenceModule'],
   });
 

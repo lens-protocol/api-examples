@@ -52,7 +52,7 @@ export const unfollow = async () => {
   await login(address);
 
   // hard coded to make the code example clear
-  const unfollowProfileId = '0x0338a3';
+  const unfollowProfileId = '0x01';
   const result = await createUnfollowTypedData(unfollowProfileId);
   console.log('unfollow: result', result);
 

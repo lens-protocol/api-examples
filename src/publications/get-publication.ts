@@ -27,9 +27,6 @@ const GET_PUBLICATION = `
     id
     name
     bio
-    location
-    website
-    twitter
     attributes {
       displayType
       traitType
@@ -66,7 +63,7 @@ const GET_PUBLICATION = `
       }
     }
     ownedBy
-    depatcher {
+    dispatcher {
       address
     }
     stats {
@@ -91,6 +88,12 @@ const GET_PUBLICATION = `
           value
         }
         recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
       }
     }
   }
@@ -310,7 +313,7 @@ const getPublicationRequest = (publicationId: string) => {
 };
 
 export const getPublication = async () => {
-  const result = await getPublicationRequest('0x023d-0x08');
+  const result = await getPublicationRequest('0x0f-0x01');
   prettyJSON('publication: result', result.data);
 
   return result.data;

@@ -10,8 +10,6 @@ export interface AttributeData {
 export interface ProfileMetadata extends GenericMetadata {
   name?: string;
   bio?: string;
-  location?: string;
   cover_picture?: string;
-  social: AttributeData[];
   attributes: AttributeData[];
 }

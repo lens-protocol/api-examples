@@ -35,9 +35,6 @@ const GET_PUBLICATIONS = `
     id
     name
     bio
-    location
-    website
-    twitter
     attributes {
       displayType
       traitType
@@ -74,7 +71,7 @@ const GET_PUBLICATIONS = `
       }
     }
     ownedBy
-    depatcher {
+    dispatcher {
       address
     }
     stats {
@@ -99,6 +96,12 @@ const GET_PUBLICATIONS = `
           value
         }
         recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
       }
     }
   }

@@ -31,8 +31,9 @@ const CREATE_MIRROR_TYPED_DATA = `
         profileId
         profileIdPointed
         pubIdPointed
-        referenceModule
         referenceModuleData
+        referenceModule
+        referenceModuleInitData
       }
      }
    }
@@ -64,7 +65,7 @@ export const createMirror = async () => {
   const createMirrorRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: '0x11-0x14',
+    publicationId: '0x0f-0x01',
     referenceModule: {
       followerOnlyReferenceModule: false,
     },
@@ -85,8 +86,9 @@ export const createMirror = async () => {
     profileId: typedData.value.profileId,
     profileIdPointed: typedData.value.profileIdPointed,
     pubIdPointed: typedData.value.pubIdPointed,
-    referenceModule: typedData.value.referenceModule,
     referenceModuleData: typedData.value.referenceModuleData,
+    referenceModule: typedData.value.referenceModule,
+    referenceModuleInitData: typedData.value.referenceModuleInitData,
     sig: {
       v,
       r,
@@ -105,7 +107,9 @@ export const createMirror = async () => {
 
   console.log('create mirror: logs', logs);
 
-  const topicId = utils.id('MirrorCreated(uint256,uint256,uint256,uint256,address,bytes,uint256)');
+  const topicId = utils.id(
+    'MirrorCreated(uint256,uint256,uint256,uint256,bytes,address,bytes,uint256)'
+  );
   console.log('topicid we care about', topicId);
 
   const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);

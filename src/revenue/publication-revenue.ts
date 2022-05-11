@@ -40,9 +40,6 @@ const GET_PUBLICATION_REVENUE = `
     id
     name
     bio
-    location
-    website
-    twitter
     attributes {
       displayType
       traitType
@@ -91,7 +88,7 @@ const GET_PUBLICATION_REVENUE = `
       }
     }
     ownedBy
-    depatcher {
+    dispatcher {
       address
     }
     stats {
@@ -116,6 +113,12 @@ const GET_PUBLICATION_REVENUE = `
           value
         }
         recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
       }
     }
   }
@@ -341,7 +344,7 @@ export const getPublicationRevenueRequest = (publicationId: string) => {
 };
 
 export const publicationRevenue = async () => {
-  const result = await getPublicationRevenueRequest('0x12-0x05');
+  const result = await getPublicationRevenueRequest('0x0f-0x01');
 
   prettyJSON('publication revenue: result', result.data);
 

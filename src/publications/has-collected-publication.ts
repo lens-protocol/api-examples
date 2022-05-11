@@ -32,7 +32,7 @@ export const hasCollected = async () => {
   const result = await hasCollectedRequest([
     {
       walletAddress: '0x109eCbC12836F7Dd63255254fa973d21425819aE',
-      publicationIds: ['0x032f1a-0x02', '0x17-0x01'],
+      publicationIds: ['0x0f-0x01'],
     },
   ]);
   prettyJSON('has collected: result', result.data);

@@ -11,9 +11,6 @@ const GET_FOLLOWING = `
               id
               name
               bio
-              location
-              website
-              twitter
               attributes {
                 displayType
                 traitType
@@ -80,7 +77,7 @@ const GET_FOLLOWING = `
                 }
               }
               ownedBy
-              depatcher {
+              dispatcher {
                 address
                 canUseRelay
               }
@@ -106,6 +103,12 @@ const GET_FOLLOWING = `
                     value
                   }
                   recipient
+                }
+                ... on ProfileFollowModuleSettings {
+                  type
+                }
+                ... on RevertFollowModuleSettings {
+                  type
                 }
             }
           }

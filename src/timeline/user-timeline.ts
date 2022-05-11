@@ -39,9 +39,6 @@ const GET_TIMELINE = `
     id
     name
     bio
-    location
-    website
-    twitter
     attributes {
       displayType
       traitType
@@ -90,7 +87,7 @@ const GET_TIMELINE = `
       }
     }
     ownedBy
-    depatcher {
+    dispatcher {
       address
     }
     stats {
@@ -115,6 +112,12 @@ const GET_TIMELINE = `
           value
         }
         recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
       }
     }
   }

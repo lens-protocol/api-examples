@@ -36,9 +36,6 @@ const EXPLORE_PUBLICATIONS = `
     id
     name
     bio
-    location
-    website
-    twitter
     attributes {
       displayType
       traitType
@@ -87,7 +84,7 @@ const EXPLORE_PUBLICATIONS = `
       }
     }
     ownedBy
-    depatcher {
+    dispatcher {
       address
     }
     stats {
@@ -112,6 +109,12 @@ const EXPLORE_PUBLICATIONS = `
           value
         }
         recipient
+      }
+      ... on ProfileFollowModuleSettings {
+        type
+      }
+      ... on RevertFollowModuleSettings {
+        type
       }
     }
   }
