@@ -65,7 +65,7 @@ export const createMirror = async () => {
   const createMirrorRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: '0x0f-0x04',
+    publicationId: '0x0f-0x01',
     referenceModule: {
       followerOnlyReferenceModule: false,
     },

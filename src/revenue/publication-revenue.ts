@@ -344,7 +344,7 @@ export const getPublicationRevenueRequest = (publicationId: string) => {
 };
 
 export const publicationRevenue = async () => {
-  const result = await getPublicationRevenueRequest('0x12-0x05');
+  const result = await getPublicationRevenueRequest('0x0f-0x01');
 
   prettyJSON('publication revenue: result', result.data);
 

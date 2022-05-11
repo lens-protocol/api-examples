@@ -26,7 +26,7 @@ export const reportPublication = async () => {
   await login(address);
 
   await reportPublicationRequest({
-    publicationId: '0x032f1a-0x07',
+    publicationId: '0x0f-0x01',
     reason: {
       sensitiveReason: {
         reason: 'SENSITIVE',
