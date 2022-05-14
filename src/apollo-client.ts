@@ -2,9 +2,11 @@ import {
   ApolloClient,
   ApolloLink,
   DefaultOptions,
+  from,
   HttpLink,
   InMemoryCache,
 } from '@apollo/client/core';
+import { onError } from '@apollo/client/link/error';
 import fetch from 'cross-fetch';
 import { LENS_API } from './config';
 import { getAuthenticationToken } from './state';
@@ -25,6 +27,15 @@ const httpLink = new HttpLink({
   fetch,
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`)
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 // example how you can pass in the x-access-token into requests using `ApolloLink`
 const authLink = new ApolloLink((operation, forward) => {
   const token = getAuthenticationToken();
@@ -42,7 +53,7 @@ const authLink = new ApolloLink((operation, forward) => {
 });
 
 export const apolloClient = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: from([errorLink, authLink, httpLink]),
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });

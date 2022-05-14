@@ -343,8 +343,8 @@ const explorePublications = (explorePublicationQueryRequest: {
 export const explore = async () => {
   const result = await explorePublications({
     // switch for `TOP_COLLECTED` if you wanted collected!
-    sortCriteria: 'TOP_COMMENTED',
-    limit: 10,
+    sortCriteria: 'LATEST',
+    limit: 50,
   });
 
   prettyJSON('explore: result', result.data);
