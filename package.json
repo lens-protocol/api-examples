@@ -6,7 +6,6 @@
     "authentication:login": "env-cmd -f .env ts-node ./src/authentication/login --init",
     "authentication:refresh": "env-cmd -f .env ts-node ./src/authentication/refresh",
     "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
-    "attach:get-file": "env-cmd -f .env ts-node ./src/attach/attach-file",
     "claim:claimable-handles": "env-cmd -f .env ts-node ./src/claim/claimable-handles",
     "claim:claimed-handles": "env-cmd -f .env ts-node ./src/claim/claimed-handles",
     "claim:claim-handle": "env-cmd -f .env ts-node ./src/claim/claim-handle",
