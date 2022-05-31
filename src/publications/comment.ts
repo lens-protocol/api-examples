@@ -68,8 +68,6 @@ export const createComment = async () => {
 
   await login(address);
 
-  const currencies = await enabledCurrencies();
-
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '1.0.0',
     metadata_id: uuidv4(),

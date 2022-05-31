@@ -100,7 +100,7 @@ const getDefaultProfileRequest = (ethereumAddress: string) => {
 
 export const getDefaultProfile = async () => {
   const address = getAddressFromSigner();
-  console.log('set default profile: address', address);
+  console.log('get default profile: address', address);
 
   const result = await getDefaultProfileRequest(address);
   prettyJSON('profiles: result', result.data);

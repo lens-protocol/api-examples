@@ -7,7 +7,7 @@ import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 
 const CREATE_SET_DEFAULT_PROFILE_TYPED_DATA = `
-  mutation($request: SetDefaultProfileRequest!) { 
+  mutation($request: CreateSetDefaultProfileRequest!) { 
     createSetDefaultProfileTypedData(request: $request) {
       id
       expiresAt

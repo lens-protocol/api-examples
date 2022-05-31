@@ -20,6 +20,7 @@ LENS_PERIPHERY_CONTRACT=0xD5037d72877808cdE7F669563e9389930AF404E8
 ```
 
 note `PROFILE_ID` is optional but required on some endpoints!
+note 2: Highly advised to create an API key and use the Alchemy RPC provider for Mumbai to avoid rate limiting.
 
 ## How to run
 
