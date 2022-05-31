@@ -36,7 +36,7 @@ export const reportPublication = async () => {
     additionalComments: 'Testing report!',
   });
 
-  console.log('report publication: sucess');
+  console.log('report publication: success');
 };
 
 (async () => {

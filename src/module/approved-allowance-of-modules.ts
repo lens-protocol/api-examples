@@ -36,8 +36,6 @@ export const allowance = async () => {
 
   await login(address);
 
-  const currencies = await enabledCurrencies();
-
   const result = await allowanceRequest({
     currencies: ['0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'],
     collectModules: [
