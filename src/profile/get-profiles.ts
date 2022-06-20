@@ -1,9 +1,9 @@
 import { gql } from '@apollo/client/core';
-import { BigNumber } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { prettyJSON } from '../helpers';
 
 const GET_PROFILES = `
   query($request: ProfileQueryRequest!) {
@@ -110,7 +110,6 @@ const getProfilesRequest = (request: ProfilesRequest) => {
     variables: {
       request,
     },
-    fetchPolicy: 'no-cache',
   });
 };
 
@@ -120,32 +119,17 @@ export const profiles = async (request?: ProfilesRequest) => {
 
   await login(address);
 
-  let from = 0;
-  while (true) {
-    let profileIds = [];
-    let afterFrom = from + 45;
-    for (let i = from; i < afterFrom; i++) {
-      profileIds.push(BigNumber.from(i).toHexString());
-    }
-
-    from = afterFrom;
-
-    console.log('profiles: profileIds', profileIds);
-
-    // only showing one example to query but you can see from request
-    // above you can query many
-    const profilesFromProfileIds = await getProfilesRequest({ profileIds });
-
-    console.log(
-      'result',
-      profilesFromProfileIds.data.profiles.items.map((profile2: any) => profile2.id)
-    );
-
-    // prettyJSON(
-    //   'profiles: result',
-    //   profilesFromProfileIds.data.profiles.map((profile2: any) => profile2.id)
-    // );
+  if (!request) {
+    request = { ownedBy: address };
   }
+
+  // only showing one example to query but you can see from request
+  // above you can query many
+  const profilesFromProfileIds = await getProfilesRequest(request);
+
+  prettyJSON('profiles: result', profilesFromProfileIds.data);
+
+  return profilesFromProfileIds.data;
 };
 
 (async () => {
