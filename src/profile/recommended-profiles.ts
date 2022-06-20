@@ -16,6 +16,7 @@ const RECOMMENDED_PROFILES = `
           key
           value
         }
+        followNftAddress
         metadata
         isDefault
         picture {

@@ -17,6 +17,7 @@ const GET_FOLLOWING = `
                 key
                 value
               }
+              followNftAddress
               metadata
               isDefault
               handle

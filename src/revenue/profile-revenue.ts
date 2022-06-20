@@ -54,6 +54,7 @@ const GET_PROFILE_REVENUE = `
       key
       value
     }
+    followNftAddress
     metadata
     isDefault
     handle

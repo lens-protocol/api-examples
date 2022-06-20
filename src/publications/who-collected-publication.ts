@@ -18,6 +18,7 @@ const WHO_COLLECTED = `
             key
             value
           }
+          followNftAddress
           metadata
           handle
           picture {

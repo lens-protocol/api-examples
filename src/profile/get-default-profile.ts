@@ -15,6 +15,7 @@ const GET_DEFAULT_PROFILES = `
         key
         value
       }
+      followNftAddress
       metadata
       isDefault
       picture {

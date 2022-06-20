@@ -76,6 +76,7 @@ fragment ProfileFields on Profile {
     key
     value
   }
+  followNftAddress
   metadata
   isDefault
   handle

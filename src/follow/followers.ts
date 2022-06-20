@@ -19,8 +19,8 @@ const GET_FOLLOWERS = `
               key
               value
             }
+            followNftAddress
             metadata
-            isDefault
             handle
             picture {
               ... on NftImage {

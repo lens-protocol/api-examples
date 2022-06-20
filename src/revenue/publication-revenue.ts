@@ -46,6 +46,7 @@ const GET_PUBLICATION_REVENUE = `
       key
       value
     }
+    followNftAddress
     metadata
     isDefault
     handle

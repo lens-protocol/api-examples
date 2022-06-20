@@ -45,6 +45,7 @@ const GET_TIMELINE = `
       key
       value
     }
+    followNftAddress
     metadata
     isDefault
     handle

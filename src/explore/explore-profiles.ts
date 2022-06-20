@@ -16,6 +16,7 @@ const EXPLORE_PROFILES = `
           key
           value
         }
+        followNftAddress
         metadata
         handle
         picture {

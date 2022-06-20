@@ -18,6 +18,7 @@ const GET_PENDING_APPROVAL_FOLLOWS = `
               key
               value
             }
+            followNftAddress
             metadata
             isDefault
             handle

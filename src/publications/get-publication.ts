@@ -33,6 +33,7 @@ const GET_PUBLICATION = `
       key
       value
     }
+    followNftAddress
     metadata
     isDefault
     handle
