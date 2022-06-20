@@ -252,6 +252,7 @@ fragment PostFields on Post {
     }
   }
   appId
+  hidden
 }
 
 fragment CommentBaseFields on Comment {
@@ -275,6 +276,7 @@ fragment CommentBaseFields on Comment {
     }
   }
   appId
+  hidden
 }
 
 fragment CommentFields on Comment {
@@ -295,6 +297,7 @@ fragment CommentFields on Comment {
       }
     }
   }
+  hidden
 }
 
 fragment CommentMirrorOfFields on Comment {

@@ -242,6 +242,7 @@ const GET_TIMELINE = `
     collectedBy {
       ...WalletFields
     }
+    hidden
   }
 
   fragment MirrorBaseFields on Mirror {
@@ -265,6 +266,7 @@ const GET_TIMELINE = `
       }
     }
     appId
+    hidden
   }
 
   fragment MirrorFields on Mirror {
@@ -303,6 +305,7 @@ const GET_TIMELINE = `
     collectedBy {
       ...WalletFields
     }
+    hidden
   }
 
   fragment CommentFields on Comment {

@@ -209,6 +209,7 @@ const GET_PUBLICATION = `
       }
     }
     appId
+    hidden
   }
 
   fragment MirrorBaseFields on Mirror {
@@ -232,6 +233,7 @@ const GET_PUBLICATION = `
       }
     }
     appId
+    hidden
   }
 
   fragment MirrorFields on Mirror {
@@ -267,6 +269,7 @@ const GET_PUBLICATION = `
       }
     }
     appId
+    hidden
   }
 
   fragment CommentFields on Comment {

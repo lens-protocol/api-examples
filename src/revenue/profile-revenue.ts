@@ -248,6 +248,7 @@ const GET_PROFILE_REVENUE = `
       }
     }
     appId
+    hidden
   }
 
   fragment MirrorBaseFields on Mirror {
@@ -271,6 +272,7 @@ const GET_PROFILE_REVENUE = `
       }
     }
     appId
+    hidden
   }
 
   fragment MirrorFields on Mirror {
@@ -306,6 +308,7 @@ const GET_PROFILE_REVENUE = `
       }
     }
     appId
+    hidden
   }
 
   fragment CommentFields on Comment {
