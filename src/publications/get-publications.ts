@@ -41,6 +41,8 @@ const GET_PUBLICATIONS = `
       key
       value
     }
+    isFollowedByMe
+    isFollowing(who: null)
     followNftAddress
     metadata
     isDefault
@@ -219,6 +221,7 @@ const GET_PUBLICATIONS = `
     appId
     hidden
     reaction(request: null)
+    mirrors(profileId: null)
     hasCollectedByMe
   }
 
@@ -283,6 +286,7 @@ const GET_PUBLICATIONS = `
     appId
     hidden
     reaction(request: null)
+    mirrors(profileId: null)
     hasCollectedByMe
   }
 

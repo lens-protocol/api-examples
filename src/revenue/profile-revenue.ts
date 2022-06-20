@@ -54,6 +54,8 @@ const GET_PROFILE_REVENUE = `
       key
       value
     }
+    isFollowedByMe
+    isFollowing(who: null)
     followNftAddress
     metadata
     isDefault
@@ -250,6 +252,7 @@ const GET_PROFILE_REVENUE = `
     appId
     hidden
     reaction(request: null)
+    mirrors(profileId: null)
     hasCollectedByMe
   }
 
@@ -314,6 +317,7 @@ const GET_PROFILE_REVENUE = `
     appId
     hidden
     reaction(request: null)
+    mirrors(profileId: null)
     hasCollectedByMe
   }
 

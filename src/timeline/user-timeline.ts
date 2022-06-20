@@ -45,6 +45,8 @@ const GET_TIMELINE = `
       key
       value
     }
+    isFollowedByMe
+    isFollowing(who: null)
     followNftAddress
     metadata
     isDefault
@@ -244,6 +246,7 @@ const GET_TIMELINE = `
     }
     hidden
     reaction(request: null)
+    mirrors(profileId: null)
     hasCollectedByMe
   }
 
@@ -311,6 +314,7 @@ const GET_TIMELINE = `
     }
     hidden
     reaction(request: null)
+    mirrors(profileId: null)
     hasCollectedByMe
   }
 
