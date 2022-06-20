@@ -9,7 +9,6 @@ import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
-import { enabledCurrencies } from '../module/enabled-modules-currencies';
 
 const CREATE_POST_TYPED_DATA = `
   mutation($request: CreatePublicPostRequest!) { 
