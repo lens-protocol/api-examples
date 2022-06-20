@@ -241,6 +241,8 @@ const GET_PUBLICATION_REVENUE = `
     }
     appId
     hidden
+    reaction(request: null)
+    hasCollectedByMe
   }
 
   fragment MirrorBaseFields on Mirror {
@@ -265,6 +267,8 @@ const GET_PUBLICATION_REVENUE = `
     }
     appId
     hidden
+    reaction(request: null)
+    hasCollectedByMe
   }
 
   fragment MirrorFields on Mirror {
@@ -301,6 +305,8 @@ const GET_PUBLICATION_REVENUE = `
     }
     appId
     hidden
+    reaction(request: null)
+    hasCollectedByMe
   }
 
   fragment CommentFields on Comment {

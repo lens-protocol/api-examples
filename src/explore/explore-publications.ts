@@ -237,6 +237,8 @@ const EXPLORE_PUBLICATIONS = `
     }
     appId
     hidden
+    reaction(request: null)
+    hasCollectedByMe
   }
 
   fragment MirrorBaseFields on Mirror {
@@ -261,6 +263,8 @@ const EXPLORE_PUBLICATIONS = `
     }
     appId
     hidden
+    reaction(request: null)
+    hasCollectedByMe
   }
 
   fragment MirrorFields on Mirror {
@@ -297,6 +301,8 @@ const EXPLORE_PUBLICATIONS = `
     }
     appId
     hidden
+    reaction(request: null)
+    hasCollectedByMe
   }
 
   fragment CommentFields on Comment {
