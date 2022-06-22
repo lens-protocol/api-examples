@@ -246,7 +246,7 @@ const GET_TIMELINE = `
     }
     hidden
     reaction(request: null)
-    mirrors(profileId: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 
@@ -314,7 +314,7 @@ const GET_TIMELINE = `
     }
     hidden
     reaction(request: null)
-    mirrors(profileId: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 

@@ -256,7 +256,7 @@ fragment PostFields on Post {
   appId
   hidden
   reaction(request: null)
-  mirrors(profileId: null)
+  mirrors(by: null)
   hasCollectedByMe
 }
 
@@ -283,7 +283,7 @@ fragment CommentBaseFields on Comment {
   appId
   hidden
   reaction(request: null)
-  mirrors(profileId: null)
+  mirrors(by: null)
   hasCollectedByMe
 }
 

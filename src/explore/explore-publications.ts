@@ -240,7 +240,7 @@ const EXPLORE_PUBLICATIONS = `
     appId
     hidden
     reaction(request: null)
-    mirrors(profileId: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 
@@ -305,7 +305,7 @@ const EXPLORE_PUBLICATIONS = `
     appId
     hidden
     reaction(request: null)
-    mirrors(profileId: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 

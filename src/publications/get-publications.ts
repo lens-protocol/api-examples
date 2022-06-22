@@ -221,7 +221,7 @@ const GET_PUBLICATIONS = `
     appId
     hidden
     reaction(request: null)
-    mirrors(profileId: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 
@@ -286,7 +286,7 @@ const GET_PUBLICATIONS = `
     appId
     hidden
     reaction(request: null)
-    mirrors(profileId: null)
+    mirrors(by: null)
     hasCollectedByMe
   }
 
