@@ -79,7 +79,7 @@ fragment ProfileFields on Profile {
   isFollowedByMe
   isFollowing(who: null)
   followNftAddress
-  metadata
+  metadataUrl: metadata
   isDefault
   handle
   picture {
