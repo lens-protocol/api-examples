@@ -54,3 +54,7 @@ export const LENS_FOLLOW_NFT_ABI = JSON.parse(fileFollowNFT);
 export const LENS_HUB_ABI = JSON.parse(fileLensHub);
 
 export const LENS_PERIPHERY_ABI = JSON.parse(fileLensPeriphery);
+
+export const INFURA_PROJECT_ID = getParam('INFURA_PROFILE_ID');
+
+export const INFURA_SECRET = getParam('INFURA_SECRET');
