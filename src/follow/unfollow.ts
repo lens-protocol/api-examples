@@ -1,42 +1,14 @@
-import { gql } from '@apollo/client/core';
+
 import { ethers } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { LENS_FOLLOW_NFT_ABI } from '../config';
 import { getAddressFromSigner, getSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { prettyJSON } from '../helpers';
-
-const CREATE_UNFOLLOW_TYPED_DATA = `
-  mutation($request: UnfollowRequest!) { 
-    createUnfollowTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          BurnWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-          deadline
-          tokenId
-        }
-      }
-    }
- }
-`;
+import {CreateUnfollowTypedDataDocument } from '../graphql/generated'
 
 const createUnfollowTypedData = (profile: string) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_UNFOLLOW_TYPED_DATA),
+    mutation: CreateUnfollowTypedDataDocument,
     variables: {
       request: {
         profile,
@@ -56,8 +28,8 @@ export const unfollow = async () => {
   const result = await createUnfollowTypedData(unfollowProfileId);
   console.log('unfollow: result', result);
 
-  const typedData = result.data.createUnfollowTypedData.typedData;
-  prettyJSON('unfollow: typedData', typedData);
+  const typedData = result.data!.createUnfollowTypedData.typedData;
+  console.log('unfollow: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('unfollow: signature', signature);

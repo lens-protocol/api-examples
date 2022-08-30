@@ -1,7 +1,6 @@
-import { gql } from '@apollo/client/core';
-import { apolloClient } from '../apollo-client';
-import { prettyJSON } from '../helpers';
 
+import { apolloClient } from '../apollo-client';
+import { gql } from "@apollo/client/core";
 const GET_PUBLICATION_REVENUE = `
   query($request: PublicationRevenueQueryRequest!) {
     publicationRevenue(request: $request) {
@@ -360,7 +359,7 @@ export const getPublicationRevenueRequest = (publicationId: string) => {
 export const publicationRevenue = async () => {
   const result = await getPublicationRevenueRequest('0x0f-0x01');
 
-  prettyJSON('publication revenue: result', result.data);
+  console.log('publication revenue: result', result.data);
 
   return result.data;
 };

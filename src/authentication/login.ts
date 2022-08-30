@@ -1,45 +1,33 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
-import { prettyJSON } from '../helpers';
+import {ChallengeDocument,AuthenticateDocument } from '../graphql/generated'
 import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
-const GET_CHALLENGE = `
-  query($request: ChallengeRequest!) {
-    challenge(request: $request) { text }
-  }
-`;
+
 
 export const generateChallenge = (address: string) => {
   return apolloClient.query({
-    query: gql(GET_CHALLENGE),
+    query: ChallengeDocument,
     variables: {
       request: {
-        address,
+         address,
       },
-    },
+    }
   });
 };
 
-const AUTHENTICATION = `
-  mutation($request: SignedAuthChallenge!) { 
-    authenticate(request: $request) {
-      accessToken
-      refreshToken
-    }
- }
-`;
-
 const authenticate = (address: string, signature: string) => {
   return apolloClient.mutate({
-    mutation: gql(AUTHENTICATION),
+    mutation: AuthenticateDocument,
     variables: {
       request: {
         address,
         signature,
       },
-    },
+    }
+   
   });
 };
 
@@ -58,9 +46,8 @@ export const login = async (address = getAddressFromSigner()) => {
   const signature = await signText(challengeResponse.data.challenge.text);
 
   const accessTokens = await authenticate(address, signature);
-  prettyJSON('login: result', accessTokens.data);
-
-  setAuthenticationToken(accessTokens.data.authenticate.accessToken);
+  console.log('login: result', accessTokens.data);
+  setAuthenticationToken(accessTokens.data!.authenticate.accessToken);
 
   return accessTokens.data;
 };

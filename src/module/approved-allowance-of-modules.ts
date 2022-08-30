@@ -1,10 +1,8 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
-import { enabledCurrencies } from './enabled-modules-currencies';
-
+import { gql } from '@apollo/client/core';
 const ALLOWANCE = `
   query($request: ApprovedModuleAllowanceAmountRequest!) {
     approvedModuleAllowanceAmount(request: $request) {
@@ -50,7 +48,7 @@ export const allowance = async () => {
     referenceModules: ['FollowerOnlyReferenceModule'],
   });
 
-  prettyJSON('allowance: result', result.data);
+  console.log('allowance: result', result.data);
 
   return result.data;
 };

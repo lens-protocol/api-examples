@@ -1,27 +1,19 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import {RemoveReactionDocument,ReactionTypes } from '../graphql/generated'
 
-const REMOVE_REACTION = `
-  mutation($request: ReactionRequest!) { 
-   removeReaction(request: $request)
- }
-`;
 
-enum ReactionType {
-  UPVOTE = 'UPVOTE',
-  DOWNVOTE = 'DOWNVOTE',
-}
 
 const removeReactionRequest = (
   profileId: string,
-  reaction: ReactionType,
+  reaction: ReactionTypes,
   publicationId: string
 ) => {
   return apolloClient.mutate({
-    mutation: gql(REMOVE_REACTION),
+    mutation: RemoveReactionDocument,
     variables: {
       request: {
         profileId,
@@ -43,7 +35,7 @@ export const removeReaction = async () => {
 
   await login(address);
 
-  await removeReactionRequest(profileId, ReactionType.UPVOTE, '0x0f-0x01');
+  await removeReactionRequest(profileId, ReactionTypes.Upvote, '0x0f-0x01');
 
   console.log('remove reaction: sucess');
 };

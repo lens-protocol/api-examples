@@ -1,6 +1,8 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+
+import {CreateSetFollowNftUriTypedDataDocument } from '../graphql/generated'
 import { PROFILE_ID } from '../config';
 import {
   getAddressFromSigner,
@@ -9,41 +11,13 @@ import {
 } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
-const CREATE_SET_FOLLOW_NFT_URI_TYPED_DATA = `
-  mutation($request: CreateSetFollowNFTUriRequest!) { 
-    createSetFollowNFTUriTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetFollowNFTURIWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        profileId
-        deadline
-        followNFTURI
-      }
-     }
-   }
- }
-`;
 
 const createSetFollowNFTUriTypedData = (setFollowNFTUriRequest: {
   profileId: string;
   followNFTURI?: string | undefined;
 }) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_SET_FOLLOW_NFT_URI_TYPED_DATA),
+    mutation: CreateSetFollowNftUriTypedDataDocument,
     variables: {
       request: setFollowNFTUriRequest,
     },
@@ -75,12 +49,12 @@ export const setFollowNftUri = async () => {
   const result = await createSetFollowNFTUriTypedData(setFollowNftUriRequest);
   console.log('set follow nft uri: result', result);
 
-  const typedData = result.data.createSetFollowNFTUriTypedData.typedData;
+  const typedData = result.data!.createSetFollowNFTUriTypedData.typedData;
   console.log('set follow nft uri: typedData', typedData);
 
   const signature = await signedTypeData(
     typedData.domain,
-    typedData.types,
+    typedData!.types,
     typedData.value
   );
   console.log('set follow nft uri: signature', signature);

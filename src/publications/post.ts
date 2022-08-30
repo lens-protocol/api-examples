@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
@@ -9,44 +9,13 @@ import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
+import {CreatePostTypedDataDocument } from '../graphql/generated'
 
-const CREATE_POST_TYPED_DATA = `
-  mutation($request: CreatePublicPostRequest!) { 
-    createPostTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          PostWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        deadline
-        profileId
-        contentURI
-        collectModule
-        collectModuleInitData
-        referenceModule
-        referenceModuleInitData
-      }
-    }
-  }
-}
-`;
 
 //TODO typings
 const createPostTypedData = (createPostTypedDataRequest: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_POST_TYPED_DATA),
+    mutation: CreatePostTypedDataDocument,
     variables: {
       request: createPostTypedDataRequest,
     },
@@ -120,7 +89,7 @@ export const createPost = async () => {
   const result = await createPostTypedData(createPostRequest);
   console.log('create post: createPostTypedData', result);
 
-  const typedData = result.data.createPostTypedData.typedData;
+  const typedData = result.data!.createPostTypedData.typedData;
   console.log('create post: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -149,7 +118,7 @@ export const createPost = async () => {
 
   console.log('create post: profile has been indexed', result);
 
-  const logs = indexedResult.txReceipt.logs;
+  const logs = indexedResult.txReceipt!.logs;
 
   console.log('create post: logs', logs);
 
@@ -161,7 +130,7 @@ export const createPost = async () => {
   const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
   console.log('create post: created log', profileCreatedLog);
 
-  let profileCreatedEventLog = profileCreatedLog.topics;
+  let profileCreatedEventLog = profileCreatedLog!.topics;
   console.log('create post: created event logs', profileCreatedEventLog);
 
   const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];

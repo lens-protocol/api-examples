@@ -1,44 +1,16 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { prettyJSON } from '../helpers';
-import { lensHub } from '../lens-hub';
 
-const CREATE_COLLECT_TYPED_DATA = `
-  mutation($request: CreateCollectRequest!) { 
-    createCollectTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          CollectWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        deadline
-        profileId
-        pubId
-        data
-      }
-     }
-   }
- }
-`;
+import { lensHub } from '../lens-hub';
+import {CreateCollectTypedDataDocument } from '../graphql/generated'
+
 
 // TODO typings
 const createCollectTypedData = (createCollectTypedDataRequest: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_COLLECT_TYPED_DATA),
+    mutation: CreateCollectTypedDataDocument,
     variables: {
       request: createCollectTypedDataRequest,
     },
@@ -64,8 +36,8 @@ export const collect = async () => {
   const result = await createCollectTypedData(collectRequest);
   console.log('collect: createCollectTypedData', result);
 
-  const typedData = result.data.createCollectTypedData.typedData;
-  prettyJSON('collect: typedData', typedData);
+  const typedData = result.data!.createCollectTypedData.typedData;
+  console.log('collect: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('collect: signature', signature);

@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
-import { prettyJSON } from '../helpers';
+import { gql } from "@apollo/client/core";
 
 const GET_PROFILE_REVENUE = `
   query($request: ProfileRevenueQueryRequest!) {
@@ -373,7 +373,7 @@ export const profileRevenue = async () => {
 
   const result = await getProfileRevenueRequest(profileId);
 
-  prettyJSON('profile revenue: result', result.data);
+  console.log('profile revenue: result', result.data);
 
   return result.data;
 };

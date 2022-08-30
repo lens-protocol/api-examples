@@ -1,18 +1,14 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
+import {ReportPublicationDocument } from '../graphql/generated'
 
-const REPORT_PUBLICATION = `
-  mutation($request: ReportPublicationRequest!) { 
-   reportPublication(request: $request)
- }
-`;
 
 // TODO sort types
 const reportPublicationRequest = (reportPublicationParams: any) => {
   return apolloClient.mutate({
-    mutation: gql(REPORT_PUBLICATION),
+    mutation: ReportPublicationDocument,
     variables: {
       request: reportPublicationParams,
     },

@@ -1,90 +1,15 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { follow } from '../follow/follow';
-import { prettyJSON, sleep } from '../helpers';
+import {HasTxHashBeenIndexedDocument } from '../graphql/generated'
 
-const HAS_TX_BEEN_INDEXED = `
-  query($request: HasTxHashBeenIndexedRequest!) {
-    hasTxHashBeenIndexed(request: $request) { 
-	    ... on TransactionIndexedResult {
-            indexed
-            txReceipt {
-                to
-                from
-                contractAddress
-                transactionIndex
-                root
-                gasUsed
-                logsBloom
-                blockHash
-                transactionHash
-                blockNumber
-                confirmations
-                cumulativeGasUsed
-                effectiveGasPrice
-                byzantium
-                type
-                status
-                logs {
-                    blockNumber
-                    blockHash
-                    transactionIndex
-                    removed
-                    address
-                    data
-                    topics
-                    transactionHash
-                    logIndex
-                }
-            }
-            metadataStatus {
-              status
-              reason
-            }
-        }
-        ... on TransactionError {
-            reason
-            txReceipt {
-                to
-                from
-                contractAddress
-                transactionIndex
-                root
-                gasUsed
-                logsBloom
-                blockHash
-                transactionHash
-                blockNumber
-                confirmations
-                cumulativeGasUsed
-                effectiveGasPrice
-                byzantium
-                type
-                status
-                logs {
-                    blockNumber
-                    blockHash
-                    transactionIndex
-                    removed
-                    address
-                    data
-                    topics
-                    transactionHash
-                    logIndex
-             }
-            }
-        },
-        __typename
-    }
-  }
-`;
 
 const hasTxBeenIndexed = (txHash: string) => {
   return apolloClient.query({
-    query: gql(HAS_TX_BEEN_INDEXED),
+    query: HasTxHashBeenIndexedDocument,
     variables: {
       request: {
         txHash,
@@ -99,18 +24,19 @@ export const pollUntilIndexed = async (txHash: string) => {
     const result = await hasTxBeenIndexed(txHash);
     console.log('pool until indexed: result', result.data);
 
-    const response = result.data.hasTxHashBeenIndexed;
+    const response = result.data!.hasTxHashBeenIndexed;
     if (response.__typename === 'TransactionIndexedResult') {
       console.log('pool until indexed: indexed', response.indexed);
       console.log('pool until metadataStatus: metadataStatus', response.metadataStatus);
 
+      console.log(response.metadataStatus)
       if (response.metadataStatus) {
         if (response.metadataStatus.status === 'SUCCESS') {
           return response;
         }
 
         if (response.metadataStatus.status === 'METADATA_VALIDATION_FAILED') {
-          throw new Error(response.metadataStatus.reason);
+          throw new Error(response.metadataStatus.status);
         }
       } else {
         if (response.indexed) {
@@ -120,7 +46,7 @@ export const pollUntilIndexed = async (txHash: string) => {
 
       console.log('pool until indexed: sleep for 1500 milliseconds then try again');
       // sleep for a second before trying again
-      await sleep(1500);
+      await new Promise( resolve => setTimeout(resolve, 1500) );
     } else {
       // it got reverted and failed!
       throw new Error(response.reason);
@@ -135,7 +61,7 @@ const testTransaction = async () => {
   await login(address);
 
   const hash = await follow('0x06');
-  prettyJSON('testTransaction: hash', hash);
+  console.log('testTransaction: hash', hash);
 
   await pollUntilIndexed(hash);
 

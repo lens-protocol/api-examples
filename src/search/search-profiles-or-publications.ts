@@ -1,6 +1,7 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
-import { prettyJSON } from '../helpers';
+import { gql } from "@apollo/client/core";
+
 
 const SEARCH = `
   query($request: SearchQueryRequest!) {
@@ -335,7 +336,7 @@ export const search = async () => {
     query: 'adeilaide',
     type: 'PUBLICATION',
   });
-  prettyJSON('search: result', result.data);
+  console.log('search: result', result.data);
 
   return result.data;
 };

@@ -1,0 +1,3 @@
+  mutation addReaction($request: ReactionRequest!) { 
+   addReaction(request: $request)
+ }

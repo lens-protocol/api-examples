@@ -4,40 +4,13 @@ import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { lensHub } from '../lens-hub';
+import {CreateFollowTypedDataDocument } from '../graphql/generated'
 
-const CREATE_FOLLOW_TYPED_DATA = `
-  mutation($request: FollowRequest!) { 
-    createFollowTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          FollowWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-          deadline
-          profileIds
-          datas
-        }
-      }
-    }
- }
-`;
 
 // TODO sort typed!
 const createFollowTypedData = (followRequestInfo: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_FOLLOW_TYPED_DATA),
+    mutation: CreateFollowTypedDataDocument,
     variables: {
       request: {
         follow: followRequestInfo,
@@ -62,7 +35,7 @@ export const follow = async (profileId: string = '0x11') => {
   const result = await createFollowTypedData(followRequest);
   console.log('follow: result', result);
 
-  const typedData = result.data.createFollowTypedData.typedData;
+  const typedData = result.data!.createFollowTypedData.typedData;
   console.log('follow: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
