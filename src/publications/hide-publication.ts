@@ -1,17 +1,14 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
 
-const HIDE_PUBLICATION = `
-  mutation($request: HidePublicationRequest!) { 
-   hidePublication(request: $request)
- }
-`;
+import {HidePublicationDocument } from '../graphql/generated'
+
 
 export const deletePublicationRequest = (publicationId: string) => {
   return apolloClient.mutate({
-    mutation: gql(HIDE_PUBLICATION),
+    mutation: HidePublicationDocument,
     variables: {
       request: {
         publicationId,

@@ -1,56 +1,23 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { generateChallenge, login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, signText, splitSignature } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
-const CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA = `
-  mutation($request: UpdateProfileImageRequest!) { 
-    createSetProfileImageURITypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          SetProfileImageURIWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-        	deadline
-        	imageURI
-        	profileId
-        }
-      }
-    }
- }
-`;
+
+import {CreateSetProfileImageUriTypedDataDocument ,NftOwnershipChallengeDocument} from '../graphql/generated'
+// TODO typings
 
 const createSetProfileImageUriTypedData = (request: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA),
+    mutation: CreateSetProfileImageUriTypedDataDocument,
     variables: {
       request,
     },
   });
 };
 
-const GET_NFT_CHALLENGE = `
-  query($request: NftOwnershipChallengeRequest!) {
-    nftOwnershipChallenge(request: $request) { 
-      id
-      text 
-    }
-  }
-`;
 
 export const generateNftChallenge = (
   ownerAddress: string,
@@ -59,12 +26,12 @@ export const generateNftChallenge = (
   chainId: number = 80001
 ) => {
   return apolloClient.query({
-    query: gql(GET_NFT_CHALLENGE),
+    query: NftOwnershipChallengeDocument,
     variables: {
       request: {
         ethereumAddress: ownerAddress,
         nfts: {
-          contractAddress: nftContractAddress,
+          contractAddress,
           tokenId,
           chainId,
         },
@@ -102,7 +69,7 @@ export const setProfileImageUriNFT = async () => {
   const result = await createSetProfileImageUriTypedData(setProfileImageUriNFTRequest);
   console.log('set profile image uri nft: enableDispatcherWithTypedData', result);
 
-  const typedData = result.data.createSetProfileImageURITypedData.typedData;
+  const typedData = result.data!.createSetProfileImageURITypedData.typedData;
   console.log('set profile image uri nft: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

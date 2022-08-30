@@ -1,23 +1,15 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, sendTx } from '../ethers.service';
 import { enabledCurrencies } from './enabled-modules-currencies';
+import {GenerateModuleCurrencyApprovalDataDocument } from '../graphql/generated'
 
-const MODULE_APPROVAL_DATA = `
-  query($request: GenerateModuleCurrencyApprovalDataRequest!) {
-    generateModuleCurrencyApprovalData(request: $request) {
-      to
-   	  from
-      data
-    }
-  }
-`;
 
 // TODO typings!
 const getModuleApprovalData = (moduleApprovalRequest: any) => {
   return apolloClient.query({
-    query: gql(MODULE_APPROVAL_DATA),
+    query: GenerateModuleCurrencyApprovalDataDocument,
     variables: {
       request: moduleApprovalRequest,
     },
@@ -40,8 +32,7 @@ export const approveModule = async () => {
   const result = await getModuleApprovalData(generateApprovalModuleData);
   console.log('approve module: result', result.data);
 
-  const generateModuleCurrencyApprovalData =
-    result.data.generateModuleCurrencyApprovalData;
+  const generateModuleCurrencyApprovalData = result.data!.generateModuleCurrencyApprovalData;
 
   const tx = await sendTx({
     to: generateModuleCurrencyApprovalData.to,

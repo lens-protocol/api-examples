@@ -1,0 +1,11 @@
+mutation claim($request: ClaimHandleRequest!) { 
+    claim(request: $request) {
+      ... on RelayerResult {
+        txHash
+      }
+      ... on RelayError {
+        reason
+      }
+      __typename
+    }
+ }

@@ -1,21 +1,14 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
 import { login } from './login';
 
-const REFRESH_AUTHENTICATION = `
-  mutation($request: RefreshRequest!) { 
-    refresh(request: $request) {
-      accessToken
-      refreshToken
-    }
- }
-`;
+import {RefreshDocument } from '../graphql/generated'
+
 
 const refreshAuth = (refreshToken: string) => {
   return apolloClient.mutate({
-    mutation: gql(REFRESH_AUTHENTICATION),
+    mutation: RefreshDocument,
     variables: {
       request: {
         refreshToken,
@@ -31,9 +24,9 @@ export const refresh = async () => {
   const accessTokens = await login(address);
 
   const newAccessToken = await refreshAuth(
-    accessTokens.authenticate.refreshToken
+    accessTokens!.authenticate.refreshToken
   );
-  prettyJSON('refresh: result', newAccessToken.data);
+  console.log('refresh: result', newAccessToken.data);
 
   return newAccessToken.data;
 };

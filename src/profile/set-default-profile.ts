@@ -1,43 +1,15 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
-
-const CREATE_SET_DEFAULT_PROFILE_TYPED_DATA = `
-  mutation($request: CreateSetDefaultProfileRequest!) { 
-    createSetDefaultProfileTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetDefaultProfileWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        deadline
-        wallet
-        profileId
-      }
-    }
-  }
-}
-`;
+import {CreateSetDefaultProfileTypedDataDocument } from '../graphql/generated'
 
 const createSetDefaultProfileTypedData = (profileId: string) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_SET_DEFAULT_PROFILE_TYPED_DATA),
+    mutation: CreateSetDefaultProfileTypedDataDocument,
     variables: {
       request: {
         profileId,
@@ -60,7 +32,7 @@ export const setDefaultProfile = async () => {
   const result = await createSetDefaultProfileTypedData(profileId);
   console.log('set default profile: createSetDefaultProfileTypedData', result);
 
-  const typedData = result.data.createSetDefaultProfileTypedData.typedData;
+  const typedData = result.data!.createSetDefaultProfileTypedData.typedData;
   console.log('set default profile: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

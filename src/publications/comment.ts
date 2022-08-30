@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
@@ -9,48 +9,13 @@ import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
-import { enabledCurrencies } from '../module/enabled-modules-currencies';
+import {CreateCommentTypedDataDocument } from '../graphql/generated'
 
-const CREATE_COMMENT_TYPED_DATA = `
-  mutation($request: CreatePublicCommentRequest!) { 
-    createCommentTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          CommentWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        deadline
-        profileId
-        profileIdPointed
-        pubIdPointed
-        contentURI
-        collectModule
-        collectModuleInitData
-        referenceModule
-        referenceModuleInitData
-        referenceModuleData
-      }
-     }
-   }
- }
-`;
 
 // TODO types
 const createCommentTypedData = (createCommentTypedDataRequest: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_COMMENT_TYPED_DATA),
+    mutation: CreateCommentTypedDataDocument,
     variables: {
       request: createCommentTypedDataRequest,
     },
@@ -114,7 +79,7 @@ export const createComment = async () => {
   const result = await createCommentTypedData(createCommentRequest);
   console.log('create comment: createCommentTypedData', result);
 
-  const typedData = result.data.createCommentTypedData.typedData;
+  const typedData = result.data!.createCommentTypedData.typedData;
   console.log('create comment: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -146,7 +111,7 @@ export const createComment = async () => {
 
   console.log('create comment: profile has been indexed', result);
 
-  const logs = indexedResult.txReceipt.logs;
+  const logs = indexedResult.txReceipt!.logs;
 
   console.log('create comment: logs', logs);
 
@@ -158,7 +123,7 @@ export const createComment = async () => {
   const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
   console.log('create comment: created log', profileCreatedLog);
 
-  let profileCreatedEventLog = profileCreatedLog.topics;
+  let profileCreatedEventLog = profileCreatedLog!.topics;
   console.log('create comment: created event logs', profileCreatedEventLog);
 
   const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];

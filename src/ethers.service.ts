@@ -15,7 +15,7 @@ export const getAddressFromSigner = () => {
 
 export const signedTypeData = (
   domain: TypedDataDomain,
-  types: Record<string, TypedDataField[]>,
+  types: Record<string, any>,
   value: Record<string, any>
 ) => {
   const signer = getSigner();

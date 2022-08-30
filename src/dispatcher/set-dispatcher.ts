@@ -1,7 +1,9 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
+
+import {CreateSetDispatcherTypedDataDocument } from '../graphql/generated'
 import {
   getAddressFromSigner,
   signedTypeData,
@@ -9,41 +11,14 @@ import {
 } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
-const CREATE_SET_DISPATCHER_TYPED_DATA = `
-  mutation($request: SetDispatcherRequest!) { 
-    createSetDispatcherTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetDispatcherWithSig {
-            name
-            type
-          }
-        }
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        value {
-          nonce
-          deadline
-          profileId
-          dispatcher
-        }
-      }
-    }
- }
-`;
 
 export const enableDispatcherWithTypedData = (
   profileId: string,
   dispatcher: string
 ) => {
+  
   return apolloClient.mutate({
-    mutation: gql(CREATE_SET_DISPATCHER_TYPED_DATA),
+    mutation: CreateSetDispatcherTypedDataDocument,
     variables: {
       request: {
         profileId,
@@ -55,11 +30,11 @@ export const enableDispatcherWithTypedData = (
 
 const disableDispatcherWithTypedData = (profileId: string) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_SET_DISPATCHER_TYPED_DATA),
+    mutation: CreateSetDispatcherTypedDataDocument,
     variables: {
       request: {
         profileId,
-        enabled: false,
+        enable: false
       },
     },
   });
@@ -87,7 +62,7 @@ export const setDispatcher = async () => {
   );
   console.log('set dispatcher: enableDispatcherWithTypedData', result);
 
-  const typedData = result.data.createSetDispatcherTypedData.typedData;
+  const typedData = result.data!.createSetDispatcherTypedData.typedData;
   console.log('set dispatcher: typedData', typedData);
 
   const signature = await signedTypeData(

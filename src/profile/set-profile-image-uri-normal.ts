@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
@@ -9,39 +9,12 @@ import {
 } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
-const CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA = `
-  mutation($request: UpdateProfileImageRequest!) { 
-    createSetProfileImageURITypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          SetProfileImageURIWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-        	deadline
-        	imageURI
-        	profileId
-        }
-      }
-    }
- }
-`;
+import {CreateSetProfileImageUriTypedDataDocument } from '../graphql/generated'
 
 // TODO typings
 const createSetProfileImageUriTypedData = (request: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_SET_PROFILE_IMAGE_URI_TYPED_DATA),
+    mutation: CreateSetProfileImageUriTypedDataDocument,
     variables: {
       request,
     },
@@ -73,7 +46,7 @@ export const setProfileImageUriNormal = async () => {
     result
   );
 
-  const typedData = result.data.createSetProfileImageURITypedData.typedData;
+  const typedData = result.data!.createSetProfileImageURITypedData.typedData;
   console.log('set profile image uri normal: typedData', typedData);
 
   const signature = await signedTypeData(

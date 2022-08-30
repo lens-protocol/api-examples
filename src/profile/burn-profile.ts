@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client/core";
+
 import { apolloClient } from "../apollo-client";
 import { login } from "../authentication/login";
 import { PROFILE_ID } from "../config";
@@ -9,38 +9,13 @@ import {
 } from "../ethers.service";
 import { lensHub } from "../lens-hub";
 
-const CREATE_BURN_PROFILE_TYPED_DATA = `
-  mutation($request: BurnProfileRequest!) { 
-    createBurnProfileTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          BurnWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-        	deadline
-        	tokenId
-        }
-      }
-    }
- }
-`;
+import {CreateBurnProfileTypedDataDocument } from '../graphql/generated'
+
 
 // TODO typings
 const createBurnProfileTypedData = (request: any) => {
   return apolloClient.mutate({
-    mutation: gql(CREATE_BURN_PROFILE_TYPED_DATA),
+    mutation: CreateBurnProfileTypedDataDocument,
     variables: {
       request,
     },
@@ -63,7 +38,7 @@ export const burnProfile = async () => {
   });
   console.log("burn profile", result);
 
-  const typedData = result.data.createBurnProfileTypedData.typedData;
+  const typedData = result.data!.createBurnProfileTypedData.typedData;
   console.log("burn profile: typedData", typedData);
 
   const signature = await signedTypeData(

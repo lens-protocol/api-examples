@@ -1,40 +1,10 @@
-import { gql } from '@apollo/client/core';
+
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
 
-const GET_USERS_NFTS = `
-  query($request: NFTsRequest!) {
-    nfts(request: $request) {
-      items {
-        contractName
-        contractAddress
-        symbol
-        tokenId
-        owners {
-          amount
-          address
-        }
-        name
-        description
-        contentURI
-        originalContent {
-          uri
-          metaType
-        }
-        chainId
-        collectionName
-        ercType
-      }
-    pageInfo {
-      prev
-      next
-      totalCount
-    }
-  }
-}
-`;
+import {NftsDocument } from '../graphql/generated'
+
 
 const getUsersNfts = (
   ownerAddress: string,
@@ -42,7 +12,7 @@ const getUsersNfts = (
   contractAddress?: string
 ) => {
   return apolloClient.query({
-    query: gql(GET_USERS_NFTS),
+    query: NftsDocument,
     variables: {
       request: {
         ownerAddress,
@@ -67,7 +37,7 @@ export const usersNfts = async () => {
     [80001]
   );
 
-  prettyJSON('users nfts: result', result.data);
+  console.log('users nfts: result', result.data);
 
   return result.data;
 };
