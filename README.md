@@ -22,8 +22,9 @@ INFURA_PROJECT_ID=YOUR_INFURA_PROJECT_ID
 INFURA_SECRET=YOUR_INFURA_SECRET
 ```
 
-note `PROFILE_ID` is optional but required on some endpoints!
-note 2: Highly advised to create an API key and use the Alchemy RPC provider for Mumbai to avoid rate limiting.
+Note 1:`PROFILE_ID` is optional but required on some endpoints! Also, make sure to insert the `PROFILE_ID` in hexadecimal format.
+Note 2: Highly advised to create an API key and use the Alchemy RPC provider for Mumbai to avoid rate limiting.
+Note 3: `PK` represents Private key here.
 
 ## How to run
 
