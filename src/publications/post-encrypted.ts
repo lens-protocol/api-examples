@@ -1,12 +1,27 @@
+// @ts-ignore
+import { LensEnvironment, LensGatedSDK, LensNetwork } from '@lens/sdk-gated/server';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit, PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
+import {
+  ethersProvider,
+  getAddressFromSigner,
+  getSigner,
+  signedTypeData,
+  splitSignature,
+} from '../ethers.service';
+import {
+  AccessCriteriaType,
+  ContractType,
+  CreatePostTypedDataDocument,
+  CreatePublicPostRequest,
+  NftOwnershipInput,
+  PublicationMainFocus,
+  PublicationMetadataV2Input as MetadataV2,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
@@ -34,7 +49,7 @@ export const signCreatePostTypedData = async (request: CreatePublicPostRequest) 
   return { result, signature };
 };
 
-const createPost = async () => {
+const createPostEncrypted = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -45,9 +60,9 @@ const createPost = async () => {
 
   await login(address);
 
-  const ipfsResult = await uploadIpfs<Metadata>({
+  const metadata: MetadataV2 = {
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
+    mainContentFocus: PublicationMainFocus.TextOnly,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
@@ -59,13 +74,44 @@ const createPost = async () => {
     attributes: [],
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
+    media: [
+      {
+        type: 'image',
+        altTag: 'alt tag',
+        cover: 'cover',
+        item: 'http://example.com',
+      },
+    ],
+    animation_url: null,
+  };
+
+  // instantiate SDK and connect to Lit Network
+  const sdk = new LensGatedSDK({
+    provider: ethersProvider,
+    signer: getSigner(),
+    env: LensEnvironment.production,
+    network: LensNetwork.polygon,
   });
-  console.log('create post: ipfs result', ipfsResult);
+
+  const accessConditions: NftOwnershipInput = {
+    type: AccessCriteriaType.Nft,
+    contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
+    contractType: ContractType.Erc721,
+    chainID: 80001,
+  };
+  const { contentURI, encryptedMetadata } = await sdk.gated.encryptMetadata(
+    metadata,
+    accessConditions,
+    uploadIpfs
+  );
+
+  console.log('create post: ipfs result', contentURI);
+  console.log('create post: encryptedMetadata', encryptedMetadata);
 
   // hard coded to make the code example clear
   const createPostRequest = {
     profileId,
-    contentURI: `ipfs://${ipfsResult.path}`,
+    contentURI: 'ipfs://' + contentURI.path,
     collectModule: {
       // feeCollectModule: {
       //   amount: {
@@ -78,7 +124,7 @@ const createPost = async () => {
       //   referralFee: 10.5,
       // },
       // revertCollectModule: true,
-      freeCollectModule: { followerOnly: true },
+      freeCollectModule: { followerOnly: false },
       // limitedFeeCollectModule: {
       //   amount: {
       //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
@@ -91,6 +137,11 @@ const createPost = async () => {
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
+    },
+    gated: {
+      nft: accessConditions,
+      encryptedSymmetricKey:
+        encryptedMetadata.encryptionParams.providerSpecificParams.encryptionKey,
     },
   };
 
@@ -148,6 +199,6 @@ const createPost = async () => {
 
 (async () => {
   if (argsBespokeInit()) {
-    await createPost();
+    await createPostEncrypted();
   }
 })();

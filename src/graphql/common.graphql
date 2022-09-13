@@ -121,6 +121,46 @@ fragment MetadataOutputFields on MetadataOutput {
     traitType
     value
   }
+  encryptionParams {
+    providerSpecificParams {
+      encryptionKey
+    }
+    accessCondition {
+        __typename
+        ... on AndConditionOutput {
+            ...AndConditionFields
+        }
+        ... on OrConditionOutput {
+            ...OrConditionFields
+        }
+        ... on NftOwnershipOutput {
+            ...NftOwnershipFields
+        }
+        ... on EOAOwnershipOutput {
+            ...EOAOwnershipFields
+        }
+        ... on ERC20TokenOwnershipOutput {
+            ...ERC20TokenOwnershipFields
+        }
+    }
+    encryptedFields {
+        animation_url
+        content
+        external_url
+        image
+        media {
+            original {
+                ...MediaFields
+            }
+            small {
+                ...MediaFields
+            }
+            medium {
+                ...MediaFields
+            }
+        }
+    }
+  }
 }
 
 fragment Erc20Fields on Erc20 {
@@ -153,6 +193,7 @@ fragment PostFields on Post {
   reaction(request: null)
   mirrors(by: null)
   hasCollectedByMe
+  isGated
 }
 
 fragment MirrorBaseFields on Mirror {
@@ -177,6 +218,7 @@ fragment MirrorBaseFields on Mirror {
   hidden
   reaction(request: null)
   hasCollectedByMe
+  isGated
 }
 
 fragment MirrorFields on Mirror {
@@ -214,6 +256,7 @@ fragment CommentBaseFields on Comment {
   reaction(request: null)
   mirrors(by: null)
   hasCollectedByMe
+  isGated
 }
 
 fragment CommentFields on Comment {
@@ -401,5 +444,56 @@ fragment ReferenceModuleFields on ReferenceModule {
     commentsRestricted
     mirrorsRestricted
     degreesOfSeparation
+  }
+}
+
+fragment ERC20TokenOwnershipFields on ERC20TokenOwnershipOutput {
+  type
+  contractAddress
+  amount
+  chainID
+  condition
+  decimals
+}
+
+fragment EOAOwnershipFields on EOAOwnershipOutput {
+  type
+  address
+  chainID
+}
+
+fragment NftOwnershipFields on NftOwnershipOutput {
+  type
+  contractAddress
+  chainID
+  contractType
+  tokenIds
+}
+
+fragment AndConditionFields on AndConditionOutput {
+  criteria {
+    ... on ERC20TokenOwnershipOutput {
+        ...ERC20TokenOwnershipFields
+    }
+    ... on EOAOwnershipOutput {
+        ...EOAOwnershipFields
+    }
+    ... on NftOwnershipOutput {
+        ...NftOwnershipFields
+    }
+  }
+}
+
+fragment OrConditionFields on OrConditionOutput {
+  criteria {
+    ... on ERC20TokenOwnershipOutput {
+        ...ERC20TokenOwnershipFields
+    }
+    ... on EOAOwnershipOutput {
+        ...EOAOwnershipFields
+    }
+    ... on NftOwnershipOutput {
+        ...NftOwnershipFields
+    }
   }
 }

@@ -51,22 +51,22 @@ export const pollUntilIndexed = async (input: { txHash: string } | { txId: strin
   }
 };
 
-const testTransaction = async () => {
-  const address = getAddressFromSigner();
-  console.log('testTransaction: address', address);
-
-  await login(address);
-
-  const hash = await follow('0x06');
-  console.log('testTransaction: hash', hash);
-
-  await pollUntilIndexed({ txHash: hash });
-
-  console.log('testTransaction: Indexed');
-};
-
-(async () => {
-  if (argsBespokeInit()) {
-    await testTransaction();
-  }
-})();
+// const testTransaction = async () => {
+//   const address = getAddressFromSigner();
+//   console.log('testTransaction: address', address);
+//
+//   await login(address);
+//
+//   const hash = await follow('0x06');
+//   console.log('testTransaction: hash', hash);
+//
+//   await pollUntilIndexed({ txHash: hash });
+//
+//   console.log('testTransaction: Indexed');
+// };
+//
+// (async () => {
+//   if (argsBespokeInit()) {
+//     await testTransaction();
+//   }
+// })();
