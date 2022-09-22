@@ -30,17 +30,14 @@ const getProfileRequest = (request: ProfileRequest) => {
 
 export const messages = async (profileId: string = '0x4814') => {
   const address = getAddressFromSigner();
-  const signer = getSigner();
-
   await login(address);
 
   const request = { profileId };
-
   const profile = await getProfileRequest(request);
 
   prettyJSON('profile: owner', profile.data.profile.ownedBy);
 
-  const client = await Client.create(signer);
+  const client = await Client.create(getSigner());
   const convo = await client.conversations.newConversation(profile.data.profile.ownedBy);
   const messages = await convo.messages();
 
