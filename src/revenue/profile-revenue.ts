@@ -1,8 +1,8 @@
-
+import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
-import { gql } from "@apollo/client/core";
 
+// TODO FIX!
 const GET_PROFILE_REVENUE = `
   query($request: ProfileRevenueQueryRequest!) {
     profileRevenue(request: $request) {

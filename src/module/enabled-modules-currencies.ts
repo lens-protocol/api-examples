@@ -1,16 +1,15 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { EnabledModuleCurrenciesDocument } from '../graphql/generated';
 
-import {EnabledModuleCurrenciesDocument } from '../graphql/generated'
-
-
-const enabledCurrenciesRequest = () => {
-  return apolloClient.query({
+const enabledCurrenciesRequest = async () => {
+  const result = await apolloClient.query({
     query: EnabledModuleCurrenciesDocument,
   });
+
+  return result.data.enabledModuleCurrencies;
 };
 
 export const enabledCurrencies = async () => {
@@ -21,9 +20,9 @@ export const enabledCurrencies = async () => {
 
   const result = await enabledCurrenciesRequest();
 
-  console.log('enabled currencies: result', result.data);
+  console.log('enabled currencies: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

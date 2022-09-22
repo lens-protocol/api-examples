@@ -1,22 +1,18 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { TimelineDocument, TimelineRequest } from '../graphql/generated';
 
-
-import {TimelineDocument } from '../graphql/generated'
-
-const getTimelineRequest = (profileId: string) => {
-  return apolloClient.query({
+const getTimelineRequest = async (request: TimelineRequest) => {
+  const result = await apolloClient.query({
     query: TimelineDocument,
     variables: {
-      request: {
-        profileId,
-        limit: 10,
-      },
+      request,
     },
   });
+
+  return result.data.timeline;
 };
 
 export const timeline = async () => {
@@ -30,10 +26,10 @@ export const timeline = async () => {
 
   await login(address);
 
-  const result = await getTimelineRequest(profileId);
-  console.log('ping: result', result.data);
+  const result = await getTimelineRequest({ profileId });
+  console.log('ping: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

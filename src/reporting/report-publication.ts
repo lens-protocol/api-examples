@@ -1,18 +1,22 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import {ReportPublicationDocument } from '../graphql/generated'
+import {
+  PublicationReportingReason,
+  PublicationReportingSensitiveSubreason,
+  ReportPublicationDocument,
+  ReportPublicationRequest,
+} from '../graphql/generated';
 
-
-// TODO sort types
-const reportPublicationRequest = (reportPublicationParams: any) => {
-  return apolloClient.mutate({
+const reportPublicationRequest = async (request: ReportPublicationRequest) => {
+  const result = await apolloClient.mutate({
     mutation: ReportPublicationDocument,
     variables: {
-      request: reportPublicationParams,
+      request,
     },
   });
+
+  return result.data!.reportPublication;
 };
 
 export const reportPublication = async () => {
@@ -25,8 +29,8 @@ export const reportPublication = async () => {
     publicationId: '0x0f-0x01',
     reason: {
       sensitiveReason: {
-        reason: 'SENSITIVE',
-        subreason: 'OFFENSIVE',
+        reason: PublicationReportingReason.Sensitive,
+        subreason: PublicationReportingSensitiveSubreason.Offensive,
       },
     },
     additionalComments: 'Testing report!',

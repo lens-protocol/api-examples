@@ -1,25 +1,25 @@
-
 import { apolloClient } from '../apollo-client';
+import {
+  WhoCollectedPublicationDocument,
+  WhoCollectedPublicationRequest,
+} from '../graphql/generated';
 
-import {WhoCollectedPublicationDocument } from '../graphql/generated'
-
-
-export const whoCollectedRequest = (publicationId: string) => {
-  return apolloClient.query({
+export const whoCollectedRequest = async (request: WhoCollectedPublicationRequest) => {
+  const result = await apolloClient.query({
     query: WhoCollectedPublicationDocument,
     variables: {
-      request: {
-        publicationId,
-      },
+      request,
     },
   });
+
+  return result.data.whoCollectedPublication;
 };
 
 export const whoCollected = async () => {
-  const result = await whoCollectedRequest('0x0f-0x01');
-  console.log('who collected: result', result.data);
+  const result = await whoCollectedRequest({ publicationId: '0x0f-0x01' });
+  console.log('who collected: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

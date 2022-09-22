@@ -1,31 +1,19 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
-
-import {CreateSetDispatcherTypedDataDocument } from '../graphql/generated'
-import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreateSetDispatcherTypedDataDocument, SetDispatcherRequest } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-
-export const enableDispatcherWithTypedData = (
-  profileId: string,
-  dispatcher: string
-) => {
-  
-  return apolloClient.mutate({
+export const enableDispatcherWithTypedData = async (request: SetDispatcherRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateSetDispatcherTypedDataDocument,
     variables: {
-      request: {
-        profileId,
-        dispatcher,
-      },
+      request,
     },
   });
+
+  return result.data!.createSetDispatcherTypedData;
 };
 
 const disableDispatcherWithTypedData = (profileId: string) => {
@@ -34,13 +22,13 @@ const disableDispatcherWithTypedData = (profileId: string) => {
     variables: {
       request: {
         profileId,
-        enable: false
+        enable: false,
       },
     },
   });
 };
 
-export const setDispatcher = async () => {
+export const enableDispatcher = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -51,25 +39,16 @@ export const setDispatcher = async () => {
 
   await login(address);
 
-  const setDispatcherRequest = {
+  const result = await enableDispatcherWithTypedData({
     profileId,
     dispatcher: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
-  };
-
-  const result = await enableDispatcherWithTypedData(
-    setDispatcherRequest.profileId,
-    setDispatcherRequest.dispatcher
-  );
+  });
   console.log('set dispatcher: enableDispatcherWithTypedData', result);
 
-  const typedData = result.data!.createSetDispatcherTypedData.typedData;
+  const typedData = result.typedData;
   console.log('set dispatcher: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('set dispatcher: signature', signature);
 
   const { v, r, s } = splitSignature(signature);
@@ -88,5 +67,5 @@ export const setDispatcher = async () => {
 };
 
 (async () => {
-  await setDispatcher();
+  await enableDispatcher();
 })();

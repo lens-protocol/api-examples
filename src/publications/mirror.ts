@@ -3,19 +3,19 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 
-import {CreateMirrorTypedDataDocument } from '../graphql/generated'
-
-// TODO types
-const createMirrorTypedData = (createMirrorTypedDataRequest: any) => {
-  return apolloClient.mutate({
+const createMirrorTypedData = async (request: CreateMirrorRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateMirrorTypedDataDocument,
     variables: {
-      request: createMirrorTypedDataRequest,
+      request,
     },
   });
+
+  return result.data!.createMirrorTypedData;
 };
 
 export const createMirror = async () => {
@@ -42,7 +42,7 @@ export const createMirror = async () => {
   const result = await createMirrorTypedData(createMirrorRequest);
   console.log('create mirror: createMirrorTypedData', result);
 
-  const typedData = result.data!.createMirrorTypedData.typedData;
+  const typedData = result.typedData;
   console.log('create mirror: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -97,7 +97,7 @@ export const createMirror = async () => {
     profileId + '-' + BigNumber.from(publicationId).toHexString()
   );
 
-  return result.data;
+  return result;
 };
 
 (async () => {

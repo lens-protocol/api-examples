@@ -1,19 +1,19 @@
-
 import { apolloClient } from '../apollo-client';
+import { PingDocument } from '../graphql/generated';
 
-import {PingDocument } from '../graphql/generated'
-
-const pingRequest = () => {
-  return apolloClient.query({
+const pingRequest = async () => {
+  const result = await apolloClient.query({
     query: PingDocument,
   });
+
+  return result.data.ping;
 };
 
 export const ping = async () => {
   const result = await pingRequest();
-  //prettyJSON('ping: result', result);
-  console.log(result)
-  return result.data;
+
+  console.log('ping: result', result);
+  return result;
 };
 
 (async () => {

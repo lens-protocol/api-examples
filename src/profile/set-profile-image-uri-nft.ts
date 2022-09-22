@@ -1,43 +1,35 @@
-
 import { apolloClient } from '../apollo-client';
-import { generateChallenge, login } from '../authentication/login';
+import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, signText, splitSignature } from '../ethers.service';
+import {
+  CreateSetProfileImageUriTypedDataDocument,
+  NftOwnershipChallengeDocument,
+  NftOwnershipChallengeRequest,
+  UpdateProfileImageRequest,
+} from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-
-import {CreateSetProfileImageUriTypedDataDocument ,NftOwnershipChallengeDocument} from '../graphql/generated'
-// TODO typings
-
-const createSetProfileImageUriTypedData = (request: any) => {
-  return apolloClient.mutate({
+const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateSetProfileImageUriTypedDataDocument,
     variables: {
       request,
     },
   });
+
+  return result.data!.createSetProfileImageURITypedData;
 };
 
-
-export const generateNftChallenge = (
-  ownerAddress: string,
-  nftContractAddress = '0x60ae865ee4c725cd04353b5aab364553f56cef82',
-  tokenId: string = '974',
-  chainId: number = 80001
-) => {
-  return apolloClient.query({
+export const generateNftChallenge = async (request: NftOwnershipChallengeRequest) => {
+  const result = await apolloClient.query({
     query: NftOwnershipChallengeDocument,
     variables: {
-      request: {
-        ethereumAddress: ownerAddress,
-        nfts: {
-          contractAddress,
-          tokenId,
-          chainId,
-        },
-      },
+      request,
     },
   });
+
+  return result.data!.nftOwnershipChallenge;
 };
 
 export const setProfileImageUriNFT = async () => {
@@ -46,22 +38,31 @@ export const setProfileImageUriNFT = async () => {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
-  const address = getAddressFromSigner();
-  console.log('set profile image uri normal: address', address);
+  const ethereumAddress = getAddressFromSigner();
+  console.log('set profile image uri normal: address', ethereumAddress);
 
-  await login(address);
+  await login(ethereumAddress);
 
   // prove ownership of the nft
   // use an NFT that you actually own
-  const challengeResponse = await generateNftChallenge(address);
+  const challengeResponse = await generateNftChallenge({
+    ethereumAddress,
+    nfts: [
+      {
+        contractAddress: '0x60ae865ee4c725cd04353b5aab364553f56cef82',
+        tokenId: '974',
+        chainId: 80001,
+      },
+    ],
+  });
 
   // sign the text with the wallet
-  const challengeSignature = await signText(challengeResponse.data.nftOwnershipChallenge?.text);
+  const challengeSignature = await signText(challengeResponse.text);
 
   const setProfileImageUriNFTRequest = {
     profileId,
     nftData: {
-      id: challengeResponse.data.nftOwnershipChallenge.id,
+      id: challengeResponse.id,
       signature: challengeSignature,
     },
   };
@@ -69,7 +70,7 @@ export const setProfileImageUriNFT = async () => {
   const result = await createSetProfileImageUriTypedData(setProfileImageUriNFTRequest);
   console.log('set profile image uri nft: enableDispatcherWithTypedData', result);
 
-  const typedData = result.data!.createSetProfileImageURITypedData.typedData;
+  const typedData = result.typedData;
   console.log('set profile image uri nft: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

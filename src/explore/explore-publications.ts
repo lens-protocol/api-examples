@@ -1,26 +1,25 @@
-
 import { apolloClient } from '../apollo-client';
+import {
+  ExplorePublicationRequest,
+  ExplorePublicationsDocument,
+  PublicationSortCriteria,
+} from '../graphql/generated';
 
-import {ExplorePublicationsDocument,ExplorePublicationRequest } from '../graphql/generated'
-
-
-
-const explorePublications = (ExplorePublicationRequest: any) => {
+const explorePublications = (request: ExplorePublicationRequest) => {
   return apolloClient.query({
     query: ExplorePublicationsDocument,
     variables: {
-      request: ExplorePublicationRequest,
+      request,
     },
   });
 };
 
 export const explore = async () => {
   const result = await explorePublications({
-    // switch for `TOP_COLLECTED` if you wanted collected!
-    // switch for `TOP_MIRRORED` if you wanted top mirrored
-    // switch for `TOP_COMMENTED` if you wanted top commented
-    sortCriteria: 'LATEST',
-    limit: 50,
+    // switch for `PublicationSortCriteria.TOP_COLLECTED` if you wanted collected!
+    // switch for `PublicationSortCriteria.TOP_MIRRORED` if you wanted top mirrored
+    // switch for `PublicationSortCriteria.TOP_COMMENTED` if you wanted top commented
+    sortCriteria: PublicationSortCriteria.Latest,
   });
 
   console.log('explore: result', result.data);

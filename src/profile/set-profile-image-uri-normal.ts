@@ -1,24 +1,22 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+  CreateSetProfileImageUriTypedDataDocument,
+  UpdateProfileImageRequest,
+} from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-import {CreateSetProfileImageUriTypedDataDocument } from '../graphql/generated'
-
-// TODO typings
-const createSetProfileImageUriTypedData = (request: any) => {
-  return apolloClient.mutate({
+const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateSetProfileImageUriTypedDataDocument,
     variables: {
       request,
     },
   });
+
+  return result.data!.createSetProfileImageURITypedData;
 };
 
 export const setProfileImageUriNormal = async () => {
@@ -38,22 +36,13 @@ export const setProfileImageUriNormal = async () => {
     url: 'ipfs://QmSfyMcnh1wnJHrAWCBjZHapTS859oNSsuDFiAPPdAHgHP',
   };
 
-  const result = await createSetProfileImageUriTypedData(
-    setProfileImageUriRequest
-  );
-  console.log(
-    'set profile image uri normal: enableDispatcherWithTypedData',
-    result
-  );
+  const result = await createSetProfileImageUriTypedData(setProfileImageUriRequest);
+  console.log('set profile image uri normal: enableDispatcherWithTypedData', result);
 
-  const typedData = result.data!.createSetProfileImageURITypedData.typedData;
+  const typedData = result.typedData;
   console.log('set profile image uri normal: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('set profile image uri normal: signature', signature);
 
   const { v, r, s } = splitSignature(signature);

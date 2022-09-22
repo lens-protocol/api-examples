@@ -1,31 +1,29 @@
-
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
+import {
+  FollowerNftOwnedTokenIdsDocument,
+  FollowerNftOwnedTokenIdsRequest,
+} from '../graphql/generated';
 
-import {FollowerNftOwnedTokenIdsDocument } from '../graphql/generated'
-
-
-
-const getFollowerNFTTokenIds = (address: string, profileId: string) => {
-  return apolloClient.query({
+const getFollowerNFTTokenIds = async (request: FollowerNftOwnedTokenIdsRequest) => {
+  const result = await apolloClient.query({
     query: FollowerNftOwnedTokenIdsDocument,
     variables: {
-      request: {
-        address,
-        profileId,
-      },
+      request,
     },
   });
+
+  return result.data.followerNftOwnedTokenIds;
 };
 
 export const followerNFTTokenIds = async () => {
   const address = getAddressFromSigner();
   console.log('followerNFTTokenIds: address', address);
 
-  const result = await getFollowerNFTTokenIds(address, '0x0338a3');
-  console.log('followerNFTTokenIds: result', result.data);
+  const result = await getFollowerNFTTokenIds({ address, profileId: '0x01' });
+  console.log('followerNFTTokenIds: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

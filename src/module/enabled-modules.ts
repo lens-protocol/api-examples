@@ -1,15 +1,15 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { EnabledModulesDocument } from '../graphql/generated';
 
-import {EnabledModulesDocument } from '../graphql/generated'
-
-const enabledModulesRequest = () => {
-  return apolloClient.query({
+const enabledModulesRequest = async () => {
+  const result = await apolloClient.query({
     query: EnabledModulesDocument,
   });
+
+  return result.data.enabledModules;
 };
 
 export const enabledModules = async () => {
@@ -20,9 +20,9 @@ export const enabledModules = async () => {
 
   const result = await enabledModulesRequest();
 
-  console.log('enabled modules: result', result.data);
+  console.log('enabled modules: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

@@ -1,25 +1,19 @@
-
 import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-
+import { CreateProfileDocument, CreateProfileRequest } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 
-import {CreateProfileDocument } from '../graphql/generated'
-
-
-const createProfileRequest = (createProfileRequest: {
-  handle: string;
-  profilePictureUri?: string;
-  followNFTURI?: string;
-}) => {
-  return apolloClient.mutate({
+const createProfileRequest = async (request: CreateProfileRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateProfileDocument,
     variables: {
-      request: createProfileRequest,
+      request,
     },
   });
+
+  return result.data!.createProfile;
 };
 
 export const createProfile = async () => {
@@ -32,10 +26,15 @@ export const createProfile = async () => {
     handle: new Date().getTime().toString(),
   });
 
-  console.log('create profile: result', createProfileResult!.data);
+  console.log('create profile: result', createProfileResult);
+
+  if (createProfileResult.__typename === 'RelayError') {
+    console.error('create profile: failed');
+    return;
+  }
 
   console.log('create profile: poll until indexed');
-  const result = await pollUntilIndexed(createProfileResult!.data!.createProfile!.txHash);
+  const result = await pollUntilIndexed(createProfileResult.txHash);
 
   console.log('create profile: profile has been indexed', result);
 
@@ -57,7 +56,6 @@ export const createProfile = async () => {
   const profileId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[1])[0];
 
   console.log('profile id', BigNumber.from(profileId).toHexString());
-
 };
 
 (async () => {

@@ -1,19 +1,20 @@
-
 import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
+import {
+  PublicationsDocument,
+  PublicationsQueryRequest,
+  PublicationTypes,
+} from '../graphql/generated';
 
-
-import {PublicationsDocument } from '../graphql/generated'
-
-
-// TODO types
-const getPublicationsRequest = (getPublicationQuery: any) => {
-  return apolloClient.query({
+const getPublicationsRequest = async (request: PublicationsQueryRequest) => {
+  const result = await apolloClient.query({
     query: PublicationsDocument,
     variables: {
-      request: getPublicationQuery,
+      request,
     },
   });
+
+  return result.data.publications;
 };
 
 export const getPublications = async () => {
@@ -24,11 +25,11 @@ export const getPublications = async () => {
 
   const result = await getPublicationsRequest({
     profileId,
-    publicationTypes: ['POST', 'COMMENT', 'MIRROR'],
+    publicationTypes: [PublicationTypes.Post, PublicationTypes.Comment, PublicationTypes.Mirror],
   });
-  console.log('publications: result', result.data);
+  console.log('publications: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

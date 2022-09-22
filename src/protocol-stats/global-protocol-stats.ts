@@ -1,19 +1,19 @@
-
 import { apolloClient } from '../apollo-client';
+import { GlobalProtocolStatsDocument } from '../graphql/generated';
 
-import {GlobalProtocolStatsDocument } from '../graphql/generated'
-
-const getGlobalStatsRequest = () => {
-  return apolloClient.query({
+const getGlobalStatsRequest = async () => {
+  const result = await apolloClient.query({
     query: GlobalProtocolStatsDocument,
   });
+
+  return result.data.globalProtocolStats;
 };
 
 export const getGlobalStats = async () => {
   const result = await getGlobalStatsRequest();
-  console.log('global protocol stats: result', result.data);
+  console.log('global protocol stats: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

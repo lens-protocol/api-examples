@@ -1,25 +1,22 @@
-
 import { apolloClient } from '../apollo-client';
+import { PublicationDocument, PublicationQueryRequest } from '../graphql/generated';
 
-import {PublicationDocument } from '../graphql/generated'
-
-
-const getPublicationRequest = (publicationId: string) => {
-  return apolloClient.query({
+const getPublicationRequest = async (request: PublicationQueryRequest) => {
+  const result = await apolloClient.query({
     query: PublicationDocument,
     variables: {
-      request: {
-        publicationId,
-      },
+      request,
     },
   });
+
+  return result.data.publication;
 };
 
 export const getPublication = async () => {
-  const result = await getPublicationRequest('0x0f-0x01');
-  console.log('publication: result', result.data);
+  const result = await getPublicationRequest({ publicationId: '0x0f-0x01' });
+  console.log('publication: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

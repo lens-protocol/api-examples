@@ -1,20 +1,18 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-
+import { CreateCollectRequest, CreateCollectTypedDataDocument } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
-import {CreateCollectTypedDataDocument } from '../graphql/generated'
 
-
-// TODO typings
-const createCollectTypedData = (createCollectTypedDataRequest: any) => {
-  return apolloClient.mutate({
+const createCollectTypedData = async (request: CreateCollectRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateCollectTypedDataDocument,
     variables: {
-      request: createCollectTypedDataRequest,
+      request,
     },
   });
+
+  return result.data!.createCollectTypedData;
 };
 
 export const collect = async () => {
@@ -36,7 +34,7 @@ export const collect = async () => {
   const result = await createCollectTypedData(collectRequest);
   console.log('collect: createCollectTypedData', result);
 
-  const typedData = result.data!.createCollectTypedData.typedData;
+  const typedData = result.typedData;
   console.log('collect: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

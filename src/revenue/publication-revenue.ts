@@ -1,6 +1,7 @@
-
+import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
-import { gql } from "@apollo/client/core";
+
+// TODO FIX!
 const GET_PUBLICATION_REVENUE = `
   query($request: PublicationRevenueQueryRequest!) {
     publicationRevenue(request: $request) {

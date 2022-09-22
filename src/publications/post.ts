@@ -1,25 +1,24 @@
-
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
-import {CreatePostTypedDataDocument } from '../graphql/generated'
 
-
-//TODO typings
-const createPostTypedData = (createPostTypedDataRequest: any) => {
-  return apolloClient.mutate({
+const createPostTypedData = async (request: CreatePublicPostRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreatePostTypedDataDocument,
     variables: {
-      request: createPostTypedDataRequest,
+      request,
     },
   });
+
+  return result.data!.createPostTypedData;
 };
 
 export const createPost = async () => {
@@ -89,7 +88,7 @@ export const createPost = async () => {
   const result = await createPostTypedData(createPostRequest);
   console.log('create post: createPostTypedData', result);
 
-  const typedData = result.data!.createPostTypedData.typedData;
+  const typedData = result.typedData;
   console.log('create post: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -141,7 +140,7 @@ export const createPost = async () => {
     profileId + '-' + BigNumber.from(publicationId).toHexString()
   );
 
-  return result.data;
+  return result;
 };
 
 (async () => {

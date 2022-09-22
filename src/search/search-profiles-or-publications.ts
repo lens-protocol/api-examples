@@ -1,8 +1,7 @@
-
+import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
-import { gql } from "@apollo/client/core";
 
-
+// TODO FIX!
 const SEARCH = `
   query($request: SearchQueryRequest!) {
     search(request: $request) {

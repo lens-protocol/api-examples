@@ -1,25 +1,24 @@
-
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreateCommentTypedDataDocument, CreatePublicCommentRequest } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
-import {CreateCommentTypedDataDocument } from '../graphql/generated'
 
-
-// TODO types
-const createCommentTypedData = (createCommentTypedDataRequest: any) => {
-  return apolloClient.mutate({
+const createCommentTypedData = async (request: CreatePublicCommentRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateCommentTypedDataDocument,
     variables: {
-      request: createCommentTypedDataRequest,
+      request,
     },
   });
+
+  return result.data!.createCommentTypedData;
 };
 
 export const createComment = async () => {
@@ -79,7 +78,7 @@ export const createComment = async () => {
   const result = await createCommentTypedData(createCommentRequest);
   console.log('create comment: createCommentTypedData', result);
 
-  const typedData = result.data!.createCommentTypedData.typedData;
+  const typedData = result.typedData;
   console.log('create comment: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -137,7 +136,7 @@ export const createComment = async () => {
     profileId + '-' + BigNumber.from(publicationId).toHexString()
   );
 
-  return result.data;
+  return result;
 };
 
 (async () => {

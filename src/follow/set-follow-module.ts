@@ -1,20 +1,22 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import {
+  CreateSetFollowModuleRequest,
+  CreateSetFollowModuleTypedDataDocument,
+} from '../graphql/generated';
 import { lensHub } from '../lens-hub';
-import {CreateSetFollowModuleTypedDataDocument } from '../graphql/generated'
 
-
-// TODO: sort typed
-const createSetFollowModuleTypedData = (setFollowModuleRequest: any) => {
-  return apolloClient.mutate({
+const createSetFollowModuleTypedData = async (request: CreateSetFollowModuleRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateSetFollowModuleTypedDataDocument,
     variables: {
-      request: setFollowModuleRequest,
+      request,
     },
   });
+
+  return result.data!.createSetFollowModuleTypedData;
 };
 
 export const setFollowModule = async () => {
@@ -48,7 +50,7 @@ export const setFollowModule = async () => {
   const result = await createSetFollowModuleTypedData(setFollowModuleRequest);
   console.log('set follow module: result', result);
 
-  const typedData = result.data!.createSetFollowModuleTypedData.typedData;
+  const typedData = result.typedData;
   console.log('set follow module: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

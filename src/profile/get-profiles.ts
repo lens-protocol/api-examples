@@ -1,21 +1,19 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { ProfileQueryRequest, ProfilesDocument } from '../graphql/generated';
 
-
-import {ProfilesDocument,ProfileQueryRequest } from '../graphql/generated'
-
-
-const getProfilesRequest = (ProfileQueryRequest: any) => {
-  return apolloClient.query({
+const getProfilesRequest = async (request: ProfileQueryRequest) => {
+  const result = await apolloClient.query({
     query: ProfilesDocument,
     variables: {
-      request: { profileIds: ["0x01"], limit: 10 }
+      request,
     },
   });
-}
+
+  return result.data.profiles;
+};
 
 export const profiles = async () => {
   const address = getAddressFromSigner();
@@ -25,14 +23,13 @@ export const profiles = async () => {
 
   const profileIds: string[] = ['0x0f']; // Ensure you follow this profileID
 
-
   // only showing one example to query but you can see from request
   // above you can query many
-  const profilesFromProfileIds = await getProfilesRequest(profileIds);
+  const profilesFromProfileIds = await getProfilesRequest({ profileIds });
 
-  console.log('profiles: result', profilesFromProfileIds.data);
+  console.log('profiles: result', profilesFromProfileIds);
 
-  return profilesFromProfileIds.data;
+  return profilesFromProfileIds;
 };
 
 (async () => {

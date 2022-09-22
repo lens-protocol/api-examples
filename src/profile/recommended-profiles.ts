@@ -1,15 +1,14 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
+import { RecommendedProfilesDocument } from '../graphql/generated';
 
-
-import {RecommendedProfilesDocument } from '../graphql/generated'
-
-const getRecommendedProfilesRequest = () => {
-  return apolloClient.query({
+const getRecommendedProfilesRequest = async () => {
+  const result = await apolloClient.query({
     query: RecommendedProfilesDocument,
   });
+
+  return result.data.recommendedProfiles;
 };
 
 export const recommendedProfiles = async () => {
@@ -22,9 +21,9 @@ export const recommendedProfiles = async () => {
   // above you can query many
   const result = await getRecommendedProfilesRequest();
 
-  console.log('recommended profiles: result', result.data);
+  console.log('recommended profiles: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

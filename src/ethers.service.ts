@@ -1,4 +1,4 @@
-import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer';
+import { TypedDataDomain } from '@ethersproject/abstract-signer';
 import { ethers, utils, Wallet } from 'ethers';
 import { MUMBAI_RPC_URL, PK } from './config';
 import { omit } from './helpers';

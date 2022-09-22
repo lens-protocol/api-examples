@@ -1,30 +1,26 @@
-
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import {FollowingDocument } from '../graphql/generated'
+import { FollowingDocument, FollowingRequest } from '../graphql/generated';
 
-
-
-const followingRequest = (walletAddress: string) => {
-  return apolloClient.query({
+const followingRequest = async (request: FollowingRequest) => {
+  const result = await apolloClient.query({
     query: FollowingDocument,
     variables: {
-      request: {
-        address: walletAddress,
-        limit: 10,
-      },
+      request,
     },
   });
+
+  return result.data.following;
 };
 
 export const following = async () => {
   const address = getAddressFromSigner();
   console.log('following: address', address);
 
-  const result = await followingRequest(address);
-  console.log('following: result', result.data);
+  const result = await followingRequest({ address });
+  console.log('following: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

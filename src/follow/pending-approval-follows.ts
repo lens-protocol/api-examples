@@ -1,20 +1,15 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import {PendingApprovalFollowsDocument } from '../graphql/generated'
+import { PendingApprovalFollowsDocument } from '../graphql/generated';
 
-
-const pendingApprovalFollows = () => {
-  return apolloClient.query({
+const pendingApprovalFollows = async () => {
+  const result = await apolloClient.query({
     query: PendingApprovalFollowsDocument,
-    variables: {
-      request: {
-        limit: 10,
-      },
-    },
   });
+
+  return result.data.pendingApprovalFollows;
 };
 
 export const pendingApprovals = async () => {
@@ -24,9 +19,9 @@ export const pendingApprovals = async () => {
   await login(address);
 
   const result = await pendingApprovalFollows();
-  console.log('pending approvals: result', result.data);
+  console.log('pending approvals: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

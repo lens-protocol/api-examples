@@ -1,23 +1,22 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import {
+  CreateToggleFollowRequest,
+  CreateToggleFollowTypedDataDocument,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import {CreateToggleFollowTypedDataDocument } from '../graphql/generated'
 import { lensPeriphery } from '../lens-hub';
 
-
-// TODO sort typed!
-const createToggleFollowTypedData = (profileIds: string[], enables: boolean[]) => {
-  return apolloClient.mutate({
+const createToggleFollowTypedData = async (request: CreateToggleFollowRequest) => {
+  const result = await apolloClient.mutate({
     mutation: CreateToggleFollowTypedDataDocument,
     variables: {
-      request: {
-        profileIds,
-        enables,
-      },
+      request,
     },
   });
+
+  return result.data!.createToggleFollowTypedData;
 };
 
 export const toggleFollow = async (profileId: string = '0x032f1a') => {
@@ -29,10 +28,10 @@ export const toggleFollow = async (profileId: string = '0x032f1a') => {
   const profileIds: string[] = ['0x0f']; // Ensure you follow this profileID
   const enables: boolean[] = [false];
 
-  const result = await createToggleFollowTypedData(profileIds, enables);
+  const result = await createToggleFollowTypedData({ profileIds, enables });
   console.log('follow: result', result);
 
-  const typedData = result.data!.createToggleFollowTypedData.typedData;
+  const typedData = result.typedData;
   console.log('follow: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

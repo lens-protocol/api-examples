@@ -1,17 +1,16 @@
 import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
-import {FollowersDocument } from '../graphql/generated'
+import { FollowersDocument, FollowersRequest } from '../graphql/generated';
 
-const followersRequest = (profileId: string) => {
-  return apolloClient.query({
+const followersRequest = async (request: FollowersRequest) => {
+  const result = await apolloClient.query({
     query: FollowersDocument,
     variables: {
-      request: {
-        profileId,
-        limit: 10,
-      },
+      request,
     },
   });
+
+  return result.data.followers;
 };
 
 export const followers = async () => {
@@ -20,10 +19,10 @@ export const followers = async () => {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
-  const result = await followersRequest(profileId);
-  console.log('followers: result', result.data);
+  const result = await followersRequest({ profileId });
+  console.log('followers: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

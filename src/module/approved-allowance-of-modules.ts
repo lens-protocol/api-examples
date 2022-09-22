@@ -1,31 +1,23 @@
-
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { gql } from '@apollo/client/core';
-const ALLOWANCE = `
-  query($request: ApprovedModuleAllowanceAmountRequest!) {
-    approvedModuleAllowanceAmount(request: $request) {
-      currency
-      module
-      contractAddress
-      allowance
-    }
-  }
-`;
+import {
+  ApprovedModuleAllowanceAmountDocument,
+  ApprovedModuleAllowanceAmountRequest,
+  CollectModules,
+  FollowModules,
+  ReferenceModules,
+} from '../graphql/generated';
 
-const allowanceRequest = (allowanceRequest: {
-  currencies: string[];
-  collectModules: string[];
-  followModules: string[];
-  referenceModules: string[];
-}) => {
-  return apolloClient.query({
-    query: gql(ALLOWANCE),
+const allowanceRequest = async (request: ApprovedModuleAllowanceAmountRequest) => {
+  const result = await apolloClient.query({
+    query: ApprovedModuleAllowanceAmountDocument,
     variables: {
-      request: allowanceRequest,
+      request,
     },
   });
+
+  return result.data.approvedModuleAllowanceAmount;
 };
 
 export const allowance = async () => {
@@ -37,20 +29,24 @@ export const allowance = async () => {
   const result = await allowanceRequest({
     currencies: ['0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889'],
     collectModules: [
-      'LimitedFeeCollectModule',
-      'FeeCollectModule',
-      'LimitedTimedFeeCollectModule',
-      'TimedFeeCollectModule',
-      'FreeCollectModule',
-      'RevertCollectModule',
+      CollectModules.LimitedFeeCollectModule,
+      CollectModules.FeeCollectModule,
+      CollectModules.LimitedTimedFeeCollectModule,
+      CollectModules.TimedFeeCollectModule,
+      CollectModules.FreeCollectModule,
+      CollectModules.RevertCollectModule,
     ],
-    followModules: ['FeeFollowModule', 'RevertFollowModule', 'ProfileFollowModule'],
-    referenceModules: ['FollowerOnlyReferenceModule'],
+    followModules: [
+      FollowModules.FeeFollowModule,
+      FollowModules.RevertFollowModule,
+      FollowModules.ProfileFollowModule,
+    ],
+    referenceModules: [ReferenceModules.FollowerOnlyReferenceModule],
   });
 
-  console.log('allowance: result', result.data);
+  console.log('allowance: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {
