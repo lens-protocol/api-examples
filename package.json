@@ -25,6 +25,7 @@
     "follow:toggle": "env-cmd -f .env ts-node ./src/follow/toggle-follow",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping",
     "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed --init",
+    "messaging:list": "env-cmd -f .env ts-node ./src/messaging/list-messages --init",
     "module:approve-module": "env-cmd -f .env ts-node ./src/module/approve-module --init",
     "module:approved-allowance-of-modules": "env-cmd -f .env ts-node ./src/module/approved-allowance-of-modules",
     "module:collect": "env-cmd -f .env ts-node ./src/module/collect",
@@ -59,9 +60,13 @@
     "search:search-profiles-or-publications": "env-cmd -f .env ts-node ./src/search/search-profiles-or-publications",
     "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline"
   },
-  "authors": ["joshstevens19@hotmail.co.uk", "zannis@aave.com"],
+  "authors": [
+    "joshstevens19@hotmail.co.uk",
+    "zannis@aave.com"
+  ],
   "dependencies": {
     "@apollo/client": "^3.5.10",
+    "@xmtp/xmtp-js": "^6.3.2",
     "axios": "^0.26.1",
     "cross-fetch": "^3.1.5",
     "ethers": "^5.5.4",
