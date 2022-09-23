@@ -27,7 +27,7 @@ export const getPublications = async () => {
     profileId,
     publicationTypes: [PublicationTypes.Post, PublicationTypes.Comment, PublicationTypes.Mirror],
   });
-  console.log('publications: result', result);
+  console.log('publications: result', result.items);
 
   return result;
 };

@@ -1,7 +1,7 @@
 query doesFollow($request: DoesFollowRequest!) {
-	doesFollow(request: $request) { 
-		followerAddress
-		profileId
-		follows
-	}
+  doesFollow(request: $request) {
+    followerAddress
+    profileId
+    follows
+  }
 }

@@ -1,8 +1,8 @@
-  query approvedModuleAllowanceAmount($request: ApprovedModuleAllowanceAmountRequest!) {
-    approvedModuleAllowanceAmount(request: $request) {
-      currency
-      module
-      contractAddress
-      allowance
-    }
+query approvedModuleAllowanceAmount($request: ApprovedModuleAllowanceAmountRequest!) {
+  approvedModuleAllowanceAmount(request: $request) {
+    currency
+    module
+    contractAddress
+    allowance
   }
+}

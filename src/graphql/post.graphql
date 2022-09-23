@@ -1,14 +1,14 @@
- mutation createPostTypedData($request: CreatePublicPostRequest!) { 
-    createPostTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          PostWithSig {
-            name
-            type
-          }
+mutation createPostTypedData($request: CreatePublicPostRequest!) {
+  createPostTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        PostWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId

@@ -1,14 +1,14 @@
-mutation createSetDefaultProfileTypedData($request: CreateSetDefaultProfileRequest!) { 
-    createSetDefaultProfileTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetDefaultProfileWithSig {
-            name
-            type
-          }
+mutation createSetDefaultProfileTypedData($request: CreateSetDefaultProfileRequest!) {
+  createSetDefaultProfileTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        SetDefaultProfileWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId

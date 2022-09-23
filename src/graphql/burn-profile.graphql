@@ -1,25 +1,25 @@
-mutation createBurnProfileTypedData($request: BurnProfileRequest!) { 
-    createBurnProfileTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
+mutation createBurnProfileTypedData($request: BurnProfileRequest!) {
+  createBurnProfileTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      types {
+        BurnWithSig {
           name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          BurnWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-        	deadline
-        	tokenId
+          type
         }
       }
+      value {
+        nonce
+        deadline
+        tokenId
+      }
     }
- }
+  }
+}

@@ -1,14 +1,14 @@
-mutation createCommentTypedData($request: CreatePublicCommentRequest!) { 
-    createCommentTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          CommentWithSig {
-            name
-            type
-          }
+mutation createCommentTypedData($request: CreatePublicCommentRequest!) {
+  createCommentTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        CommentWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId
@@ -28,6 +28,6 @@ mutation createCommentTypedData($request: CreatePublicCommentRequest!) {
         referenceModuleInitData
         referenceModuleData
       }
-     }
-   }
- }
+    }
+  }
+}

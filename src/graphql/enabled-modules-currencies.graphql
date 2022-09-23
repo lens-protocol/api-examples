@@ -1,8 +1,8 @@
-  query enabledModuleCurrencies{
-    enabledModuleCurrencies {
-      name
-      symbol
-      decimals
-      address
-    }
+query enabledModuleCurrencies {
+  enabledModuleCurrencies {
+    name
+    symbol
+    decimals
+    address
   }
+}

@@ -1,14 +1,14 @@
-mutation createCollectTypedData($request: CreateCollectRequest!) { 
-    createCollectTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          CollectWithSig {
-            name
-            type
-          }
+mutation createCollectTypedData($request: CreateCollectRequest!) {
+  createCollectTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        CollectWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId
@@ -22,6 +22,6 @@ mutation createCollectTypedData($request: CreateCollectRequest!) {
         pubId
         data
       }
-     }
-   }
+    }
+  }
 }

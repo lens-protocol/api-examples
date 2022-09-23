@@ -1,21 +1,19 @@
 query ExplorePublications($request: ExplorePublicationRequest!) {
-    explorePublications(request: $request) {
-      items {
-        __typename 
-        ... on Post {
-          ...PostFields
-        }
-        ... on Comment {
-          ...CommentFields
-        }
-        ... on Mirror {
-          ...MirrorFields
-        }
+  explorePublications(request: $request) {
+    items {
+      __typename
+      ... on Post {
+        ...PostFields
       }
-      pageInfo {
-        prev
-        next
-        totalCount
+      ... on Comment {
+        ...CommentFields
+      }
+      ... on Mirror {
+        ...MirrorFields
       }
     }
+    pageInfo {
+      ...CommonPaginatedResultInfo
+    }
   }
+}

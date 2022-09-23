@@ -1,14 +1,14 @@
-  mutation createMirrorTypedData($request: CreateMirrorRequest!) { 
-    createMirrorTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          MirrorWithSig {
-            name
-            type
-          }
+mutation createMirrorTypedData($request: CreateMirrorRequest!) {
+  createMirrorTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        MirrorWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId
@@ -25,6 +25,6 @@
         referenceModule
         referenceModuleInitData
       }
-     }
-   }
- }
+    }
+  }
+}

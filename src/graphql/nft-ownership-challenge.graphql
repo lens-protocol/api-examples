@@ -1,6 +1,6 @@
 query nftOwnershipChallenge($request: NftOwnershipChallengeRequest!) {
-    nftOwnershipChallenge(request: $request) { 
-      id
-      text 
-    }
+  nftOwnershipChallenge(request: $request) {
+    id
+    text
   }
+}

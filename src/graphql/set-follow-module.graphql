@@ -1,14 +1,14 @@
-mutation createSetFollowModuleTypedData($request: CreateSetFollowModuleRequest!) { 
-    createSetFollowModuleTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetFollowModuleWithSig {
-            name
-            type
-          }
+mutation createSetFollowModuleTypedData($request: CreateSetFollowModuleRequest!) {
+  createSetFollowModuleTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        SetFollowModuleWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId
@@ -22,6 +22,6 @@ mutation createSetFollowModuleTypedData($request: CreateSetFollowModuleRequest!)
         followModule
         followModuleInitData
       }
-     }
-   }
- }
+    }
+  }
+}

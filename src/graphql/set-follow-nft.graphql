@@ -1,14 +1,14 @@
-mutation createSetFollowNFTUriTypedData($request: CreateSetFollowNFTUriRequest!) { 
-    createSetFollowNFTUriTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetFollowNFTURIWithSig {
-            name
-            type
-          }
+mutation createSetFollowNFTUriTypedData($request: CreateSetFollowNFTUriRequest!) {
+  createSetFollowNFTUriTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        SetFollowNFTURIWithSig {
+          name
+          type
         }
+      }
       domain {
         name
         chainId
@@ -21,6 +21,6 @@ mutation createSetFollowNFTUriTypedData($request: CreateSetFollowNFTUriRequest!)
         deadline
         followNFTURI
       }
-     }
-   }
- }
+    }
+  }
+}
