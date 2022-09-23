@@ -2,31 +2,32 @@ query notifications($request: NotificationRequest!) {
   notifications(request: $request) {
     items {
       ... on NewFollowerNotification {
+        notificationId
         ...NewFollowerNotificationFields
       }
 
       ... on NewMirrorNotification {
+        notificationId
         ...NewMirrorNotificationFields
       }
 
       ... on NewCollectNotification {
+        notificationId
         ...NewCollectNotificationFields
       }
 
       ... on NewCommentNotification {
+        notificationId
         ...NewCommentNotificationFields
       }
 
       ... on NewMentionNotification {
-        mentionPublication {
-          ... on Post {
-            ...PostFields
-          }
-          ... on Comment {
-            ...CommentFields
-          }
-        }
-        createdAt
+        notificationId
+        ...NewMentionNotificationFields
+      }
+      ... on NewReactionNotification {
+        notificationId
+        ...NewReactionNotificationFields
       }
     }
     pageInfo {
@@ -105,5 +106,40 @@ fragment NewCommentNotificationFields on NewCommentNotification {
   }
   comment {
     ...CommentWithCommentedPublicationFields
+  }
+}
+
+fragment NewMentionNotificationFields on NewMentionNotification {
+  __typename
+  mentionPublication {
+    ... on Post {
+      ...PostFields
+    }
+    ... on Comment {
+      ...CommentFields
+    }
+  }
+  createdAt
+}
+
+fragment NewReactionNotificationFields on NewReactionNotification {
+  __typename
+  createdAt
+  profile {
+    ...ProfileFields
+  }
+  reaction
+  publication {
+    ... on Post {
+      ...PostFields
+    }
+
+    ... on Mirror {
+      ...MirrorFields
+    }
+
+    ... on Comment {
+      ...CommentFields
+    }
   }
 }
