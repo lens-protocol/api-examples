@@ -5,7 +5,7 @@ import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.
 import { CreateFollowTypedDataDocument, FollowRequest } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-const createFollowTypedData = async (request: FollowRequest) => {
+export const createFollowTypedData = async (request: FollowRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreateFollowTypedDataDocument,
     variables: {
