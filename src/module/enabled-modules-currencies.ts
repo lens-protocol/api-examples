@@ -1,25 +1,15 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
+import { EnabledModuleCurrenciesDocument } from '../graphql/generated';
 
-const ENABLED_CURRENCIES = `
-  query {
-    enabledModuleCurrencies {
-      name
-      symbol
-      decimals
-      address
-    }
-  }
-`;
-
-const enabledCurrenciesRequest = () => {
-  return apolloClient.query({
-    query: gql(ENABLED_CURRENCIES),
+const enabledCurrenciesRequest = async () => {
+  const result = await apolloClient.query({
+    query: EnabledModuleCurrenciesDocument,
   });
+
+  return result.data.enabledModuleCurrencies;
 };
 
 export const enabledCurrencies = async () => {
@@ -30,9 +20,9 @@ export const enabledCurrencies = async () => {
 
   const result = await enabledCurrenciesRequest();
 
-  prettyJSON('enabled currencies: result', result.data);
+  console.log('enabled currencies: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

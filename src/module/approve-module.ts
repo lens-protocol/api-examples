@@ -1,27 +1,22 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, sendTx } from '../ethers.service';
+import {
+  CollectModules,
+  GenerateModuleCurrencyApprovalDataDocument,
+  GenerateModuleCurrencyApprovalDataRequest,
+} from '../graphql/generated';
 import { enabledCurrencies } from './enabled-modules-currencies';
 
-const MODULE_APPROVAL_DATA = `
-  query($request: GenerateModuleCurrencyApprovalDataRequest!) {
-    generateModuleCurrencyApprovalData(request: $request) {
-      to
-   	  from
-      data
-    }
-  }
-`;
-
-// TODO typings!
-const getModuleApprovalData = (moduleApprovalRequest: any) => {
-  return apolloClient.query({
-    query: gql(MODULE_APPROVAL_DATA),
+const getModuleApprovalData = async (request: GenerateModuleCurrencyApprovalDataRequest) => {
+  const result = await apolloClient.query({
+    query: GenerateModuleCurrencyApprovalDataDocument,
     variables: {
-      request: moduleApprovalRequest,
+      request,
     },
   });
+
+  return result.data.generateModuleCurrencyApprovalData;
 };
 
 export const approveModule = async () => {
@@ -30,18 +25,12 @@ export const approveModule = async () => {
 
   const currencies = await enabledCurrencies();
 
-  // hard coded to make the code example clear
-  const generateApprovalModuleData = {
-    currency: currencies.enabledModuleCurrencies.map((c: any) => c.address)[0],
+  const generateModuleCurrencyApprovalData = await getModuleApprovalData({
+    currency: currencies.map((c: any) => c.address)[0],
     value: '10',
-    collectModule: 'FeeCollectModule',
-  };
-
-  const result = await getModuleApprovalData(generateApprovalModuleData);
-  console.log('approve module: result', result.data);
-
-  const generateModuleCurrencyApprovalData =
-    result.data.generateModuleCurrencyApprovalData;
+    collectModule: CollectModules.FeeCollectModule,
+  });
+  console.log('approve module: result', generateModuleCurrencyApprovalData);
 
   const tx = await sendTx({
     to: generateModuleCurrencyApprovalData.to,

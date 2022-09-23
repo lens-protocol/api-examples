@@ -1,49 +1,19 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreateFollowTypedDataDocument, FollowRequest } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-const CREATE_FOLLOW_TYPED_DATA = `
-  mutation($request: FollowRequest!) { 
-    createFollowTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        types {
-          FollowWithSig {
-            name
-            type
-          }
-        }
-        value {
-          nonce
-          deadline
-          profileIds
-          datas
-        }
-      }
-    }
- }
-`;
-
-// TODO sort typed!
-const createFollowTypedData = (followRequestInfo: any) => {
-  return apolloClient.mutate({
-    mutation: gql(CREATE_FOLLOW_TYPED_DATA),
+export const createFollowTypedData = async (request: FollowRequest) => {
+  const result = await apolloClient.mutate({
+    mutation: CreateFollowTypedDataDocument,
     variables: {
-      request: {
-        follow: followRequestInfo,
-      },
+      request,
     },
   });
+
+  return result.data!.createFollowTypedData;
 };
 
 export const follow = async (profileId: string = '0x11') => {
@@ -52,17 +22,16 @@ export const follow = async (profileId: string = '0x11') => {
 
   await login(address);
 
-  // hard coded to make the code example clear
-  const followRequest = [
-    {
-      profile: profileId,
-    },
-  ];
-
-  const result = await createFollowTypedData(followRequest);
+  const result = await createFollowTypedData({
+    follow: [
+      {
+        profile: profileId,
+      },
+    ],
+  });
   console.log('follow: result', result);
 
-  const typedData = result.data.createFollowTypedData.typedData;
+  const typedData = result.typedData;
   console.log('follow: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);

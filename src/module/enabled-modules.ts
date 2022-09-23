@@ -1,69 +1,15 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
+import { EnabledModulesDocument } from '../graphql/generated';
 
-const ENABLED_MODULES = `
-  query {
-    enabledModules {
-      collectModules {
-        moduleName
-        contractAddress
-        inputParams {
-          name
-          type
-        }
-        redeemParams {
-          name
-          type
-        }
-        returnDataParms {
-          name
-          type
-        }
-      }
-      followModules {
-        moduleName
-        contractAddress
-        inputParams {
-          name
-          type
-        }
-        redeemParams {
-          name
-          type
-        }
-        returnDataParms {
-          name
-          type
-        }
-      }
-      referenceModules {
-        moduleName
-        contractAddress
-        inputParams {
-          name
-          type
-        }
-        redeemParams {
-          name
-          type
-        }
-        returnDataParms {
-          name
-          type
-        }
-      }
-    }
-	}
-`;
-
-const enabledModulesRequest = () => {
-  return apolloClient.query({
-    query: gql(ENABLED_MODULES),
+const enabledModulesRequest = async () => {
+  const result = await apolloClient.query({
+    query: EnabledModulesDocument,
   });
+
+  return result.data.enabledModules;
 };
 
 export const enabledModules = async () => {
@@ -74,9 +20,9 @@ export const enabledModules = async () => {
 
   const result = await enabledModulesRequest();
 
-  prettyJSON('enabled modules: result', result.data);
+  console.log('enabled modules: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

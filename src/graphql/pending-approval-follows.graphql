@@ -1,0 +1,10 @@
+query pendingApprovalFollows($request: PendingApprovalFollowsRequest!) {
+  pendingApprovalFollows(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      ...CommonPaginatedResultInfoFields
+    }
+  }
+}

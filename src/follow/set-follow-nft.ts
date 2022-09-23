@@ -1,53 +1,22 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
-  getAddressFromSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+  CreateSetFollowNftUriRequest,
+  CreateSetFollowNftUriTypedDataDocument,
+} from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-const CREATE_SET_FOLLOW_NFT_URI_TYPED_DATA = `
-  mutation($request: CreateSetFollowNFTUriRequest!) { 
-    createSetFollowNFTUriTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetFollowNFTURIWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        profileId
-        deadline
-        followNFTURI
-      }
-     }
-   }
- }
-`;
-
-const createSetFollowNFTUriTypedData = (setFollowNFTUriRequest: {
-  profileId: string;
-  followNFTURI?: string | undefined;
-}) => {
-  return apolloClient.mutate({
-    mutation: gql(CREATE_SET_FOLLOW_NFT_URI_TYPED_DATA),
+const createSetFollowNFTUriTypedData = async (request: CreateSetFollowNftUriRequest) => {
+  const result = await apolloClient.mutate({
+    mutation: CreateSetFollowNftUriTypedDataDocument,
     variables: {
-      request: setFollowNFTUriRequest,
+      request,
     },
   });
+
+  return result.data!.createSetFollowNFTUriTypedData;
 };
 
 export const setFollowNftUri = async () => {
@@ -75,14 +44,10 @@ export const setFollowNftUri = async () => {
   const result = await createSetFollowNFTUriTypedData(setFollowNftUriRequest);
   console.log('set follow nft uri: result', result);
 
-  const typedData = result.data.createSetFollowNFTUriTypedData.typedData;
+  const typedData = result.typedData;
   console.log('set follow nft uri: typedData', typedData);
 
-  const signature = await signedTypeData(
-    typedData.domain,
-    typedData.types,
-    typedData.value
-  );
+  const signature = await signedTypeData(typedData.domain, typedData!.types, typedData.value);
   console.log('set follow nft uri: signature', signature);
 
   const { v, r, s } = splitSignature(signature);

@@ -1,53 +1,21 @@
-import { gql } from '@apollo/client/core';
 import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 
-const CREATE_MIRROR_TYPED_DATA = `
-  mutation($request: CreateMirrorRequest!) { 
-    createMirrorTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          MirrorWithSig {
-            name
-            type
-          }
-        }
-      domain {
-        name
-        chainId
-        version
-        verifyingContract
-      }
-      value {
-        nonce
-        deadline
-        profileId
-        profileIdPointed
-        pubIdPointed
-        referenceModuleData
-        referenceModule
-        referenceModuleInitData
-      }
-     }
-   }
- }
-`;
-
-// TODO types
-const createMirrorTypedData = (createMirrorTypedDataRequest: any) => {
-  return apolloClient.mutate({
-    mutation: gql(CREATE_MIRROR_TYPED_DATA),
+const createMirrorTypedData = async (request: CreateMirrorRequest) => {
+  const result = await apolloClient.mutate({
+    mutation: CreateMirrorTypedDataDocument,
     variables: {
-      request: createMirrorTypedDataRequest,
+      request,
     },
   });
+
+  return result.data!.createMirrorTypedData;
 };
 
 export const createMirror = async () => {
@@ -74,7 +42,7 @@ export const createMirror = async () => {
   const result = await createMirrorTypedData(createMirrorRequest);
   console.log('create mirror: createMirrorTypedData', result);
 
-  const typedData = result.data.createMirrorTypedData.typedData;
+  const typedData = result.typedData;
   console.log('create mirror: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -103,7 +71,7 @@ export const createMirror = async () => {
 
   console.log('create mirror: profile has been indexed', result);
 
-  const logs = indexedResult.txReceipt.logs;
+  const logs = indexedResult.txReceipt!.logs;
 
   console.log('create mirror: logs', logs);
 
@@ -115,7 +83,7 @@ export const createMirror = async () => {
   const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
   console.log('create mirror: created log', profileCreatedLog);
 
-  let profileCreatedEventLog = profileCreatedLog.topics;
+  let profileCreatedEventLog = profileCreatedLog!.topics;
   console.log('create mirror: created event logs', profileCreatedEventLog);
 
   const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
@@ -129,7 +97,7 @@ export const createMirror = async () => {
     profileId + '-' + BigNumber.from(publicationId).toHexString()
   );
 
-  return result.data;
+  return result;
 };
 
 (async () => {

@@ -24,4 +24,24 @@ export interface Metadata extends GenericMetadata {
   imageMimeType?: string | null;
   media?: MetadataMedia[];
   animation_url?: string;
+  locale: string;
+  tags?: string[];
+  contentWarning?: PublicationContentWarning[];
+  mainContentFocus: PublicationMainFocus;
+}
+
+export enum PublicationContentWarning {
+  NSFW = 'NSFW',
+  SENSITIVE = 'SENSITIVE',
+  SPOILER = 'SPOILER',
+}
+
+export enum PublicationMainFocus {
+  VIDEO = 'VIDEO',
+  IMAGE = 'IMAGE',
+  ARTICLE = 'ARTICLE',
+  TEXT_ONLY = 'TEXT_ONLY',
+  AUDIO = 'AUDIO',
+  LINK = 'LINK',
+  EMBED = 'EMBED',
 }

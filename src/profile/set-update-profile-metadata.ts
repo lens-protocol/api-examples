@@ -1,53 +1,28 @@
-import { gql } from '@apollo/client/core';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import {
+  CreatePublicSetProfileMetadataUriRequest,
+  CreateSetProfileMetadataTypedDataDocument,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';
 import { lensPeriphery } from '../lens-hub';
 
-const CREATE_SET_PROFILE_METADATA_TYPED_DATA = `
-  mutation($request: CreatePublicSetProfileMetadataURIRequest!) { 
-    createSetProfileMetadataTypedData(request: $request) {
-      id
-      expiresAt
-      typedData {
-        types {
-          SetProfileMetadataURIWithSig {
-            name
-            type
-          }
-        }
-        domain {
-          name
-          chainId
-          version
-          verifyingContract
-        }
-        value {
-          nonce
-          deadline
-          profileId
-          metadata
-        }
-      }
-    }
-  }
-`;
-
-const createSetProfileMetadataTypedData = (profileId: string, metadata: string) => {
-  return apolloClient.mutate({
-    mutation: gql(CREATE_SET_PROFILE_METADATA_TYPED_DATA),
+const createSetProfileMetadataTypedData = async (
+  request: CreatePublicSetProfileMetadataUriRequest
+) => {
+  const result = await apolloClient.mutate({
+    mutation: CreateSetProfileMetadataTypedDataDocument,
     variables: {
-      request: {
-        profileId,
-        metadata,
-      },
+      request,
     },
   });
+
+  return result.data!.createSetProfileMetadataTypedData;
 };
 
 export const setProfileMetadata = async () => {
@@ -83,13 +58,14 @@ export const setProfileMetadata = async () => {
     metadata: 'ipfs://' + ipfsResult.path,
   };
 
-  const result = await createSetProfileMetadataTypedData(
-    createProfileMetadataRequest.profileId,
-    createProfileMetadataRequest.metadata
-  );
+  const result = await createSetProfileMetadataTypedData({
+    profileId: createProfileMetadataRequest.profileId,
+    metadata: createProfileMetadataRequest.metadata,
+  });
+
   console.log('create profile: createSetProfileMetadataTypedData', result);
 
-  const typedData = result.data.createSetProfileMetadataTypedData.typedData;
+  const typedData = result.typedData;
   console.log('create profile: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
@@ -114,11 +90,11 @@ export const setProfileMetadata = async () => {
 
   console.log('create profile metadata: profile has been indexed', result);
 
-  const logs = indexedResult.txReceipt.logs;
+  const logs = indexedResult.txReceipt!.logs;
 
   console.log('create profile metadata: logs', logs);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

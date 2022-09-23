@@ -1,22 +1,22 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
+import {
+  PublicationReportingReason,
+  PublicationReportingSensitiveSubreason,
+  ReportPublicationDocument,
+  ReportPublicationRequest,
+} from '../graphql/generated';
 
-const REPORT_PUBLICATION = `
-  mutation($request: ReportPublicationRequest!) { 
-   reportPublication(request: $request)
- }
-`;
-
-// TODO sort types
-const reportPublicationRequest = (reportPublicationParams: any) => {
-  return apolloClient.mutate({
-    mutation: gql(REPORT_PUBLICATION),
+const reportPublicationRequest = async (request: ReportPublicationRequest) => {
+  const result = await apolloClient.mutate({
+    mutation: ReportPublicationDocument,
     variables: {
-      request: reportPublicationParams,
+      request,
     },
   });
+
+  return result.data!.reportPublication;
 };
 
 export const reportPublication = async () => {
@@ -29,8 +29,8 @@ export const reportPublication = async () => {
     publicationId: '0x0f-0x01',
     reason: {
       sensitiveReason: {
-        reason: 'SENSITIVE',
-        subreason: 'OFFENSIVE',
+        reason: PublicationReportingReason.Sensitive,
+        subreason: PublicationReportingSensitiveSubreason.Offensive,
       },
     },
     additionalComments: 'Testing report!',

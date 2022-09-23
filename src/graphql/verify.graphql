@@ -1,0 +1,3 @@
+query verify($request: VerifyRequest!) {
+  verify(request: $request)
+}

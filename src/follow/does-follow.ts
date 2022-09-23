@@ -1,28 +1,15 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
-import { prettyJSON } from '../helpers';
+import { DoesFollowDocument, DoesFollowRequest } from '../graphql/generated';
 
-const DOES_FOLLOW = `
-  query($request: DoesFollowRequest!) {
-    doesFollow(request: $request) { 
-			followerAddress
-    	profileId
-    	follows
-		}
-  }
-`;
-
-const doesFollowRequest = (
-  followInfos: { followerAddress: string; profileId: string }[]
-) => {
-  return apolloClient.query({
-    query: gql(DOES_FOLLOW),
+const doesFollowRequest = async (request: DoesFollowRequest) => {
+  const result = await apolloClient.query({
+    query: DoesFollowDocument,
     variables: {
-      request: {
-        followInfos,
-      },
+      request,
     },
   });
+
+  return result.data.doesFollow;
 };
 
 export const doesFollow = async () => {
@@ -33,10 +20,10 @@ export const doesFollow = async () => {
     },
   ];
 
-  const result = await doesFollowRequest(followInfos);
-  prettyJSON('does follow: result', result.data);
+  const result = await doesFollowRequest({ followInfos });
+  console.log('does follow: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

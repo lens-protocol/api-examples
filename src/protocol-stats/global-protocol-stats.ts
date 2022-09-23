@@ -1,41 +1,19 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
-import { prettyJSON } from '../helpers';
+import { GlobalProtocolStatsDocument } from '../graphql/generated';
 
-const GET_GLOBAL_PROTOCOL_STATS = `
-  query($request: GlobalProtocolStatsRequest) {
-    globalProtocolStats(request: $request) {
-        totalProfiles
-        totalBurntProfiles
-        totalPosts
-        totalMirrors
-        totalComments
-        totalCollects
-        totalFollows
-        totalRevenue {
-            asset {
-                name
-                symbol
-                decimals
-                address
-            }
-            value
-        }
-     }
-  }
-`;
-
-const getGlobalStatsRequest = () => {
-  return apolloClient.query({
-    query: gql(GET_GLOBAL_PROTOCOL_STATS),
+const getGlobalStatsRequest = async () => {
+  const result = await apolloClient.query({
+    query: GlobalProtocolStatsDocument,
   });
+
+  return result.data.globalProtocolStats;
 };
 
 export const getGlobalStats = async () => {
   const result = await getGlobalStatsRequest();
-  prettyJSON('global protocol stats: result', result.data);
+  console.log('global protocol stats: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

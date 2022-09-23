@@ -1,36 +1,29 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import { prettyJSON } from '../helpers';
+import { VerifyDocument, VerifyRequest } from '../graphql/generated';
 import { login } from './login';
 
-const VERIFY = `
-  query($request: VerifyRequest!) {
-    verify(request: $request)
-  }
-`;
-
-const verify = (accessToken: string) => {
-  return apolloClient.query({
-    query: gql(VERIFY),
+const verify = async (request: VerifyRequest) => {
+  const result = await apolloClient.query({
+    query: VerifyDocument,
     variables: {
-      request: {
-        accessToken,
-      },
+      request,
     },
   });
+
+  return result.data.verify;
 };
 
 export const verifyRequest = async () => {
   const address = getAddressFromSigner();
   console.log('verify: address', address);
 
-  const accessTokens = await login(address);
+  const authenticationResult = await login(address);
 
-  const result = await verify(accessTokens.authenticate.accessToken);
-  prettyJSON('verify: result', result.data);
+  const result = await verify({ accessToken: authenticationResult!.accessToken });
+  console.log('verify: result', result);
 
-  return result.data;
+  return result;
 };
 
 (async () => {

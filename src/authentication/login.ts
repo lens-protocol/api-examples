@@ -1,46 +1,34 @@
-import { gql } from '@apollo/client/core';
 import { apolloClient } from '../apollo-client';
 import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
-import { prettyJSON } from '../helpers';
+import {
+  AuthenticateDocument,
+  ChallengeDocument,
+  ChallengeRequest,
+  SignedAuthChallenge,
+} from '../graphql/generated';
 import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
-const GET_CHALLENGE = `
-  query($request: ChallengeRequest!) {
-    challenge(request: $request) { text }
-  }
-`;
-
-export const generateChallenge = (address: string) => {
-  return apolloClient.query({
-    query: gql(GET_CHALLENGE),
+export const generateChallenge = async (request: ChallengeRequest) => {
+  const result = await apolloClient.query({
+    query: ChallengeDocument,
     variables: {
-      request: {
-        address,
-      },
+      request,
     },
   });
+
+  return result.data.challenge;
 };
 
-const AUTHENTICATION = `
-  mutation($request: SignedAuthChallenge!) { 
-    authenticate(request: $request) {
-      accessToken
-      refreshToken
-    }
- }
-`;
-
-const authenticate = (address: string, signature: string) => {
-  return apolloClient.mutate({
-    mutation: gql(AUTHENTICATION),
+const authenticate = async (request: SignedAuthChallenge) => {
+  const result = await apolloClient.mutate({
+    mutation: AuthenticateDocument,
     variables: {
-      request: {
-        address,
-        signature,
-      },
+      request,
     },
   });
+
+  return result.data!.authenticate;
 };
 
 export const login = async (address = getAddressFromSigner()) => {
@@ -52,17 +40,16 @@ export const login = async (address = getAddressFromSigner()) => {
   console.log('login: address', address);
 
   // we request a challenge from the server
-  const challengeResponse = await generateChallenge(address);
+  const challengeResponse = await generateChallenge({ address });
 
   // sign the text with the wallet
-  const signature = await signText(challengeResponse.data.challenge.text);
+  const signature = await signText(challengeResponse.text);
 
-  const accessTokens = await authenticate(address, signature);
-  prettyJSON('login: result', accessTokens.data);
+  const authenticatedResult = await authenticate({ address, signature });
+  console.log('login: result', authenticatedResult);
+  setAuthenticationToken(authenticatedResult.accessToken);
 
-  setAuthenticationToken(accessTokens.data.authenticate.accessToken);
-
-  return accessTokens.data;
+  return authenticatedResult;
 };
 
 (async () => {

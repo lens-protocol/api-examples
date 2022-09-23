@@ -1,0 +1,16 @@
+query ProfilePublicationsForSale($request: ProfilePublicationsForSaleRequest!) {
+  profilePublicationsForSale(request: $request) {
+    items {
+      __typename
+      ... on Post {
+        ...PostFields
+      }
+      ... on Comment {
+        ...CommentFields
+      }
+    }
+    pageInfo {
+      ...CommonPaginatedResultInfoFields
+    }
+  }
+}
