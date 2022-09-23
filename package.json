@@ -51,6 +51,7 @@
     "publications:who-collected-publication": "env-cmd -f .env ts-node ./src/publications/who-collected-publication",
     "reaction:add": "env-cmd -f .env ts-node ./src/reaction/add-reaction",
     "reaction:remove": "env-cmd -f .env ts-node ./src/reaction/remove-reaction",
+    "reaction:who-reacted-publication": "env-cmd -f .env ts-node ./src/reaction/who-reacted-publication",
     "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
     "revenue:profile-publication-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-publications-revenue",
     "revenue:profile-follow-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-follow-revenue",
