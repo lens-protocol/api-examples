@@ -34,6 +34,7 @@
     "profile:get-default-profile": "env-cmd -f .env ts-node ./src/profile/get-default-profile",
     "profile:get-profile": "env-cmd -f .env ts-node ./src/profile/get-profile",
     "profile:get-profiles": "env-cmd -f .env ts-node ./src/profile/get-profiles --init",
+    "profile:mutual-profile-follows": "env-cmd -f .env ts-node ./src/profile/mutual-profile-follows",
     "profile:recommended-profiles": "env-cmd -f .env ts-node ./src/profile/recommended-profiles",
     "profile:set-default-profile": "env-cmd -f .env ts-node ./src/profile/set-default-profile",
     "profile:set-profile-metadata": "env-cmd -f .env ts-node ./src/profile/set-update-profile-metadata",
