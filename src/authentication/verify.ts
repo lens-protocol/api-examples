@@ -20,7 +20,7 @@ export const verifyRequest = async () => {
 
   const authenticationResult = await login(address);
 
-  const result = await verify(authenticationResult!.accessToken);
+  const result = await verify({ accessToken: authenticationResult!.accessToken });
   console.log('verify: result', result);
 
   return result;

@@ -16,7 +16,7 @@ export const profileFollowRevenueRequest = async (request: ProfileFollowRevenueQ
 };
 
 export const profileFollowRevenue = async () => {
-  const result = await profileFollowRevenueRequest({ profileId: '0x41' });
+  const result = await profileFollowRevenueRequest({ profileId: '0x15' });
   console.log('profiles follow revenues: result', result);
 
   return result;

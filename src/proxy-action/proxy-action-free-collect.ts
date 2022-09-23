@@ -1,5 +1,11 @@
 import { apolloClient } from '../apollo-client';
-import { ProxyActionDocument, ProxyActionRequest } from '../graphql/generated';
+import { login } from '../authentication/login';
+import { getAddressFromSigner } from '../ethers.service';
+import {
+  ProxyActionDocument,
+  ProxyActionRequest,
+  ProxyActionStatusTypes,
+} from '../graphql/generated';
 import { sleep } from '../helpers';
 import { proxyActionStatusRequest } from './proxy-action-status';
 
@@ -15,20 +21,31 @@ const proxyActionFreeCollectRequest = async (request: ProxyActionRequest) => {
 };
 
 export const proxyActionFreeCollect = async () => {
+  const address = getAddressFromSigner();
+  console.log('proxy action free collect: address', address);
+
+  await login(address);
+
   const result = await proxyActionFreeCollectRequest({
     collect: {
       freeCollect: {
-        publicationId: '0x01-0x01',
+        publicationId: '0x06-0x01',
       },
     },
   });
   console.log('proxy action free collect: result', result);
 
   while (true) {
-    const status = await proxyActionStatusRequest(result);
-    console.log('proxy action free collect: status', status);
-    if (status.__typename === 'ProxyActionStatusResult') {
-      console.log('proxy action free collect: complete', status);
+    const statusResult = await proxyActionStatusRequest(result);
+    console.log('proxy action free collect: status', statusResult);
+    if (statusResult.__typename === 'ProxyActionStatusResult') {
+      if (statusResult.status === ProxyActionStatusTypes.Complete) {
+        console.log('proxy action free collect: complete', statusResult);
+        break;
+      }
+    }
+    if (statusResult.__typename === 'ProxyActionError') {
+      console.log('proxy action free collect: failed', statusResult);
       break;
     }
     await sleep(1000);

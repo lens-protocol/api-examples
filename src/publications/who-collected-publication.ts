@@ -16,7 +16,7 @@ export const whoCollectedRequest = async (request: WhoCollectedPublicationReques
 };
 
 export const whoCollected = async () => {
-  const result = await whoCollectedRequest({ publicationId: '0x0f-0x01' });
+  const result = await whoCollectedRequest({ publicationId: '0x41-0x03' });
   console.log('who collected: result', result);
 
   return result;

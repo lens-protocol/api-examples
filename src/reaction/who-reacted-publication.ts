@@ -13,7 +13,7 @@ export const whoReactedPublicationRequest = async (request: WhoReactedPublicatio
 };
 
 export const whoReactedPublication = async () => {
-  const result = await whoReactedPublicationRequest({ publicationId: '0x0f-0x01' });
+  const result = await whoReactedPublicationRequest({ publicationId: '0x41-0x03' });
   console.log('who collected: result', result);
 
   return result;

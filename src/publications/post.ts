@@ -6,7 +6,7 @@ import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata } from '../interfaces/publication';
+import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
@@ -34,22 +34,18 @@ export const createPost = async () => {
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '1.0.0',
+    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
     metadata_id: uuidv4(),
     description: 'Description',
+    locale: 'en-US',
     content: 'Content',
     external_url: null,
     image: null,
     imageMimeType: null,
     name: 'Name',
     attributes: [],
-    media: [
-      // {
-      //   item: 'https://scx2.b-cdn.net/gfx/news/hires/2018/lion.jpg',
-      //   // item: 'https://assets-global.website-files.com/5c38aa850637d1e7198ea850/5f4e173f16b537984687e39e_AAVE%20ARTICLE%20website%20main%201600x800.png',
-      //   type: 'image/jpeg',
-      // },
-    ],
-    appId: 'testing123',
+    tags: ['using_api_examples'],
+    appId: 'api_examples_github',
   });
   console.log('create post: ipfs result', ipfsResult);
 

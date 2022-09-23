@@ -16,18 +16,6 @@ export const enableDispatcherWithTypedData = async (request: SetDispatcherReques
   return result.data!.createSetDispatcherTypedData;
 };
 
-const disableDispatcherWithTypedData = (profileId: string) => {
-  return apolloClient.mutate({
-    mutation: CreateSetDispatcherTypedDataDocument,
-    variables: {
-      request: {
-        profileId,
-        enable: false,
-      },
-    },
-  });
-};
-
 export const enableDispatcher = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
@@ -41,7 +29,8 @@ export const enableDispatcher = async () => {
 
   const result = await enableDispatcherWithTypedData({
     profileId,
-    dispatcher: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+    // leave it blank if you want to use the lens API dispatcher!
+    // dispatcher: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
   });
   console.log('set dispatcher: enableDispatcherWithTypedData', result);
 
