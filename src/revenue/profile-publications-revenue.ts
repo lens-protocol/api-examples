@@ -19,7 +19,7 @@ export const profilePublicationsRevenueRequest = async (
 
 export const profilePublicationsRevenue = async () => {
   const result = await profilePublicationsRevenueRequest({ profileId: '0x41' });
-  console.log('publications for sale: result', result);
+  console.log('publications profile revenues: result', result);
 
   return result;
 };

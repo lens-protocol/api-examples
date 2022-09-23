@@ -1,0 +1,15 @@
+query ProfileFollowRevenue($request: ProfileFollowRevenueQueryRequest!) {
+  profileFollowRevenue(request: $request) {
+    revenues {
+      total {
+        asset {
+          name
+          symbol
+          decimals
+          address
+        }
+        value
+      }
+    }
+  }
+}
