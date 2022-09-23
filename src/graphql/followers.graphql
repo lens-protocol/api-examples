@@ -7,7 +7,7 @@ query followers($request: FollowersRequest!) {
       totalAmountOfTimesFollowed
     }
     pageInfo {
-      ...CommonPaginatedResultInfo
+      ...CommonPaginatedResultInfoFields
     }
   }
 }

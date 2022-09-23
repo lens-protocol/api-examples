@@ -13,7 +13,7 @@ query publications($request: PublicationsQueryRequest!) {
       }
     }
     pageInfo {
-      ...CommonPaginatedResultInfo
+      ...CommonPaginatedResultInfoFields
     }
   }
 }

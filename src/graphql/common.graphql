@@ -351,7 +351,7 @@ fragment WalletFields on Wallet {
   }
 }
 
-fragment CommonPaginatedResultFields on PaginatedResultInfo {
+fragment CommonPaginatedResultInfoFields on PaginatedResultInfo {
   prev
   next
   totalCount

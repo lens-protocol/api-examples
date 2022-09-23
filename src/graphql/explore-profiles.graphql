@@ -4,7 +4,7 @@ query exploreProfiles($request: ExploreProfilesRequest!) {
       ...ProfileFields
     }
     pageInfo {
-      ...CommonPaginatedResultInfo
+      ...CommonPaginatedResultInfoFields
     }
   }
 }

@@ -4,10 +4,10 @@ query following($request: FollowingRequest!) {
       profile {
         ...ProfileFields
       }
+      totalAmountOfTimesFollowing
     }
-    totalAmountOfTimesFollowing
-  }
-  pageInfo {
-    ...CommonPaginatedResultInfo
+    pageInfo {
+      ...CommonPaginatedResultInfoFields
+    }
   }
 }

@@ -30,7 +30,7 @@ query notifications($request: NotificationRequest!) {
       }
     }
     pageInfo {
-      ...CommonPaginatedResultInfo
+      ...CommonPaginatedResultInfoFields
     }
   }
 }
