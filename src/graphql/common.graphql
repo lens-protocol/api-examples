@@ -75,6 +75,23 @@ fragment ProfileFields on Profile {
   followModule {
     ...FollowModuleFields
   }
+  onChainIdentity {
+    ens {
+      name
+    }
+    proofOfHumanity
+    sybilDotOrg {
+      verified
+      source {
+        twitter {
+          handle
+        }
+      }
+    }
+    worldcoin {
+      isHuman
+    }
+  }
 }
 
 fragment PublicationStatsFields on PublicationStats {
