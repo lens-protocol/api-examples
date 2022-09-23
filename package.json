@@ -51,7 +51,7 @@
     "reaction:add": "env-cmd -f .env ts-node ./src/reaction/add-reaction",
     "reaction:remove": "env-cmd -f .env ts-node ./src/reaction/remove-reaction",
     "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
-    "revenue:profile-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-revenue",
+    "revenue:profile-publication-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-publications-revenue",
     "revenue:publication-revenue": "env-cmd -f .env ts-node ./src/revenue/publication-revenue",
     "search:search-profiles-or-publications": "env-cmd -f .env ts-node ./src/search/search-profiles-or-publications",
     "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline"
