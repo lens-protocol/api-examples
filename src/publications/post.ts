@@ -33,7 +33,7 @@ export const createPost = async () => {
   await login(address);
 
   const ipfsResult = await uploadIpfs<Metadata>({
-    version: '1.0.0',
+    version: '2.0.0',
     mainContentFocus: PublicationMainFocus.TEXT_ONLY,
     metadata_id: uuidv4(),
     description: 'Description',
