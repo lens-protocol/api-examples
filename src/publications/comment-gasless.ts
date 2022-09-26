@@ -2,36 +2,64 @@ import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { broadcastRequest } from '../broadcast/broadcast-follow-example';
 import { argsBespokeInit, PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateCommentTypedDataDocument, CreatePublicCommentRequest } from '../graphql/generated';
+import { getAddressFromSigner } from '../ethers.service';
+import {
+  CreateCommentViaDispatcherDocument,
+  CreatePublicCommentRequest,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
-import { lensHub } from '../lens-hub';
+import { profile } from '../profile/get-profile';
+import { signCreateCommentTypedData } from './comment';
 
-export const createCommentTypedData = async (request: CreatePublicCommentRequest) => {
+const createCommentViaDispatcherRequest = async (request: CreatePublicCommentRequest) => {
   const result = await apolloClient.mutate({
-    mutation: CreateCommentTypedDataDocument,
+    mutation: CreateCommentViaDispatcherDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.createCommentTypedData;
+  return result.data!.createCommentViaDispatcher;
 };
 
-export const signCreateCommentTypedData = async (request: CreatePublicCommentRequest) => {
-  const result = await createCommentTypedData(request);
-  console.log('create comment: createCommentTypedData', result);
+const comment = async (createPostRequest: CreatePublicCommentRequest) => {
+  const profileResult = await profile({ profileId: PROFILE_ID });
+  if (!profileResult) {
+    throw new Error('Could not find profile');
+  }
 
-  const typedData = result.typedData;
-  console.log('create comment: typedData', typedData);
+  // this means it they have not setup the dispatcher, if its a no you must use broadcast
+  if (profileResult.dispatcher?.canUseRelay) {
+    const dispatcherResult = await createCommentViaDispatcherRequest(createPostRequest);
+    console.log('create comment via dispatcher: createPostViaDispatcherRequest', dispatcherResult);
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create comment: signature', signature);
+    if (dispatcherResult.__typename !== 'RelayerResult') {
+      console.error('create comment via dispatcher: failed', dispatcherResult);
+      throw new Error('create comment via dispatcher: failed');
+    }
 
-  return { result, signature };
+    return { txHash: dispatcherResult.txHash, txId: dispatcherResult.txId };
+  } else {
+    const signedResult = await signCreateCommentTypedData(createPostRequest);
+    console.log('create comment via broadcast: signedResult', signedResult);
+
+    const broadcastResult = await broadcastRequest({
+      id: signedResult.result.id,
+      signature: signedResult.signature,
+    });
+
+    if (broadcastResult.__typename !== 'RelayerResult') {
+      console.error('create comment via broadcast: failed', broadcastResult);
+      throw new Error('create comment via broadcast: failed');
+    }
+
+    console.log('create comment via broadcast: broadcastResult', broadcastResult);
+    return { txHash: broadcastResult.txHash, txId: broadcastResult.txId };
+  }
 };
 
 const createComment = async () => {
@@ -84,34 +112,11 @@ const createComment = async () => {
     },
   };
 
-  const signedResult = await signCreateCommentTypedData(createCommentRequest);
-  console.log('create comment: signedResult', signedResult);
-
-  const typedData = signedResult.result.typedData;
-
-  const { v, r, s } = splitSignature(signedResult.signature);
-
-  const tx = await lensHub.commentWithSig({
-    profileId: typedData.value.profileId,
-    contentURI: typedData.value.contentURI,
-    profileIdPointed: typedData.value.profileIdPointed,
-    pubIdPointed: typedData.value.pubIdPointed,
-    collectModule: typedData.value.collectModule,
-    collectModuleInitData: typedData.value.collectModuleInitData,
-    referenceModule: typedData.value.referenceModule,
-    referenceModuleInitData: typedData.value.referenceModuleInitData,
-    referenceModuleData: typedData.value.referenceModuleData,
-    sig: {
-      v,
-      r,
-      s,
-      deadline: typedData.value.deadline,
-    },
-  });
-  console.log('create comment: tx hash', tx.hash);
+  const result = await comment(createCommentRequest);
+  console.log('create comment gasless', result);
 
   console.log('create comment: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
+  const indexedResult = await pollUntilIndexed(result.txHash);
 
   console.log('create comment: profile has been indexed');
 
