@@ -26,7 +26,7 @@ const createCommentViaDispatcherRequest = async (request: CreatePublicCommentReq
   return result.data!.createCommentViaDispatcher;
 };
 
-const comment = async (createPostRequest: CreatePublicCommentRequest) => {
+const comment = async (createCommentRequest: CreatePublicCommentRequest) => {
   const profileResult = await profile({ profileId: PROFILE_ID });
   if (!profileResult) {
     throw new Error('Could not find profile');
@@ -34,7 +34,7 @@ const comment = async (createPostRequest: CreatePublicCommentRequest) => {
 
   // this means it they have not setup the dispatcher, if its a no you must use broadcast
   if (profileResult.dispatcher?.canUseRelay) {
-    const dispatcherResult = await createCommentViaDispatcherRequest(createPostRequest);
+    const dispatcherResult = await createCommentViaDispatcherRequest(createCommentRequest);
     console.log('create comment via dispatcher: createPostViaDispatcherRequest', dispatcherResult);
 
     if (dispatcherResult.__typename !== 'RelayerResult') {
@@ -44,7 +44,7 @@ const comment = async (createPostRequest: CreatePublicCommentRequest) => {
 
     return { txHash: dispatcherResult.txHash, txId: dispatcherResult.txId };
   } else {
-    const signedResult = await signCreateCommentTypedData(createPostRequest);
+    const signedResult = await signCreateCommentTypedData(createCommentRequest);
     console.log('create comment via broadcast: signedResult', signedResult);
 
     const broadcastResult = await broadcastRequest({

@@ -20,7 +20,7 @@ const createMirrorViaDispatcherRequest = async (request: CreateMirrorRequest) =>
   return result.data!.createMirrorViaDispatcher;
 };
 
-const mirror = async (createPostRequest: CreateMirrorRequest) => {
+const mirror = async (createMirrorRequest: CreateMirrorRequest) => {
   const profileResult = await profile({ profileId: PROFILE_ID });
   if (!profileResult) {
     throw new Error('Could not find profile');
@@ -28,7 +28,7 @@ const mirror = async (createPostRequest: CreateMirrorRequest) => {
 
   // this means it they have not setup the dispatcher, if its a no you must use broadcast
   if (profileResult.dispatcher?.canUseRelay) {
-    const dispatcherResult = await createMirrorViaDispatcherRequest(createPostRequest);
+    const dispatcherResult = await createMirrorViaDispatcherRequest(createMirrorRequest);
     console.log('create mirror via dispatcher: createPostViaDispatcherRequest', dispatcherResult);
 
     if (dispatcherResult.__typename !== 'RelayerResult') {
@@ -38,7 +38,7 @@ const mirror = async (createPostRequest: CreateMirrorRequest) => {
 
     return { txHash: dispatcherResult.txHash, txId: dispatcherResult.txId };
   } else {
-    const signedResult = await signCreateMirrorTypedData(createPostRequest);
+    const signedResult = await signCreateMirrorTypedData(createMirrorRequest);
     console.log('create mirror via broadcast: signedResult', signedResult);
 
     const broadcastResult = await broadcastRequest({
