@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
+import { argsBespokeInit, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
   CreateSetProfileImageUriTypedDataDocument,
@@ -8,7 +8,7 @@ import {
 } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {
+export const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreateSetProfileImageUriTypedDataDocument,
     variables: {
@@ -19,14 +19,27 @@ const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequ
   return result.data!.createSetProfileImageURITypedData;
 };
 
-export const setProfileImageUriNormal = async () => {
+export const signCreateSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {
+  const result = await createSetProfileImageUriTypedData(request);
+  console.log('set profile image uri: createSetProfileImageUriTypedData', result);
+
+  const typedData = result.typedData;
+  console.log('set profile image uri: typedData', typedData);
+
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
+  console.log('set profile image uri: signature', signature);
+
+  return { result, signature };
+};
+
+const setProfileImageUri = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
   const address = getAddressFromSigner();
-  console.log('set profile image uri normal: address', address);
+  console.log('set profile image uri: address', address);
 
   await login(address);
 
@@ -36,16 +49,12 @@ export const setProfileImageUriNormal = async () => {
     url: 'ipfs://QmSfyMcnh1wnJHrAWCBjZHapTS859oNSsuDFiAPPdAHgHP',
   };
 
-  const result = await createSetProfileImageUriTypedData(setProfileImageUriRequest);
-  console.log('set profile image uri normal: enableDispatcherWithTypedData', result);
+  const signedResult = await signCreateSetProfileImageUriTypedData(setProfileImageUriRequest);
+  console.log('set profile image uri: signedResult', signedResult);
 
-  const typedData = result.typedData;
-  console.log('set profile image uri normal: typedData', typedData);
+  const typedData = signedResult.result.typedData;
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('set profile image uri normal: signature', signature);
-
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signedResult.signature);
 
   const tx = await lensHub.setProfileImageURIWithSig({
     profileId: typedData.value.profileId,
@@ -57,9 +66,11 @@ export const setProfileImageUriNormal = async () => {
       deadline: typedData.value.deadline,
     },
   });
-  console.log('set profile image uri normal: tx hash', tx.hash);
+  console.log('set profile image uri: tx hash', tx.hash);
 };
 
 (async () => {
-  await setProfileImageUriNormal();
+  if (argsBespokeInit()) {
+    await setProfileImageUri();
+  }
 })();
