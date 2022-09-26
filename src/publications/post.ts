@@ -118,7 +118,7 @@ const createPost = async () => {
   console.log('create post: tx hash', tx.hash);
 
   console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
+  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
 
   console.log('create post: profile has been indexed');
 

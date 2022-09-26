@@ -116,7 +116,7 @@ const createCommentGasless = async () => {
   console.log('create comment gasless', result);
 
   console.log('create comment: poll until indexed');
-  const indexedResult = await pollUntilIndexed(result.txHash);
+  const indexedResult = await pollUntilIndexed({ txId: result.txId });
 
   console.log('create comment: profile has been indexed');
 

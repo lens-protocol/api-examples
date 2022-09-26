@@ -55,7 +55,7 @@ export const setDefaultProfile = async () => {
   console.log('set default profile: tx hash', tx.hash);
 
   console.log('set default profile: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
+  const indexedResult = await pollUntilIndexed({ txHash: tx.txHash });
 
   console.log('set default profile: action has been indexed', indexedResult);
 

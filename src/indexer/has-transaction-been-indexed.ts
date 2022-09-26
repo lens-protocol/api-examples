@@ -17,9 +17,9 @@ const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
   return result.data.hasTxHashBeenIndexed;
 };
 
-export const pollUntilIndexed = async (txHash: string) => {
+export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }) => {
   while (true) {
-    const response = await hasTxBeenIndexed({ txHash });
+    const response = await hasTxBeenIndexed(input);
     console.log('pool until indexed: result', response);
 
     if (response.__typename === 'TransactionIndexedResult') {
@@ -60,7 +60,7 @@ const testTransaction = async () => {
   const hash = await follow('0x06');
   console.log('testTransaction: hash', hash);
 
-  await pollUntilIndexed(hash);
+  await pollUntilIndexed({ txHash: hash });
 
   console.log('testTransaction: Indexed');
 };

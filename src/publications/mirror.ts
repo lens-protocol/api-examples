@@ -76,7 +76,7 @@ const createMirror = async () => {
   console.log('create mirror: tx hash', tx.hash);
 
   console.log('create mirror: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
+  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
 
   console.log('create mirror: profile has been indexed');
 

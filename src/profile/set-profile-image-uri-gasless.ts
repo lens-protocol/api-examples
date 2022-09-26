@@ -83,7 +83,7 @@ const setProfileImageUri = async () => {
   console.log('set profile image url gasless', result);
 
   console.log('set profile image url: poll until indexed');
-  const indexedResult = await pollUntilIndexed(result.txHash);
+  const indexedResult = await pollUntilIndexed({ txId: result.txId });
 
   console.log('set profile image url: profile has been indexed', result);
 

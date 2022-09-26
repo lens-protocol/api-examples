@@ -123,7 +123,7 @@ export const createPostGasless = async () => {
   console.log('create post gasless', result);
 
   console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed(result.txHash);
+  const indexedResult = await pollUntilIndexed({ txId: result.txId });
 
   console.log('create post: profile has been indexed', result);
 

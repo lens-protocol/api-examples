@@ -81,7 +81,7 @@ export const createMirror = async () => {
   console.log('create mirror gasless', result);
 
   console.log('create mirror: poll until indexed');
-  const indexedResult = await pollUntilIndexed(result.txHash);
+  const indexedResult = await pollUntilIndexed({ txId: result.txId });
 
   console.log('create mirror: profile has been indexed', result);
 

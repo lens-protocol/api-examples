@@ -91,23 +91,26 @@ const createComment = async () => {
 
   const { v, r, s } = splitSignature(signedResult.signature);
 
-  const tx = await lensHub.commentWithSig({
-    profileId: typedData.value.profileId,
-    contentURI: typedData.value.contentURI,
-    profileIdPointed: typedData.value.profileIdPointed,
-    pubIdPointed: typedData.value.pubIdPointed,
-    collectModule: typedData.value.collectModule,
-    collectModuleInitData: typedData.value.collectModuleInitData,
-    referenceModule: typedData.value.referenceModule,
-    referenceModuleInitData: typedData.value.referenceModuleInitData,
-    referenceModuleData: typedData.value.referenceModuleData,
-    sig: {
-      v,
-      r,
-      s,
-      deadline: typedData.value.deadline,
+  const tx = await lensHub.commentWithSig(
+    {
+      profileId: typedData.value.profileId,
+      contentURI: typedData.value.contentURI,
+      profileIdPointed: typedData.value.profileIdPointed,
+      pubIdPointed: typedData.value.pubIdPointed,
+      collectModule: typedData.value.collectModule,
+      collectModuleInitData: typedData.value.collectModuleInitData,
+      referenceModule: typedData.value.referenceModule,
+      referenceModuleInitData: typedData.value.referenceModuleInitData,
+      referenceModuleData: typedData.value.referenceModuleData,
+      sig: {
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      },
     },
-  });
+    { gasLimit: 500000 }
+  );
   console.log('create comment: tx hash', tx.hash);
 
   console.log('create comment: poll until indexed');

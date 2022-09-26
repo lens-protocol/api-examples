@@ -55,7 +55,7 @@ export const toggleFollow = async (profileId: string = '0x032f1a') => {
   console.log('follow: tx hash', tx.hash);
 
   console.log('follow: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
+  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
 
   console.log('follow: profile has been indexed', result);
 

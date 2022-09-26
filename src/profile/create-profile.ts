@@ -34,7 +34,7 @@ export const createProfile = async () => {
   }
 
   console.log('create profile: poll until indexed');
-  const result = await pollUntilIndexed(createProfileResult.txHash);
+  const result = await pollUntilIndexed({ txHash: createProfileResult.txHash });
 
   console.log('create profile: profile has been indexed', result);
 

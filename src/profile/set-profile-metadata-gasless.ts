@@ -105,7 +105,7 @@ export const setProfileMetadata = async () => {
   console.log('create comment gasless', result);
 
   console.log('create profile metadata: poll until indexed');
-  const indexedResult = await pollUntilIndexed(result.txHash);
+  const indexedResult = await pollUntilIndexed({ txId: result.txId });
 
   console.log('create profile metadata: profile has been indexed', result);
 
