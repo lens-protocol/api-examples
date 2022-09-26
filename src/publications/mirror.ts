@@ -1,13 +1,13 @@
 import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
+import { argsBespokeInit, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 
-const createMirrorTypedData = async (request: CreateMirrorRequest) => {
+export const createMirrorTypedData = async (request: CreateMirrorRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreateMirrorTypedDataDocument,
     variables: {
@@ -18,7 +18,20 @@ const createMirrorTypedData = async (request: CreateMirrorRequest) => {
   return result.data!.createMirrorTypedData;
 };
 
-export const createMirror = async () => {
+export const signCreateMirrorTypedData = async (request: CreateMirrorRequest) => {
+  const result = await createMirrorTypedData(request);
+  console.log('create mirror: createMirrorTypedData', result);
+
+  const typedData = result.typedData;
+  console.log('create mirror: typedData', typedData);
+
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
+  console.log('create mirror: signature', signature);
+
+  return { result, signature };
+};
+
+const createMirror = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -39,16 +52,12 @@ export const createMirror = async () => {
     },
   };
 
-  const result = await createMirrorTypedData(createMirrorRequest);
-  console.log('create mirror: createMirrorTypedData', result);
+  const signedResult = await signCreateMirrorTypedData(createMirrorRequest);
+  console.log('create mirror: signedResult', signedResult);
 
-  const typedData = result.typedData;
-  console.log('create mirror: typedData', typedData);
+  const typedData = signedResult.result.typedData;
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create mirror: signature', signature);
-
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signedResult.signature);
 
   const tx = await lensHub.mirrorWithSig({
     profileId: typedData.value.profileId,
@@ -69,7 +78,7 @@ export const createMirror = async () => {
   console.log('create mirror: poll until indexed');
   const indexedResult = await pollUntilIndexed(tx.hash);
 
-  console.log('create mirror: profile has been indexed', result);
+  console.log('create mirror: profile has been indexed');
 
   const logs = indexedResult.txReceipt!.logs;
 
@@ -96,10 +105,10 @@ export const createMirror = async () => {
     'create mirror: internal publication id',
     profileId + '-' + BigNumber.from(publicationId).toHexString()
   );
-
-  return result;
 };
 
 (async () => {
-  await createMirror();
+  if (argsBespokeInit()) {
+    await createMirror();
+  }
 })();

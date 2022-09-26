@@ -62,7 +62,7 @@ const comment = async (createPostRequest: CreatePublicCommentRequest) => {
   }
 };
 
-const createComment = async () => {
+const createCommentGasless = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -149,6 +149,6 @@ const createComment = async () => {
 
 (async () => {
   if (argsBespokeInit()) {
-    await createComment();
+    await createCommentGasless();
   }
 })();
