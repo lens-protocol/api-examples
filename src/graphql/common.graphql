@@ -62,6 +62,7 @@ fragment ProfileFields on Profile {
   ownedBy
   dispatcher {
     address
+    canUseRelay
   }
   stats {
     totalFollowers

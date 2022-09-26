@@ -1,10 +1,11 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { argsBespokeInit } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
 import { createFollowTypedData } from '../follow/follow';
 import { BroadcastDocument, BroadcastRequest } from '../graphql/generated';
 
-const broadcastRequest = async (request: BroadcastRequest) => {
+export const broadcastRequest = async (request: BroadcastRequest) => {
   const result = await apolloClient.mutate({
     mutation: BroadcastDocument,
     variables: {
@@ -15,7 +16,7 @@ const broadcastRequest = async (request: BroadcastRequest) => {
   return result.data!.broadcast;
 };
 
-export const broadcast = async () => {
+const broadcast = async () => {
   const address = getAddressFromSigner();
   console.log('follow with broadcast: address', address);
 
@@ -40,10 +41,12 @@ export const broadcast = async () => {
     id: result.id,
     signature,
   });
-  console.log('follow with broadcast: tx hash', broadcastResult);
+  console.log('follow with broadcast: broadcastResult', broadcastResult);
   return broadcastResult;
 };
 
 (async () => {
-  await broadcast();
+  if (argsBespokeInit()) {
+    await broadcast();
+  }
 })();

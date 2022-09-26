@@ -2,7 +2,7 @@ import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
+import { argsBespokeInit, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
@@ -10,7 +10,7 @@ import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
-const createPostTypedData = async (request: CreatePublicPostRequest) => {
+export const createPostTypedData = async (request: CreatePublicPostRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreatePostTypedDataDocument,
     variables: {
@@ -21,7 +21,20 @@ const createPostTypedData = async (request: CreatePublicPostRequest) => {
   return result.data!.createPostTypedData;
 };
 
-export const createPost = async () => {
+export const signCreatePostTypedData = async (request: CreatePublicPostRequest) => {
+  const result = await createPostTypedData(request);
+  console.log('create post: createPostTypedData', result);
+
+  const typedData = result.typedData;
+  console.log('create post: typedData', typedData);
+
+  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
+  console.log('create post: signature', signature);
+
+  return { result, signature };
+};
+
+const createPost = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -81,16 +94,12 @@ export const createPost = async () => {
     },
   };
 
-  const result = await createPostTypedData(createPostRequest);
-  console.log('create post: createPostTypedData', result);
+  const signedResult = await signCreatePostTypedData(createPostRequest);
+  console.log('create post: signedResult', signedResult);
 
-  const typedData = result.typedData;
-  console.log('create post: typedData', typedData);
+  const typedData = signedResult.result.typedData;
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create post: signature', signature);
-
-  const { v, r, s } = splitSignature(signature);
+  const { v, r, s } = splitSignature(signedResult.signature);
 
   const tx = await lensHub.postWithSig({
     profileId: typedData.value.profileId,
@@ -111,7 +120,7 @@ export const createPost = async () => {
   console.log('create post: poll until indexed');
   const indexedResult = await pollUntilIndexed(tx.hash);
 
-  console.log('create post: profile has been indexed', result);
+  console.log('create post: profile has been indexed');
 
   const logs = indexedResult.txReceipt!.logs;
 
@@ -135,10 +144,10 @@ export const createPost = async () => {
     'create post: internal publication id',
     profileId + '-' + BigNumber.from(publicationId).toHexString()
   );
-
-  return result;
 };
 
 (async () => {
-  await createPost();
+  if (argsBespokeInit()) {
+    await createPost();
+  }
 })();
