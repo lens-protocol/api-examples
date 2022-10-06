@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
+import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { follow } from '../follow/follow';
 import { HasTxHashBeenIndexedDocument, HasTxHashBeenIndexedRequest } from '../graphql/generated';
@@ -51,22 +51,22 @@ export const pollUntilIndexed = async (input: { txHash: string } | { txId: strin
   }
 };
 
-// const testTransaction = async () => {
-//   const address = getAddressFromSigner();
-//   console.log('testTransaction: address', address);
-//
-//   await login(address);
-//
-//   const hash = await follow('0x06');
-//   console.log('testTransaction: hash', hash);
-//
-//   await pollUntilIndexed({ txHash: hash });
-//
-//   console.log('testTransaction: Indexed');
-// };
-//
-// (async () => {
-//   if (argsBespokeInit()) {
-//     await testTransaction();
-//   }
-// })();
+const testTransaction = async () => {
+  const address = getAddressFromSigner();
+  console.log('testTransaction: address', address);
+
+  await login(address);
+
+  const hash = await follow('0x06');
+  console.log('testTransaction: hash', hash);
+
+  await pollUntilIndexed({ txHash: hash });
+
+  console.log('testTransaction: Indexed');
+};
+
+(async () => {
+  if (explicitStart(__filename)) {
+    await testTransaction();
+  }
+})();

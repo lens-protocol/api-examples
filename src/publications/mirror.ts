@@ -1,7 +1,7 @@
 import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { argsBespokeInit, PROFILE_ID } from '../config';
+import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
@@ -108,7 +108,7 @@ const createMirror = async () => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await createMirror();
   }
 })();

@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { argsBespokeInit, PROFILE_ID } from '../config';
+import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { ProfileDocument, SingleProfileQueryRequest } from '../graphql/generated';
 
@@ -38,7 +38,7 @@ export const profile = async (request?: SingleProfileQueryRequest) => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await profile();
   }
 })();

@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { argsBespokeInit } from '../config';
+import { explicitStart } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
 import {
   AuthenticateDocument,
@@ -53,7 +53,7 @@ export const login = async (address = getAddressFromSigner()) => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await login();
   }
 })();

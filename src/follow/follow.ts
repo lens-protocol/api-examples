@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
+import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateFollowTypedDataDocument, FollowRequest } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
@@ -55,7 +55,7 @@ export const follow = async (profileId: string = '0x11') => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await follow();
   }
 })();

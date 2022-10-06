@@ -1,10 +1,10 @@
 // @ts-ignore
-import { LensGatedSDK, LensEnvironment, LensNetwork } from '@lens/sdk-gated/server';
+import { LensEnvironment, LensGatedSDK, LensNetwork } from '@lens/sdk-gated/server';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { argsBespokeInit, PROFILE_ID } from '../config';
+import { explicitStart, PROFILE_ID } from '../config';
 import {
   ethersProvider,
   getAddressFromSigner,
@@ -194,7 +194,7 @@ const createCommentEncrypted = async () => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await createCommentEncrypted();
   }
 })();

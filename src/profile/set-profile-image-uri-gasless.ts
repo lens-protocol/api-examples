@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { broadcastRequest } from '../broadcast/broadcast-follow-example';
-import { argsBespokeInit, PROFILE_ID } from '../config';
+import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
   CreateSetProfileImageUriViaDispatcherDocument,
@@ -93,7 +93,7 @@ const setProfileImageUri = async () => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await setProfileImageUri();
   }
 })();
