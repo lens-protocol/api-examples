@@ -1,4 +1,4 @@
-schema: 'http://api-mumbai.lens.dev'
+schema: 'https://api-mumbai.lens.dev'
 documents: './src/graphql/*.graphql'
 generates:
   ./src/graphql/generated.ts:
