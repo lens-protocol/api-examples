@@ -109,7 +109,7 @@ const createPostEncrypted = async () => {
   console.log('create post: encryptedMetadata', encryptedMetadata);
 
   // hard coded to make the code example clear
-  const createPostRequest = {
+  const createPostRequest: CreatePublicPostRequest = {
     profileId,
     contentURI: 'ipfs://' + contentURI.path,
     collectModule: {
