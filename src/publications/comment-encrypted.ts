@@ -13,11 +13,10 @@ import {
   splitSignature,
 } from '../ethers.service';
 import {
-  AccessCriteriaType,
   ContractType,
   CreateCommentTypedDataDocument,
   CreatePublicCommentRequest,
-  NftOwnershipInput,
+  OwnershipConditionInput,
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
 } from '../graphql/generated';
@@ -93,15 +92,16 @@ const createCommentEncrypted = async () => {
     network: LensNetwork.polygon,
   });
 
-  const accessConditions: NftOwnershipInput = {
-    type: AccessCriteriaType.Nft,
-    contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
-    contractType: ContractType.Erc721,
-    chainID: 80001,
+  const nftAccessConditions: OwnershipConditionInput = {
+    nft: {
+      contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
+      contractType: ContractType.Erc721,
+      chainID: 80001,
+    },
   };
   const { contentURI, encryptedMetadata } = await sdk.gated.encryptMetadata(
     metadata,
-    accessConditions,
+    nftAccessConditions,
     uploadIpfs
   );
 
@@ -109,10 +109,10 @@ const createCommentEncrypted = async () => {
   console.log('create comment: encryptedMetadata', encryptedMetadata);
 
   // hard coded to make the code example clear
-  const createCommentRequest = {
+  const createCommentRequest: CreatePublicCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x44c1-0x13`,
+    publicationId: `0x15-0x01`,
     contentURI: 'ipfs://' + contentURI.path,
     collectModule: {
       // timedFeeCollectModule: {
@@ -127,6 +127,11 @@ const createCommentEncrypted = async () => {
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
+    },
+    gated: {
+      ...nftAccessConditions,
+      encryptedSymmetricKey:
+        encryptedMetadata.encryptionParams.providerSpecificParams.encryptionKey,
     },
   };
 

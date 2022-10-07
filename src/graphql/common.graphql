@@ -126,22 +126,21 @@ fragment MetadataOutputFields on MetadataOutput {
       encryptionKey
     }
     accessCondition {
-        __typename
-        ... on AndConditionOutput {
-            ...AndConditionFields
-        }
-        ... on OrConditionOutput {
-            ...OrConditionFields
-        }
-        ... on NftOwnershipOutput {
-            ...NftOwnershipFields
-        }
-        ... on EOAOwnershipOutput {
-            ...EOAOwnershipFields
-        }
-        ... on ERC20TokenOwnershipOutput {
-            ...ERC20TokenOwnershipFields
-        }
+      and {
+        ...AndConditionFields
+      }
+      or {
+        ...OrConditionFields
+      }
+      nft {
+        ...NftOwnershipFields
+      }
+      eoa {
+        ...EoaOwnershipFields
+      }
+      token {
+        ...Erc20TokenOwnershipFields
+      }
     }
     encryptedFields {
         animation_url
@@ -447,8 +446,7 @@ fragment ReferenceModuleFields on ReferenceModule {
   }
 }
 
-fragment ERC20TokenOwnershipFields on ERC20TokenOwnershipOutput {
-  type
+fragment Erc20TokenOwnershipFields on Erc20TokenOwnershipOutput {
   contractAddress
   amount
   chainID
@@ -456,44 +454,38 @@ fragment ERC20TokenOwnershipFields on ERC20TokenOwnershipOutput {
   decimals
 }
 
-fragment EOAOwnershipFields on EOAOwnershipOutput {
-  type
+fragment EoaOwnershipFields on EoaOwnershipOutput {
   address
   chainID
 }
 
 fragment NftOwnershipFields on NftOwnershipOutput {
-  type
   contractAddress
   chainID
   contractType
   tokenIds
 }
 
+fragment OwnershipConditionFields on OwnershipConditionOutput {
+  nft {
+    ...NftOwnershipFields
+  }
+  eoa {
+    ...EoaOwnershipFields
+  }
+  token {
+    ...Erc20TokenOwnershipFields
+  }
+}
+
 fragment AndConditionFields on AndConditionOutput {
   criteria {
-    ... on ERC20TokenOwnershipOutput {
-        ...ERC20TokenOwnershipFields
-    }
-    ... on EOAOwnershipOutput {
-        ...EOAOwnershipFields
-    }
-    ... on NftOwnershipOutput {
-        ...NftOwnershipFields
-    }
+    ...OwnershipConditionFields
   }
 }
 
 fragment OrConditionFields on OrConditionOutput {
   criteria {
-    ... on ERC20TokenOwnershipOutput {
-        ...ERC20TokenOwnershipFields
-    }
-    ... on EOAOwnershipOutput {
-        ...EOAOwnershipFields
-    }
-    ... on NftOwnershipOutput {
-        ...NftOwnershipFields
-    }
+    ...OwnershipConditionFields
   }
 }

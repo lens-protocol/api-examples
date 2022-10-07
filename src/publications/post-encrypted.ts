@@ -13,13 +13,14 @@ import {
   splitSignature,
 } from '../ethers.service';
 import {
-  AccessCriteriaType,
+  AccessConditionOutput,
   ContractType,
   CreatePostTypedDataDocument,
   CreatePublicPostRequest,
-  NftOwnershipInput,
+  OwnershipConditionInput,
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
+  ScalarOperator,
 } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { uploadIpfs } from '../ipfs';
@@ -93,15 +94,46 @@ const createPostEncrypted = async () => {
     network: LensNetwork.polygon,
   });
 
-  const accessConditions: NftOwnershipInput = {
-    type: AccessCriteriaType.Nft,
-    contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
-    contractType: ContractType.Erc721,
-    chainID: 80001,
+  const nftAccessCondition: OwnershipConditionInput = {
+    nft: {
+      contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
+      contractType: ContractType.Erc721,
+      chainID: 80001,
+    },
   };
+
+  const eoaAccessCondition: OwnershipConditionInput = {
+    eoa: {
+      address: getAddressFromSigner(),
+      chainID: 80001,
+    },
+  };
+
+  const erc20AccessCondition: OwnershipConditionInput = {
+    token: {
+      contractAddress: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC on Mumbai
+      decimals: 18,
+      amount: '0',
+      chainID: 80001,
+      condition: ScalarOperator.GreaterThan,
+    },
+  };
+
+  const andAccessCondition: AccessConditionOutput = {
+    and: {
+      criteria: [nftAccessCondition, erc20AccessCondition],
+    },
+  };
+
+  const orAccessCondition: AccessConditionOutput = {
+    or: {
+      criteria: [nftAccessCondition, eoaAccessCondition],
+    },
+  };
+
   const { contentURI, encryptedMetadata } = await sdk.gated.encryptMetadata(
     metadata,
-    accessConditions,
+    orAccessCondition,
     uploadIpfs
   );
 
@@ -113,33 +145,13 @@ const createPostEncrypted = async () => {
     profileId,
     contentURI: 'ipfs://' + contentURI.path,
     collectModule: {
-      // feeCollectModule: {
-      //   amount: {
-      //     currency: currencies.enabledModuleCurrencies.map(
-      //       (c: any) => c.address
-      //     )[0],
-      //     value: '0.000001',
-      //   },
-      //   recipient: address,
-      //   referralFee: 10.5,
-      // },
-      // revertCollectModule: true,
       freeCollectModule: { followerOnly: false },
-      // limitedFeeCollectModule: {
-      //   amount: {
-      //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
-      //     value: '2',
-      //   },
-      //   collectLimit: '20000',
-      //   recipient: '0x3A5bd1E37b099aE3386D13947b6a90d97675e5e3',
-      //   referralFee: 0,
-      // },
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
     },
     gated: {
-      nft: accessConditions,
+      ...orAccessCondition,
       encryptedSymmetricKey:
         encryptedMetadata.encryptionParams.providerSpecificParams.encryptionKey,
     },
