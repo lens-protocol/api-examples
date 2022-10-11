@@ -148,15 +148,7 @@ fragment MetadataOutputFields on MetadataOutput {
         external_url
         image
         media {
-            original {
-                ...MediaFields
-            }
-            small {
-                ...MediaFields
-            }
-            medium {
-                ...MediaFields
-            }
+            ...EncryptedMediaSetFields
         }
     }
   }
@@ -488,4 +480,23 @@ fragment OrConditionFields on OrConditionOutput {
   criteria {
     ...OwnershipConditionFields
   }
+}
+
+fragment EncryptedMediaFields on EncryptedMedia {
+  url
+  width
+  height
+  mimeType
+}
+
+fragment EncryptedMediaSetFields on EncryptedMediaSet {
+   original {
+       ...EncryptedMediaFields
+   }
+   small {
+       ...EncryptedMediaFields
+   }
+   medium {
+       ...EncryptedMediaFields
+   }
 }
