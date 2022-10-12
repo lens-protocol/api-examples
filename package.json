@@ -66,7 +66,7 @@
     "revenue:publication-revenue": "env-cmd -f .env ts-node ./src/revenue/publication-revenue",
     "search:search-profiles": "env-cmd -f .env ts-node ./src/search/search-profiles",
     "search:search-publications": "env-cmd -f .env ts-node ./src/search/search-publications",
-    "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline"
+    "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed"
   },
   "authors": [
     "joshstevens19@hotmail.co.uk",

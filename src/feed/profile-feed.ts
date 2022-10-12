@@ -2,36 +2,36 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { TimelineDocument, TimelineRequest } from '../graphql/generated';
+import { FeedRequest, ProfileFeedDocument } from '../graphql/generated';
 
-const getTimelineRequest = async (request: TimelineRequest) => {
+const getProfileFeedRequest = async (request: FeedRequest) => {
   const result = await apolloClient.query({
-    query: TimelineDocument,
+    query: ProfileFeedDocument,
     variables: {
       request,
     },
   });
 
-  return result.data.timeline;
+  return result.data.feed;
 };
 
-export const timeline = async () => {
+export const profileFeed = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
   const address = getAddressFromSigner();
-  console.log('timeline: address', address);
+  console.log('profile feed: address', address);
 
   await login(address);
 
-  const result = await getTimelineRequest({ profileId });
-  console.log('ping: result', result);
+  const result = await getProfileFeedRequest({ profileId, limit: 50 });
+  console.log('profile feed: result', result);
 
   return result;
 };
 
 (async () => {
-  await timeline();
+  await profileFeed();
 })();
