@@ -1,5 +1,5 @@
 // @ts-ignore
-import { LensEnvironment, LensGatedSDK, LensNetwork } from '@lens/sdk-gated/server';
+import { LensGatedSDK, LensEnvironment } from '@lens-protocol/sdk-gated/server';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
@@ -17,13 +17,12 @@ import {
   ContractType,
   CreatePostTypedDataDocument,
   CreatePublicPostRequest,
-  OwnershipConditionInput,
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
   ScalarOperator,
 } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { uploadIpfs } from '../ipfs';
+import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
 export const createPostTypedData = async (request: CreatePublicPostRequest) => {
@@ -63,13 +62,13 @@ const createPostEncrypted = async () => {
 
   const metadata: MetadataV2 = {
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TextOnly,
+    mainContentFocus: PublicationMainFocus.Image,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
-    content: 'Content',
+    content: 'followed me and got rugged',
     external_url: null,
-    image: null,
+    image: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
     imageMimeType: null,
     name: 'Name',
     attributes: [],
@@ -77,10 +76,10 @@ const createPostEncrypted = async () => {
     appId: 'api_examples_github',
     media: [
       {
-        type: 'image',
+        type: 'image/png',
         altTag: 'alt tag',
-        cover: 'cover',
-        item: 'http://example.com',
+        cover: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
+        item: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
       },
     ],
     animation_url: null,
@@ -90,11 +89,10 @@ const createPostEncrypted = async () => {
   const sdk = new LensGatedSDK({
     provider: ethersProvider,
     signer: getSigner(),
-    env: LensEnvironment.production,
-    network: LensNetwork.polygon,
+    env: LensEnvironment.Mumbai,
   });
 
-  const nftAccessCondition: OwnershipConditionInput = {
+  const nftAccessCondition: AccessConditionOutput = {
     nft: {
       contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
       contractType: ContractType.Erc721,
@@ -102,14 +100,14 @@ const createPostEncrypted = async () => {
     },
   };
 
-  const eoaAccessCondition: OwnershipConditionInput = {
+  const eoaAccessCondition: AccessConditionOutput = {
     eoa: {
       address: getAddressFromSigner(),
       chainID: 80001,
     },
   };
 
-  const erc20AccessCondition: OwnershipConditionInput = {
+  const erc20AccessCondition: AccessConditionOutput = {
     token: {
       contractAddress: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC on Mumbai
       decimals: 18,
@@ -131,19 +129,37 @@ const createPostEncrypted = async () => {
     },
   };
 
-  const { contentURI, encryptedMetadata } = await sdk.gated.encryptMetadata(
+  const followAccessCondition: AccessConditionOutput = {
+    follow: {
+      profileId: '0x01',
+    },
+  };
+
+  const collectAccessCondition: AccessConditionOutput = {
+    collect: {
+      publisherId: '0x44c1',
+      publicationId: '0x20',
+    },
+  };
+
+  const { contentURI, encryptedMetadata, error } = await sdk.gated.encryptMetadata(
     metadata,
-    orAccessCondition,
-    uploadIpfs
+    PROFILE_ID!,
+    followAccessCondition,
+    uploadIpfsGetPath
   );
 
+  if (error) {
+    console.error(error);
+    return;
+  }
   console.log('create post: ipfs result', contentURI);
   console.log('create post: encryptedMetadata', encryptedMetadata);
 
   // hard coded to make the code example clear
   const createPostRequest: CreatePublicPostRequest = {
     profileId,
-    contentURI: 'ipfs://' + contentURI.path,
+    contentURI: 'ipfs://' + contentURI,
     collectModule: {
       freeCollectModule: { followerOnly: false },
     },
@@ -151,9 +167,9 @@ const createPostEncrypted = async () => {
       followerOnlyReferenceModule: false,
     },
     gated: {
-      ...orAccessCondition,
+      ...followAccessCondition,
       encryptedSymmetricKey:
-        encryptedMetadata.encryptionParams.providerSpecificParams.encryptionKey,
+        encryptedMetadata!.encryptionParams.providerSpecificParams.encryptionKey,
     },
   };
 

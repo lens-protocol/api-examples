@@ -1,11 +1,10 @@
 // @ts-ignore
-import { LensEnvironment, LensNetwork, LensGatedSDK } from '@lens/sdk-gated/server';
+import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated/server';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { ethersProvider, getAddressFromSigner, getSigner } from '../ethers.service';
 import {
   PostCanDecryptArgs,
-  PublicationDocument,
   PublicationEncryptedDocument,
   PublicationQueryRequest,
 } from '../graphql/generated';
@@ -27,22 +26,28 @@ const getPublicationRequest = async (
 
 export const getEncryptedPublication = async () => {
   const result = await getPublicationRequest(
-    { publicationId: '0x44c1-0x17' },
-    { profileId: '0x01' }
+    { publicationId: '0x44c1-0x2e' },
+    { profileId: '0x44c1' }
   );
-  console.log('publication: encrypted', result);
-
-  // instantiate SDK and connect to Lit Network
-  const sdk: LensGatedSDK = new LensGatedSDK({
-    provider: ethersProvider,
-    signer: getSigner(),
-    env: LensEnvironment.production,
-    network: LensNetwork.polygon,
-  });
 
   if (!result) {
-    throw new Error('Publication not found');
+    console.error('publication not found, exiting...');
+    return;
   }
+
+  console.log('publication: encrypted', result);
+  if (!result.canDecrypt.result) {
+    console.log('You cannot decrypt this publication, exiting...');
+    return;
+  }
+
+  // instantiate SDK and connect to Lit Network
+  const sdk = new LensGatedSDK({
+    provider: ethersProvider,
+    signer: getSigner(),
+    env: LensEnvironment.Mumbai,
+  });
+
   const { decrypted: metadata } = await sdk.gated.decryptMetadata(result.metadata);
 
   const decrypted = {

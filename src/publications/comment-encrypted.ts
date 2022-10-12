@@ -1,5 +1,5 @@
 // @ts-ignore
-import { LensEnvironment, LensGatedSDK, LensNetwork } from '@lens/sdk-gated/server';
+import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated/server';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
@@ -13,15 +13,14 @@ import {
   splitSignature,
 } from '../ethers.service';
 import {
-  ContractType,
+  AccessConditionOutput,
   CreateCommentTypedDataDocument,
   CreatePublicCommentRequest,
-  OwnershipConditionInput,
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
 } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { uploadIpfs } from '../ipfs';
+import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
 export const createCommentTypedData = async (request: CreatePublicCommentRequest) => {
@@ -65,7 +64,7 @@ const createCommentEncrypted = async () => {
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
-    content: 'Content',
+    content: 'gated comment',
     external_url: null,
     image: null,
     imageMimeType: null,
@@ -73,14 +72,7 @@ const createCommentEncrypted = async () => {
     attributes: [],
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
-    media: [
-      {
-        type: 'IMAGE',
-        altTag: 'alt tag',
-        cover: 'cover',
-        item: 'http://example.com',
-      },
-    ],
+    media: null,
     animation_url: null,
   };
 
@@ -88,23 +80,25 @@ const createCommentEncrypted = async () => {
   const sdk = new LensGatedSDK({
     provider: ethersProvider,
     signer: getSigner(),
-    env: LensEnvironment.production,
-    network: LensNetwork.polygon,
+    env: LensEnvironment.Mumbai,
   });
 
-  const nftAccessConditions: OwnershipConditionInput = {
-    nft: {
-      contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
-      contractType: ContractType.Erc721,
-      chainID: 80001,
+  const followAccessCondition: AccessConditionOutput = {
+    follow: {
+      profileId: PROFILE_ID,
     },
   };
-  const { contentURI, encryptedMetadata } = await sdk.gated.encryptMetadata(
+  const { contentURI, encryptedMetadata, error } = await sdk.gated.encryptMetadata(
     metadata,
-    nftAccessConditions,
-    uploadIpfs
+    profileId,
+    followAccessCondition,
+    uploadIpfsGetPath
   );
 
+  if (error) {
+    console.error(error);
+    return;
+  }
   console.log('create comment: ipfs result', contentURI);
   console.log('create comment: encryptedMetadata', encryptedMetadata);
 
@@ -112,8 +106,8 @@ const createCommentEncrypted = async () => {
   const createCommentRequest: CreatePublicCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x15-0x01`,
-    contentURI: 'ipfs://' + contentURI.path,
+    publicationId: `0x44c1-0x2f`,
+    contentURI: 'ipfs://' + contentURI,
     collectModule: {
       // timedFeeCollectModule: {
       //   amount: {
@@ -129,7 +123,7 @@ const createCommentEncrypted = async () => {
       followerOnlyReferenceModule: false,
     },
     gated: {
-      ...nftAccessConditions,
+      ...followAccessCondition,
       encryptedSymmetricKey:
         encryptedMetadata.encryptionParams.providerSpecificParams.encryptionKey,
     },
