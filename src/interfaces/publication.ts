@@ -26,7 +26,7 @@ export interface Metadata extends GenericMetadata {
   animation_url?: string;
   locale: string;
   tags?: string[];
-  contentWarning?: PublicationContentWarning[];
+  contentWarning?: PublicationContentWarning;
   mainContentFocus: PublicationMainFocus;
 }
 
