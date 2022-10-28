@@ -68,7 +68,8 @@
     "search:search-profiles": "env-cmd -f .env ts-node ./src/search/search-profiles",
     "search:search-publications": "env-cmd -f .env ts-node ./src/search/search-publications",
     "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline",
-    "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment"
+    "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment",
+    "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed"
   },
   "authors": [
     "joshstevens19@hotmail.co.uk",
