@@ -1,5 +1,5 @@
 import { TypedDataDomain } from '@ethersproject/abstract-signer';
-import { ethers, Signer, utils, Wallet } from 'ethers';
+import { ethers, utils, Wallet } from 'ethers';
 import { MUMBAI_RPC_URL, PK } from './config';
 import { omit } from './helpers';
 
