@@ -1,15 +1,12 @@
 import { TypedDataDomain } from '@ethersproject/abstract-signer';
-import { ethers, utils, Wallet } from 'ethers';
+import { ethers, Signer, utils, Wallet } from 'ethers';
 import { MUMBAI_RPC_URL, PK } from './config';
 import { omit } from './helpers';
 
 export const ethersProvider = new ethers.providers.JsonRpcProvider(MUMBAI_RPC_URL);
 
 export const getSigner = () => {
-  console.log('----__> ', PK);
-  const wallet = new Wallet(PK, ethersProvider);
-  console.log('IS SIGNER : ', wallet._isSigner);
-  return wallet;
+  return new Wallet(PK, ethersProvider);
 };
 
 export const getAddressFromSigner = () => {
