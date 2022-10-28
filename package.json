@@ -55,6 +55,7 @@
     "publications:hide-publication": "env-cmd -f .env ts-node ./src/publications/hide-publication",
     "publications:post-gasless": "env-cmd -f .env ts-node ./src/publications/post-gasless",
     "publications:post": "env-cmd -f .env ts-node ./src/publications/post",
+    "publications:post-attach": "env-cmd -f .env ts-node ./src/publications/post-attach",
     "publications:profile-publications-for-sale": "env-cmd -f .env ts-node ./src/publications/profile-publications-for-sale",
     "publications:who-collected-publication": "env-cmd -f .env ts-node ./src/publications/who-collected-publication",
     "reaction:add": "env-cmd -f .env ts-node ./src/reaction/add-reaction",
@@ -66,15 +67,17 @@
     "revenue:publication-revenue": "env-cmd -f .env ts-node ./src/revenue/publication-revenue",
     "search:search-profiles": "env-cmd -f .env ts-node ./src/search/search-profiles",
     "search:search-publications": "env-cmd -f .env ts-node ./src/search/search-publications",
-    "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline"
+    "timeline:user-timeline": "env-cmd -f .env ts-node ./src/timeline/user-timeline",
+    "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment"
   },
   "authors": [
     "joshstevens19@hotmail.co.uk",
-    "zannis@aave.com"
+    "zannis@aave.com",
+    "daniel@aave.com"
   ],
   "dependencies": {
-    "@ethersproject/abstract-signer": "^5.7.0",
     "@apollo/client": "^3.5.10",
+    "@ethersproject/abstract-signer": "^5.7.0",
     "@graphql-codegen/fragment-matcher": "^3.3.1",
     "axios": "^0.26.1",
     "cross-fetch": "^3.1.5",
@@ -82,6 +85,7 @@
     "graphql": "^16.3.0",
     "ipfs-http-client": "^56.0.1",
     "omit-deep": "^0.3.0",
+    "typestub-ipfs-only-hash": "^4.0.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

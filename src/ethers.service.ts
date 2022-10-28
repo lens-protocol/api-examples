@@ -6,7 +6,10 @@ import { omit } from './helpers';
 export const ethersProvider = new ethers.providers.JsonRpcProvider(MUMBAI_RPC_URL);
 
 export const getSigner = () => {
-  return new Wallet(PK, ethersProvider);
+  console.log('----__> ', PK);
+  const wallet = new Wallet(PK, ethersProvider);
+  console.log('IS SIGNER : ', wallet._isSigner);
+  return wallet;
 };
 
 export const getAddressFromSigner = () => {

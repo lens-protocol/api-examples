@@ -24,6 +24,7 @@ export type Scalars = {
   FollowModuleData: any;
   Handle: any;
   HandleClaimIdScalar: any;
+  IfpsCid: any;
   InternalPublicationId: any;
   Jwt: any;
   LimitScalar: any;
@@ -1303,7 +1304,7 @@ export type Media = {
   /** The alt tags for accessibility */
   altTag?: Maybe<Scalars['String']>;
   /** The cover for any video or audio you attached */
-  cover?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['Url']>;
   /** Height - will always be null on the public API */
   height?: Maybe<Scalars['Int']>;
   /** The image/audio/video mime type for the publication */
@@ -1314,6 +1315,19 @@ export type Media = {
   url: Scalars['Url'];
   /** Width - will always be null on the public API */
   width?: Maybe<Scalars['Int']>;
+};
+
+/** Media object output */
+export type MediaOutput = {
+  __typename?: 'MediaOutput';
+  /** The alt tags for accessibility */
+  altTag?: Maybe<Scalars['String']>;
+  /** The cover for any video or audio you attached */
+  cover?: Maybe<Scalars['Url']>;
+  item: Scalars['Url'];
+  source?: Maybe<PublicationMediaSource>;
+  /** This is the mime type of media */
+  type?: Maybe<Scalars['MimeType']>;
 };
 
 /** The Media Set */
@@ -1466,6 +1480,7 @@ export type Mutation = {
   authenticate: AuthenticationResult;
   broadcast: RelayResult;
   claim: RelayResult;
+  createAttachMediaData: PublicMediaResults;
   createBurnProfileTypedData: CreateBurnProfileBroadcastItemResult;
   createCollectTypedData: CreateCollectBroadcastItemResult;
   createCommentTypedData: CreateCommentBroadcastItemResult;
@@ -1516,6 +1531,11 @@ export type MutationBroadcastArgs = {
 
 export type MutationClaimArgs = {
   request: ClaimHandleRequest;
+};
+
+
+export type MutationCreateAttachMediaDataArgs = {
+  request: PublicMediaRequest;
 };
 
 
@@ -2218,6 +2238,26 @@ export enum ProxyActionStatusTypes {
   Transferring = 'TRANSFERRING'
 }
 
+export type PublicMediaRequest = {
+  /** The alt tags for accessibility */
+  altTag?: InputMaybe<Scalars['String']>;
+  /** The cover for any video or audio you attached */
+  cover?: InputMaybe<Scalars['Url']>;
+  /** Pre calculated cid of the file to push */
+  itemCid: Scalars['IfpsCid'];
+  /** This is the mime type of media */
+  type?: InputMaybe<Scalars['MimeType']>;
+};
+
+/** The response to upload the attached file */
+export type PublicMediaResults = {
+  __typename?: 'PublicMediaResults';
+  /** ipfs uri to add on the metadata */
+  media: MediaOutput;
+  /** Signed url to push the file */
+  signedUrl: Scalars['String'];
+};
+
 export type Publication = Comment | Mirror | Post;
 
 /** The publication content warning */
@@ -2238,6 +2278,11 @@ export enum PublicationMainFocus {
   Link = 'LINK',
   TextOnly = 'TEXT_ONLY',
   Video = 'VIDEO'
+}
+
+/** The source of the media */
+export enum PublicationMediaSource {
+  Lens = 'LENS'
 }
 
 /** Publication metadata content waring filters */
@@ -2267,8 +2312,9 @@ export type PublicationMetadataMediaInput = {
   /** The alt tags for accessibility */
   altTag?: InputMaybe<Scalars['String']>;
   /** The cover for any video or audio you attached */
-  cover?: InputMaybe<Scalars['String']>;
+  cover?: InputMaybe<Scalars['Url']>;
   item: Scalars['Url'];
+  source?: InputMaybe<PublicationMediaSource>;
   /** This is the mime type of media */
   type?: InputMaybe<Scalars['MimeType']>;
 };
@@ -3245,6 +3291,13 @@ export type ApprovedModuleAllowanceAmountQueryVariables = Exact<{
 
 export type ApprovedModuleAllowanceAmountQuery = { __typename?: 'Query', approvedModuleAllowanceAmount: Array<{ __typename?: 'ApprovedAllowanceAmount', currency: any, module: string, contractAddress: any, allowance: string }> };
 
+export type CreateAttachMediaDataMutationVariables = Exact<{
+  request: PublicMediaRequest;
+}>;
+
+
+export type CreateAttachMediaDataMutation = { __typename?: 'Mutation', createAttachMediaData: { __typename?: 'PublicMediaResults', signedUrl: string, media: { __typename?: 'MediaOutput', item: any, type?: any | null, cover?: any | null, source?: PublicationMediaSource | null, altTag?: string | null } } };
+
 export type AuthenticateMutationVariables = Exact<{
   request: SignedAuthChallenge;
 }>;
@@ -3767,6 +3820,7 @@ export const NewReactionNotificationFieldsFragmentDoc = {"kind":"Document","defi
 export const AddReactionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addReaction"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ReactionRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"addReaction"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<AddReactionMutation, AddReactionMutationVariables>;
 export const GenerateModuleCurrencyApprovalDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"generateModuleCurrencyApprovalData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"GenerateModuleCurrencyApprovalDataRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"generateModuleCurrencyApprovalData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"to"}},{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"data"}}]}}]}}]} as unknown as DocumentNode<GenerateModuleCurrencyApprovalDataQuery, GenerateModuleCurrencyApprovalDataQueryVariables>;
 export const ApprovedModuleAllowanceAmountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"approvedModuleAllowanceAmount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ApprovedModuleAllowanceAmountRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approvedModuleAllowanceAmount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currency"}},{"kind":"Field","name":{"kind":"Name","value":"module"}},{"kind":"Field","name":{"kind":"Name","value":"contractAddress"}},{"kind":"Field","name":{"kind":"Name","value":"allowance"}}]}}]}}]} as unknown as DocumentNode<ApprovedModuleAllowanceAmountQuery, ApprovedModuleAllowanceAmountQueryVariables>;
+export const CreateAttachMediaDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createAttachMediaData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PublicMediaRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createAttachMediaData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"signedUrl"}},{"kind":"Field","name":{"kind":"Name","value":"media"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"item"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}},{"kind":"Field","name":{"kind":"Name","value":"source"}},{"kind":"Field","name":{"kind":"Name","value":"altTag"}}]}}]}}]}}]} as unknown as DocumentNode<CreateAttachMediaDataMutation, CreateAttachMediaDataMutationVariables>;
 export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignedAuthChallenge"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
 export const BroadcastDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Broadcast"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcast"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayerResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastMutation, BroadcastMutationVariables>;
 export const CreateBurnProfileTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"createBurnProfileTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BurnProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBurnProfileTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"BurnWithSig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"tokenId"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateBurnProfileTypedDataMutation, CreateBurnProfileTypedDataMutationVariables>;

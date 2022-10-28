@@ -1,3 +1,4 @@
+import { MediaOutput } from '../graphql/generated';
 import { GenericMetadata, MetadataDisplayType } from './generic';
 
 interface MetadataMedia {
@@ -22,7 +23,7 @@ export interface Metadata extends GenericMetadata {
   attributes: MetadataAttribute[];
   image?: string | null;
   imageMimeType?: string | null;
-  media?: MetadataMedia[];
+  media?: MediaOutput[];
   animation_url?: string;
   locale: string;
   tags?: string[];
