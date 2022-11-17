@@ -70,7 +70,7 @@ const setProfileMetadata = async () => {
   // hard coded to make the code example clear
   const createProfileMetadataRequest = {
     profileId,
-    metadata: 'ipfs://' + ipfsResult.path,
+    metadata: `ipfs://${ipfsResult.path}`,
   };
 
   const signedResult = await signCreateSetProfileMetadataTypedData(createProfileMetadataRequest);

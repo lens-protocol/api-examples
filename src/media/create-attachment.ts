@@ -27,7 +27,7 @@ const uploadFile = async (presignedUrl: string, file: Buffer) => {
 
 export const createMediaAttachment = async () => {
   const address = getAddressFromSigner();
-  console.log('users nfts: address', address);
+  console.log('create media attachment: address', address);
   await login(address);
   const file = fs.readFileSync(path.join(__dirname, 'file/video.mp4'));
 
