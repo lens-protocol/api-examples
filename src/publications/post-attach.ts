@@ -73,7 +73,7 @@ export const createPostGasless = async () => {
   const mediaFile = await createMediaAttachment();
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
+    mainContentFocus: PublicationMainFocus.VIDEO,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
