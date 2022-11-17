@@ -67,7 +67,7 @@ const createComment = async () => {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
     publicationId: `0x0f-0x01`,
-    contentURI: 'ipfs://' + ipfsResult.path,
+    contentURI: `ipfs://${ipfsResult.path}`,
     collectModule: {
       // timedFeeCollectModule: {
       //   amount: {

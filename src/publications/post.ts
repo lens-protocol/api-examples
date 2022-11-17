@@ -65,7 +65,7 @@ const createPost = async () => {
   // hard coded to make the code example clear
   const createPostRequest = {
     profileId,
-    contentURI: 'ipfs://' + ipfsResult.path,
+    contentURI: `ipfs://${ipfsResult.path}`,
     collectModule: {
       // feeCollectModule: {
       //   amount: {
