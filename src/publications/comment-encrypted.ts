@@ -1,5 +1,5 @@
 // @ts-ignore
-import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated/server';
+import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
@@ -77,7 +77,7 @@ const createCommentEncrypted = async () => {
   };
 
   // instantiate SDK and connect to Lit Network
-  const sdk = new LensGatedSDK({
+  const sdk = await LensGatedSDK.create({
     provider: ethersProvider,
     signer: getSigner(),
     env: LensEnvironment.Mumbai,

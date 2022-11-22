@@ -434,7 +434,6 @@ fragment Erc20OwnershipFields on Erc20OwnershipOutput {
 
 fragment EoaOwnershipFields on EoaOwnershipOutput {
   address
-  chainID
 }
 
 fragment NftOwnershipFields on NftOwnershipOutput {
@@ -454,7 +453,7 @@ fragment FollowConditionFields on FollowConditionOutput {
 
 fragment CollectConditionFields on CollectConditionOutput {
   publicationId
-  publisherId
+  thisPublication
 }
 
 fragment AndConditionFields on AndConditionOutput {

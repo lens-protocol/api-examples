@@ -1,5 +1,4 @@
-// @ts-ignore
-import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated/server';
+import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { ethersProvider, getAddressFromSigner, getSigner } from '../ethers.service';
@@ -26,7 +25,7 @@ const getPublicationRequest = async (
 
 export const getEncryptedPublication = async () => {
   const result = await getPublicationRequest(
-    { publicationId: '0x44c1-0x2e' },
+    { publicationId: '0x44c1-0x31' },
     { profileId: '0x44c1' }
   );
 
@@ -42,13 +41,13 @@ export const getEncryptedPublication = async () => {
   }
 
   // instantiate SDK and connect to Lit Network
-  const sdk = new LensGatedSDK({
+  const sdk = await LensGatedSDK.create({
     provider: ethersProvider,
     signer: getSigner(),
     env: LensEnvironment.Mumbai,
   });
 
-  const { decrypted: metadata } = await sdk.gated.decryptMetadata(result.metadata);
+  const { decrypted: metadata } = await sdk.gated.decryptMetadata(result.metadata as any);
 
   const decrypted = {
     ...result,

@@ -1,5 +1,4 @@
-// @ts-ignore
-import { LensGatedSDK, LensEnvironment } from '@lens-protocol/sdk-gated/server';
+import { LensGatedSDK, LensEnvironment } from '@lens-protocol/sdk-gated';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
@@ -86,7 +85,7 @@ const createPostEncrypted = async () => {
   };
 
   // instantiate SDK and connect to Lit Network
-  const sdk = new LensGatedSDK({
+  const sdk = await LensGatedSDK.create({
     provider: ethersProvider,
     signer: getSigner(),
     env: LensEnvironment.Mumbai,
@@ -103,7 +102,6 @@ const createPostEncrypted = async () => {
   const eoaAccessCondition: AccessConditionOutput = {
     eoa: {
       address: getAddressFromSigner(),
-      chainID: 80001,
     },
   };
 
@@ -137,8 +135,8 @@ const createPostEncrypted = async () => {
 
   const collectAccessCondition: AccessConditionOutput = {
     collect: {
-      publisherId: '0x44c1',
-      publicationId: '0x20',
+      publicationId: '0x44c1-0x20',
+      // thisPublication: true
     },
   };
 
