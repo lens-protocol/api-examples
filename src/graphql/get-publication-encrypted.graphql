@@ -1,0 +1,23 @@
+query publicationEncrypted($request: PublicationQueryRequest!, $profileId: ProfileId!) {
+  publication(request: $request) {
+    __typename
+    ... on Post {
+      ...PostFields
+      canDecrypt(profileId: $profileId) {
+        result
+      }
+    }
+    ... on Comment {
+      ...CommentFields
+      canDecrypt(profileId: $profileId) {
+        result
+      }
+    }
+    ... on Mirror {
+      ...MirrorFields
+      canDecrypt(profileId: $profileId) {
+        result
+      }
+    }
+  }
+}

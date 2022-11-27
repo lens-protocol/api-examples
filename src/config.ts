@@ -31,8 +31,9 @@ const getParam = (name: string) => {
   return param;
 };
 
-export const argsBespokeInit = () => {
-  return process.argv.find((c) => c === '--init') !== undefined;
+export const explicitStart = (filename: string) => {
+  const scriptName = path.basename(process.argv[1]);
+  return path.basename(filename).includes(scriptName);
 };
 
 export const PK = getParamOrExit('PK');

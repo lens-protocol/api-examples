@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { argsBespokeInit } from '../config';
+import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { EnabledModuleCurrenciesDocument } from '../graphql/generated';
 
@@ -26,7 +26,7 @@ export const enabledCurrencies = async () => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) { 
     await enabledCurrencies();
   }
 })();

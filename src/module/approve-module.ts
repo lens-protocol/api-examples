@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { argsBespokeInit } from '../config';
+import { explicitStart } from '../config';
 import { getAddressFromSigner, sendTx } from '../ethers.service';
 import {
   CollectModules,
@@ -46,7 +46,7 @@ export const approveModule = async () => {
 };
 
 (async () => {
-  if (argsBespokeInit()) {
+  if (explicitStart(__filename)) {
     await approveModule();
   }
 })();
