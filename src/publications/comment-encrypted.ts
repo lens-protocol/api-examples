@@ -1,4 +1,3 @@
-// @ts-ignore
 import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
@@ -95,7 +94,7 @@ const createCommentEncrypted = async () => {
     uploadIpfsGetPath
   );
 
-  if (error) {
+  if (error || !encryptedMetadata) {
     console.error(error);
     return;
   }

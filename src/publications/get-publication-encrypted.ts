@@ -1,7 +1,6 @@
 import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
-import { ethersProvider, getAddressFromSigner, getSigner } from '../ethers.service';
+import { ethersProvider, getSigner } from '../ethers.service';
 import {
   PostCanDecryptArgs,
   PublicationEncryptedDocument,
