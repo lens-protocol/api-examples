@@ -28,7 +28,7 @@ export const collect = async () => {
   // remember you must make sure you approved allowance of
   // this currency on the module
   const collectRequest = {
-    publicationId: '0x06-0x01',
+    publicationId: '0x44c1-0x3d',
   };
 
   const result = await createCollectTypedData(collectRequest);

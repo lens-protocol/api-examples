@@ -78,7 +78,7 @@ const createPost = async () => {
       //   referralFee: 10.5,
       // },
       // revertCollectModule: true,
-      freeCollectModule: { followerOnly: true },
+      // freeCollectModule: { followerOnly: true },
       // limitedFeeCollectModule: {
       //   amount: {
       //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
@@ -88,26 +88,26 @@ const createPost = async () => {
       //   recipient: '0x3A5bd1E37b099aE3386D13947b6a90d97675e5e3',
       //   referralFee: 0,
       // },
-      // multirecipientFeeCollectModule: {
-      //   amount: {
-      //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
-      //     value: '0.001',
-      //   },
-      //   collectLimit: 2,
-      //   endTimestamp: '2025-01-01T00:00:00.000Z',
-      //   referralFee: 0,
-      //   followerOnly: false,
-      //   recipients: [
-      //     {
-      //       recipient: address,
-      //       split: 0.5,
-      //     },
-      //     {
-      //       recipient: '0xacab2c2Cdde3a5839b91BABEfFd5fd5128590d6f',
-      //       split: 0.5,
-      //     },
-      //   ],
-      // },
+      multirecipientFeeCollectModule: {
+        amount: {
+          currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+          value: '0.001',
+        },
+        collectLimit: 2,
+        endTimestamp: '2025-01-01T00:00:00.000Z',
+        referralFee: 0,
+        followerOnly: false,
+        recipients: [
+          {
+            recipient: address,
+            split: 50,
+          },
+          {
+            recipient: '0xacab2c2Cdde3a5839b91BABEfFd5fd5128590d6f',
+            split: 50,
+          },
+        ],
+      },
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
