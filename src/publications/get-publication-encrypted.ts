@@ -24,7 +24,7 @@ const getPublicationRequest = async (
 
 export const getEncryptedPublication = async () => {
   const result = await getPublicationRequest(
-    { publicationId: '0x44c1-0x31' },
+    { publicationId: '0x44c1-0x3e' },
     { profileId: '0x44c1' }
   );
 
