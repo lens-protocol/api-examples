@@ -63,7 +63,7 @@ const createPost = async () => {
   console.log('create post: ipfs result', ipfsResult);
 
   // hard coded to make the code example clear
-  const createPostRequest = {
+  const createPostRequest: CreatePublicPostRequest = {
     profileId,
     contentURI: `ipfs://${ipfsResult.path}`,
     collectModule: {

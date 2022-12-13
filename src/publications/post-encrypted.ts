@@ -65,7 +65,7 @@ const createPostEncrypted = async () => {
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
-    content: 'followed me and got rugged',
+    content: 'gated!',
     external_url: null,
     image: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
     imageMimeType: null,
@@ -109,9 +109,9 @@ const createPostEncrypted = async () => {
     token: {
       contractAddress: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC on Mumbai
       decimals: 18,
-      amount: '0',
+      amount: '0.0001',
       chainID: 80001,
-      condition: ScalarOperator.GreaterThan,
+      condition: ScalarOperator.GreaterThanOrEqual,
     },
   };
 
