@@ -1,5 +1,4 @@
-import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
-import { BigNumber, utils } from 'ethers';
+import { EncryptedMetadata, LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
@@ -18,9 +17,12 @@ import {
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
 } from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
+import { pollAndIndexComment } from './comment';
+import { followAccessCondition } from './post-encrypted';
+
+const prefix = 'create gated comment';
 
 export const createCommentTypedData = async (request: CreatePublicCommentRequest) => {
   const result = await apolloClient.mutate({
@@ -31,6 +33,71 @@ export const createCommentTypedData = async (request: CreatePublicCommentRequest
   });
 
   return result.data!.createCommentTypedData;
+};
+
+export const createGatedPublicCommentRequest = async (
+  profileId: string,
+  publicationId: string, // id of the publication you want to comment on
+  metadata: MetadataV2,
+  condition: AccessConditionOutput
+): Promise<{
+  request: CreatePublicCommentRequest;
+  contentURI: string;
+  encryptedMetadata: EncryptedMetadata;
+}> => {
+  // instantiate SDK and connect to Lit Network
+  const sdk = await LensGatedSDK.create({
+    provider: ethersProvider,
+    signer: getSigner(),
+    env: LensEnvironment.Mumbai,
+  });
+
+  const { contentURI, encryptedMetadata, error } = await sdk.gated.encryptMetadata(
+    metadata,
+    profileId,
+    condition,
+    uploadIpfsGetPath
+  );
+
+  await sdk.disconnect();
+
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+  console.log(`${prefix}: ipfs result`, contentURI);
+  console.log(`${prefix}: encryptedMetadata`, encryptedMetadata);
+
+  // hard coded to make the code example clear
+  return {
+    request: {
+      profileId,
+      publicationId,
+      contentURI: 'ipfs://' + contentURI,
+      collectModule: {
+        // timedFeeCollectModule: {
+        //   amount: {
+        //     currency: currencies.enabledModuleCurrencies.map((c: any) => c.address)[0],
+        //     value: '0.01',
+        //   },
+        //   recipient: address,
+        //   referralFee: 10.5,
+        // },
+        revertCollectModule: true,
+      },
+      referenceModule: {
+        followerOnlyReferenceModule: false,
+      },
+      gated: {
+        ...encryptedMetadata!.encryptionParams.accessCondition,
+        encryptedSymmetricKey:
+          encryptedMetadata!.encryptionParams.providerSpecificParams.encryptionKey,
+      },
+    },
+    contentURI: contentURI!,
+    encryptedMetadata: encryptedMetadata!,
+  };
 };
 
 export const signCreateCommentTypedData = async (request: CreatePublicCommentRequest) => {
@@ -48,6 +115,7 @@ export const signCreateCommentTypedData = async (request: CreatePublicCommentReq
 
 const createCommentEncrypted = async () => {
   const profileId = PROFILE_ID;
+  const publicationId = '0x0f-0x01';
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
@@ -75,61 +143,15 @@ const createCommentEncrypted = async () => {
     animation_url: null,
   };
 
-  // instantiate SDK and connect to Lit Network
-  const sdk = await LensGatedSDK.create({
-    provider: ethersProvider,
-    signer: getSigner(),
-    env: LensEnvironment.Mumbai,
-  });
-
-  const followAccessCondition: AccessConditionOutput = {
-    follow: {
-      profileId: PROFILE_ID,
-    },
-  };
-  const { contentURI, encryptedMetadata, error } = await sdk.gated.encryptMetadata(
-    metadata,
+  const { request } = await createGatedPublicCommentRequest(
     profileId,
-    followAccessCondition,
-    uploadIpfsGetPath
+    publicationId,
+    metadata,
+    followAccessCondition(profileId)
   );
 
-  if (error || !encryptedMetadata) {
-    console.error(error);
-    return;
-  }
-  console.log('create comment: ipfs result', contentURI);
-  console.log('create comment: encryptedMetadata', encryptedMetadata);
-
-  // hard coded to make the code example clear
-  const createCommentRequest: CreatePublicCommentRequest = {
-    profileId,
-    // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x44c1-0x2f`,
-    contentURI: 'ipfs://' + contentURI,
-    collectModule: {
-      // timedFeeCollectModule: {
-      //   amount: {
-      //     currency: currencies.enabledModuleCurrencies.map((c: any) => c.address)[0],
-      //     value: '0.01',
-      //   },
-      //   recipient: address,
-      //   referralFee: 10.5,
-      // },
-      revertCollectModule: true,
-    },
-    referenceModule: {
-      followerOnlyReferenceModule: false,
-    },
-    gated: {
-      ...followAccessCondition,
-      encryptedSymmetricKey:
-        encryptedMetadata.encryptionParams.providerSpecificParams.encryptionKey,
-    },
-  };
-
-  const signedResult = await signCreateCommentTypedData(createCommentRequest);
-  console.log('create comment: signedResult', signedResult);
+  const signedResult = await signCreateCommentTypedData(request);
+  console.log(`${prefix}: signedResult`, signedResult);
 
   const typedData = signedResult.result.typedData;
 
@@ -155,40 +177,9 @@ const createCommentEncrypted = async () => {
     },
     { gasLimit: 500000 }
   );
-  console.log('create comment: tx hash', tx.hash);
+  console.log(`${prefix}: tx hash`, tx.hash);
 
-  console.log('create comment: poll until indexed');
-  const indexedResult = await pollUntilIndexed({
-    txHash: tx.hash,
-  });
-
-  console.log('create comment: profile has been indexed');
-
-  const logs = indexedResult.txReceipt!.logs;
-
-  console.log('create comment: logs', logs);
-
-  const topicId = utils.id(
-    'CommentCreated(uint256,uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
-
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create comment: created log', profileCreatedLog);
-
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create comment: created event logs', profileCreatedEventLog);
-
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
-
-  console.log(
-    'create comment: contract publication id',
-    BigNumber.from(publicationId).toHexString()
-  );
-  console.log(
-    'create comment: internal publication id',
-    profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
+  await pollAndIndexComment(tx.hash, profileId, prefix);
 };
 
 (async () => {

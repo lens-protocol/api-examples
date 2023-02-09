@@ -1,18 +1,17 @@
-import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { broadcastRequest } from '../broadcast/broadcast-follow-example';
-import { PROFILE_ID } from '../config';
+import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { CreatePostViaDispatcherDocument, CreatePublicPostRequest } from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { profile } from '../profile/get-profile';
-import { signCreatePostTypedData } from './post';
+import { pollAndIndexPost, signCreatePostTypedData } from './post';
 
-const createPostViaDispatcherRequest = async (request: CreatePublicPostRequest) => {
+const prefix = 'create post gasless';
+export const createPostViaDispatcherRequest = async (request: CreatePublicPostRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreatePostViaDispatcherDocument,
     variables: {
@@ -23,7 +22,7 @@ const createPostViaDispatcherRequest = async (request: CreatePublicPostRequest) 
   return result.data!.createPostViaDispatcher;
 };
 
-const post = async (createPostRequest: CreatePublicPostRequest) => {
+export const postGasless = async (createPostRequest: CreatePublicPostRequest) => {
   const profileResult = await profile({ profileId: PROFILE_ID });
   if (!profileResult) {
     throw new Error('Could not find profile');
@@ -66,7 +65,7 @@ export const createPostGasless = async () => {
   }
 
   const address = getAddressFromSigner();
-  console.log('create post: address', address);
+  console.log(`${prefix}: address`, address);
 
   await login(address);
 
@@ -85,7 +84,7 @@ export const createPostGasless = async () => {
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
   });
-  console.log('create post: ipfs result', ipfsResult);
+  console.log(`${prefix}: ipfs result`, ipfsResult);
 
   // hard coded to make the code example clear
   const createPostRequest = {
@@ -119,40 +118,14 @@ export const createPostGasless = async () => {
     },
   };
 
-  const result = await post(createPostRequest);
-  console.log('create post gasless', result);
+  const result = await postGasless(createPostRequest);
+  console.log(prefix, result);
 
-  console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: result.txId });
-
-  console.log('create post: profile has been indexed', result);
-
-  const logs = indexedResult.txReceipt!.logs;
-
-  console.log('create post: logs', logs);
-
-  const topicId = utils.id(
-    'PostCreated(uint256,uint256,string,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
-
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create post: created log', profileCreatedLog);
-
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create post: created event logs', profileCreatedEventLog);
-
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
-
-  console.log('create post: contract publication id', BigNumber.from(publicationId).toHexString());
-  console.log(
-    'create post: internal publication id',
-    profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
-
-  return result;
+  await pollAndIndexPost(result.txHash, profileId, prefix);
 };
 
 (async () => {
-  await createPostGasless();
+  if (explicitStart(__filename)) {
+    await createPostGasless();
+  }
 })();

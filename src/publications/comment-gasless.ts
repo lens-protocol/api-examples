@@ -1,4 +1,3 @@
-import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
@@ -9,13 +8,14 @@ import {
   CreateCommentViaDispatcherDocument,
   CreatePublicCommentRequest,
 } from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { profile } from '../profile/get-profile';
-import { signCreateCommentTypedData } from './comment';
+import { pollAndIndexComment, signCreateCommentTypedData } from './comment';
 
-const createCommentViaDispatcherRequest = async (request: CreatePublicCommentRequest) => {
+const prefix = 'create comment gasless';
+
+export const createCommentViaDispatcherRequest = async (request: CreatePublicCommentRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreateCommentViaDispatcherDocument,
     variables: {
@@ -26,7 +26,7 @@ const createCommentViaDispatcherRequest = async (request: CreatePublicCommentReq
   return result.data!.createCommentViaDispatcher;
 };
 
-const comment = async (createCommentRequest: CreatePublicCommentRequest) => {
+export const commentGasless = async (createCommentRequest: CreatePublicCommentRequest) => {
   const profileResult = await profile({ profileId: PROFILE_ID });
   if (!profileResult) {
     throw new Error('Could not find profile');
@@ -112,39 +112,10 @@ const createCommentGasless = async () => {
     },
   };
 
-  const result = await comment(createCommentRequest);
+  const result = await commentGasless(createCommentRequest);
   console.log('create comment gasless', result);
 
-  console.log('create comment: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: result.txId });
-
-  console.log('create comment: profile has been indexed');
-
-  const logs = indexedResult.txReceipt!.logs;
-
-  console.log('create comment: logs', logs);
-
-  const topicId = utils.id(
-    'CommentCreated(uint256,uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
-
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create comment: created log', profileCreatedLog);
-
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create comment: created event logs', profileCreatedEventLog);
-
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
-
-  console.log(
-    'create comment: contract publication id',
-    BigNumber.from(publicationId).toHexString()
-  );
-  console.log(
-    'create comment: internal publication id',
-    profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
+  await pollAndIndexComment(result.txHash, profileId, prefix);
 };
 
 (async () => {

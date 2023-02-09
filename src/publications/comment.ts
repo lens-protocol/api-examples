@@ -10,6 +10,7 @@ import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
+const prefix = 'create comment';
 export const createCommentTypedData = async (request: CreatePublicCommentRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreateCommentTypedDataDocument,
@@ -34,6 +35,36 @@ export const signCreateCommentTypedData = async (request: CreatePublicCommentReq
   return { result, signature };
 };
 
+export const pollAndIndexComment = async (txHash: string, profileId: string, prefix: string) => {
+  console.log(`${prefix}: poll until indexed`);
+  const indexedResult = await pollUntilIndexed({ txHash });
+
+  console.log(`${prefix}: profile has been indexed`);
+
+  const logs = indexedResult.txReceipt!.logs;
+
+  console.log(`${prefix}: logs`, logs);
+
+  const topicId = utils.id(
+    'CommentCreated(uint256,uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)'
+  );
+  console.log('topicid we care about', topicId);
+
+  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
+  console.log(`${prefix}: created log`, profileCreatedLog);
+
+  let profileCreatedEventLog = profileCreatedLog!.topics;
+  console.log(`${prefix}: created event logs`, profileCreatedEventLog);
+
+  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
+
+  console.log(`${prefix}: contract publication id`, BigNumber.from(publicationId).toHexString());
+  console.log(
+    `${prefix}: internal publication id`,
+    profileId + '-' + BigNumber.from(publicationId).toHexString()
+  );
+};
+
 const createComment = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
@@ -41,7 +72,7 @@ const createComment = async () => {
   }
 
   const address = getAddressFromSigner();
-  console.log('create comment: address', address);
+  console.log(`${prefix}: address`, address);
 
   await login(address);
 
@@ -60,10 +91,10 @@ const createComment = async () => {
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
   });
-  console.log('create comment: ipfs result', ipfsResult);
+  console.log(`${prefix}: ipfs result`, ipfsResult);
 
   // hard coded to make the code example clear
-  const createCommentRequest = {
+  const createCommentRequest: CreatePublicCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
     publicationId: `0x0f-0x01`,
@@ -85,7 +116,7 @@ const createComment = async () => {
   };
 
   const signedResult = await signCreateCommentTypedData(createCommentRequest);
-  console.log('create comment: signedResult', signedResult);
+  console.log(`${prefix}: signedResult`, signedResult);
 
   const typedData = signedResult.result.typedData;
 
@@ -111,38 +142,9 @@ const createComment = async () => {
     },
     { gasLimit: 500000 }
   );
-  console.log('create comment: tx hash', tx.hash);
+  console.log(`${prefix}: tx hash`, tx.hash);
 
-  console.log('create comment: poll until indexed');
-  const indexedResult = await pollUntilIndexed(tx.hash);
-
-  console.log('create comment: profile has been indexed');
-
-  const logs = indexedResult.txReceipt!.logs;
-
-  console.log('create comment: logs', logs);
-
-  const topicId = utils.id(
-    'CommentCreated(uint256,uint256,string,uint256,uint256,bytes,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
-
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create comment: created log', profileCreatedLog);
-
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create comment: created event logs', profileCreatedEventLog);
-
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
-
-  console.log(
-    'create comment: contract publication id',
-    BigNumber.from(publicationId).toHexString()
-  );
-  console.log(
-    'create comment: internal publication id',
-    profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
+  await pollAndIndexComment(tx.hash, profileId, prefix);
 };
 
 (async () => {

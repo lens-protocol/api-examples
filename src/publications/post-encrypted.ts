@@ -1,51 +1,150 @@
-import { LensGatedSDK, LensEnvironment } from '@lens-protocol/sdk-gated';
-import { BigNumber, utils } from 'ethers';
+import { EncryptedMetadata, LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { v4 as uuidv4 } from 'uuid';
-import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
-import {
-  ethersProvider,
-  getAddressFromSigner,
-  getSigner,
-  signedTypeData,
-  splitSignature,
-} from '../ethers.service';
+import { ethersProvider, getAddressFromSigner, getSigner, splitSignature } from '../ethers.service';
 import {
   AccessConditionOutput,
   ContractType,
-  CreatePostTypedDataDocument,
   CreatePublicPostRequest,
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
   ScalarOperator,
 } from '../graphql/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
+import { pollAndIndexPost, signCreatePostTypedData } from './post';
 
-export const createPostTypedData = async (request: CreatePublicPostRequest) => {
-  const result = await apolloClient.mutate({
-    mutation: CreatePostTypedDataDocument,
-    variables: {
-      request,
+const prefix = 'create gated post';
+
+export const nftAccessCondition = ({
+  contractAddress,
+  contractType,
+  chainID,
+}: {
+  contractAddress: string;
+  contractType: ContractType;
+  chainID: number;
+}): AccessConditionOutput => ({
+  nft: {
+    contractAddress,
+    contractType,
+    chainID,
+  },
+});
+
+export const eoaAccessCondition = (
+  address: string = getAddressFromSigner()
+): AccessConditionOutput => ({
+  eoa: {
+    address,
+  },
+});
+
+export const erc20AccessCondition = (
+  { contractAddress, chainID, amount, condition, decimals } = {
+    contractAddress: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC on Mumbai
+    decimals: 18,
+    amount: '0.0001',
+    chainID: 80001,
+    condition: ScalarOperator.GreaterThanOrEqual,
+  }
+): AccessConditionOutput => ({
+  token: {
+    contractAddress,
+    decimals,
+    amount,
+    chainID,
+    condition,
+  },
+});
+
+export const andAccessCondition = (criteria: AccessConditionOutput[]): AccessConditionOutput => ({
+  and: {
+    criteria,
+  },
+});
+
+export const orAccessCondition = (criteria: AccessConditionOutput[]): AccessConditionOutput => ({
+  or: {
+    criteria,
+  },
+});
+
+export const followAccessCondition = (profileId: string = '0x01'): AccessConditionOutput => ({
+  follow: {
+    profileId,
+  },
+});
+
+export const collectAccessCondition = (publicationId?: string): AccessConditionOutput => {
+  if (publicationId) {
+    return {
+      collect: {
+        publicationId,
+      },
+    };
+  }
+  return {
+    collect: {
+      thisPublication: true,
     },
-  });
-
-  return result.data!.createPostTypedData;
+  };
 };
 
-export const signCreatePostTypedData = async (request: CreatePublicPostRequest) => {
-  const result = await createPostTypedData(request);
-  console.log('create post: createPostTypedData', result);
+export const createGatedPublicPostRequest = async (
+  profileId: string,
+  metadata: MetadataV2,
+  condition: AccessConditionOutput
+): Promise<{
+  request: CreatePublicPostRequest;
+  contentURI: string;
+  encryptedMetadata: EncryptedMetadata;
+}> => {
+  // instantiate SDK and connect to Lit Network
+  const sdk = await LensGatedSDK.create({
+    provider: ethersProvider,
+    signer: getSigner(),
+    env: LensEnvironment.Mumbai,
+  });
 
-  const typedData = result.typedData;
-  console.log('create post: typedData', typedData);
+  const { contentURI, encryptedMetadata, error } = await sdk.gated.encryptMetadata(
+    metadata,
+    profileId,
+    condition,
+    uploadIpfsGetPath
+  );
 
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('create post: signature', signature);
+  await sdk.disconnect();
 
-  return { result, signature };
+  if (error) {
+    console.error(error);
+    throw error;
+  }
+
+  console.log(`${prefix}: ipfs result`, contentURI);
+  console.log(`${prefix}: encryptedMetadata`, encryptedMetadata);
+
+  // hard coded to make the code example clear
+  return {
+    request: {
+      profileId,
+      contentURI: 'ipfs://' + contentURI,
+      collectModule: {
+        freeCollectModule: { followerOnly: false },
+      },
+      referenceModule: {
+        followerOnlyReferenceModule: false,
+      },
+      gated: {
+        ...encryptedMetadata!.encryptionParams.accessCondition,
+        encryptedSymmetricKey:
+          encryptedMetadata!.encryptionParams.providerSpecificParams.encryptionKey,
+      },
+    },
+    contentURI: contentURI!,
+    encryptedMetadata: encryptedMetadata!,
+  };
 };
 
 const createPostEncrypted = async () => {
@@ -55,124 +154,43 @@ const createPostEncrypted = async () => {
   }
 
   const address = getAddressFromSigner();
-  console.log('create post: address', address);
+  console.log(`${prefix}: address`, address);
 
   await login(address);
 
   const metadata: MetadataV2 = {
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.Image,
+    mainContentFocus: PublicationMainFocus.TextOnly,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
     content: 'gated!',
     external_url: null,
-    image: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
+    image: null,
     imageMimeType: null,
     name: 'Name',
     attributes: [],
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
-    media: [
-      {
-        type: 'image/png',
-        altTag: 'alt tag',
-        cover: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
-        item: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
-      },
-    ],
+    // media: [
+    //   {
+    //     type: 'image/png',
+    //     altTag: 'alt tag',
+    //     cover: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
+    //     item: 'ipfs://QmZq4ozZ4ZAoPuPnujgyhQmpmsQTJnBS36KfijUCqmnhQa',
+    //   },
+    // ],
     animation_url: null,
   };
 
-  // instantiate SDK and connect to Lit Network
-  const sdk = await LensGatedSDK.create({
-    provider: ethersProvider,
-    signer: getSigner(),
-    env: LensEnvironment.Mumbai,
-  });
-
-  const nftAccessCondition: AccessConditionOutput = {
-    nft: {
-      contractAddress: '0x5832be646a8a7a1a7a7843efd6b8165ac06e360d', // lens protocol follower nft
-      contractType: ContractType.Erc721,
-      chainID: 80001,
-    },
-  };
-
-  const eoaAccessCondition: AccessConditionOutput = {
-    eoa: {
-      address: getAddressFromSigner(),
-    },
-  };
-
-  const erc20AccessCondition: AccessConditionOutput = {
-    token: {
-      contractAddress: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC on Mumbai
-      decimals: 18,
-      amount: '0.0001',
-      chainID: 80001,
-      condition: ScalarOperator.GreaterThanOrEqual,
-    },
-  };
-
-  const andAccessCondition: AccessConditionOutput = {
-    and: {
-      criteria: [nftAccessCondition, erc20AccessCondition],
-    },
-  };
-
-  const orAccessCondition: AccessConditionOutput = {
-    or: {
-      criteria: [nftAccessCondition, eoaAccessCondition],
-    },
-  };
-
-  const followAccessCondition: AccessConditionOutput = {
-    follow: {
-      profileId: '0x01',
-    },
-  };
-
-  const collectAccessCondition: AccessConditionOutput = {
-    collect: {
-      publicationId: '0x44c1-0x20',
-      // thisPublication: true
-    },
-  };
-
-  const { contentURI, encryptedMetadata, error } = await sdk.gated.encryptMetadata(
+  const { request } = await createGatedPublicPostRequest(
+    profileId,
     metadata,
-    PROFILE_ID!,
-    followAccessCondition,
-    uploadIpfsGetPath
+    followAccessCondition(profileId)
   );
 
-  if (error) {
-    console.error(error);
-    return;
-  }
-  console.log('create post: ipfs result', contentURI);
-  console.log('create post: encryptedMetadata', encryptedMetadata);
-
-  // hard coded to make the code example clear
-  const createPostRequest: CreatePublicPostRequest = {
-    profileId,
-    contentURI: 'ipfs://' + contentURI,
-    collectModule: {
-      freeCollectModule: { followerOnly: false },
-    },
-    referenceModule: {
-      followerOnlyReferenceModule: false,
-    },
-    gated: {
-      ...followAccessCondition,
-      encryptedSymmetricKey:
-        encryptedMetadata!.encryptionParams.providerSpecificParams.encryptionKey,
-    },
-  };
-
-  const signedResult = await signCreatePostTypedData(createPostRequest);
-  console.log('create post: signedResult', signedResult);
+  const signedResult = await signCreatePostTypedData(request);
+  console.log(`${prefix}: signedResult`, signedResult);
 
   const typedData = signedResult.result.typedData;
 
@@ -192,35 +210,9 @@ const createPostEncrypted = async () => {
       deadline: typedData.value.deadline,
     },
   });
-  console.log('create post: tx hash', tx.hash);
+  console.log(`${prefix}: tx hash`, tx.hash);
 
-  console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
-
-  console.log('create post: profile has been indexed');
-
-  const logs = indexedResult.txReceipt!.logs;
-
-  console.log('create post: logs', logs);
-
-  const topicId = utils.id(
-    'PostCreated(uint256,uint256,string,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
-
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create post: created log', profileCreatedLog);
-
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create post: created event logs', profileCreatedEventLog);
-
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
-
-  console.log('create post: contract publication id', BigNumber.from(publicationId).toHexString());
-  console.log(
-    'create post: internal publication id',
-    profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
+  await pollAndIndexPost(tx.hash, profileId, prefix);
 };
 
 (async () => {
