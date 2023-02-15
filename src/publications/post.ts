@@ -10,6 +10,7 @@ import { Metadata, PublicationMainFocus } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
+const prefix = 'create post';
 export const createPostTypedData = async (request: CreatePublicPostRequest) => {
   const result = await apolloClient.mutate({
     mutation: CreatePostTypedDataDocument,
@@ -34,6 +35,38 @@ export const signCreatePostTypedData = async (request: CreatePublicPostRequest) 
   return { result, signature };
 };
 
+export const pollAndIndexPost = async (txHash: string, profileId: string, prefix: string) => {
+  console.log(`${prefix}: poll until indexed`);
+  const indexedResult = await pollUntilIndexed({ txHash });
+
+  console.log(`${prefix}: profile has been indexed`);
+
+  const logs = indexedResult.txReceipt!.logs;
+
+  console.log(`${prefix}: logs`, logs);
+
+  const topicId = utils.id(
+    'PostCreated(uint256,uint256,string,address,bytes,address,bytes,uint256)'
+  );
+  console.log('topicid we care about', topicId);
+
+  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
+  console.log(`${prefix}: created log`, profileCreatedLog);
+
+  let profileCreatedEventLog = profileCreatedLog!.topics;
+  console.log(`${prefix}: created event logs`, profileCreatedEventLog);
+
+  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
+
+  const contractPublicationId = BigNumber.from(publicationId).toHexString();
+
+  const internalPublicationId = profileId + '-' + contractPublicationId;
+
+  console.log(`${prefix}: contract publication id`, contractPublicationId);
+  console.log(`${prefix}: internal publication id`, internalPublicationId);
+  return internalPublicationId;
+};
+
 const createPost = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
@@ -41,7 +74,7 @@ const createPost = async () => {
   }
 
   const address = getAddressFromSigner();
-  console.log('create post: address', address);
+  console.log(`${prefix}: address`, address);
 
   await login(address);
 
@@ -60,7 +93,7 @@ const createPost = async () => {
     tags: ['using_api_examples'],
     appId: 'api_examples_github',
   });
-  console.log('create post: ipfs result', ipfsResult);
+  console.log(`${prefix}: ipfs result`, ipfsResult);
 
   // hard coded to make the code example clear
   const createPostRequest: CreatePublicPostRequest = {
@@ -138,7 +171,7 @@ const createPost = async () => {
   };
 
   const signedResult = await signCreatePostTypedData(createPostRequest);
-  console.log('create post: signedResult', signedResult);
+  console.log(`${prefix}: signedResult`, signedResult);
 
   const typedData = signedResult.result.typedData;
 
@@ -158,35 +191,9 @@ const createPost = async () => {
       deadline: typedData.value.deadline,
     },
   });
-  console.log('create post: tx hash', tx.hash);
+  console.log(`${prefix}: tx hash`, tx.hash);
 
-  console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
-
-  console.log('create post: profile has been indexed');
-
-  const logs = indexedResult.txReceipt!.logs;
-
-  console.log('create post: logs', logs);
-
-  const topicId = utils.id(
-    'PostCreated(uint256,uint256,string,address,bytes,address,bytes,uint256)'
-  );
-  console.log('topicid we care about', topicId);
-
-  const profileCreatedLog = logs.find((l: any) => l.topics[0] === topicId);
-  console.log('create post: created log', profileCreatedLog);
-
-  let profileCreatedEventLog = profileCreatedLog!.topics;
-  console.log('create post: created event logs', profileCreatedEventLog);
-
-  const publicationId = utils.defaultAbiCoder.decode(['uint256'], profileCreatedEventLog[2])[0];
-
-  console.log('create post: contract publication id', BigNumber.from(publicationId).toHexString());
-  console.log(
-    'create post: internal publication id',
-    profileId + '-' + BigNumber.from(publicationId).toHexString()
-  );
+  await pollAndIndexPost(tx.hash, profileId, prefix);
 };
 
 (async () => {
