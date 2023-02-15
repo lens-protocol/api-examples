@@ -7,13 +7,13 @@ import {
   PublicationMetadataV2Input as MetadataV2,
 } from '../graphql/generated';
 import { pollAndIndexComment } from './comment';
-import { createGatedPublicCommentRequest } from './comment-encrypted';
 import { commentGasless } from './comment-gasless';
-import { followAccessCondition } from './post-encrypted';
+import { createGatedPublicCommentRequest } from './comment-gated';
+import { followAccessCondition } from './post-gated';
 
 const prefix = 'create gated comment gasless';
 
-const commentEncryptedGasless = async () => {
+const commentGatedGasless = async () => {
   const address = getAddressFromSigner();
   const profileId = PROFILE_ID;
   const publicationId = '0x0f-0x01';
@@ -56,6 +56,6 @@ const commentEncryptedGasless = async () => {
 
 (async () => {
   if (explicitStart(__filename)) {
-    await commentEncryptedGasless();
+    await commentGatedGasless();
   }
 })();

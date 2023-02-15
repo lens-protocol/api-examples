@@ -20,7 +20,7 @@ import {
 import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { pollAndIndexComment } from './comment';
-import { followAccessCondition } from './post-encrypted';
+import { followAccessCondition } from './post-gated';
 
 const prefix = 'create gated comment';
 
@@ -113,7 +113,7 @@ export const signCreateCommentTypedData = async (request: CreatePublicCommentReq
   return { result, signature };
 };
 
-const createCommentEncrypted = async () => {
+const createCommentGated = async () => {
   const profileId = PROFILE_ID;
   const publicationId = '0x0f-0x01';
   if (!profileId) {
@@ -184,6 +184,6 @@ const createCommentEncrypted = async () => {
 
 (async () => {
   if (explicitStart(__filename)) {
-    await createCommentEncrypted();
+    await createCommentGated();
   }
 })();

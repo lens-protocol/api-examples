@@ -147,7 +147,7 @@ export const createGatedPublicPostRequest = async (
   };
 };
 
-const createPostEncrypted = async () => {
+const createPostGated = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -217,6 +217,6 @@ const createPostEncrypted = async () => {
 
 (async () => {
   if (explicitStart(__filename)) {
-    await createPostEncrypted();
+    await createPostGated();
   }
 })();

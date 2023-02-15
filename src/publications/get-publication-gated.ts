@@ -22,7 +22,7 @@ const getPublicationRequest = async (
   return result.data.publication;
 };
 
-export const getEncryptedPublication = async () => {
+export const getGatedPublication = async () => {
   const result = await getPublicationRequest(
     { publicationId: '0x44c1-0x3e' },
     { profileId: '0x44c1' }
@@ -33,7 +33,7 @@ export const getEncryptedPublication = async () => {
     return;
   }
 
-  console.log('publication: encrypted', result);
+  console.log('publication: gated', result);
   if (!result.canDecrypt.result) {
     console.log('You cannot decrypt this publication, exiting...');
     return;
@@ -56,5 +56,5 @@ export const getEncryptedPublication = async () => {
 };
 
 (async () => {
-  await getEncryptedPublication();
+  await getGatedPublication();
 })();

@@ -7,12 +7,12 @@ import {
   PublicationMetadataV2Input as MetadataV2,
 } from '../graphql/generated';
 import { pollAndIndexPost } from './post';
-import { createGatedPublicPostRequest, followAccessCondition } from './post-encrypted';
 import { postGasless } from './post-gasless';
+import { createGatedPublicPostRequest, followAccessCondition } from './post-gated';
 
 const prefix = 'create gated post gasless';
 
-const postEncryptedGasless = async () => {
+const postGatedGasless = async () => {
   const address = getAddressFromSigner();
   const profileId = PROFILE_ID;
   console.log(`${prefix}: address`, address);
@@ -53,6 +53,6 @@ const postEncryptedGasless = async () => {
 
 (async () => {
   if (explicitStart(__filename)) {
-    await postEncryptedGasless();
+    await postGatedGasless();
   }
 })();
