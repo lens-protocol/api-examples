@@ -88,6 +88,49 @@ const createPost = async () => {
       //   recipient: '0x3A5bd1E37b099aE3386D13947b6a90d97675e5e3',
       //   referralFee: 0,
       // },
+      // multirecipientFeeCollectModule: {
+      //   amount: {
+      //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      //     value: '0.001',
+      //   },
+      //   collectLimit: '2',
+      //   endTimestamp: '2025-01-01T00:00:00.000Z',
+      //   referralFee: 0,
+      //   followerOnly: false,
+      //   recipients: [
+      //     {
+      //       recipient: address,
+      //       split: 50,
+      //     },
+      //     {
+      //       recipient: '0xacab2c2Cdde3a5839b91BABEfFd5fd5128590d6f',
+      //       split: 50,
+      //     },
+      //   ],
+      // },
+      // aaveFeeCollectModule: {
+      //   amount: {
+      //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      //     value: '0.001',
+      //   },
+      //   collectLimit: '2',
+      //   endTimestamp: '2025-01-01T00:00:00.000Z',
+      //   referralFee: 0,
+      //   followerOnly: false,
+      //   recipient: address,
+      // },
+      // erc4626FeeCollectModule: {
+      //   amount: {
+      //     currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      //     value: '0.001',
+      //   },
+      //   collectLimit: '2',
+      //   endTimestamp: '2025-01-01T00:00:00.000Z',
+      //   referralFee: 0,
+      //   followerOnly: false,
+      //   recipient: address,
+      //   vault: '0x3A5bd1E37b099aE3386D13947b6a90d97675e5e3', // MUST BE VALID ERC4626 VAULT
+      // },
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
