@@ -164,6 +164,19 @@ const createPost = async () => {
       //   recipient: address,
       //   vault: '0x3A5bd1E37b099aE3386D13947b6a90d97675e5e3', // MUST BE VALID ERC4626 VAULT
       // },
+      // simpleCollectModule: {
+      //   fee: {
+      //     amount: {
+      //       currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      //       value: '0',
+      //     },
+      //     referralFee: 0,
+      //     recipient: address,
+      //   },
+      //   collectLimit: '2',
+      //   endTimestamp: '2025-01-01T00:00:00.000Z',
+      //   followerOnly: false,
+      // },
     },
     referenceModule: {
       followerOnlyReferenceModule: false,
