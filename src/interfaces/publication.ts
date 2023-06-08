@@ -1,13 +1,5 @@
-import { MediaOutput } from '../graphql/generated';
+import { MediaOutput, PublicationMainFocus } from '../graphql/generated';
 import { GenericMetadata, MetadataDisplayType } from './generic';
-
-interface MetadataMedia {
-  item: string;
-  /**
-   * This is the mime type of media
-   */
-  type: string;
-}
 
 export interface MetadataAttribute {
   displayType?: MetadataDisplayType;
@@ -35,14 +27,4 @@ export enum PublicationContentWarning {
   NSFW = 'NSFW',
   SENSITIVE = 'SENSITIVE',
   SPOILER = 'SPOILER',
-}
-
-export enum PublicationMainFocus {
-  VIDEO = 'VIDEO',
-  IMAGE = 'IMAGE',
-  ARTICLE = 'ARTICLE',
-  TEXT_ONLY = 'TEXT_ONLY',
-  AUDIO = 'AUDIO',
-  LINK = 'LINK',
-  EMBED = 'EMBED',
 }

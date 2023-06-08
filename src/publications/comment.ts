@@ -4,9 +4,13 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateCommentTypedDataDocument, CreatePublicCommentRequest } from '../graphql/generated';
+import {
+  CreateCommentTypedDataDocument,
+  CreatePublicCommentRequest,
+  PublicationMainFocus,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
+import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
@@ -78,7 +82,7 @@ const createComment = async () => {
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
+    mainContentFocus: PublicationMainFocus.TextOnly,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
@@ -97,7 +101,7 @@ const createComment = async () => {
   const createCommentRequest: CreatePublicCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x0f-0x01`,
+    publicationId: `0x15-0x0103`,
     contentURI: `ipfs://${ipfsResult.path}`,
     collectModule: {
       // timedFeeCollectModule: {

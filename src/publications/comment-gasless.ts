@@ -1,14 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/broadcast-follow-example';
+import { broadcastRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
   CreateCommentViaDispatcherDocument,
   CreatePublicCommentRequest,
+  PublicationMainFocus,
 } from '../graphql/generated';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
+import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { profile } from '../profile/get-profile';
 import { pollAndIndexComment, signCreateCommentTypedData } from './comment';
@@ -75,7 +76,7 @@ const createCommentGasless = async () => {
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
+    mainContentFocus: PublicationMainFocus.TextOnly,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
@@ -94,7 +95,7 @@ const createCommentGasless = async () => {
   const createCommentRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: `0x0f-0x01`,
+    publicationId: `0x2f-0x01be`,
     contentURI: `ipfs://${ipfsResult.path}`,
     collectModule: {
       // timedFeeCollectModule: {

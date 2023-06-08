@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/broadcast-follow-example';
+import { broadcastRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
