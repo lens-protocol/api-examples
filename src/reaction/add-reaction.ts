@@ -29,7 +29,7 @@ export const addReaction = async () => {
   await addReactionRequest({
     profileId,
     reaction: ReactionTypes.Upvote,
-    publicationId: '0x0f-0x01',
+    publicationId: '0x2f-0x01be',
   });
 
   console.log('add reaction: sucess');

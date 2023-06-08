@@ -1,11 +1,15 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/broadcast-follow-example';
-import { explicitStart, PROFILE_ID } from '../config';
+import { broadcastRequest } from '../broadcast/shared-broadcast';
+import { PROFILE_ID, explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { CreatePostViaDispatcherDocument, CreatePublicPostRequest } from '../graphql/generated';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
+import {
+  CreatePostViaDispatcherDocument,
+  CreatePublicPostRequest,
+  PublicationMainFocus,
+} from '../graphql/generated';
+import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { profile } from '../profile/get-profile';
 import { pollAndIndexPost, signCreatePostTypedData } from './post';
@@ -71,11 +75,11 @@ export const createPostGasless = async () => {
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
+    mainContentFocus: PublicationMainFocus.TextOnly,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',
-    content: 'Content',
+    content: '@wagmi.test',
     external_url: null,
     image: null,
     imageMimeType: null,

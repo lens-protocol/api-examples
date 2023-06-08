@@ -1,7 +1,7 @@
 import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/broadcast-follow-example';
+import { broadcastRequest } from '../broadcast/shared-broadcast';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { CreateMirrorRequest, CreateMirrorViaDispatcherDocument } from '../graphql/generated';
@@ -71,7 +71,7 @@ export const createMirror = async () => {
   const createMirrorRequest = {
     profileId,
     // remember it has to be indexed and follow metadata standards to be traceable!
-    publicationId: '0x0f-0x01',
+    publicationId: '0x5f46-0x0b',
     referenceModule: {
       followerOnlyReferenceModule: false,
     },

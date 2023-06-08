@@ -4,9 +4,13 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreatePostTypedDataDocument, CreatePublicPostRequest } from '../graphql/generated';
+import {
+  CreatePostTypedDataDocument,
+  CreatePublicPostRequest,
+  PublicationMainFocus,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
+import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 
@@ -80,7 +84,7 @@ const createPost = async () => {
 
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.TEXT_ONLY,
+    mainContentFocus: PublicationMainFocus.TextOnly,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',

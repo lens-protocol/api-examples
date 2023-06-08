@@ -2,16 +2,20 @@ import { BigNumber, utils } from 'ethers';
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/broadcast-follow-example';
+import { broadcastRequest } from '../broadcast/shared-broadcast';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { CreatePostViaDispatcherDocument, CreatePublicPostRequest } from '../graphql/generated';
+import {
+  CreatePostViaDispatcherDocument,
+  CreatePublicPostRequest,
+  PublicationMainFocus,
+} from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-import { Metadata, PublicationMainFocus } from '../interfaces/publication';
+import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
+import { createMediaAttachment } from '../media/create-attachment';
 import { profile } from '../profile/get-profile';
 import { signCreatePostTypedData } from './post';
-import { createMediaAttachment } from '../media/create-attachment';
 
 const createPostAttachViaDispatcherRequest = async (request: CreatePublicPostRequest) => {
   const result = await apolloClient.mutate({
@@ -73,7 +77,7 @@ export const createPostGasless = async () => {
   const mediaFile = await createMediaAttachment();
   const ipfsResult = await uploadIpfs<Metadata>({
     version: '2.0.0',
-    mainContentFocus: PublicationMainFocus.VIDEO,
+    mainContentFocus: PublicationMainFocus.Video,
     metadata_id: uuidv4(),
     description: 'Description',
     locale: 'en-US',

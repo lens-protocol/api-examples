@@ -1,21 +1,9 @@
-import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
 import { createFollowTypedData } from '../follow/follow';
-import { BroadcastDocument, BroadcastRequest } from '../graphql/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
-
-export const broadcastRequest = async (request: BroadcastRequest) => {
-  const result = await apolloClient.mutate({
-    mutation: BroadcastDocument,
-    variables: {
-      request,
-    },
-  });
-
-  return result.data!.broadcast;
-};
+import { broadcastRequest } from './shared-broadcast';
 
 const broadcast = async () => {
   const address = getAddressFromSigner();
