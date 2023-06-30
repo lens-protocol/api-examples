@@ -9,6 +9,7 @@
     "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
+    "bookmark:get": "env-cmd -f .env ts-node ./src/bookmarks/publications-profile-bookmarks",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:enable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/enable-dispatcher",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
