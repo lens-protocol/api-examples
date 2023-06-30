@@ -85,7 +85,8 @@
   "authors": [
     "joshstevens19@hotmail.co.uk",
     "zannis@aave.com",
-    "daniel@aave.com"
+    "daniel@aave.com",
+    "yogi@aave.com"
   ],
   "dependencies": {
     "@apollo/client": "^3.5.10",
