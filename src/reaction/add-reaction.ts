@@ -32,7 +32,7 @@ export const addReaction = async () => {
     publicationId: '0x2f-0x01be',
   });
 
-  console.log('add reaction: sucess');
+  console.log('add reaction: success');
 };
 
 (async () => {

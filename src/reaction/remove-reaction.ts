@@ -32,7 +32,7 @@ export const removeReaction = async () => {
     publicationId: '0x0f-0x01',
   });
 
-  console.log('remove reaction: sucess');
+  console.log('remove reaction: success');
 };
 
 (async () => {
