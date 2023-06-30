@@ -7,6 +7,9 @@
     "authentication:login": "env-cmd -f .env ts-node ./src/authentication/login",
     "authentication:refresh": "env-cmd -f .env ts-node ./src/authentication/refresh",
     "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
+    "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
+    "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
+    "bookmark:get": "env-cmd -f .env ts-node ./src/bookmarks/publications-profile-bookmarks",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:enable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/enable-dispatcher",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
@@ -30,6 +33,8 @@
     "module:enabled-modules-currencies": "env-cmd -f .env ts-node ./src/module/enabled-modules-currencies",
     "module:enabled-modules": "env-cmd -f .env ts-node ./src/module/enabled-modules",
     "nfts:get-users-nfts": "env-cmd -f .env ts-node ./src/nfts/get-users-nfts",
+    "not-interested:add": "env-cmd -f .env ts-node ./src/not-interested/add-not-interested",
+    "not-interested:remove": "env-cmd -f .env ts-node ./src/not-interested/remove-not-interested",
     "notifications:users-notifications": "env-cmd -f .env ts-node ./src/notifications/users-notifications",
     "profile:burn": "env-cmd -f .env ts-node ./src/profile/burn-profile",
     "profile:create-profile": "env-cmd -f .env ts-node ./src/profile/create-profile",
@@ -85,7 +90,8 @@
   "authors": [
     "joshstevens19@hotmail.co.uk",
     "zannis@aave.com",
-    "daniel@aave.com"
+    "daniel@aave.com",
+    "yogi@aave.com"
   ],
   "dependencies": {
     "@apollo/client": "^3.5.10",
