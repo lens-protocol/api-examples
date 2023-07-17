@@ -42,8 +42,10 @@ export const eoaAccessCondition = (
 });
 
 export const erc20AccessCondition = (
-  { contractAddress, chainID, amount, condition, decimals } = {
+  { contractAddress, name, symbol, chainID, amount, condition, decimals } = {
     contractAddress: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889', // WMATIC on Mumbai
+    name: 'Wrapped MATIC',
+    symbol: 'WMATIC',
     decimals: 18,
     amount: '0.0001',
     chainID: 80001,
@@ -52,6 +54,8 @@ export const erc20AccessCondition = (
 ): AccessConditionOutput => ({
   token: {
     contractAddress,
+    name,
+    symbol,
     decimals,
     amount,
     chainID,
