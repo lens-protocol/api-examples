@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastDataAvailabilityRequest } from '../broadcast/broadcast-data-availability';
+import { broadcastDataAvailabilityRequest } from '../broadcast/broadcast-momoka-post-example';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
 import {

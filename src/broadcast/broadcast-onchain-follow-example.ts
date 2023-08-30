@@ -3,7 +3,7 @@ import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
 import { createFollowTypedData } from '../follow/follow';
 import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
-import { broadcastRequestOnchain } from './shared-broadcast';
+import { broadcastOnchainRequest } from './shared-broadcast';
 
 const broadcast = async () => {
   const address = getAddressFromSigner();
@@ -26,7 +26,7 @@ const broadcast = async () => {
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('follow with broadcast: signature', signature);
 
-  const broadcastResult = await broadcastRequestOnchain({
+  const broadcastResult = await broadcastOnchainRequest({
     id: result.id,
     signature,
   });

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
+import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
@@ -53,7 +53,7 @@ const setMetadata = async (createMetadataRequest: CreatePublicSetProfileMetadata
     const signedResult = await signCreateSetProfileMetadataTypedData(createMetadataRequest);
     console.log('create profile metadata via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequestOnchain({
+    const broadcastResult = await broadcastOnchainRequest({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });

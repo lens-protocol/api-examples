@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
+import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
@@ -48,7 +48,7 @@ export const commentGasless = async (createCommentRequest: CreatePublicCommentRe
     const signedResult = await signCreateCommentTypedData(createCommentRequest);
     console.log('create comment via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequestOnchain({
+    const broadcastResult = await broadcastOnchainRequest({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });

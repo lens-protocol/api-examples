@@ -1,7 +1,11 @@
 import { apolloClient } from '../apollo-client';
-import { BroadcastOnchainDocument, BroadcastRequest } from '../graphql/generated';
+import {
+  BroadcastOnMomokaDocument,
+  BroadcastOnchainDocument,
+  BroadcastRequest,
+} from '../graphql/generated';
 
-export const broadcastRequestOnchain = async (request: BroadcastRequest) => {
+export const broadcastOnchainRequest = async (request: BroadcastRequest) => {
   const result = await apolloClient.mutate({
     mutation: BroadcastOnchainDocument,
     variables: {
@@ -10,4 +14,15 @@ export const broadcastRequestOnchain = async (request: BroadcastRequest) => {
   });
 
   return result.data!.broadcastOnchain;
+};
+
+export const broadcastOnMomokaRequest = async (request: BroadcastRequest) => {
+  const result = await apolloClient.mutate({
+    mutation: BroadcastOnMomokaDocument,
+    variables: {
+      request,
+    },
+  });
+
+  return result.data!.broadcastOnMomoka;
 };

@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
+import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
@@ -47,7 +47,7 @@ const setProfileImage = async (createProfileImageRequest: UpdateProfileImageRequ
     const signedResult = await signCreateSetProfileImageUriTypedData(createProfileImageRequest);
     console.log('set profile image url via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequestOnchain({
+    const broadcastResult = await broadcastOnchainRequest({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });
