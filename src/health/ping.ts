@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { PingDocument } from '../graphql/generated';
+import { PingDocument } from '../../graphql-v1/generated';
 
 const pingRequest = async () => {
   const result = await apolloClient.query({

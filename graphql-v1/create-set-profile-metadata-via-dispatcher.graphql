@@ -1,0 +1,13 @@
+mutation CreateSetProfileMetadataViaDispatcher(
+  $request: CreatePublicSetProfileMetadataURIRequest!
+) {
+  createSetProfileMetadataViaDispatcher(request: $request) {
+    ... on RelayerResult {
+      txHash
+      txId
+    }
+    ... on RelayError {
+      reason
+    }
+  }
+}

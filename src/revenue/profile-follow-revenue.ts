@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import {
   ProfileFollowRevenueDocument,
   ProfileFollowRevenueQueryRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 export const profileFollowRevenueRequest = async (request: ProfileFollowRevenueQueryRequest) => {
   const result = await apolloClient.query({

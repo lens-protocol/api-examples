@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateFollowTypedDataDocument, FollowRequest } from '../graphql/generated';
+import { CreateFollowTypedDataDocument, FollowRequest } from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 export const createFollowTypedData = async (request: FollowRequest) => {

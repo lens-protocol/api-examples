@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { PublicationDocument, PublicationQueryRequest } from '../graphql/generated';
+import { PublicationDocument, PublicationQueryRequest } from '../../graphql-v1/generated';
 
 const getPublicationRequest = async (request: PublicationQueryRequest) => {
   const result = await apolloClient.query({

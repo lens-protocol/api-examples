@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import { RefreshDocument, RefreshRequest } from '../graphql/generated';
+import { RefreshDocument, RefreshRequest } from '../../graphql-v1/generated';
 import { login } from './login';
 
 const refreshAuth = async (request: RefreshRequest) => {

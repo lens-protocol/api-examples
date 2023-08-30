@@ -3,7 +3,7 @@ import {
   ExplorePublicationRequest,
   ExplorePublicationsDocument,
   PublicationSortCriteria,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const explorePublications = (request: ExplorePublicationRequest) => {
   return apolloClient.query({

@@ -1,0 +1,10 @@
+query profiles($request: ProfileQueryRequest!) {
+  profiles(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      ...CommonPaginatedResultInfoFields
+    }
+  }
+}

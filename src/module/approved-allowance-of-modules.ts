@@ -7,7 +7,7 @@ import {
   CollectModules,
   FollowModules,
   ReferenceModules,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const allowanceRequest = async (request: ApprovedModuleAllowanceAmountRequest) => {
   const result = await apolloClient.query({

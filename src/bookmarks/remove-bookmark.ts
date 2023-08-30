@@ -5,7 +5,7 @@ import { getAddressFromSigner } from '../ethers.service';
 import {
   PublicationProfileBookmarkRequest,
   RemovePublicationProfileBookmarkDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const removePublicationProfileBookmark = async (request: PublicationProfileBookmarkRequest) => {
   const result = await apolloClient.mutate({

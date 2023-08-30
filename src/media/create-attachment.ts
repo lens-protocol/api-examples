@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { PublicMediaRequest, CreateAttachMediaDataDocument } from '../graphql/generated';
+import { PublicMediaRequest, CreateAttachMediaDataDocument } from '../../graphql-v1/generated';
 import fs from 'fs';
 import path from 'path';
 import * as Hash from 'typestub-ipfs-only-hash';

@@ -7,7 +7,7 @@ import {
   CreateDataAvailabilityCommentRequest,
   CreateDataAvailabilityCommentTypedDataDocument,
   CreateDataAvailabilityCommentViaDispatcherDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { profile } from '../profile/get-profile';
 
 const createDACommentViaDispatcherRequest = async (

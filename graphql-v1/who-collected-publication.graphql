@@ -1,0 +1,10 @@
+query whoCollectedPublication($request: WhoCollectedPublicationRequest!) {
+  whoCollectedPublication(request: $request) {
+    items {
+      ...WalletFields
+    }
+    pageInfo {
+      ...CommonPaginatedResultInfoFields
+    }
+  }
+}

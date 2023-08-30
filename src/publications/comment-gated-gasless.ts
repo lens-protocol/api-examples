@@ -5,7 +5,7 @@ import { getAddressFromSigner } from '../ethers.service';
 import {
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollAndIndexComment } from './comment';
 import { commentGasless } from './comment-gasless';
 import { createGatedPublicCommentRequest } from './comment-gated';

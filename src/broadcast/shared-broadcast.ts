@@ -1,13 +1,13 @@
 import { apolloClient } from '../apollo-client';
-import { BroadcastDocument, BroadcastRequest } from '../graphql/generated';
+import { BroadcastOnchainDocument, BroadcastRequest } from '../graphql/generated';
 
-export const broadcastRequest = async (request: BroadcastRequest) => {
+export const broadcastRequestOnchain = async (request: BroadcastRequest) => {
   const result = await apolloClient.mutate({
-    mutation: BroadcastDocument,
+    mutation: BroadcastOnchainDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.broadcast;
+  return result.data!.broadcastOnchain;
 };

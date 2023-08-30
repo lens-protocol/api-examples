@@ -10,7 +10,7 @@ import {
   PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
   ScalarOperator,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { pollAndIndexPost, signCreatePostTypedData } from './post';

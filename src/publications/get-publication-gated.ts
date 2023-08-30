@@ -5,7 +5,7 @@ import {
   PostCanDecryptArgs,
   PublicationEncryptedDocument,
   PublicationQueryRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const getPublicationRequest = async (
   request: PublicationQueryRequest,

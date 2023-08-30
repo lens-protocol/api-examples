@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { FeedRequest, ProfileFeedDocument } from '../graphql/generated';
+import { FeedRequest, ProfileFeedDocument } from '../../graphql-v1/generated';
 
 const getProfileFeedRequest = async (request: FeedRequest) => {
   const result = await apolloClient.query({

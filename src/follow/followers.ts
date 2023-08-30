@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
-import { FollowersDocument, FollowersRequest } from '../graphql/generated';
+import { FollowersDocument, FollowersRequest } from '../../graphql-v1/generated';
 
 const followersRequest = async (request: FollowersRequest) => {
   const result = await apolloClient.query({

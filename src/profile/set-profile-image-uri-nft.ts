@@ -7,7 +7,7 @@ import {
   NftOwnershipChallengeDocument,
   NftOwnershipChallengeRequest,
   UpdateProfileImageRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {

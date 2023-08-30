@@ -5,7 +5,7 @@ import { getAddressFromSigner } from '../ethers.service';
 import {
   PendingApprovalFollowsDocument,
   PendingApprovalFollowsRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const pendingApprovalFollows = async (request: PendingApprovalFollowsRequest) => {
   const result = await apolloClient.query({

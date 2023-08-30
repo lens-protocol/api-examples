@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { BroadcastDataAvailabilityDocument, BroadcastRequest } from '../graphql/generated';
+import { BroadcastDataAvailabilityDocument, BroadcastRequest } from '../../graphql-v1/generated';
 
 export const broadcastDataAvailabilityRequest = async (request: BroadcastRequest) => {
   const result = await apolloClient.mutate({

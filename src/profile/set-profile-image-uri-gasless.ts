@@ -1,12 +1,12 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/shared-broadcast';
+import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
   CreateSetProfileImageUriViaDispatcherDocument,
   UpdateProfileImageRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { profile } from './get-profile';
 import { signCreateSetProfileImageUriTypedData } from './set-profile-image-uri';
@@ -47,7 +47,7 @@ const setProfileImage = async (createProfileImageRequest: UpdateProfileImageRequ
     const signedResult = await signCreateSetProfileImageUriTypedData(createProfileImageRequest);
     console.log('set profile image url via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequest({
+    const broadcastResult = await broadcastRequestOnchain({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });

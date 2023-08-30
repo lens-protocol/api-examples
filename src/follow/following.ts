@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import { FollowingDocument, FollowingRequest } from '../graphql/generated';
+import { FollowingDocument, FollowingRequest } from '../../graphql-v1/generated';
 
 const followingRequest = async (request: FollowingRequest) => {
   const result = await apolloClient.query({

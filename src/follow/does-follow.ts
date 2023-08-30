@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { DoesFollowDocument, DoesFollowRequest } from '../graphql/generated';
+import { DoesFollowDocument, DoesFollowRequest } from '../../graphql-v1/generated';
 
 const doesFollowRequest = async (request: DoesFollowRequest) => {
   const result = await apolloClient.query({

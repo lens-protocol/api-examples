@@ -5,7 +5,7 @@ import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.
 import {
   CreateSetFollowModuleRequest,
   CreateSetFollowModuleTypedDataDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 const createSetFollowModuleTypedData = async (request: CreateSetFollowModuleRequest) => {

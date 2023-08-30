@@ -1,0 +1,27 @@
+query PublicationRevenue($request: PublicationRevenueQueryRequest!) {
+  publicationRevenue(request: $request) {
+    publication {
+      __typename
+      ... on Post {
+        ...PostFields
+      }
+      ... on Comment {
+        ...CommentFields
+      }
+      ... on Mirror {
+        ...MirrorFields
+      }
+    }
+    revenue {
+      total {
+        asset {
+          name
+          symbol
+          decimals
+          address
+        }
+        value
+      }
+    }
+  }
+}

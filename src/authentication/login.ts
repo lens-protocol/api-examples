@@ -6,7 +6,7 @@ import {
   ChallengeDocument,
   ChallengeRequest,
   SignedAuthChallenge,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { getAuthenticationToken, setAuthenticationToken } from '../state';
 
 export const generateChallenge = async (request: ChallengeRequest) => {

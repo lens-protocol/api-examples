@@ -5,7 +5,7 @@ import { getAddressFromSigner } from '../ethers.service';
 import {
   PublicationProfileNotInterestedRequest,
   RemovePublicationProfileNotInterestedDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const removePublicationProfileNotInterested = async (
   request: PublicationProfileNotInterestedRequest

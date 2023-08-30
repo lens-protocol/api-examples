@@ -4,7 +4,7 @@ import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.
 import {
   CreateToggleFollowRequest,
   CreateToggleFollowTypedDataDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensPeriphery } from '../lens-hub';
 

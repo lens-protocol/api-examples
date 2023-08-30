@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { BurnProfileRequest, CreateBurnProfileTypedDataDocument } from '../graphql/generated';
+import { BurnProfileRequest, CreateBurnProfileTypedDataDocument } from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 const createBurnProfileTypedData = async (request: BurnProfileRequest) => {

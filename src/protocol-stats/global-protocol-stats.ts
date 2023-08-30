@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { GlobalProtocolStatsDocument } from '../graphql/generated';
+import { GlobalProtocolStatsDocument } from '../../graphql-v1/generated';
 
 const getGlobalStatsRequest = async () => {
   const result = await apolloClient.query({

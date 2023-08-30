@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { NotificationRequest, NotificationsDocument } from '../graphql/generated';
+import { NotificationRequest, NotificationsDocument } from '../../graphql-v1/generated';
 
 const getNotifications = async (request: NotificationRequest) => {
   const result = await apolloClient.mutate({

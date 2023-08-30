@@ -1,0 +1,3 @@
+mutation AddPublicationProfileBookmark($request: PublicationProfileBookmarkRequest!) {
+  addPublicationProfileBookmark(request: $request)
+}

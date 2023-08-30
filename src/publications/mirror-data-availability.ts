@@ -7,7 +7,7 @@ import {
   CreateDataAvailabilityMirrorRequest,
   CreateDataAvailabilityMirrorTypedDataDocument,
   CreateDataAvailabilityMirrorViaDispatcherDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { profile } from '../profile/get-profile';
 
 const createDAMirrorViaDispatcherRequest = async (request: CreateDataAvailabilityMirrorRequest) => {

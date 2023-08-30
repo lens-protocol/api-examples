@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import {
   ProfilePublicationRevenueDocument,
   ProfilePublicationRevenueQueryRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 export const profilePublicationsRevenueRequest = async (
   request: ProfilePublicationRevenueQueryRequest

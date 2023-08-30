@@ -8,7 +8,7 @@ import {
   CreateDataAvailabilityPostRequest,
   CreateDataAvailabilityPostTypedDataDocument,
   CreateDataAvailabilityPostViaDispatcherDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { profile } from '../profile/get-profile';
 
 const createDAPostViaDispatcherRequest = async (request: CreateDataAvailabilityPostRequest) => {

@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { EnabledModuleCurrenciesDocument } from '../graphql/generated';
+import { EnabledModuleCurrenciesDocument } from '../../graphql-v1/generated';
 
 const enabledCurrenciesRequest = async () => {
   const result = await apolloClient.query({
@@ -26,7 +26,7 @@ export const enabledCurrencies = async () => {
 };
 
 (async () => {
-  if (explicitStart(__filename)) { 
+  if (explicitStart(__filename)) {
     await enabledCurrencies();
   }
 })();

@@ -1,14 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/shared-broadcast';
+import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
 import { PROFILE_ID, explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
   CreatePostViaDispatcherDocument,
   CreatePublicPostRequest,
   PublicationMainFocus,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { profile } from '../profile/get-profile';
@@ -47,7 +47,7 @@ export const postGasless = async (createPostRequest: CreatePublicPostRequest) =>
     const signedResult = await signCreatePostTypedData(createPostRequest);
     console.log('create post via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequest({
+    const broadcastResult = await broadcastRequestOnchain({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });

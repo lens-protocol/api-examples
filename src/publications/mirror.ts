@@ -3,7 +3,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../graphql/generated';
+import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 

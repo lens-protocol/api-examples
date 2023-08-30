@@ -2,7 +2,10 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateSetDispatcherTypedDataDocument, SetDispatcherRequest } from '../graphql/generated';
+import {
+  CreateSetDispatcherTypedDataDocument,
+  SetDispatcherRequest,
+} from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 const disableDispatcherWithTypedData = async (request: SetDispatcherRequest) => {

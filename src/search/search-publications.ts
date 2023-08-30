@@ -3,7 +3,7 @@ import {
   SearchPublicationsDocument,
   SearchQueryRequest,
   SearchRequestTypes,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const searchRequest = async (request: SearchQueryRequest) => {
   const result = await apolloClient.query({

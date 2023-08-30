@@ -1,10 +1,10 @@
 import { BigNumber, utils } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/shared-broadcast';
+import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { CreateMirrorRequest, CreateMirrorViaDispatcherDocument } from '../graphql/generated';
+import { CreateMirrorRequest, CreateMirrorViaDispatcherDocument } from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { profile } from '../profile/get-profile';
 import { signCreateMirrorTypedData } from './mirror';
@@ -41,7 +41,7 @@ const mirror = async (createMirrorRequest: CreateMirrorRequest) => {
     const signedResult = await signCreateMirrorTypedData(createMirrorRequest);
     console.log('create mirror via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequest({
+    const broadcastResult = await broadcastRequestOnchain({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });

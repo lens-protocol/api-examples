@@ -5,7 +5,7 @@ import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.
 import {
   CreateSetProfileImageUriTypedDataDocument,
   UpdateProfileImageRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 export const createSetProfileImageUriTypedData = async (request: UpdateProfileImageRequest) => {

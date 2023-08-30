@@ -1,13 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { broadcastRequest } from '../broadcast/shared-broadcast';
+import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataViaDispatcherDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';
@@ -53,7 +53,7 @@ const setMetadata = async (createMetadataRequest: CreatePublicSetProfileMetadata
     const signedResult = await signCreateSetProfileMetadataTypedData(createMetadataRequest);
     console.log('create profile metadata via broadcast: signedResult', signedResult);
 
-    const broadcastResult = await broadcastRequest({
+    const broadcastResult = await broadcastRequestOnchain({
       id: signedResult.result.id,
       signature: signedResult.signature,
     });

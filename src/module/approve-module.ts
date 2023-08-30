@@ -5,7 +5,7 @@ import {
   CollectModules,
   GenerateModuleCurrencyApprovalDataDocument,
   GenerateModuleCurrencyApprovalDataRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { enabledCurrencies } from './enabled-modules-currencies';
 
 const getModuleApprovalData = async (request: GenerateModuleCurrencyApprovalDataRequest) => {

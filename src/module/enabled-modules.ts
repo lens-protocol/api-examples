@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { EnabledModulesDocument } from '../graphql/generated';
+import { EnabledModulesDocument } from '../../graphql-v1/generated';
 
 const enabledModulesRequest = async () => {
   const result = await apolloClient.query({

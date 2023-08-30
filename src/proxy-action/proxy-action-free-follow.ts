@@ -5,7 +5,7 @@ import {
   ProxyActionDocument,
   ProxyActionRequest,
   ProxyActionStatusTypes,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { sleep } from '../helpers';
 import { proxyActionStatusRequest } from './proxy-action-status';
 

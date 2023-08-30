@@ -1,0 +1,21 @@
+query hasTxHashBeenIndexed($request: HasTxHashBeenIndexedRequest!) {
+  hasTxHashBeenIndexed(request: $request) {
+    __typename
+    ... on TransactionIndexedResult {
+      indexed
+      txReceipt {
+        ...TxReceiptFields
+      }
+      metadataStatus {
+        status
+        reason
+      }
+    }
+    ... on TransactionError {
+      reason
+      txReceipt {
+        ...TxReceiptFields
+      }
+    }
+  }
+}

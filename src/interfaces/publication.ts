@@ -1,4 +1,4 @@
-import { MediaOutput, PublicationMainFocus } from '../graphql/generated';
+import { MediaOutput, PublicationMainFocus } from '../../graphql-v1/generated';
 import { GenericMetadata, MetadataDisplayType } from './generic';
 
 export interface MetadataAttribute {

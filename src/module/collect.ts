@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateCollectRequest, CreateCollectTypedDataDocument } from '../graphql/generated';
+import { CreateCollectRequest, CreateCollectTypedDataDocument } from '../../graphql-v1/generated';
 import { lensHub } from '../lens-hub';
 
 const createCollectTypedData = async (request: CreateCollectRequest) => {

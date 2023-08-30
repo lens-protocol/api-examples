@@ -3,7 +3,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { LENS_FOLLOW_NFT_ABI } from '../config';
 import { getAddressFromSigner, getSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../graphql/generated';
+import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../../graphql-v1/generated';
 
 const createUnfollowTypedData = async (request: UnfollowRequest) => {
   const result = await apolloClient.mutate({

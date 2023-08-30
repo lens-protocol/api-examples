@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { ProxyActionStatusDocument } from '../graphql/generated';
+import { ProxyActionStatusDocument } from '../../graphql-v1/generated';
 
 export const proxyActionStatusRequest = async (proxyActionId: string) => {
   const result = await apolloClient.query({

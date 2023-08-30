@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { RecommendedProfilesDocument } from '../graphql/generated';
+import { RecommendedProfilesDocument } from '../../graphql-v1/generated';
 
 const getRecommendedProfilesRequest = async () => {
   const result = await apolloClient.query({

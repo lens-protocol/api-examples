@@ -5,7 +5,7 @@ import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.
 import {
   CreateSetDefaultProfileRequest,
   CreateSetDefaultProfileTypedDataDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 

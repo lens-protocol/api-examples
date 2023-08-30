@@ -6,7 +6,7 @@ import {
   PublicationSortCriteria,
   PublicationsProfileBookmarkedQueryRequest,
   PublicationsProfileBookmarksDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const publicationsProfileBookmarks = (request: PublicationsProfileBookmarkedQueryRequest) => {
   return apolloClient.query({

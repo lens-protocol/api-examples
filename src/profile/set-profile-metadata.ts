@@ -6,7 +6,7 @@ import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.
 import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataTypedDataDocument,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';

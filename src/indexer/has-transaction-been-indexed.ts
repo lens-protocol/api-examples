@@ -3,7 +3,10 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { follow } from '../follow/follow';
-import { HasTxHashBeenIndexedDocument, HasTxHashBeenIndexedRequest } from '../graphql/generated';
+import {
+  HasTxHashBeenIndexedDocument,
+  HasTxHashBeenIndexedRequest,
+} from '../../graphql-v1/generated';
 
 const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
   const result = await apolloClient.query({

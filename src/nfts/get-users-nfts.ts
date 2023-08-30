@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { NftsDocument, NfTsRequest } from '../graphql/generated';
+import { NftsDocument, NfTsRequest } from '../../graphql-v1/generated';
 
 const getUsersNfts = async (request: NfTsRequest) => {
   const result = await apolloClient.query({

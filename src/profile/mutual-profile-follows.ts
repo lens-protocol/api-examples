@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import {
   MutualFollowersProfilesDocument,
   MutualFollowersProfilesQueryRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 export const mutualProfileFollowsRequest = async (request: MutualFollowersProfilesQueryRequest) => {
   const result = await apolloClient.query({

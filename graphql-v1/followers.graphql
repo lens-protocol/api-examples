@@ -1,0 +1,13 @@
+query followers($request: FollowersRequest!) {
+  followers(request: $request) {
+    items {
+      wallet {
+        ...WalletFields
+      }
+      totalAmountOfTimesFollowed
+    }
+    pageInfo {
+      ...CommonPaginatedResultInfoFields
+    }
+  }
+}

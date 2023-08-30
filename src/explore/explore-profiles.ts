@@ -3,7 +3,7 @@ import {
   ExploreProfilesDocument,
   ExploreProfilesRequest,
   ProfileSortCriteria,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 // sort out types by generating them!
 export const exploreProfiles = async (request: ExploreProfilesRequest) => {

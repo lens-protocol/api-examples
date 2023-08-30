@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { ReactionRequest, ReactionTypes, RemoveReactionDocument } from '../graphql/generated';
+import { ReactionRequest, ReactionTypes, RemoveReactionDocument } from '../../graphql-v1/generated';
 
 const removeReactionRequest = async (request: ReactionRequest) => {
   const result = await apolloClient.mutate({

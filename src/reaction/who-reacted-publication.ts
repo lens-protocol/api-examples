@@ -1,5 +1,8 @@
 import { apolloClient } from '../apollo-client';
-import { WhoReactedPublicationDocument, WhoReactedPublicationRequest } from '../graphql/generated';
+import {
+  WhoReactedPublicationDocument,
+  WhoReactedPublicationRequest,
+} from '../../graphql-v1/generated';
 
 export const whoReactedPublicationRequest = async (request: WhoReactedPublicationRequest) => {
   const result = await apolloClient.query({

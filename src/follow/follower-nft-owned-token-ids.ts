@@ -3,7 +3,7 @@ import { getAddressFromSigner } from '../ethers.service';
 import {
   FollowerNftOwnedTokenIdsDocument,
   FollowerNftOwnedTokenIdsRequest,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 
 const getFollowerNFTTokenIds = async (request: FollowerNftOwnedTokenIdsRequest) => {
   const result = await apolloClient.query({

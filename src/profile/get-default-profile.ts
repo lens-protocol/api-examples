@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import { DefaultProfileDocument, DefaultProfileRequest } from '../graphql/generated';
+import { DefaultProfileDocument, DefaultProfileRequest } from '../../graphql-v1/generated';
 
 const getDefaultProfileRequest = async (request: DefaultProfileRequest) => {
   const result = await apolloClient.query({

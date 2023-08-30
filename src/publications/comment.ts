@@ -8,7 +8,7 @@ import {
   CreateCommentTypedDataDocument,
   CreatePublicCommentRequest,
   PublicationMainFocus,
-} from '../graphql/generated';
+} from '../../graphql-v1/generated';
 import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
