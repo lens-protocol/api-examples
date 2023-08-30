@@ -1,0 +1,17 @@
+query LensTransactionStatus($request: LensTransactionStatusRequest!) {
+  result: lensTransactionStatus(request: $request) {
+    ... on LensTransaction {
+      __typename
+      status
+      txHash
+      reason
+      extraInfo
+    }
+    ... on LensMetadataTransaction {
+      __typename
+      status
+      metadataFailedReason
+      extraInfo
+    }
+  }
+}

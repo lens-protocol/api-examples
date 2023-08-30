@@ -4,53 +4,49 @@ import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { follow } from '../follow/follow';
 import {
-  HasTxHashBeenIndexedDocument,
-  HasTxHashBeenIndexedRequest,
-} from '../../graphql-v1/generated';
+  LensTransactionStatusDocument,
+  LensTransactionStatusRequest,
+  LensTransactionStatusType,
+} from '../graphql/generated';
 
-const hasTxBeenIndexed = async (request: HasTxHashBeenIndexedRequest) => {
+const hasTxBeenIndexed = async (request: LensTransactionStatusRequest) => {
   const result = await apolloClient.query({
-    query: HasTxHashBeenIndexedDocument,
+    query: LensTransactionStatusDocument,
     variables: {
       request,
     },
     fetchPolicy: 'network-only',
   });
 
-  return result.data.hasTxHashBeenIndexed;
+  return result.data.result;
 };
 
-export const pollUntilIndexed = async (input: { txHash: string } | { txId: string }) => {
+export const waitUntilComplete = async (input: { txHash: string } | { txId: string }) => {
   while (true) {
     const response = await hasTxBeenIndexed(input);
     console.log('pool until indexed: result', response);
 
-    if (response.__typename === 'TransactionIndexedResult') {
-      console.log('pool until indexed: indexed', response.indexed);
-      console.log('pool until metadataStatus: metadataStatus', response.metadataStatus);
-
-      console.log(response.metadataStatus);
-      if (response.metadataStatus) {
-        if (response.metadataStatus.status === 'SUCCESS') {
-          return response;
+    switch (response.status) {
+      case LensTransactionStatusType.Failed:
+        if (response.__typename === 'LensTransaction') {
+          // it got reverted and failed!
+          throw new Error(response.reason ?? 'Transaction failed');
+        } else {
+          throw new Error(response.metadataFailedReason ?? 'Transaction failed');
         }
 
-        if (response.metadataStatus.status === 'METADATA_VALIDATION_FAILED') {
-          throw new Error(response.metadataStatus.status);
-        }
-      } else {
-        if (response.indexed) {
-          return response;
-        }
-      }
+      case LensTransactionStatusType.Progressing:
+        console.log('still in progress');
+        break;
 
-      console.log('pool until indexed: sleep for 1500 milliseconds then try again');
-      // sleep for a second before trying again
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-    } else {
-      // it got reverted and failed!
-      throw new Error(response.reason);
+      case LensTransactionStatusType.Complete:
+        console.log('complete and indexed onchain');
+        return response;
     }
+
+    console.log('pool until indexed: sleep for 1500 milliseconds then try again');
+    // sleep for before trying again
+    await new Promise((resolve) => setTimeout(resolve, 1500));
   }
 };
 
@@ -63,7 +59,7 @@ const testTransaction = async () => {
   const hash = await follow('0x06');
   console.log('testTransaction: hash', hash);
 
-  await pollUntilIndexed({ txHash: hash });
+  await waitUntilComplete({ txHash: hash });
 
   console.log('testTransaction: Indexed');
 };

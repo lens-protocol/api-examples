@@ -10,7 +10,7 @@ import {
   CreatePublicPostRequest,
   PublicationMainFocus,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { createMediaAttachment } from '../media/create-attachment';
@@ -129,7 +129,7 @@ export const createPostGasless = async () => {
   console.log('create post gasless', result);
 
   console.log('create post: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: result.txId });
+  const indexedResult = await waitUntilComplete({ txId: result.txId });
 
   console.log('create post: profile has been indexed', result);
 

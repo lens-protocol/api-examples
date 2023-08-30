@@ -8,7 +8,7 @@ import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataViaDispatcherDocument,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';
 import { profile } from './get-profile';
@@ -105,7 +105,7 @@ export const setProfileMetadata = async () => {
   console.log('create comment gasless', result);
 
   console.log('create profile metadata: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: result.txId });
+  const indexedResult = await waitUntilComplete({ txId: result.txId });
 
   console.log('create profile metadata: profile has been indexed', result);
 

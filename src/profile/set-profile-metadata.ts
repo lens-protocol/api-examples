@@ -7,7 +7,7 @@ import {
   CreatePublicSetProfileMetadataUriRequest,
   CreateSetProfileMetadataTypedDataDocument,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';
 import { lensPeriphery } from '../lens-hub';
@@ -93,7 +93,7 @@ const setProfileMetadata = async () => {
   console.log('create profile metadata: tx hash', tx.hash);
 
   console.log('create profile metadata: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
+  const indexedResult = await waitUntilComplete({ txHash: tx.hash });
 
   console.log('create profile metadata: profile has been indexed');
 

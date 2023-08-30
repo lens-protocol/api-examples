@@ -2,7 +2,7 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
 import { createFollowTypedData } from '../follow/follow';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { broadcastRequestOnchain } from './shared-broadcast';
 
 const broadcast = async () => {
@@ -38,11 +38,10 @@ const broadcast = async () => {
   }
 
   console.log('follow with broadcast: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: broadcastResult.txId });
-  console.log('follow with broadcast: has been indexed', result);
+  const indexedResult = await waitUntilComplete({ txId: broadcastResult.txId });
+  console.log('follow with broadcast: has been indexed', indexedResult);
 
-  const logs = indexedResult!.txReceipt!.logs;
-  console.log('follow with broadcast: logs', logs);
+  console.log('follow broadcast: complete');
 };
 
 (async () => {

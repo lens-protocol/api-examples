@@ -5,7 +5,7 @@ import { broadcastRequestOnchain } from '../broadcast/shared-broadcast';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { CreateMirrorRequest, CreateMirrorViaDispatcherDocument } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { profile } from '../profile/get-profile';
 import { signCreateMirrorTypedData } from './mirror';
 
@@ -81,7 +81,7 @@ export const createMirror = async () => {
   console.log('create mirror gasless', result);
 
   console.log('create mirror: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: result.txId });
+  const indexedResult = await waitUntilComplete({ txId: result.txId });
 
   console.log('create mirror: profile has been indexed', result);
 

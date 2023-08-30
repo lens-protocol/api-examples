@@ -5,7 +5,7 @@ import {
   CreateToggleFollowRequest,
   CreateToggleFollowTypedDataDocument,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { lensPeriphery } from '../lens-hub';
 
 const createToggleFollowTypedData = async (request: CreateToggleFollowRequest) => {
@@ -55,7 +55,7 @@ export const toggleFollow = async (profileId: string = '0x032f1a') => {
   console.log('follow: tx hash', tx.hash);
 
   console.log('follow: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
+  const indexedResult = await waitUntilComplete({ txHash: tx.hash });
 
   console.log('follow: profile has been indexed', result);
 

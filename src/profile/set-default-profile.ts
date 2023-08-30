@@ -6,7 +6,7 @@ import {
   CreateSetDefaultProfileRequest,
   CreateSetDefaultProfileTypedDataDocument,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 
 const createSetDefaultProfileTypedData = async (request: CreateSetDefaultProfileRequest) => {
@@ -55,7 +55,7 @@ export const setDefaultProfile = async () => {
   console.log('set default profile: tx hash', tx.hash);
 
   console.log('set default profile: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.txHash });
+  const indexedResult = await waitUntilComplete({ txHash: tx.txHash });
 
   console.log('set default profile: action has been indexed', indexedResult);
 

@@ -9,7 +9,7 @@ import {
   CreatePublicCommentRequest,
   PublicationMainFocus,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { Metadata } from '../interfaces/publication';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
@@ -41,7 +41,7 @@ export const signCreateCommentTypedData = async (request: CreatePublicCommentReq
 
 export const pollAndIndexComment = async (txHash: string, profileId: string, prefix: string) => {
   console.log(`${prefix}: poll until indexed`);
-  const indexedResult = await pollUntilIndexed({ txHash });
+  const indexedResult = await waitUntilComplete({ txHash });
 
   console.log(`${prefix}: profile has been indexed`);
 

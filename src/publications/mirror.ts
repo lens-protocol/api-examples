@@ -4,7 +4,7 @@ import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateMirrorRequest, CreateMirrorTypedDataDocument } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { lensHub } from '../lens-hub';
 
 export const createMirrorTypedData = async (request: CreateMirrorRequest) => {
@@ -76,7 +76,7 @@ const createMirror = async () => {
   console.log('create mirror: tx hash', tx.hash);
 
   console.log('create mirror: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txHash: tx.hash });
+  const indexedResult = await waitUntilComplete({ txHash: tx.hash });
 
   console.log('create mirror: profile has been indexed');
 

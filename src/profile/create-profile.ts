@@ -3,7 +3,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
 import { CreateProfileDocument, CreateProfileRequest } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 
 const createProfileRequest = async (request: CreateProfileRequest) => {
   const result = await apolloClient.mutate({
@@ -34,7 +34,7 @@ export const createProfile = async () => {
   }
 
   console.log('create profile: poll until indexed');
-  const result = await pollUntilIndexed({ txHash: createProfileResult.txHash });
+  const result = await waitUntilComplete({ txHash: createProfileResult.txHash });
 
   console.log('create profile: profile has been indexed', result);
 

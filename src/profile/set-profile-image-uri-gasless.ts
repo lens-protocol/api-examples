@@ -7,7 +7,7 @@ import {
   CreateSetProfileImageUriViaDispatcherDocument,
   UpdateProfileImageRequest,
 } from '../../graphql-v1/generated';
-import { pollUntilIndexed } from '../indexer/has-transaction-been-indexed';
+import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 import { profile } from './get-profile';
 import { signCreateSetProfileImageUriTypedData } from './set-profile-image-uri';
 
@@ -83,7 +83,7 @@ const setProfileImageUri = async () => {
   console.log('set profile image url gasless', result);
 
   console.log('set profile image url: poll until indexed');
-  const indexedResult = await pollUntilIndexed({ txId: result.txId });
+  const indexedResult = await waitUntilComplete({ txId: result.txId });
 
   console.log('set profile image url: profile has been indexed', result);
 
