@@ -8,7 +8,7 @@ import {
 } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import fetch from 'cross-fetch';
-import { LENS_API } from './config';
+import { LENS_API, ORIGIN } from './config';
 import { getAuthenticationToken } from './state';
 
 const defaultOptions: DefaultOptions = {
@@ -49,6 +49,7 @@ const authLink = new ApolloLink((operation, forward) => {
   operation.setContext({
     headers: {
       'x-access-token': token ? `Bearer ${token}` : '',
+      ...(ORIGIN ? { origin: ORIGIN } : {}),
     },
   });
 

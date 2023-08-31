@@ -46,7 +46,7 @@ export const signCreateDAPostTypedData = async (request: CreateDataAvailabilityP
   return { result, signature };
 };
 
-const postDA = async (
+const createPostOnMomoka = async (
   createDAPostRequest: CreateDataAvailabilityPostRequest,
   useDispatcherIfEnabled: boolean
 ) => {
@@ -102,7 +102,7 @@ export const createPostDataAvailability = async (useDispatcherIfEnabled: boolean
     contentURI: 'https://arweave.net/A492V5l-4w43v0QbqQZ2vtivOuRxEHTUHBJvub68CZE',
   };
 
-  const result = await postDA(createDAPostRequest, useDispatcherIfEnabled);
+  const result = await createPostOnMomoka(createDAPostRequest, useDispatcherIfEnabled);
   console.log('create DA post created', result);
 
   if (result.__typename !== 'CreateDataAvailabilityPublicationResult') {

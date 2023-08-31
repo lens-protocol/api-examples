@@ -1,5 +1,5 @@
 query LensTransactionStatus($request: LensTransactionStatusRequest!) {
-  result: lensTransactionStatus(request: $request) {
+  lensTransactionStatus(request: $request) {
     ... on LensTransaction {
       __typename
       status

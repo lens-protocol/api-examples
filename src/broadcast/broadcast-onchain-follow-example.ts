@@ -41,7 +41,7 @@ const broadcast = async () => {
   const indexedResult = await waitUntilComplete({ txId: broadcastResult.txId });
   console.log('follow with broadcast: has been indexed', indexedResult);
 
-  console.log('follow broadcast: complete');
+console.log('follow broadcast: complete');
 };
 
 (async () => {

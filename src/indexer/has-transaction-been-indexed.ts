@@ -18,7 +18,7 @@ const hasTxBeenIndexed = async (request: LensTransactionStatusRequest) => {
     fetchPolicy: 'network-only',
   });
 
-  return result.data.result;
+  return result.data.lensTransactionStatus;
 };
 
 export const waitUntilComplete = async (input: { txHash: string } | { txId: string }) => {
