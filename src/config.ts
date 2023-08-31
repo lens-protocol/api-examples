@@ -14,10 +14,10 @@ const fileFollowNFT = fs.readFileSync(
   'utf8'
 );
 
-const getParamOrExit = (name: string) => {
+const getParamOrExit = (name: string, errorMessage?: string) => {
   const param = process.env[name];
   if (!param) {
-    console.error(`Required config param '${name}' missing`);
+    console.error(errorMessage ?? `Required config param '${name}' missing`);
     process.exit(1);
   }
   return param;
@@ -62,4 +62,6 @@ export const INFURA_SECRET = getParam('INFURA_SECRET');
 
 export const USE_GASLESS = Boolean(getParam('USE_GASLESS'));
 
-export const ORIGIN = getParam('ORIGIN');
+export const ORIGIN = USE_GASLESS
+  ? getParamOrExit('ORIGIN', 'You must supply the ORIGIN env var when USE_GASLESS is enabled')
+  : getParam('ORIGIN');
