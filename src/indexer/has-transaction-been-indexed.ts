@@ -1,8 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { login } from '../authentication/login';
 import { explicitStart } from '../config';
-import { getAddressFromSigner } from '../ethers.service';
-import { follow } from '../follow/follow';
 import {
   LensTransactionStatusDocument,
   LensTransactionStatusRequest,
@@ -51,17 +48,14 @@ export const waitUntilComplete = async (input: { txHash: string } | { txId: stri
 };
 
 const testTransaction = async () => {
-  const address = getAddressFromSigner();
-  console.log('testTransaction: address', address);
-
-  await login(address);
-
-  const hash = await follow('0x06');
-  console.log('testTransaction: hash', hash);
-
-  await waitUntilComplete({ txHash: hash });
-
-  console.log('testTransaction: Indexed');
+  // TODO! make a tx hash and monitor it
+  // const address = getAddressFromSigner();
+  // console.log('testTransaction: address', address);
+  // await login(address);
+  // const hash = await follow('0x06');
+  // console.log('testTransaction: hash', hash);
+  // await waitUntilComplete({ txHash: hash });
+  // console.log('testTransaction: Indexed');
 };
 
 (async () => {

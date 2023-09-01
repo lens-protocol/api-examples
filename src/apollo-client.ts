@@ -8,6 +8,7 @@ import {
 } from '@apollo/client/core';
 import { onError } from '@apollo/client/link/error';
 import fetch from 'cross-fetch';
+import { print } from 'graphql/language/printer';
 import { LENS_API, ORIGIN } from './config';
 import { getAuthenticationToken } from './state';
 
@@ -44,6 +45,11 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 const authLink = new ApolloLink((operation, forward) => {
   const token = getAuthenticationToken();
   console.log('jwt token:', token);
+
+  const logMessage = `GraphQL Query: ${print(operation.query)}, Variables: ${JSON.stringify(
+    operation.variables
+  )}`;
+  console.log(logMessage);
 
   // Use the setContext method to set the HTTP headers.
   operation.setContext({

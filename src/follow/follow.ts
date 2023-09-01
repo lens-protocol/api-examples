@@ -40,6 +40,7 @@ export const follow = async (profileId: string = '0x02') => {
 
   if (USE_GASLESS) {
     const broadcastResult = await broadcastOnchainRequest({ id, signature });
+    console.log('follow: broadcastResult', broadcastResult);
 
     await waitUntilBroadcastTransactionIsComplete(broadcastResult, 'follow');
   } else {
