@@ -20,6 +20,8 @@
     "profile:set-profile-metadata-lens-profile-manager": "env-cmd -f .env ts-node ./src/profile/set-profile-metadata-lens-profile-manager",
     "module:set-follow-module": "env-cmd -f .env ts-node ./src/module/set-follow-module",
     "module:set-follow-module-lens-profile-manager": "env-cmd -f .env ts-node ./src/module/set-follow-module-lens-profile-manager",
+    "handle:unlink-handle-from-profile": "env-cmd -f .env ts-node ./src/handle/unlink-handle-from-profile",
+    "handle:unlink-handle-from-profile-lens-profile-manager": "env-cmd -f .env ts-node ./src/handle/unlink-handle-from-profile-lens-profile-manager",
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
@@ -86,7 +88,8 @@
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "random:sign": "env-cmd -f .env ts-node ./src/random-sign",
     "mock:upload": "env-cmd -f .env ts-node ./src/mock-upload",
-    "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5"
+    "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5",
+    "generate-lens-token-handle-registry-typings": "abi-types-generator './src/abis/lens-token-handle-registry-contract-abi.json' --output='./src/abis/types' --name=LensTokenHandleRegistry --provider=ethers_v5"
   },
   "authors": [
     "joshstevens19@hotmail.co.uk",

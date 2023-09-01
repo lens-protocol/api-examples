@@ -1799,10 +1799,6 @@ export enum LensTransactionStatusType {
   Progressing = 'PROGRESSING',
 }
 
-export type LinkHandleRequest = {
-  handle: Scalars['Handle'];
-};
-
 export type LinkMetadataV1 = {
   __typename?: 'LinkMetadataV1';
   appId?: Maybe<Scalars['AppId']>;
@@ -3881,7 +3877,6 @@ export type Query = {
   invitedProfiles: Array<InvitedResult>;
   iss: Array<PrfResult>;
   lensTransactionStatus: LensTransactionResult;
-  linkHandleToProfile?: Maybe<Scalars['Void']>;
   momokaSubmitters: MomokaSubmittersResult;
   momokaSummary: MomokaSummaryResult;
   momokaTransaction: MomokaTransaction;
@@ -3925,7 +3920,6 @@ export type Query = {
   searchPublications: PaginatedPublicationPrimaryResult;
   supportedModules: Array<SupportedModules>;
   txIdToTxHash?: Maybe<Scalars['TxHash']>;
-  unlinkHandleFromProfile?: Maybe<Scalars['Void']>;
   userSigNonces: UserSigNonces;
   validatePublicationMetadata: PublicationValidateMetadataResult;
   verify: Scalars['Boolean'];
@@ -4003,10 +3997,6 @@ export type QueryIssArgs = {
 
 export type QueryLensTransactionStatusArgs = {
   request: LensTransactionStatusRequest;
-};
-
-export type QueryLinkHandleToProfileArgs = {
-  request: LinkHandleRequest;
 };
 
 export type QueryMomokaTransactionArgs = {
@@ -4135,10 +4125,6 @@ export type QuerySearchPublicationsArgs = {
 
 export type QueryTxIdToTxHashArgs = {
   txId: Scalars['TxId'];
-};
-
-export type QueryUnlinkHandleFromProfileArgs = {
-  request: UnlinkHandleRequest;
 };
 
 export type QueryValidatePublicationMetadataArgs = {
@@ -4643,10 +4629,6 @@ export type UnknownReferenceModuleSettings = {
   referenceModuleReturnData: Scalars['BlockchainData'];
 };
 
-export type UnlinkHandleRequest = {
-  handle: Scalars['Handle'];
-};
-
 export type UserPoapsQueryRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   for: Scalars['ProfileId'];
@@ -4873,6 +4855,102 @@ export type UnfollowMutationVariables = Exact<{
 export type UnfollowMutation = {
   __typename?: 'Mutation';
   unfollow:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
+export type CreateHandleLinkToProfileTypedDataMutationVariables = Exact<{
+  request: HandleLinkToProfileRequest;
+}>;
+
+export type CreateHandleLinkToProfileTypedDataMutation = {
+  __typename?: 'Mutation';
+  createHandleLinkToProfileTypedData: {
+    __typename?: 'CreateHandleLinkToProfileBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateHandleLinkToProfileEIP712TypedData';
+      types: {
+        __typename?: 'CreateHandleLinkToProfileEIP712TypedDataTypes';
+        Link: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: {
+        __typename?: 'CreateHandleLinkToProfileEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        handleId: any;
+      };
+    };
+  };
+};
+
+export type HandleLinkToProfileMutationVariables = Exact<{
+  request: HandleLinkToProfileRequest;
+}>;
+
+export type HandleLinkToProfileMutation = {
+  __typename?: 'Mutation';
+  handleLinkToProfile:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
+export type CreateHandleUnlinkFromProfileTypedDataMutationVariables = Exact<{
+  request: HandleUnlinkFromProfileRequest;
+}>;
+
+export type CreateHandleUnlinkFromProfileTypedDataMutation = {
+  __typename?: 'Mutation';
+  createHandleUnlinkFromProfileTypedData: {
+    __typename?: 'CreateHandleUnlinkFromProfileBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedData';
+      types: {
+        __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataTypes';
+        Unlink: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: {
+        __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        handleId: any;
+      };
+    };
+  };
+};
+
+export type HandleUnlinkFromProfileMutationVariables = Exact<{
+  request: HandleUnlinkFromProfileRequest;
+}>;
+
+export type HandleUnlinkFromProfileMutation = {
+  __typename?: 'Mutation';
+  handleUnlinkFromProfile:
     | {
         __typename?: 'LensProfileManagerRelayError';
         reason: LensProfileManagerRelayErrorReasonType;
@@ -5822,6 +5900,355 @@ export const UnfollowDocument = {
     },
   ],
 } as unknown as DocumentNode<UnfollowMutation, UnfollowMutationVariables>;
+export const CreateHandleLinkToProfileTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateHandleLinkToProfileTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'HandleLinkToProfileRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createHandleLinkToProfileTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'Link' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'handleId' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateHandleLinkToProfileTypedDataMutation,
+  CreateHandleLinkToProfileTypedDataMutationVariables
+>;
+export const HandleLinkToProfileDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'HandleLinkToProfile' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'HandleLinkToProfileRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'handleLinkToProfile' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<HandleLinkToProfileMutation, HandleLinkToProfileMutationVariables>;
+export const CreateHandleUnlinkFromProfileTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateHandleUnlinkFromProfileTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'HandleUnlinkFromProfileRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createHandleUnlinkFromProfileTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'Unlink' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'handleId' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateHandleUnlinkFromProfileTypedDataMutation,
+  CreateHandleUnlinkFromProfileTypedDataMutationVariables
+>;
+export const HandleUnlinkFromProfileDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'HandleUnlinkFromProfile' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'HandleUnlinkFromProfileRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'handleUnlinkFromProfile' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  HandleUnlinkFromProfileMutation,
+  HandleUnlinkFromProfileMutationVariables
+>;
 export const CreateSetFollowModuleTypedDataDocument = {
   kind: 'Document',
   definitions: [

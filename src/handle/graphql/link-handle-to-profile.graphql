@@ -1,0 +1,38 @@
+mutation CreateHandleLinkToProfileTypedData($request: HandleLinkToProfileRequest!) {
+  createHandleLinkToProfileTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Link {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        handleId
+      }
+    }
+  }
+}
+
+mutation HandleLinkToProfile($request: HandleLinkToProfileRequest!) {
+  handleLinkToProfile(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
