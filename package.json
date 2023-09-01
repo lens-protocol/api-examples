@@ -85,7 +85,8 @@
     "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment",
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "random:sign": "env-cmd -f .env ts-node ./src/random-sign",
-    "mock:upload": "env-cmd -f .env ts-node ./src/mock-upload"
+    "mock:upload": "env-cmd -f .env ts-node ./src/mock-upload",
+    "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5"
   },
   "authors": [
     "joshstevens19@hotmail.co.uk",
@@ -106,7 +107,8 @@
     "ipfs-http-client": "^56.0.3",
     "omit-deep": "^0.3.0",
     "typestub-ipfs-only-hash": "^4.0.0",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "ethereum-abi-types-generator": "^1.3.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.11.3",
