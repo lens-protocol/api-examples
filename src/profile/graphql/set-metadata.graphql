@@ -1,0 +1,38 @@
+mutation CreateOnchainSetProfileMetadataTypedData($request: OnchainSetProfileMetadataRequest!) {
+  createOnchainSetProfileMetadataTypedData(request: $request) {
+    expiresAt
+    id
+    typedData {
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      types {
+        SetProfileMetadataURI {
+          name
+          type
+        }
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        metadataURI
+      }
+    }
+  }
+}
+
+mutation SetProfileMetadata($request: OnchainSetProfileMetadataRequest!) {
+  setProfileMetadata(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

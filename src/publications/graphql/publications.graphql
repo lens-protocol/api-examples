@@ -4,7 +4,7 @@ mutation CreateMomokaPostTypedData($request: MomokaPostRequest!) {
     expiresAt
     typedData {
       types {
-        PostWithSig {
+        Post {
           name
           type
         }

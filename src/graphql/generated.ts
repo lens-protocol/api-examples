@@ -377,7 +377,7 @@ export type CreateActOnOpenActionEip712TypedData = {
 
 export type CreateActOnOpenActionEip712TypedDataTypes = {
   __typename?: 'CreateActOnOpenActionEIP712TypedDataTypes';
-  ActWithSig: Array<Eip712TypedDataField>;
+  Act: Array<Eip712TypedDataField>;
 };
 
 export type CreateActOnOpenActionEip712TypedDataValue = {
@@ -415,7 +415,7 @@ export type CreateBlockProfilesEip712TypedData = {
 
 export type CreateBlockProfilesEip712TypedDataTypes = {
   __typename?: 'CreateBlockProfilesEIP712TypedDataTypes';
-  SetBlockStatusWithSig: Array<Eip712TypedDataField>;
+  SetBlockStatus: Array<Eip712TypedDataField>;
 };
 
 export type CreateBlockProfilesEip712TypedDataValue = {
@@ -523,7 +523,7 @@ export type CreateHandleLinkToProfileEip712TypedData = {
 
 export type CreateHandleLinkToProfileEip712TypedDataTypes = {
   __typename?: 'CreateHandleLinkToProfileEIP712TypedDataTypes';
-  LinkWithSig: Array<Eip712TypedDataField>;
+  Link: Array<Eip712TypedDataField>;
 };
 
 export type CreateHandleLinkToProfileEip712TypedDataValue = {
@@ -556,7 +556,7 @@ export type CreateHandleUnlinkFromProfileEip712TypedData = {
 
 export type CreateHandleUnlinkFromProfileEip712TypedDataTypes = {
   __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataTypes';
-  UnlinkWithSig: Array<Eip712TypedDataField>;
+  Unlink: Array<Eip712TypedDataField>;
 };
 
 export type CreateHandleUnlinkFromProfileEip712TypedDataValue = {
@@ -599,7 +599,7 @@ export type CreateMomokaCommentEip712TypedData = {
 
 export type CreateMomokaCommentEip712TypedDataTypes = {
   __typename?: 'CreateMomokaCommentEIP712TypedDataTypes';
-  CommentWithSig: Array<Eip712TypedDataField>;
+  Comment: Array<Eip712TypedDataField>;
 };
 
 export type CreateMomokaCommentEip712TypedDataValue = {
@@ -641,7 +641,7 @@ export type CreateMomokaMirrorEip712TypedData = {
 
 export type CreateMomokaMirrorEip712TypedDataTypes = {
   __typename?: 'CreateMomokaMirrorEIP712TypedDataTypes';
-  MirrorWithSig: Array<Eip712TypedDataField>;
+  Mirror: Array<Eip712TypedDataField>;
 };
 
 export type CreateMomokaMirrorEip712TypedDataValue = {
@@ -678,7 +678,7 @@ export type CreateMomokaPostEip712TypedData = {
 
 export type CreateMomokaPostEip712TypedDataTypes = {
   __typename?: 'CreateMomokaPostEIP712TypedDataTypes';
-  PostWithSig: Array<Eip712TypedDataField>;
+  Post: Array<Eip712TypedDataField>;
 };
 
 export type CreateMomokaPostEip712TypedDataValue = {
@@ -722,7 +722,7 @@ export type CreateMomokaQuoteEip712TypedData = {
 
 export type CreateMomokaQuoteEip712TypedDataTypes = {
   __typename?: 'CreateMomokaQuoteEIP712TypedDataTypes';
-  QuoteWithSig: Array<Eip712TypedDataField>;
+  Quote: Array<Eip712TypedDataField>;
 };
 
 export type CreateMomokaQuoteEip712TypedDataValue = {
@@ -764,7 +764,7 @@ export type CreateOnchainCommentEip712TypedData = {
 
 export type CreateOnchainCommentEip712TypedDataTypes = {
   __typename?: 'CreateOnchainCommentEIP712TypedDataTypes';
-  CommentWithSig: Array<Eip712TypedDataField>;
+  Comment: Array<Eip712TypedDataField>;
 };
 
 export type CreateOnchainCommentEip712TypedDataValue = {
@@ -806,7 +806,7 @@ export type CreateOnchainMirrorEip712TypedData = {
 
 export type CreateOnchainMirrorEip712TypedDataTypes = {
   __typename?: 'CreateOnchainMirrorEIP712TypedDataTypes';
-  MirrorWithSig: Array<Eip712TypedDataField>;
+  Mirror: Array<Eip712TypedDataField>;
 };
 
 export type CreateOnchainMirrorEip712TypedDataValue = {
@@ -843,7 +843,7 @@ export type CreateOnchainPostEip712TypedData = {
 
 export type CreateOnchainPostEip712TypedDataTypes = {
   __typename?: 'CreateOnchainPostEIP712TypedDataTypes';
-  PostWithSig: Array<Eip712TypedDataField>;
+  Post: Array<Eip712TypedDataField>;
 };
 
 export type CreateOnchainPostEip712TypedDataValue = {
@@ -880,7 +880,7 @@ export type CreateOnchainQuoteEip712TypedData = {
 
 export type CreateOnchainQuoteEip712TypedDataTypes = {
   __typename?: 'CreateOnchainQuoteEIP712TypedDataTypes';
-  QuoteWithSig: Array<Eip712TypedDataField>;
+  Quote: Array<Eip712TypedDataField>;
 };
 
 export type CreateOnchainQuoteEip712TypedDataValue = {
@@ -922,7 +922,7 @@ export type CreateOnchainSetProfileMetadataEip712TypedData = {
 
 export type CreateOnchainSetProfileMetadataEip712TypedDataTypes = {
   __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataTypes';
-  SetProfileMetadataURIWithSig: Array<Eip712TypedDataField>;
+  SetProfileMetadataURI: Array<Eip712TypedDataField>;
 };
 
 export type CreateOnchainSetProfileMetadataEip712TypedDataValue = {
@@ -973,7 +973,7 @@ export type CreateSetFollowModuleEip712TypedData = {
 
 export type CreateSetFollowModuleEip712TypedDataTypes = {
   __typename?: 'CreateSetFollowModuleEIP712TypedDataTypes';
-  SetFollowModuleWithSig: Array<Eip712TypedDataField>;
+  SetFollowModule: Array<Eip712TypedDataField>;
 };
 
 export type CreateSetFollowModuleEip712TypedDataValue = {
@@ -1007,7 +1007,7 @@ export type CreateUnblockProfilesEip712TypedData = {
 
 export type CreateUnblockProfilesEip712TypedDataTypes = {
   __typename?: 'CreateUnblockProfilesEIP712TypedDataTypes';
-  SetBlockStatusWithSig: Array<Eip712TypedDataField>;
+  SetBlockStatus: Array<Eip712TypedDataField>;
 };
 
 export type CreateUnblockProfilesEip712TypedDataValue = {
@@ -4920,6 +4920,58 @@ export type CreateChangeProfileManagersTypedDataMutation = {
   };
 };
 
+export type CreateOnchainSetProfileMetadataTypedDataMutationVariables = Exact<{
+  request: OnchainSetProfileMetadataRequest;
+}>;
+
+export type CreateOnchainSetProfileMetadataTypedDataMutation = {
+  __typename?: 'Mutation';
+  createOnchainSetProfileMetadataTypedData: {
+    __typename?: 'CreateOnchainSetProfileMetadataBroadcastItemResult';
+    expiresAt: any;
+    id: any;
+    typedData: {
+      __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedData';
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      types: {
+        __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataTypes';
+        SetProfileMetadataURI: Array<{
+          __typename?: 'EIP712TypedDataField';
+          name: string;
+          type: string;
+        }>;
+      };
+      value: {
+        __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        metadataURI: any;
+      };
+    };
+  };
+};
+
+export type SetProfileMetadataMutationVariables = Exact<{
+  request: OnchainSetProfileMetadataRequest;
+}>;
+
+export type SetProfileMetadataMutation = {
+  __typename?: 'Mutation';
+  setProfileMetadata:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
 export type CreateMomokaPostTypedDataMutationVariables = Exact<{
   request: MomokaPostRequest;
 }>;
@@ -4934,7 +4986,7 @@ export type CreateMomokaPostTypedDataMutation = {
       __typename?: 'CreateMomokaPostEIP712TypedData';
       types: {
         __typename?: 'CreateMomokaPostEIP712TypedDataTypes';
-        PostWithSig: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+        Post: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
       };
       domain: {
         __typename?: 'EIP712TypedDataDomain';
@@ -5715,6 +5767,179 @@ export const CreateChangeProfileManagersTypedDataDocument = {
   CreateChangeProfileManagersTypedDataMutation,
   CreateChangeProfileManagersTypedDataMutationVariables
 >;
+export const CreateOnchainSetProfileMetadataTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateOnchainSetProfileMetadataTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'OnchainSetProfileMetadataRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createOnchainSetProfileMetadataTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'SetProfileMetadataURI' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'metadataURI' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateOnchainSetProfileMetadataTypedDataMutation,
+  CreateOnchainSetProfileMetadataTypedDataMutationVariables
+>;
+export const SetProfileMetadataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'SetProfileMetadata' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'OnchainSetProfileMetadataRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'setProfileMetadata' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<SetProfileMetadataMutation, SetProfileMetadataMutationVariables>;
 export const CreateMomokaPostTypedDataDocument = {
   kind: 'Document',
   definitions: [
@@ -5764,7 +5989,7 @@ export const CreateMomokaPostTypedDataDocument = {
                           selections: [
                             {
                               kind: 'Field',
-                              name: { kind: 'Name', value: 'PostWithSig' },
+                              name: { kind: 'Name', value: 'Post' },
                               selectionSet: {
                                 kind: 'SelectionSet',
                                 selections: [
