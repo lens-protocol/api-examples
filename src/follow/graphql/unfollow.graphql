@@ -1,0 +1,24 @@
+mutation CreateUnfollowTypedData($request: UnfollowRequest!) {
+  createUnfollowTypedData(request: $request) {
+    typedData {
+      types {
+        Unfollow {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        unfollowerProfileId
+        idsOfProfilesToUnfollow
+      }
+    }
+  }
+}

@@ -1,9 +1,8 @@
-import { ethers } from 'ethers';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { LENS_FOLLOW_NFT_ABI } from '../config';
-import { getAddressFromSigner, getSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../../graphql-v1/generated';
+import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
+import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../graphql/generated';
+import { lensHub } from '../lens-hub';
 
 const createUnfollowTypedData = async (request: UnfollowRequest) => {
   const result = await apolloClient.mutate({
@@ -22,7 +21,7 @@ export const unfollow = async () => {
 
   await login(address);
 
-  const result = await createUnfollowTypedData({ profile: '0x01' });
+  const result = await createUnfollowTypedData({ profiles: ['0x02'] });
   console.log('unfollow: result', result);
 
   const typedData = result.typedData;
@@ -33,23 +32,19 @@ export const unfollow = async () => {
 
   const { v, r, s } = splitSignature(signature);
 
-  // load up the follower nft contract
-  const followNftContract = new ethers.Contract(
-    typedData.domain.verifyingContract,
-    LENS_FOLLOW_NFT_ABI,
-    getSigner()
+  const tx = await lensHub.unfollowWithSig(
+    typedData.value.unfollowerProfileId,
+    typedData.value.idsOfProfilesToUnfollow,
+    {
+      signer: address,
+      v,
+      r,
+      s,
+      deadline: typedData.value.deadline,
+    }
   );
-
-  const sig = {
-    v,
-    r,
-    s,
-    deadline: typedData.value.deadline,
-  };
-
-  // force the tx to send
-  const tx = await followNftContract.burnWithSig(typedData.value.tokenId, sig);
   console.log('follow: tx hash', tx.hash);
+  return tx.hash;
 };
 
 (async () => {
