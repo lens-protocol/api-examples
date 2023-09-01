@@ -49,7 +49,15 @@ export type Scalars = {
   Void: any;
 };
 
-export type AccessCondition = AndCondition | CollectCondition | EoaOwnershipCondition | Erc20OwnershipCondition | FollowCondition | NftOwnershipCondition | OrCondition | ProfileOwnershipCondition;
+export type AccessCondition =
+  | AndCondition
+  | CollectCondition
+  | EoaOwnershipCondition
+  | Erc20OwnershipCondition
+  | FollowCondition
+  | NftOwnershipCondition
+  | OrCondition
+  | ProfileOwnershipCondition;
 
 export type AchRequest = {
   address: Scalars['EvmAddress'];
@@ -91,7 +99,6 @@ export type Amount = {
   /** Floating point number as string (e.g. 42.009837). It could have the entire precision of the Asset or be truncated to the last significant decimal. */
   value: Scalars['String'];
 };
-
 
 export type AmountRateArgs = {
   request: Scalars['String'];
@@ -162,7 +169,7 @@ export type Audio = {
 };
 
 export enum AudioMimeType {
-  Mp3 = 'MP3'
+  Mp3 = 'MP3',
 }
 
 export type AudioSet = {
@@ -198,11 +205,19 @@ export type BroadcastRequest = {
   signature: Scalars['Signature'];
 };
 
+export type CanCommentArg = {
+  profileId?: InputMaybe<Scalars['ProfileId']>;
+};
+
 export type CanDecryptResponse = {
   __typename?: 'CanDecryptResponse';
   extraDetails?: Maybe<Scalars['String']>;
   reasons?: Maybe<Array<DecryptFailReasonType>>;
   result: Scalars['Boolean'];
+};
+
+export type CanMirrorArg = {
+  profileId?: InputMaybe<Scalars['ProfileId']>;
 };
 
 export type ChallengeRequest = {
@@ -219,7 +234,7 @@ export type ChangeProfileManager = {
 
 export enum ChangeProfileManagerActionType {
   Add = 'ADD',
-  Remove = 'REMOVE'
+  Remove = 'REMOVE',
 }
 
 export type ChangeProfileManagersRequest = {
@@ -256,7 +271,7 @@ export type ClaimProfileRequest = {
 export enum ClaimProfileStatusType {
   AlreadyClaimed = 'ALREADY_CLAIMED',
   ClaimFailed = 'CLAIM_FAILED',
-  NotClaimed = 'NOT_CLAIMED'
+  NotClaimed = 'NOT_CLAIMED',
 }
 
 export type ClaimableProfilesResult = {
@@ -282,7 +297,7 @@ export enum CollectOpenActionModuleType {
   LegacyRevertCollectModule = 'LegacyRevertCollectModule',
   LegacySimpleCollectModule = 'LegacySimpleCollectModule',
   LegacyTimedFeeCollectModule = 'LegacyTimedFeeCollectModule',
-  UnknownOpenActionModule = 'UnknownOpenActionModule'
+  UnknownOpenActionModule = 'UnknownOpenActionModule',
 }
 
 export type CollectOpenActionResult = {
@@ -316,7 +331,6 @@ export type Comment = {
   txHash: Scalars['TxHash'];
 };
 
-
 export type CommentStatsArgs = {
   request: PublicationStatsInput;
 };
@@ -329,7 +343,7 @@ export type CommentNotification = {
 
 export enum CommentRankingFilterType {
   NoneRelevant = 'NONE_RELEVANT',
-  Relevant = 'RELEVANT'
+  Relevant = 'RELEVANT',
 }
 
 export enum ComparisonOperatorConditionType {
@@ -338,7 +352,7 @@ export enum ComparisonOperatorConditionType {
   GreaterThanOrEqual = 'GREATER_THAN_OR_EQUAL',
   LessThan = 'LESS_THAN',
   LessThanOrEqual = 'LESS_THAN_OR_EQUAL',
-  NotEqual = 'NOT_EQUAL'
+  NotEqual = 'NOT_EQUAL',
 }
 
 export type CreateActOnOpenActionBroadcastItemResult = {
@@ -435,7 +449,7 @@ export type CreateChangeProfileManagersEip712TypedData = {
 
 export type CreateChangeProfileManagersEip712TypedDataTypes = {
   __typename?: 'CreateChangeProfileManagersEIP712TypedDataTypes';
-  ChangeDelegatedExecutorsConfigWithSig: Array<Eip712TypedDataField>;
+  ChangeDelegatedExecutorsConfig: Array<Eip712TypedDataField>;
 };
 
 export type CreateChangeProfileManagersEip712TypedDataValue = {
@@ -473,7 +487,7 @@ export type CreateFollowEip712TypedData = {
 /** The create follow eip 712 typed data types */
 export type CreateFollowEip712TypedDataTypes = {
   __typename?: 'CreateFollowEIP712TypedDataTypes';
-  FollowWithSig: Array<Eip712TypedDataField>;
+  Follow: Array<Eip712TypedDataField>;
 };
 
 /** The create follow eip 712 typed data value */
@@ -921,7 +935,7 @@ export type CreateOnchainSetProfileMetadataEip712TypedDataValue = {
 
 export enum CreateProfileWithHandleErrorReasonType {
   Failed = 'FAILED',
-  HandleTaken = 'HANDLE_TAKEN'
+  HandleTaken = 'HANDLE_TAKEN',
 }
 
 export type CreateProfileWithHandleErrorResult = {
@@ -1027,7 +1041,7 @@ export type CreateUnfollowEip712TypedData = {
 
 export type CreateUnfollowEip712TypedDataTypes = {
   __typename?: 'CreateUnfollowEIP712TypedDataTypes';
-  UnfollowWithSig: Array<Eip712TypedDataField>;
+  Unfollow: Array<Eip712TypedDataField>;
 };
 
 export type CreateUnfollowEip712TypedDataValue = {
@@ -1043,7 +1057,7 @@ export type CurRequest = {
 };
 
 export enum CustomFiltersType {
-  Gardeners = 'GARDENERS'
+  Gardeners = 'GARDENERS',
 }
 
 export enum DecryptFailReasonType {
@@ -1057,7 +1071,7 @@ export enum DecryptFailReasonType {
   MissingEncryptionParams = 'MISSING_ENCRYPTION_PARAMS',
   ProfileDoesNotExist = 'PROFILE_DOES_NOT_EXIST',
   UnauthorizedAddress = 'UNAUTHORIZED_ADDRESS',
-  UnauthorizedBalance = 'UNAUTHORIZED_BALANCE'
+  UnauthorizedBalance = 'UNAUTHORIZED_BALANCE',
 }
 
 export type DegreesOfSeparationReferenceModuleInput = {
@@ -1203,7 +1217,7 @@ export enum ExploreProfileOrderBy {
   MostFollowers = 'MOST_FOLLOWERS',
   MostMirrors = 'MOST_MIRRORS',
   MostPosts = 'MOST_POSTS',
-  MostPublication = 'MOST_PUBLICATION'
+  MostPublication = 'MOST_PUBLICATION',
 }
 
 export type ExploreProfilesRequest = {
@@ -1234,7 +1248,7 @@ export type ExplorePublicationRequest = {
 export enum ExplorePublicationType {
   Comment = 'COMMENT',
   Post = 'POST',
-  Quote = 'QUOTE'
+  Quote = 'QUOTE',
 }
 
 export enum ExplorePublicationsOrderByType {
@@ -1243,14 +1257,13 @@ export enum ExplorePublicationsOrderByType {
   TopCollectedOpenAction = 'TOP_COLLECTED_OPEN_ACTION',
   TopCommented = 'TOP_COMMENTED',
   TopMirrored = 'TOP_MIRRORED',
-  TopQuoted = 'TOP_QUOTED'
+  TopQuoted = 'TOP_QUOTED',
 }
 
 export type ExplorePublicationsWhere = {
   customFilters?: InputMaybe<Array<CustomFiltersType>>;
   metadata?: InputMaybe<PublicationMetadataFilters>;
   publicationTypes?: InputMaybe<Array<ExplorePublicationType>>;
-  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
   since?: InputMaybe<Scalars['UnixTimestamp']>;
 };
 
@@ -1276,14 +1289,13 @@ export enum FeedEventItemType {
   Post = 'POST',
   Quote = 'QUOTE',
   ReactionComment = 'REACTION_COMMENT',
-  ReactionPost = 'REACTION_POST'
+  ReactionPost = 'REACTION_POST',
 }
 
 export type FeedHighlight = Post | Quote;
 
 export type FeedHighlightWhere = {
   metadata: PublicationMetadataFilters;
-  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
 };
 
 export type FeedHighlightsRequest = {
@@ -1314,7 +1326,6 @@ export type FeedWhere = {
   feedEventItemTypes?: InputMaybe<Array<FeedEventItemType>>;
   for: Scalars['ProfileId'];
   metadata: PublicationMetadataFilters;
-  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
 };
 
 export type Fiat = {
@@ -1340,7 +1351,10 @@ export type FollowCondition = {
   follow: Scalars['ProfileId'];
 };
 
-export type FollowModule = FeeFollowModuleSettings | RevertFollowModuleSettings | UnknownFollowModuleSettings;
+export type FollowModule =
+  | FeeFollowModuleSettings
+  | RevertFollowModuleSettings
+  | UnknownFollowModuleSettings;
 
 export type FollowModuleInput = {
   feeFollowModule?: InputMaybe<FeeFollowModuleInput>;
@@ -1357,7 +1371,7 @@ export type FollowModuleRedeemInput = {
 export enum FollowModuleType {
   FeeFollowModule = 'FeeFollowModule',
   RevertFollowModule = 'RevertFollowModule',
-  UnknownFollowModule = 'UnknownFollowModule'
+  UnknownFollowModule = 'UnknownFollowModule',
 }
 
 export type FollowNotification = {
@@ -1484,6 +1498,10 @@ export type HandleUnlinkFromProfileRequest = {
   handleId: Scalars['TokenId'];
 };
 
+export type HasMirroredArg = {
+  profileId?: InputMaybe<Scalars['ProfileId']>;
+};
+
 export type HelRequest = {
   handle: Scalars['Handle'];
   remove: Scalars['Boolean'];
@@ -1501,7 +1519,7 @@ export type IdKitPhoneVerifyWebhookRequest = {
 
 export enum IdKitPhoneVerifyWebhookResultStatusType {
   AlreadyVerified = 'ALREADY_VERIFIED',
-  Success = 'SUCCESS'
+  Success = 'SUCCESS',
 }
 
 export type IllegalReasonInput = {
@@ -1521,7 +1539,7 @@ export type Image = {
 };
 
 export enum ImageMimeType {
-  Png = 'PNG'
+  Png = 'PNG',
 }
 
 export type ImageSet = {
@@ -1532,7 +1550,6 @@ export type ImageSet = {
   rawURI: Scalars['URI'];
   transformed: Image;
 };
-
 
 export type ImageSetTransformedArgs = {
   request: ImageTransform;
@@ -1736,7 +1753,7 @@ export type LensMetadataTransaction = {
 
 export enum LensMetadataTransactionFailureType {
   MetadataError = 'METADATA_ERROR',
-  Reverted = 'REVERTED'
+  Reverted = 'REVERTED',
 }
 
 export type LensProfileManagerRelayError = {
@@ -1749,7 +1766,7 @@ export enum LensProfileManagerRelayErrorReasonType {
   Failed = 'FAILED',
   NoLensManagerEnabled = 'NO_LENS_MANAGER_ENABLED',
   RateLimited = 'RATE_LIMITED',
-  RequiresSignature = 'REQUIRES_SIGNATURE'
+  RequiresSignature = 'REQUIRES_SIGNATURE',
 }
 
 export type LensProfileManagerRelayResult = LensProfileManagerRelayError | RelaySuccess;
@@ -1763,7 +1780,7 @@ export type LensTransaction = {
 };
 
 export enum LensTransactionFailureType {
-  Reverted = 'REVERTED'
+  Reverted = 'REVERTED',
 }
 
 export type LensTransactionResult = LensMetadataTransaction | LensTransaction;
@@ -1778,7 +1795,7 @@ export type LensTransactionStatusRequest = {
 export enum LensTransactionStatusType {
   Complete = 'COMPLETE',
   Failed = 'FAILED',
-  Progressing = 'PROGRESSING'
+  Progressing = 'PROGRESSING',
 }
 
 export type LinkHandleRequest = {
@@ -1990,7 +2007,11 @@ export type MomokaSummaryResult = {
   totalTransactions: Scalars['Int'];
 };
 
-export type MomokaTransaction = MomokaCommentTransaction | MomokaMirrorTransaction | MomokaPostTransaction | MomokaQuoteTransaction;
+export type MomokaTransaction =
+  | MomokaCommentTransaction
+  | MomokaMirrorTransaction
+  | MomokaPostTransaction
+  | MomokaQuoteTransaction;
 
 export type MomokaTransactionRequest = {
   /** The momoka transaction id or internal publication id */
@@ -2037,10 +2058,12 @@ export enum MomokaValidatorErrorType {
   TimestampProofInvalidSignature = 'TIMESTAMP_PROOF_INVALID_SIGNATURE',
   TimestampProofInvalidType = 'TIMESTAMP_PROOF_INVALID_TYPE',
   TimestampProofNotSubmitter = 'TIMESTAMP_PROOF_NOT_SUBMITTER',
-  Unknown = 'UNKNOWN'
+  Unknown = 'UNKNOWN',
 }
 
-export type MomokaVerificationStatus = MomokaVerificationStatusFailure | MomokaVerificationStatusSuccess;
+export type MomokaVerificationStatus =
+  | MomokaVerificationStatusFailure
+  | MomokaVerificationStatusSuccess;
 
 export type MomokaVerificationStatusFailure = {
   __typename?: 'MomokaVerificationStatusFailure';
@@ -2154,376 +2177,304 @@ export type Mutation = {
   updateNftGalleryOrder?: Maybe<Scalars['Void']>;
 };
 
-
 export type MutationAchArgs = {
   request: AchRequest;
 };
-
 
 export type MutationActOnOpenActionArgs = {
   request: ActOnOpenActionRequest;
 };
 
-
 export type MutationAddProfileInterestsArgs = {
   request: ProfileInterestsRequest;
 };
-
 
 export type MutationAddPublicationBookmarkArgs = {
   request: PublicationBookmarkRequest;
 };
 
-
 export type MutationAddPublicationNotInterestedArgs = {
   request: PublicationNotInterestedRequest;
 };
-
 
 export type MutationAddReactionArgs = {
   request: ReactionRequest;
 };
 
-
 export type MutationAuthenticateArgs = {
   request: SignedAuthChallenge;
 };
-
 
 export type MutationBlockArgs = {
   request: BlockRequest;
 };
 
-
 export type MutationBroadcastOnMomokaArgs = {
   request: BroadcastRequest;
 };
-
 
 export type MutationBroadcastOnchainArgs = {
   request: BroadcastRequest;
 };
 
-
 export type MutationClaimProfileArgs = {
   request: ClaimProfileRequest;
 };
-
 
 export type MutationCommentOnMomokaArgs = {
   request: MomokaCommentRequest;
 };
 
-
 export type MutationCommentOnchainArgs = {
   request: OnchainCommentRequest;
 };
-
 
 export type MutationCreateActOnOpenActionTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: ActOnOpenActionRequest;
 };
 
-
 export type MutationCreateBlockProfilesTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: BlockRequest;
 };
-
 
 export type MutationCreateChangeProfileManagersTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: ChangeProfileManagersRequest;
 };
 
-
 export type MutationCreateFollowTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: FollowRequest;
 };
-
 
 export type MutationCreateHandleLinkToProfileTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: HandleLinkToProfileRequest;
 };
 
-
 export type MutationCreateHandleUnlinkFromProfileTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: HandleUnlinkFromProfileRequest;
 };
-
 
 export type MutationCreateLegacyCollectTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: LegacyCollectRequest;
 };
 
-
 export type MutationCreateMomokaCommentTypedDataArgs = {
   request: MomokaCommentRequest;
 };
-
 
 export type MutationCreateMomokaMirrorTypedDataArgs = {
   request: MomokaMirrorRequest;
 };
 
-
 export type MutationCreateMomokaPostTypedDataArgs = {
   request: MomokaPostRequest;
 };
-
 
 export type MutationCreateMomokaQuoteTypedDataArgs = {
   request: MomokaQuoteRequest;
 };
 
-
 export type MutationCreateNftGalleryArgs = {
   request: NftGalleryCreateRequest;
 };
-
 
 export type MutationCreateOnchainCommentTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainCommentRequest;
 };
 
-
 export type MutationCreateOnchainMirrorTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainMirrorRequest;
 };
-
 
 export type MutationCreateOnchainPostTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainPostRequest;
 };
 
-
 export type MutationCreateOnchainQuoteTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainQuoteRequest;
 };
-
 
 export type MutationCreateOnchainSetProfileMetadataTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainSetProfileMetadataRequest;
 };
 
-
 export type MutationCreateProfileWithHandleArgs = {
   request: CreateProfileWithHandleRequest;
 };
-
 
 export type MutationCreateSetFollowModuleTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: SetFollowModuleRequest;
 };
 
-
 export type MutationCreateUnblockProfilesTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: UnblockRequest;
 };
-
 
 export type MutationCreateUnfollowTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: UnfollowRequest;
 };
 
-
 export type MutationDeleteNftGalleryArgs = {
   request: NftGalleryDeleteRequest;
 };
-
 
 export type MutationDismissRecommendedProfilesArgs = {
   request: DismissRecommendedProfilesRequest;
 };
 
-
 export type MutationDssArgs = {
   request: PrfRequest;
 };
-
 
 export type MutationFollowArgs = {
   request: FollowRequest;
 };
 
-
 export type MutationGciArgs = {
   request: GciRequest;
 };
-
 
 export type MutationGcrArgs = {
   request: GcrRequest;
 };
 
-
 export type MutationGdiArgs = {
   request: GddRequest;
 };
-
 
 export type MutationHandleLinkToProfileArgs = {
   request: HandleLinkToProfileRequest;
 };
 
-
 export type MutationHandleUnlinkFromProfileArgs = {
   request: HandleUnlinkFromProfileRequest;
 };
-
 
 export type MutationHelArgs = {
   request: HelRequest;
 };
 
-
 export type MutationHidePublicationArgs = {
   request: HidePublicationRequest;
 };
-
 
 export type MutationIdKitPhoneVerifyWebhookArgs = {
   request: IdKitPhoneVerifyWebhookRequest;
 };
 
-
 export type MutationInArgs = {
   request: InRequest;
 };
-
 
 export type MutationInternalPinArgs = {
   request: InternalPinRequest;
 };
 
-
 export type MutationInviteProfileArgs = {
   request: InviteRequest;
 };
-
 
 export type MutationLegacyCollectArgs = {
   request: LegacyCollectRequest;
 };
 
-
 export type MutationMirrorOnMomokaArgs = {
   request: MomokaMirrorRequest;
 };
-
 
 export type MutationMirrorOnchainArgs = {
   request: OnchainMirrorRequest;
 };
 
-
 export type MutationNftOwnershipChallengeArgs = {
   request: NftOwnershipChallengeRequest;
 };
-
 
 export type MutationNniArgs = {
   request: NniRequest;
 };
 
-
 export type MutationNnvArgs = {
   request: NnvRequest;
 };
-
 
 export type MutationPostOnMomokaArgs = {
   request: MomokaPostRequest;
 };
 
-
 export type MutationPostOnchainArgs = {
   request: OnchainPostRequest;
 };
-
 
 export type MutationQuoteOnMomokaArgs = {
   request: MomokaQuoteRequest;
 };
 
-
 export type MutationQuoteOnchainArgs = {
   request: OnchainQuoteRequest;
 };
-
 
 export type MutationRefreshArgs = {
   request: RefreshRequest;
 };
 
-
 export type MutationRemoveProfileInterestsArgs = {
   request: ProfileInterestsRequest;
 };
-
 
 export type MutationRemovePublicationBookmarkArgs = {
   request: PublicationBookmarkRequest;
 };
 
-
 export type MutationRemoveReactionArgs = {
   request: ReactionRequest;
 };
-
 
 export type MutationReportPublicationArgs = {
   request: ReportPublicationRequest;
 };
 
-
 export type MutationSetFollowModuleArgs = {
   request: SetFollowModuleRequest;
 };
-
 
 export type MutationSetProfileMetadataArgs = {
   request: OnchainSetProfileMetadataRequest;
 };
 
-
 export type MutationUnblockArgs = {
   request: UnblockRequest;
 };
-
 
 export type MutationUndoPublicationNotInterestedArgs = {
   request: PublicationNotInterestedRequest;
 };
 
-
 export type MutationUnfollowArgs = {
   request: UnfollowRequest;
 };
-
 
 export type MutationUpdateNftGalleryInfoArgs = {
   request: NftGalleryUpdateInfoRequest;
 };
 
-
 export type MutationUpdateNftGalleryItemsArgs = {
   request: NftGalleryUpdateItemsRequest;
 };
-
 
 export type MutationUpdateNftGalleryOrderArgs = {
   request: NftGalleryUpdateItemOrderRequest;
@@ -2599,7 +2550,7 @@ export type NftCollection = {
 
 export enum NftCollectionOwnersOrder {
   FollowersFirst = 'FollowersFirst',
-  None = 'None'
+  None = 'None',
 }
 
 /** NFT collection owners request */
@@ -2641,7 +2592,7 @@ export type NftCollectionsRequest = {
 export enum NftContractType {
   Erc721 = 'ERC721',
   Erc721Enumerable = 'ERC721Enumerable',
-  Erc1155 = 'ERC1155'
+  Erc1155 = 'ERC1155',
 }
 
 export type NftGalleriesRequest = {
@@ -2764,7 +2715,15 @@ export type NnvRequest = {
   secret: Scalars['String'];
 };
 
-export type Notification = ActedNotification | CommentNotification | FollowNotification | FutureProofNotification | MentionNotification | MirrorNotification | QuoteNotification | ReactionNotification;
+export type Notification =
+  | ActedNotification
+  | CommentNotification
+  | FollowNotification
+  | FutureProofNotification
+  | MentionNotification
+  | MirrorNotification
+  | QuoteNotification
+  | ReactionNotification;
 
 export type NotificationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
@@ -2784,7 +2743,7 @@ export enum NotificationType {
   Mirrored = 'MIRRORED',
   OtherActed = 'OTHER_ACTED',
   Quoted = 'QUOTED',
-  Reacted = 'REACTED'
+  Reacted = 'REACTED',
 }
 
 export type NotificationWhere = {
@@ -2834,7 +2793,7 @@ export type OnchainSetProfileMetadataRequest = {
 };
 
 export enum OpenActionCategoryType {
-  Collect = 'COLLECT'
+  Collect = 'COLLECT',
 }
 
 export type OpenActionFilter = {
@@ -2843,7 +2802,20 @@ export type OpenActionFilter = {
   type?: InputMaybe<OpenActionModuleType>;
 };
 
-export type OpenActionModule = LegacyAaveFeeCollectModuleSettings | LegacyErc4626FeeCollectModuleSettings | LegacyFeeCollectModuleSettings | LegacyFreeCollectModuleSettings | LegacyLimitedFeeCollectModuleSettings | LegacyLimitedTimedFeeCollectModuleSettings | LegacyMultirecipientFeeCollectModuleSettings | LegacyRevertCollectModuleSettings | LegacySimpleCollectModuleSettings | LegacyTimedFeeCollectModuleSettings | MultirecipientFeeCollectOpenActionSettings | SimpleCollectOpenActionSettings | UnknownOpenActionModuleSettings;
+export type OpenActionModule =
+  | LegacyAaveFeeCollectModuleSettings
+  | LegacyErc4626FeeCollectModuleSettings
+  | LegacyFeeCollectModuleSettings
+  | LegacyFreeCollectModuleSettings
+  | LegacyLimitedFeeCollectModuleSettings
+  | LegacyLimitedTimedFeeCollectModuleSettings
+  | LegacyMultirecipientFeeCollectModuleSettings
+  | LegacyRevertCollectModuleSettings
+  | LegacySimpleCollectModuleSettings
+  | LegacyTimedFeeCollectModuleSettings
+  | MultirecipientFeeCollectOpenActionSettings
+  | SimpleCollectOpenActionSettings
+  | UnknownOpenActionModuleSettings;
 
 export type OpenActionModuleInput = {
   multirecipientCollectOpenAction?: InputMaybe<MultirecipientFeeCollectModuleInput>;
@@ -2864,7 +2836,7 @@ export enum OpenActionModuleType {
   LegacyTimedFeeCollectModule = 'LegacyTimedFeeCollectModule',
   MultirecipientFeeCollectOpenActionModule = 'MultirecipientFeeCollectOpenActionModule',
   SimpleCollectOpenActionModule = 'SimpleCollectOpenActionModule',
-  UnknownOpenActionModule = 'UnknownOpenActionModule'
+  UnknownOpenActionModule = 'UnknownOpenActionModule',
 }
 
 export type OpenActionResult = CollectOpenActionResult | UnknownOpenActionResult;
@@ -3022,8 +2994,9 @@ export type PaginatedRevenueFromPublicationsResult = {
 
 export type PaginatedWhoReactedResult = {
   __typename?: 'PaginatedWhoReactedResult';
-  items: Array<ProfileReactedResult>;
+  items: Array<Profile>;
   pageInfo: PaginatedResultInfo;
+  reactions: Array<ProfileReactionResult>;
 };
 
 /** The POAP Event result */
@@ -3073,7 +3046,7 @@ export type PoapToken = {
 
 export enum PoapTokenLayerType {
   Layer1 = 'Layer1',
-  Layer2 = 'Layer2'
+  Layer2 = 'Layer2',
 }
 
 /** Popular NFT collections request */
@@ -3104,7 +3077,6 @@ export type Post = {
   stats: PublicationStats;
   txHash: Scalars['TxHash'];
 };
-
 
 export type PostStatsArgs = {
   request: PublicationStatsInput;
@@ -3162,12 +3134,6 @@ export type Profile = {
   txHash: Scalars['TxHash'];
 };
 
-
-/** The Profile */
-export type ProfileStatsArgs = {
-  request: ProfileStatsArgs;
-};
-
 export type ProfileActedResult = {
   __typename?: 'ProfileActedResult';
   action: OpenActionResult;
@@ -3185,7 +3151,6 @@ export type ProfileBookmarksWhere = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<Scalars['LimitScalar']>;
   metadata?: InputMaybe<PublicationMetadataFilters>;
-  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
 };
 
 export type ProfileGuardianResult = {
@@ -3246,6 +3211,15 @@ export type ProfileReactedResult = {
   reactions: Array<ReactedResult>;
 };
 
+/** The reaction details for a publication */
+export type ProfileReactionResult = {
+  __typename?: 'ProfileReactionResult';
+  /** The reaction */
+  reaction: PublicationReactionType;
+  /** The reaction date */
+  reactionAt: Scalars['DateTime'];
+};
+
 export type ProfileRecommendationsRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   /** Disable machine learning recommendations (default: false) */
@@ -3259,9 +3233,9 @@ export type ProfileRecommendationsRequest = {
 
 export type ProfileRequest = {
   /** The handle for profile you want to fetch */
-  handle?: InputMaybe<Array<Scalars['Handle']>>;
+  handle?: InputMaybe<Scalars['Handle']>;
   /** The profile you want to fetch */
-  profileId?: InputMaybe<Array<Scalars['ProfileId']>>;
+  profileId?: InputMaybe<Scalars['ProfileId']>;
 };
 
 export type ProfileSearchRequest = {
@@ -3293,54 +3267,45 @@ export type ProfileStats = {
   reactions: Scalars['Int'];
 };
 
-
 /** The Profile Stats */
 export type ProfileStatsCommentsArgs = {
   request: ProfileStatsArgs;
 };
-
 
 /** The Profile Stats */
 export type ProfileStatsCountOpenActionsArgs = {
   request: ProfileStatsCountOpenActionArgs;
 };
 
-
 /** The Profile Stats */
 export type ProfileStatsFollowersArgs = {
   request: ProfileStatsArgs;
 };
-
 
 /** The Profile Stats */
 export type ProfileStatsFollowingArgs = {
   request: ProfileStatsArgs;
 };
 
-
 /** The Profile Stats */
 export type ProfileStatsMirrorsArgs = {
   request: ProfileStatsArgs;
 };
-
 
 /** The Profile Stats */
 export type ProfileStatsPostsArgs = {
   request: ProfileStatsArgs;
 };
 
-
 /** The Profile Stats */
 export type ProfileStatsPublicationsArgs = {
   request: ProfileStatsArgs;
 };
 
-
 /** The Profile Stats */
 export type ProfileStatsQuotesArgs = {
   request: ProfileStatsArgs;
 };
-
 
 /** The Profile Stats */
 export type ProfileStatsReactionsArgs = {
@@ -3395,7 +3360,7 @@ export type ProfilesRequestWhere = {
 };
 
 export enum PublicationArticleMetadataV1MainFocusType {
-  Article = 'ARTICLE'
+  Article = 'ARTICLE',
 }
 
 export type PublicationBookmarkRequest = {
@@ -3403,7 +3368,7 @@ export type PublicationBookmarkRequest = {
 };
 
 export enum PublicationCheckingInMetadataV1MainFocusType {
-  CheckingIn = 'CHECKING_IN'
+  CheckingIn = 'CHECKING_IN',
 }
 
 export type PublicationCommentOf = {
@@ -3414,15 +3379,15 @@ export type PublicationCommentOf = {
 export enum PublicationContentWarningType {
   Nsfw = 'NSFW',
   Sensitive = 'SENSITIVE',
-  Spoiler = 'SPOILER'
+  Spoiler = 'SPOILER',
 }
 
 export enum PublicationEmbedMetadataV1MainFocusType {
-  Embed = 'EMBED'
+  Embed = 'EMBED',
 }
 
 export enum PublicationEventMetadataV1MainFocusType {
-  Event = 'EVENT'
+  Event = 'EVENT',
 }
 
 export type PublicationForYou = Post | Quote;
@@ -3453,15 +3418,15 @@ export type PublicationImageMetadataV1 = {
 };
 
 export enum PublicationImageMetadataV1MainFocusType {
-  Image = 'IMAGE'
+  Image = 'IMAGE',
 }
 
 export enum PublicationLinkMetadataV1MainFocusType {
-  Link = 'LINK'
+  Link = 'LINK',
 }
 
 export enum PublicationLiveStreamMetadataV1MainFocusType {
-  Livestream = 'LIVESTREAM'
+  Livestream = 'LIVESTREAM',
 }
 
 export type PublicationMarketplaceMetadataAttribute = {
@@ -3474,28 +3439,50 @@ export type PublicationMarketplaceMetadataAttribute = {
 export enum PublicationMarketplaceMetadataAttributeDisplayType {
   Date = 'DATE',
   Number = 'NUMBER',
-  String = 'STRING'
+  String = 'STRING',
 }
 
-export type PublicationMetadata = ArticleMetadataV1 | CheckingInMetadataV1 | EmbedMetadataV1 | EventMetadataV1 | FutureProofPublicationMetadata | LinkMetadataV1 | LiveStreamMetadataV1 | MintMetadataV1 | PublicationImageMetadataV1 | PublicationMetadataV2 | PublicationVideoMetadataV1 | SpaceMetadataV1 | StoryMetadataV1 | TextOnlyMetadataV1 | ThreeDMetadataV1 | TransactionMetadataV1;
+export type PublicationMetadata =
+  | ArticleMetadataV1
+  | CheckingInMetadataV1
+  | EmbedMetadataV1
+  | EventMetadataV1
+  | FutureProofPublicationMetadata
+  | LinkMetadataV1
+  | LiveStreamMetadataV1
+  | MintMetadataV1
+  | PublicationImageMetadataV1
+  | PublicationMetadataV2
+  | PublicationVideoMetadataV1
+  | SpaceMetadataV1
+  | StoryMetadataV1
+  | TextOnlyMetadataV1
+  | ThreeDMetadataV1
+  | TransactionMetadataV1;
 
-export type PublicationMetadataAttachment = PublicationMetadataMediaAudio | PublicationMetadataMediaImage | PublicationMetadataMediaVideo;
+export type PublicationMetadataAttachment =
+  | PublicationMetadataMediaAudio
+  | PublicationMetadataMediaImage
+  | PublicationMetadataMediaVideo;
 
 export type PublicationMetadataContentWarningFilter = {
   oneOf?: InputMaybe<Array<PublicationContentWarningType>>;
 };
 
-export type PublicationMetadataEncryptionStrategy = FutureProofPublicationEncryptionStrategy | PublicationMetadataV3LitEncryption;
+export type PublicationMetadataEncryptionStrategy =
+  | FutureProofPublicationEncryptionStrategy
+  | PublicationMetadataV3LitEncryption;
 
 export type PublicationMetadataFilters = {
   contentWarning?: InputMaybe<PublicationMetadataContentWarningFilter>;
   locale?: InputMaybe<Scalars['Locale']>;
   mainContentFocus?: InputMaybe<Array<PublicationMetadataMainFocusType>>;
+  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
   tags?: InputMaybe<PublicationMetadataTagsFilter>;
 };
 
 export enum PublicationMetadataLicenseType {
-  AllRightsReserved = 'ALL_RIGHTS_RESERVED'
+  AllRightsReserved = 'ALL_RIGHTS_RESERVED',
 }
 
 export enum PublicationMetadataMainFocusType {
@@ -3514,7 +3501,7 @@ export enum PublicationMetadataMainFocusType {
   TextOnly = 'TEXT_ONLY',
   ThreeD = 'THREE_D',
   Transaction = 'TRANSACTION',
-  Video = 'VIDEO'
+  Video = 'VIDEO',
 }
 
 export type PublicationMetadataMediaAudio = {
@@ -3533,7 +3520,7 @@ export type PublicationMetadataMediaAudio = {
 };
 
 export enum PublicationMetadataMediaAudioType {
-  Mp3 = 'MP3'
+  Mp3 = 'MP3',
 }
 
 export type PublicationMetadataMediaImage = {
@@ -3596,7 +3583,7 @@ export enum PublicationMetadataV2MainFocusType {
   Image = 'IMAGE',
   Link = 'LINK',
   TextOnly = 'TEXT_ONLY',
-  Video = 'VIDEO'
+  Video = 'VIDEO',
 }
 
 export type PublicationMetadataV3Attribute = {
@@ -3612,7 +3599,7 @@ export type PublicationMetadataV3LitEncryption = {
 };
 
 export enum PublicationMintMetadataV1MainFocusType {
-  Mint = 'MINT'
+  Mint = 'MINT',
 }
 
 export type PublicationNotInterestedRequest = {
@@ -3633,6 +3620,17 @@ export type PublicationOperations = {
   isNotInterested: Scalars['Boolean'];
 };
 
+export type PublicationOperationsCanCommentArgs = {
+  request: CanCommentArg;
+};
+
+export type PublicationOperationsCanMirrorArgs = {
+  request: CanMirrorArg;
+};
+
+export type PublicationOperationsHasMirroredArgs = {
+  request: HasMirroredArg;
+};
 
 export type PublicationOperationsHasReactedArgs = {
   request: PublicationOperationsReactionArgs;
@@ -3644,12 +3642,12 @@ export type PublicationOperationsReactionArgs = {
 
 export enum PublicationReactionType {
   Downvote = 'DOWNVOTE',
-  Upvote = 'UPVOTE'
+  Upvote = 'UPVOTE',
 }
 
 export enum PublicationReportingFraudSubreason {
   Impersonation = 'IMPERSONATION',
-  Scam = 'SCAM'
+  Scam = 'SCAM',
 }
 
 export enum PublicationReportingIllegalSubreason {
@@ -3657,19 +3655,19 @@ export enum PublicationReportingIllegalSubreason {
   DirectThreat = 'DIRECT_THREAT',
   HumanAbuse = 'HUMAN_ABUSE',
   ThreatIndividual = 'THREAT_INDIVIDUAL',
-  Violence = 'VIOLENCE'
+  Violence = 'VIOLENCE',
 }
 
 export enum PublicationReportingReason {
   Fraud = 'FRAUD',
   Illegal = 'ILLEGAL',
   Sensitive = 'SENSITIVE',
-  Spam = 'SPAM'
+  Spam = 'SPAM',
 }
 
 export enum PublicationReportingSensitiveSubreason {
   Nsfw = 'NSFW',
-  Offensive = 'OFFENSIVE'
+  Offensive = 'OFFENSIVE',
 }
 
 export enum PublicationReportingSpamSubreason {
@@ -3680,7 +3678,7 @@ export enum PublicationReportingSpamSubreason {
   MisuseHashtags = 'MISUSE_HASHTAGS',
   Repetitive = 'REPETITIVE',
   SomethingElse = 'SOMETHING_ELSE',
-  Unrelated = 'UNRELATED'
+  Unrelated = 'UNRELATED',
 }
 
 export type PublicationRequest = {
@@ -3712,7 +3710,7 @@ export type PublicationSearchWhere = {
 };
 
 export enum PublicationSpaceMetadataV1MainFocusType {
-  Space = 'SPACE'
+  Space = 'SPACE',
 }
 
 export type PublicationStats = {
@@ -3726,11 +3724,9 @@ export type PublicationStats = {
   reactions: Scalars['Int'];
 };
 
-
 export type PublicationStatsCountOpenActionsArgs = {
   request: PublicationStatsCountOpenActionArgs;
 };
-
 
 export type PublicationStatsReactionsArgs = {
   request: PublicationStatsReactionArgs;
@@ -3760,32 +3756,32 @@ export type PublicationStatsSubscriptionRequest = {
 };
 
 export enum PublicationStoryMetadataV1MainFocusType {
-  Story = 'STORY'
+  Story = 'STORY',
 }
 
 export enum PublicationTextOnlyMetadataV1MainFocusType {
-  TextOnly = 'TEXT_ONLY'
+  TextOnly = 'TEXT_ONLY',
 }
 
 export enum PublicationThreeDMetadataV1MainFocusType {
-  ThreeD = 'THREE_D'
+  ThreeD = 'THREE_D',
 }
 
 export enum PublicationTransactionMetadataType {
   Erc20 = 'ERC20',
   Erc721 = 'ERC721',
-  Other = 'OTHER'
+  Other = 'OTHER',
 }
 
 export enum PublicationTransactionMetadataV1MainFocusType {
-  Transaction = 'TRANSACTION'
+  Transaction = 'TRANSACTION',
 }
 
 export enum PublicationType {
   Comment = 'COMMENT',
   Mirror = 'MIRROR',
   Post = 'POST',
-  Quote = 'QUOTE'
+  Quote = 'QUOTE',
 }
 
 export type PublicationValidateMetadataResult = {
@@ -3815,7 +3811,7 @@ export type PublicationVideoMetadataV1 = {
 
 export enum PublicationVideoMetadataV1MainFocusType {
   ShortVideo = 'SHORT_VIDEO',
-  Video = 'VIDEO'
+  Video = 'VIDEO',
 }
 
 export enum PublicationsOrderByType {
@@ -3824,7 +3820,7 @@ export enum PublicationsOrderByType {
   TopCollectedOpenAction = 'TOP_COLLECTED_OPEN_ACTION',
   TopCommented = 'TOP_COMMENTED',
   TopMirrored = 'TOP_MIRRORED',
-  TopQuoted = 'TOP_QUOTED'
+  TopQuoted = 'TOP_QUOTED',
 }
 
 export type PublicationsRequest = {
@@ -3856,7 +3852,6 @@ export type PublicationsWhere = {
   mirrorOf?: InputMaybe<Scalars['PublicationId']>;
   publicationIds?: InputMaybe<Array<Scalars['PublicationId']>>;
   publicationTypes?: InputMaybe<Array<PublicationType>>;
-  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
   quoteOf?: InputMaybe<Scalars['PublicationId']>;
   withOpenActions?: InputMaybe<Array<OpenActionFilter>>;
 };
@@ -3937,281 +3932,225 @@ export type Query = {
   whoReactedPublication: PaginatedWhoReactedResult;
 };
 
-
 export type QueryApprovedModuleAllowanceAmountArgs = {
   request: ApprovedModuleAllowanceAmountRequest;
 };
-
 
 export type QueryChallengeArgs = {
   request: ChallengeRequest;
 };
 
-
 export type QueryCurArgs = {
   request: CurRequest;
 };
-
 
 export type QueryCurrenciesArgs = {
   request: PaginatedOffsetRequest;
 };
 
-
 export type QueryExploreProfilesArgs = {
   request: ExploreProfilesRequest;
 };
-
 
 export type QueryExplorePublicationsArgs = {
   request: ExplorePublicationRequest;
 };
 
-
 export type QueryFeedArgs = {
   request: FeedRequest;
 };
-
 
 export type QueryFeedHighlightsArgs = {
   request: FeedHighlightsRequest;
 };
 
-
 export type QueryFollowRevenuesArgs = {
   request: FollowRevenueRequest;
 };
-
 
 export type QueryFollowersArgs = {
   request: FollowersRequest;
 };
 
-
 export type QueryFollowingArgs = {
   request: FollowingRequest;
 };
-
 
 export type QueryForYouArgs = {
   request: PublicationForYouRequest;
 };
 
-
 export type QueryGctArgs = {
   request: GctRequest;
 };
-
 
 export type QueryGdmArgs = {
   request: GdmRequest;
 };
 
-
 export type QueryGenerateModuleCurrencyApprovalDataArgs = {
   request: GenerateModuleCurrencyApprovalDataRequest;
 };
-
 
 export type QueryIntotalArgs = {
   request: InTotalRequest;
 };
 
-
 export type QueryIssArgs = {
   request: PriRequest;
 };
-
 
 export type QueryLensTransactionStatusArgs = {
   request: LensTransactionStatusRequest;
 };
 
-
 export type QueryLinkHandleToProfileArgs = {
   request: LinkHandleRequest;
 };
-
 
 export type QueryMomokaTransactionArgs = {
   request: MomokaTransactionRequest;
 };
 
-
 export type QueryMomokaTransactionsArgs = {
   request: MomokaTransactionsRequest;
 };
-
 
 export type QueryMutualFollowersArgs = {
   request: MutualFollowersRequest;
 };
 
-
 export type QueryMutualNftCollectionsArgs = {
   request: MutualNftCollectionsRequest;
 };
-
 
 export type QueryMutualPoapsArgs = {
   request: MutualPoapsQueryRequest;
 };
 
-
 export type QueryNftCollectionOwnersArgs = {
   request: NftCollectionOwnersRequest;
 };
-
 
 export type QueryNftCollectionsArgs = {
   request: NftCollectionsRequest;
 };
 
-
 export type QueryNftGalleriesArgs = {
   request: NftGalleriesRequest;
 };
-
 
 export type QueryNftsArgs = {
   request: NftsRequest;
 };
 
-
 export type QueryNotificationsArgs = {
   request: NotificationRequest;
 };
-
 
 export type QueryOwnedHandlesArgs = {
   request: OwnedHandlesRequest;
 };
 
-
 export type QueryPoapEventArgs = {
   request: PoapEventQueryRequest;
 };
-
 
 export type QueryPoapHoldersArgs = {
   request: PoapHoldersQueryRequest;
 };
 
-
 export type QueryPoapsArgs = {
   request: UserPoapsQueryRequest;
 };
-
 
 export type QueryPopularNftCollectionsArgs = {
   request: PopularNftCollectionsRequest;
 };
 
-
 export type QueryProfileArgs = {
   request: ProfileRequest;
 };
-
 
 export type QueryProfileAlreadyInvitedArgs = {
   request: AlreadyInvitedCheckRequest;
 };
 
-
 export type QueryProfileBookmarksArgs = {
   request: ProfileBookmarksRequest;
 };
-
 
 export type QueryProfileManagersArgs = {
   request: ProfileManagersRequest;
 };
 
-
 export type QueryProfileRecommendationsArgs = {
   request: ProfileRecommendationsRequest;
 };
-
 
 export type QueryProfilesArgs = {
   request: ProfilesRequest;
 };
 
-
 export type QueryProfilesManagedArgs = {
   request: ProfilesManagedRequest;
 };
-
 
 export type QueryPublicationArgs = {
   request: PublicationRequest;
 };
 
-
 export type QueryPublicationsArgs = {
   request: PublicationsRequest;
 };
-
 
 export type QueryPublicationsTagsArgs = {
   request: PublicationsTagsRequest;
 };
 
-
 export type QueryRelArgs = {
   request: RelRequest;
 };
-
 
 export type QueryRevenueForPublicationArgs = {
   request: PublicationRevenueRequest;
 };
 
-
 export type QueryRevenueFromPublicationsArgs = {
   request: RevenueFromPublicationsRequest;
 };
-
 
 export type QuerySearchNftsArgs = {
   request: NftSearchRequest;
 };
 
-
 export type QuerySearchProfilesArgs = {
   request: ProfileSearchRequest;
 };
-
 
 export type QuerySearchPublicationsArgs = {
   request: PublicationSearchRequest;
 };
 
-
 export type QueryTxIdToTxHashArgs = {
   txId: Scalars['TxId'];
 };
-
 
 export type QueryUnlinkHandleFromProfileArgs = {
   request: UnlinkHandleRequest;
 };
 
-
 export type QueryValidatePublicationMetadataArgs = {
   request: ValidatePublicationMetadataRequest;
 };
-
 
 export type QueryVerifyArgs = {
   request: VerifyRequest;
 };
 
-
 export type QueryWhoActedOnPublicationArgs = {
   request: WhoActedOnPublicationRequest;
 };
-
 
 export type QueryWhoReactedPublicationArgs = {
   request: WhoReactedPublicationRequest;
@@ -4234,7 +4173,6 @@ export type Quote = {
   stats: PublicationStats;
   txHash: Scalars['TxHash'];
 };
-
 
 export type QuoteStatsArgs = {
   request: PublicationStatsInput;
@@ -4286,7 +4224,10 @@ export type RecipientDataOutput = {
   split: Scalars['Float'];
 };
 
-export type ReferenceModule = DegreesOfSeparationReferenceModuleSettings | FollowOnlyReferenceModuleSettings | UnknownReferenceModuleSettings;
+export type ReferenceModule =
+  | DegreesOfSeparationReferenceModuleSettings
+  | FollowOnlyReferenceModuleSettings
+  | UnknownReferenceModuleSettings;
 
 export type ReferenceModuleInput = {
   degreesOfSeparationReferenceModule?: InputMaybe<DegreesOfSeparationReferenceModuleInput>;
@@ -4297,7 +4238,7 @@ export type ReferenceModuleInput = {
 export enum ReferenceModuleType {
   DegreesOfSeparationReferenceModule = 'DegreesOfSeparationReferenceModule',
   FollowerOnlyReferenceModule = 'FollowerOnlyReferenceModule',
-  UnknownReferenceModule = 'UnknownReferenceModule'
+  UnknownReferenceModule = 'UnknownReferenceModule',
 }
 
 /** The refresh request */
@@ -4321,7 +4262,7 @@ export enum RelayErrorReasonType {
   Expired = 'EXPIRED',
   Failed = 'FAILED',
   RateLimited = 'RATE_LIMITED',
-  WrongWalletSigned = 'WRONG_WALLET_SIGNED'
+  WrongWalletSigned = 'WRONG_WALLET_SIGNED',
 }
 
 export type RelayMomokaResult = CreateMomokaPublicationResult | RelayError;
@@ -4366,7 +4307,7 @@ export enum RelayRoleKey {
   WithSig_8 = 'WITH_SIG_8',
   WithSig_9 = 'WITH_SIG_9',
   WithSig_10 = 'WITH_SIG_10',
-  ZkRelayer = 'ZK_RELAYER'
+  ZkRelayer = 'ZK_RELAYER',
 }
 
 export type RelaySuccess = {
@@ -4413,7 +4354,6 @@ export type RevenueFromPublicationsWhere = {
   fromCollects: Scalars['Boolean'];
   metadata?: InputMaybe<PublicationMetadataFilters>;
   publicationTypes?: InputMaybe<Array<PublicationType>>;
-  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
 };
 
 export type RevertFollowModuleSettings = {
@@ -4515,16 +4455,13 @@ export type Subscription = {
   watchLensTransaction: LensTransactionResult;
 };
 
-
 export type SubscriptionNewNotificationArgs = {
   request: NotificationSubscriptionRequest;
 };
 
-
 export type SubscriptionNewPublicationStatsArgs = {
   request: PublicationStatsSubscriptionRequest;
 };
-
 
 export type SubscriptionWatchLensTransactionArgs = {
   request: LensTransactionStatusRequest;
@@ -4572,7 +4509,7 @@ export type TagResult = {
 
 export enum TagSortCriteriaType {
   Alphabetical = 'ALPHABETICAL',
-  MostPopular = 'MOST_POPULAR'
+  MostPopular = 'MOST_POPULAR',
 }
 
 export type TextOnlyMetadataV1 = {
@@ -4738,7 +4675,7 @@ export type Video = {
 };
 
 export enum VideoMimeType {
-  Mp4 = 'MP4'
+  Mp4 = 'MP4',
 }
 
 export type VideoSet = {
@@ -4780,7 +4717,7 @@ export type WorldcoinIdentity = {
 
 export enum WorldcoinPhoneVerifyType {
   Orb = 'ORB',
-  Phone = 'PHONE'
+  Phone = 'PHONE',
 }
 
 export type WorldcoinPhoneVerifyWebhookRequest = {
@@ -4793,231 +4730,835 @@ export type AuthenticateMutationVariables = Exact<{
   request: SignedAuthChallenge;
 }>;
 
-
-export type AuthenticateMutation = { __typename?: 'Mutation', authenticate: { __typename?: 'AuthenticationResult', accessToken: any, refreshToken: any } };
+export type AuthenticateMutation = {
+  __typename?: 'Mutation';
+  authenticate: { __typename?: 'AuthenticationResult'; accessToken: any; refreshToken: any };
+};
 
 export type ChallengeQueryVariables = Exact<{
   request: ChallengeRequest;
 }>;
 
-
-export type ChallengeQuery = { __typename?: 'Query', challenge: { __typename?: 'AuthChallengeResult', id: any, text: string } };
+export type ChallengeQuery = {
+  __typename?: 'Query';
+  challenge: { __typename?: 'AuthChallengeResult'; id: any; text: string };
+};
 
 export type RefreshMutationVariables = Exact<{
   request: RefreshRequest;
 }>;
 
-
-export type RefreshMutation = { __typename?: 'Mutation', refresh: { __typename?: 'AuthenticationResult', accessToken: any, refreshToken: any } };
+export type RefreshMutation = {
+  __typename?: 'Mutation';
+  refresh: { __typename?: 'AuthenticationResult'; accessToken: any; refreshToken: any };
+};
 
 export type VerifyQueryVariables = Exact<{
   request: VerifyRequest;
 }>;
 
-
-export type VerifyQuery = { __typename?: 'Query', verify: boolean };
+export type VerifyQuery = { __typename?: 'Query'; verify: boolean };
 
 export type BroadcastOnchainMutationVariables = Exact<{
   request: BroadcastRequest;
 }>;
 
-
-export type BroadcastOnchainMutation = { __typename?: 'Mutation', broadcastOnchain: { __typename: 'RelayError', reason: RelayErrorReasonType } | { __typename: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
+export type BroadcastOnchainMutation = {
+  __typename?: 'Mutation';
+  broadcastOnchain:
+    | { __typename: 'RelayError'; reason: RelayErrorReasonType }
+    | { __typename: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
 
 export type BroadcastOnMomokaMutationVariables = Exact<{
   request: BroadcastRequest;
 }>;
 
-
-export type BroadcastOnMomokaMutation = { __typename?: 'Mutation', broadcastOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename: 'RelayError', reason: RelayErrorReasonType } };
+export type BroadcastOnMomokaMutation = {
+  __typename?: 'Mutation';
+  broadcastOnMomoka:
+    | { __typename?: 'CreateMomokaPublicationResult'; id: any; proof: any; momokaId: any }
+    | { __typename: 'RelayError'; reason: RelayErrorReasonType };
+};
 
 export type CreateChangeProfileManagersTypedDataMutationVariables = Exact<{
   request: ChangeProfileManagersRequest;
-  options?: InputMaybe<TypedDataOptions>;
 }>;
 
-
-export type CreateChangeProfileManagersTypedDataMutation = { __typename?: 'Mutation', createChangeProfileManagersTypedData: { __typename?: 'CreateChangeProfileManagersBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateChangeProfileManagersEIP712TypedData', types: { __typename?: 'CreateChangeProfileManagersEIP712TypedDataTypes', ChangeDelegatedExecutorsConfigWithSig: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateChangeProfileManagersEIP712TypedDataValue', nonce: any, deadline: any } } } };
+export type CreateChangeProfileManagersTypedDataMutation = {
+  __typename?: 'Mutation';
+  createChangeProfileManagersTypedData: {
+    __typename?: 'CreateChangeProfileManagersBroadcastItemResult';
+    expiresAt: any;
+    id: any;
+    typedData: {
+      __typename?: 'CreateChangeProfileManagersEIP712TypedData';
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      types: {
+        __typename?: 'CreateChangeProfileManagersEIP712TypedDataTypes';
+        ChangeDelegatedExecutorsConfig: Array<{
+          __typename?: 'EIP712TypedDataField';
+          name: string;
+          type: string;
+        }>;
+      };
+      value: {
+        __typename?: 'CreateChangeProfileManagersEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        delegatorProfileId: any;
+        delegatedExecutors: Array<any>;
+        approvals: Array<boolean>;
+        configNumber: number;
+        switchToGivenConfig: boolean;
+      };
+    };
+  };
+};
 
 export type CreateMomokaPostTypedDataMutationVariables = Exact<{
   request: MomokaPostRequest;
 }>;
 
-
-export type CreateMomokaPostTypedDataMutation = { __typename?: 'Mutation', createMomokaPostTypedData: { __typename?: 'CreateMomokaPostBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateMomokaPostEIP712TypedData', types: { __typename?: 'CreateMomokaPostEIP712TypedDataTypes', PostWithSig: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateMomokaPostEIP712TypedDataValue', nonce: any, deadline: any } } } };
+export type CreateMomokaPostTypedDataMutation = {
+  __typename?: 'Mutation';
+  createMomokaPostTypedData: {
+    __typename?: 'CreateMomokaPostBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateMomokaPostEIP712TypedData';
+      types: {
+        __typename?: 'CreateMomokaPostEIP712TypedDataTypes';
+        PostWithSig: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: { __typename?: 'CreateMomokaPostEIP712TypedDataValue'; nonce: any; deadline: any };
+    };
+  };
+};
 
 export type LensTransactionStatusQueryVariables = Exact<{
   request: LensTransactionStatusRequest;
 }>;
 
-
-export type LensTransactionStatusQuery = { __typename?: 'Query', lensTransactionStatus: { __typename: 'LensMetadataTransaction', status: LensTransactionStatusType, metadataFailedReason?: LensMetadataTransactionFailureType | null, extraInfo?: string | null } | { __typename: 'LensTransaction', status: LensTransactionStatusType, txHash: any, reason?: LensTransactionFailureType | null, extraInfo?: string | null } };
-
-
-export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignedAuthChallenge"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
-export const ChallengeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Challenge"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChallengeRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"challenge"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]} as unknown as DocumentNode<ChallengeQuery, ChallengeQueryVariables>;
-export const RefreshDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Refresh"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refresh"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
-export const VerifyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Verify"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VerifyRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verify"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<VerifyQuery, VerifyQueryVariables>;
-export const BroadcastOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnchainMutation, BroadcastOnchainMutationVariables>;
-export const BroadcastOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnMomokaMutation, BroadcastOnMomokaMutationVariables>;
-export const CreateChangeProfileManagersTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateChangeProfileManagersTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChangeProfileManagersRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"options"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"TypedDataOptions"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createChangeProfileManagersTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}},{"kind":"Argument","name":{"kind":"Name","value":"options"},"value":{"kind":"Variable","name":{"kind":"Name","value":"options"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ChangeDelegatedExecutorsConfigWithSig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateChangeProfileManagersTypedDataMutation, CreateChangeProfileManagersTypedDataMutationVariables>;
-export const CreateMomokaPostTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMomokaPostTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMomokaPostTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"PostWithSig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateMomokaPostTypedDataMutation, CreateMomokaPostTypedDataMutationVariables>;
-export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LensTransactionStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransactionStatusRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lensTransactionStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransaction"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensMetadataTransaction"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"metadataFailedReason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}}]}}]}}]} as unknown as DocumentNode<LensTransactionStatusQuery, LensTransactionStatusQueryVariables>;
-
-      export interface PossibleTypesResultData {
-        possibleTypes: {
-          [key: string]: string[]
-        }
+export type LensTransactionStatusQuery = {
+  __typename?: 'Query';
+  lensTransactionStatus:
+    | {
+        __typename: 'LensMetadataTransaction';
+        status: LensTransactionStatusType;
+        metadataFailedReason?: LensMetadataTransactionFailureType | null;
+        extraInfo?: string | null;
       }
-      const result: PossibleTypesResultData = {
-  "possibleTypes": {
-    "AccessCondition": [
-      "AndCondition",
-      "CollectCondition",
-      "EoaOwnershipCondition",
-      "Erc20OwnershipCondition",
-      "FollowCondition",
-      "NftOwnershipCondition",
-      "OrCondition",
-      "ProfileOwnershipCondition"
-    ],
-    "AnyPublication": [
-      "Comment",
-      "Mirror",
-      "Post",
-      "Quote"
-    ],
-    "Asset": [
-      "Erc20"
-    ],
-    "BroadcastMomokaResult": [
-      "CreateMomokaPublicationResult",
-      "RelayError"
-    ],
-    "CreateProfileWithHandleResult": [
-      "CreateProfileWithHandleErrorResult",
-      "RelaySuccess"
-    ],
-    "ExplorePublication": [
-      "Post",
-      "Quote"
-    ],
-    "FeedHighlight": [
-      "Post",
-      "Quote"
-    ],
-    "FollowModule": [
-      "FeeFollowModuleSettings",
-      "RevertFollowModuleSettings",
-      "UnknownFollowModuleSettings"
-    ],
-    "LensProfileManagerRelayResult": [
-      "LensProfileManagerRelayError",
-      "RelaySuccess"
-    ],
-    "LensTransactionResult": [
-      "LensMetadataTransaction",
-      "LensTransaction"
-    ],
-    "MediaSet": [
-      "AudioSet",
-      "ImageSet",
-      "VideoSet"
-    ],
-    "MirrorablePublication": [
-      "Comment",
-      "Post",
-      "Quote"
-    ],
-    "MomokaTransaction": [
-      "MomokaCommentTransaction",
-      "MomokaMirrorTransaction",
-      "MomokaPostTransaction",
-      "MomokaQuoteTransaction"
-    ],
-    "MomokaVerificationStatus": [
-      "MomokaVerificationStatusFailure",
-      "MomokaVerificationStatusSuccess"
-    ],
-    "Notification": [
-      "ActedNotification",
-      "CommentNotification",
-      "FollowNotification",
-      "FutureProofNotification",
-      "MentionNotification",
-      "MirrorNotification",
-      "QuoteNotification",
-      "ReactionNotification"
-    ],
-    "OpenActionModule": [
-      "LegacyAaveFeeCollectModuleSettings",
-      "LegacyERC4626FeeCollectModuleSettings",
-      "LegacyFeeCollectModuleSettings",
-      "LegacyFreeCollectModuleSettings",
-      "LegacyLimitedFeeCollectModuleSettings",
-      "LegacyLimitedTimedFeeCollectModuleSettings",
-      "LegacyMultirecipientFeeCollectModuleSettings",
-      "LegacyRevertCollectModuleSettings",
-      "LegacySimpleCollectModuleSettings",
-      "LegacyTimedFeeCollectModuleSettings",
-      "MultirecipientFeeCollectOpenActionSettings",
-      "SimpleCollectOpenActionSettings",
-      "UnknownOpenActionModuleSettings"
-    ],
-    "OpenActionResult": [
-      "CollectOpenActionResult",
-      "UnknownOpenActionResult"
-    ],
-    "PrimaryPublication": [
-      "Comment",
-      "Post",
-      "Quote"
-    ],
-    "PublicationForYou": [
-      "Post",
-      "Quote"
-    ],
-    "PublicationMetadata": [
-      "ArticleMetadataV1",
-      "CheckingInMetadataV1",
-      "EmbedMetadataV1",
-      "EventMetadataV1",
-      "FutureProofPublicationMetadata",
-      "LinkMetadataV1",
-      "LiveStreamMetadataV1",
-      "MintMetadataV1",
-      "PublicationImageMetadataV1",
-      "PublicationMetadataV2",
-      "PublicationVideoMetadataV1",
-      "SpaceMetadataV1",
-      "StoryMetadataV1",
-      "TextOnlyMetadataV1",
-      "ThreeDMetadataV1",
-      "TransactionMetadataV1"
-    ],
-    "PublicationMetadataAttachment": [
-      "PublicationMetadataMediaAudio",
-      "PublicationMetadataMediaImage",
-      "PublicationMetadataMediaVideo"
-    ],
-    "PublicationMetadataEncryptionStrategy": [
-      "FutureProofPublicationEncryptionStrategy",
-      "PublicationMetadataV3LitEncryption"
-    ],
-    "ReferenceModule": [
-      "DegreesOfSeparationReferenceModuleSettings",
-      "FollowOnlyReferenceModuleSettings",
-      "UnknownReferenceModuleSettings"
-    ],
-    "RelayMomokaResult": [
-      "CreateMomokaPublicationResult",
-      "RelayError"
-    ],
-    "RelayResult": [
-      "RelayError",
-      "RelaySuccess"
-    ]
-  }
+    | {
+        __typename: 'LensTransaction';
+        status: LensTransactionStatusType;
+        txHash: any;
+        reason?: LensTransactionFailureType | null;
+        extraInfo?: string | null;
+      };
 };
-      export default result;
-    
+
+export const AuthenticateDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Authenticate' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'SignedAuthChallenge' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'authenticate' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'accessToken' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'refreshToken' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
+export const ChallengeDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Challenge' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ChallengeRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'challenge' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'text' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<ChallengeQuery, ChallengeQueryVariables>;
+export const RefreshDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Refresh' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'RefreshRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'refresh' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'accessToken' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'refreshToken' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
+export const VerifyDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Verify' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'VerifyRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'verify' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<VerifyQuery, VerifyQueryVariables>;
+export const BroadcastOnchainDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'BroadcastOnchain' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BroadcastRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'broadcastOnchain' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RelayError' } },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'reason' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BroadcastOnchainMutation, BroadcastOnchainMutationVariables>;
+export const BroadcastOnMomokaDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'BroadcastOnMomoka' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BroadcastRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'broadcastOnMomoka' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'CreateMomokaPublicationResult' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'proof' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'momokaId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RelayError' } },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'reason' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BroadcastOnMomokaMutation, BroadcastOnMomokaMutationVariables>;
+export const CreateChangeProfileManagersTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateChangeProfileManagersTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'ChangeProfileManagersRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createChangeProfileManagersTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'ChangeDelegatedExecutorsConfig' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'delegatorProfileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'delegatedExecutors' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'approvals' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'configNumber' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'switchToGivenConfig' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateChangeProfileManagersTypedDataMutation,
+  CreateChangeProfileManagersTypedDataMutationVariables
+>;
+export const CreateMomokaPostTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateMomokaPostTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'MomokaPostRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createMomokaPostTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'PostWithSig' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateMomokaPostTypedDataMutation,
+  CreateMomokaPostTypedDataMutationVariables
+>;
+export const LensTransactionStatusDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'LensTransactionStatus' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'LensTransactionStatusRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'lensTransactionStatus' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensTransaction' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'reason' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'extraInfo' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensMetadataTransaction' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'metadataFailedReason' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'extraInfo' } },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<LensTransactionStatusQuery, LensTransactionStatusQueryVariables>;
+
+export interface PossibleTypesResultData {
+  possibleTypes: {
+    [key: string]: string[];
+  };
+}
+const result: PossibleTypesResultData = {
+  possibleTypes: {
+    AccessCondition: [
+      'AndCondition',
+      'CollectCondition',
+      'EoaOwnershipCondition',
+      'Erc20OwnershipCondition',
+      'FollowCondition',
+      'NftOwnershipCondition',
+      'OrCondition',
+      'ProfileOwnershipCondition',
+    ],
+    AnyPublication: ['Comment', 'Mirror', 'Post', 'Quote'],
+    Asset: ['Erc20'],
+    BroadcastMomokaResult: ['CreateMomokaPublicationResult', 'RelayError'],
+    CreateProfileWithHandleResult: ['CreateProfileWithHandleErrorResult', 'RelaySuccess'],
+    ExplorePublication: ['Post', 'Quote'],
+    FeedHighlight: ['Post', 'Quote'],
+    FollowModule: [
+      'FeeFollowModuleSettings',
+      'RevertFollowModuleSettings',
+      'UnknownFollowModuleSettings',
+    ],
+    LensProfileManagerRelayResult: ['LensProfileManagerRelayError', 'RelaySuccess'],
+    LensTransactionResult: ['LensMetadataTransaction', 'LensTransaction'],
+    MediaSet: ['AudioSet', 'ImageSet', 'VideoSet'],
+    MirrorablePublication: ['Comment', 'Post', 'Quote'],
+    MomokaTransaction: [
+      'MomokaCommentTransaction',
+      'MomokaMirrorTransaction',
+      'MomokaPostTransaction',
+      'MomokaQuoteTransaction',
+    ],
+    MomokaVerificationStatus: [
+      'MomokaVerificationStatusFailure',
+      'MomokaVerificationStatusSuccess',
+    ],
+    Notification: [
+      'ActedNotification',
+      'CommentNotification',
+      'FollowNotification',
+      'FutureProofNotification',
+      'MentionNotification',
+      'MirrorNotification',
+      'QuoteNotification',
+      'ReactionNotification',
+    ],
+    OpenActionModule: [
+      'LegacyAaveFeeCollectModuleSettings',
+      'LegacyERC4626FeeCollectModuleSettings',
+      'LegacyFeeCollectModuleSettings',
+      'LegacyFreeCollectModuleSettings',
+      'LegacyLimitedFeeCollectModuleSettings',
+      'LegacyLimitedTimedFeeCollectModuleSettings',
+      'LegacyMultirecipientFeeCollectModuleSettings',
+      'LegacyRevertCollectModuleSettings',
+      'LegacySimpleCollectModuleSettings',
+      'LegacyTimedFeeCollectModuleSettings',
+      'MultirecipientFeeCollectOpenActionSettings',
+      'SimpleCollectOpenActionSettings',
+      'UnknownOpenActionModuleSettings',
+    ],
+    OpenActionResult: ['CollectOpenActionResult', 'UnknownOpenActionResult'],
+    PrimaryPublication: ['Comment', 'Post', 'Quote'],
+    PublicationForYou: ['Post', 'Quote'],
+    PublicationMetadata: [
+      'ArticleMetadataV1',
+      'CheckingInMetadataV1',
+      'EmbedMetadataV1',
+      'EventMetadataV1',
+      'FutureProofPublicationMetadata',
+      'LinkMetadataV1',
+      'LiveStreamMetadataV1',
+      'MintMetadataV1',
+      'PublicationImageMetadataV1',
+      'PublicationMetadataV2',
+      'PublicationVideoMetadataV1',
+      'SpaceMetadataV1',
+      'StoryMetadataV1',
+      'TextOnlyMetadataV1',
+      'ThreeDMetadataV1',
+      'TransactionMetadataV1',
+    ],
+    PublicationMetadataAttachment: [
+      'PublicationMetadataMediaAudio',
+      'PublicationMetadataMediaImage',
+      'PublicationMetadataMediaVideo',
+    ],
+    PublicationMetadataEncryptionStrategy: [
+      'FutureProofPublicationEncryptionStrategy',
+      'PublicationMetadataV3LitEncryption',
+    ],
+    ReferenceModule: [
+      'DegreesOfSeparationReferenceModuleSettings',
+      'FollowOnlyReferenceModuleSettings',
+      'UnknownReferenceModuleSettings',
+    ],
+    RelayMomokaResult: ['CreateMomokaPublicationResult', 'RelayError'],
+    RelayResult: ['RelayError', 'RelaySuccess'],
+  },
+};
+export default result;
