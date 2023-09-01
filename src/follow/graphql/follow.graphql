@@ -26,3 +26,15 @@ mutation CreateFollowTypedData($request: FollowRequest!) {
     }
   }
 }
+
+mutation Follow($request: FollowRequest!) {
+  follow(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

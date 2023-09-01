@@ -4817,6 +4817,20 @@ export type CreateFollowTypedDataMutation = {
   };
 };
 
+export type FollowMutationVariables = Exact<{
+  request: FollowRequest;
+}>;
+
+export type FollowMutation = {
+  __typename?: 'Mutation';
+  follow:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
 export type CreateUnfollowTypedDataMutationVariables = Exact<{
   request: UnfollowRequest;
 }>;
@@ -4849,6 +4863,20 @@ export type CreateUnfollowTypedDataMutation = {
       };
     };
   };
+};
+
+export type UnfollowMutationVariables = Exact<{
+  request: UnfollowRequest;
+}>;
+
+export type UnfollowMutation = {
+  __typename?: 'Mutation';
+  unfollow:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
 };
 
 export type CreateChangeProfileManagersTypedDataMutationVariables = Exact<{
@@ -5344,6 +5372,72 @@ export const CreateFollowTypedDataDocument = {
     },
   ],
 } as unknown as DocumentNode<CreateFollowTypedDataMutation, CreateFollowTypedDataMutationVariables>;
+export const FollowDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Follow' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'FollowRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'follow' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<FollowMutation, FollowMutationVariables>;
 export const CreateUnfollowTypedDataDocument = {
   kind: 'Document',
   definitions: [
@@ -5448,6 +5542,72 @@ export const CreateUnfollowTypedDataDocument = {
   CreateUnfollowTypedDataMutation,
   CreateUnfollowTypedDataMutationVariables
 >;
+export const UnfollowDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Unfollow' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnfollowRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'unfollow' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UnfollowMutation, UnfollowMutationVariables>;
 export const CreateChangeProfileManagersTypedDataDocument = {
   kind: 'Document',
   definitions: [

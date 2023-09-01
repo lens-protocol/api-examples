@@ -24,3 +24,15 @@ mutation CreateUnfollowTypedData($request: UnfollowRequest!) {
     }
   }
 }
+
+mutation Unfollow($request: UnfollowRequest!) {
+  unfollow(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

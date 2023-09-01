@@ -1,4 +1,4 @@
-import { RelayError, RelaySuccess } from '../graphql/generated';
+import { LensProfileManagerRelayError, RelayError, RelaySuccess } from '../graphql/generated';
 import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
 
 export async function waitUntilBroadcastTransactionIsComplete(
@@ -18,4 +18,22 @@ export async function waitUntilBroadcastTransactionIsComplete(
   console.log(`${actionToBroadcast}: has been indexed`, indexedResult);
 
   console.log(`${actionToBroadcast}: complete`);
+}
+
+export async function waitUntilLensManagerTransactionIsComplete(
+  result: RelaySuccess | LensProfileManagerRelayError,
+  name: string
+) {
+  console.log('lens profile manager with action - ', { name });
+
+  if (result.__typename !== 'RelaySuccess') {
+    console.error(`${result}: failed`, result);
+    throw new Error(`${result}: failed`);
+  }
+
+  console.log(`${result}: poll until indexed`);
+  const indexedResult = await waitUntilComplete({ txId: result.txId });
+  console.log(`${result}: has been indexed`, indexedResult);
+
+  console.log(`${result}: complete`);
 }
