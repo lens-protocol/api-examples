@@ -26,7 +26,7 @@ export async function waitUntilLensManagerTransactionIsComplete(
 ) {
   console.log('lens profile manager with action - ', { name });
 
-  if (result.__typename !== 'LensProfileManagerRelayError') {
+  if (result.__typename !== 'RelaySuccess') {
     console.error(`${result}: failed`, result);
     throw new Error(`${result}: failed`);
   }
