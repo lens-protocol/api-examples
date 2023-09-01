@@ -1,8 +1,11 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
+import { USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
+import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
 const createUnfollowTypedData = async (request: UnfollowRequest) => {
   const result = await apolloClient.mutate({
@@ -21,30 +24,35 @@ export const unfollow = async () => {
 
   await login(address);
 
-  const result = await createUnfollowTypedData({ profiles: ['0x02'] });
-  console.log('unfollow: result', result);
+  const { id, typedData } = await createUnfollowTypedData({ profiles: ['0x02'] });
+  console.log('unfollow: result', { id, typedData });
 
-  const typedData = result.typedData;
   console.log('unfollow: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('unfollow: signature', signature);
 
-  const { v, r, s } = splitSignature(signature);
+  if (USE_GASLESS) {
+    const broadcastResult = await broadcastOnchainRequest({ id, signature });
 
-  const tx = await lensHub.unfollowWithSig(
-    typedData.value.unfollowerProfileId,
-    typedData.value.idsOfProfilesToUnfollow,
-    {
-      signer: address,
-      v,
-      r,
-      s,
-      deadline: typedData.value.deadline,
-    }
-  );
-  console.log('follow: tx hash', tx.hash);
-  return tx.hash;
+    await waitUntilBroadcastTransactionIsComplete(broadcastResult, 'unfollow');
+  } else {
+    const { v, r, s } = splitSignature(signature);
+
+    const tx = await lensHub.unfollowWithSig(
+      typedData.value.unfollowerProfileId,
+      typedData.value.idsOfProfilesToUnfollow,
+      {
+        signer: address,
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      }
+    );
+    console.log('follow: tx hash', tx.hash);
+    return tx.hash;
+  }
 };
 
 (async () => {

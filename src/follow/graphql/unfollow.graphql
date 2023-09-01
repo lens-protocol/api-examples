@@ -1,5 +1,7 @@
 mutation CreateUnfollowTypedData($request: UnfollowRequest!) {
   createUnfollowTypedData(request: $request) {
+    expiresAt
+    id
     typedData {
       types {
         Unfollow {

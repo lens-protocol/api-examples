@@ -4825,6 +4825,8 @@ export type CreateUnfollowTypedDataMutation = {
   __typename?: 'Mutation';
   createUnfollowTypedData: {
     __typename?: 'CreateUnfollowBroadcastItemResult';
+    expiresAt: any;
+    id: any;
     typedData: {
       __typename?: 'CreateUnfollowEIP712TypedData';
       types: {
@@ -5375,6 +5377,8 @@ export const CreateUnfollowTypedDataDocument = {
             selectionSet: {
               kind: 'SelectionSet',
               selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
                 {
                   kind: 'Field',
                   name: { kind: 'Name', value: 'typedData' },
