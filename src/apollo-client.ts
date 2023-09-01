@@ -29,16 +29,15 @@ const httpLink = new HttpLink({
 });
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${JSON.stringify(
-          locations
-        )}, Path: ${path}`
-      )
+  if (graphQLErrors) {
+    graphQLErrors.forEach((error) =>
+      console.log('[GraphQL error]:', JSON.stringify(error, null, 2))
     );
+  }
 
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+  if (networkError) {
+    console.log('[Network error]:', JSON.stringify(networkError, null, 2));
+  }
 });
 
 // example how you can pass in the x-access-token into requests using `ApolloLink`
