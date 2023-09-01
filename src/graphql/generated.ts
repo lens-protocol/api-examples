@@ -4920,6 +4920,20 @@ export type CreateChangeProfileManagersTypedDataMutation = {
   };
 };
 
+export type CreateProfileWithHandleMutationVariables = Exact<{
+  request: CreateProfileWithHandleRequest;
+}>;
+
+export type CreateProfileWithHandleMutation = {
+  __typename?: 'Mutation';
+  createProfileWithHandle:
+    | {
+        __typename?: 'CreateProfileWithHandleErrorResult';
+        reason: CreateProfileWithHandleErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
 export type CreateOnchainSetProfileMetadataTypedDataMutationVariables = Exact<{
   request: OnchainSetProfileMetadataRequest;
 }>;
@@ -5766,6 +5780,78 @@ export const CreateChangeProfileManagersTypedDataDocument = {
 } as unknown as DocumentNode<
   CreateChangeProfileManagersTypedDataMutation,
   CreateChangeProfileManagersTypedDataMutationVariables
+>;
+export const CreateProfileWithHandleDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateProfileWithHandle' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: {
+              kind: 'NamedType',
+              name: { kind: 'Name', value: 'CreateProfileWithHandleRequest' },
+            },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createProfileWithHandle' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'CreateProfileWithHandleErrorResult' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateProfileWithHandleMutation,
+  CreateProfileWithHandleMutationVariables
 >;
 export const CreateOnchainSetProfileMetadataTypedDataDocument = {
   kind: 'Document',
