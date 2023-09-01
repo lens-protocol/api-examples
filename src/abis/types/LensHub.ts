@@ -56,86 +56,100 @@ export interface LensHubEventsContext {
 }
 export type LensHubMethodNames =
   | 'new'
+  | 'DANGER__disableTokenGuardian'
+  | 'act'
+  | 'actWithSig'
   | 'approve'
   | 'balanceOf'
+  | 'batchMigrateFollowModules'
+  | 'batchMigrateFollowers'
+  | 'batchMigrateFollows'
+  | 'batchMigrateProfiles'
   | 'burn'
-  | 'burnWithSig'
+  | 'changeDelegatedExecutorsConfig'
+  | 'changeDelegatedExecutorsConfig'
+  | 'changeDelegatedExecutorsConfigWithSig'
   | 'collect'
   | 'collectWithSig'
   | 'comment'
   | 'commentWithSig'
   | 'createProfile'
-  | 'defaultProfile'
   | 'emitCollectNFTTransferEvent'
-  | 'emitFollowNFTTransferEvent'
+  | 'emitUnfollowedEvent'
+  | 'enableTokenGuardian'
   | 'exists'
   | 'follow'
   | 'followWithSig'
+  | 'getActionModuleById'
+  | 'getActionModuleWhitelistData'
   | 'getApproved'
-  | 'getCollectModule'
-  | 'getCollectNFT'
   | 'getCollectNFTImpl'
   | 'getContentURI'
-  | 'getDispatcher'
+  | 'getDelegatedExecutorsConfigNumber'
+  | 'getDelegatedExecutorsMaxConfigNumberSet'
+  | 'getDelegatedExecutorsPrevConfigNumber'
   | 'getDomainSeparator'
-  | 'getFollowModule'
-  | 'getFollowNFT'
   | 'getFollowNFTImpl'
-  | 'getFollowNFTURI'
   | 'getGovernance'
-  | 'getHandle'
   | 'getProfile'
-  | 'getProfileIdByHandle'
-  | 'getPub'
-  | 'getPubCount'
-  | 'getPubPointer'
-  | 'getPubType'
-  | 'getReferenceModule'
+  | 'getProfileIdByHandleHash'
+  | 'getPublication'
+  | 'getPublicationType'
   | 'getState'
-  | 'initialize'
+  | 'getTokenGuardianDisablingTimestamp'
   | 'isApprovedForAll'
-  | 'isCollectModuleWhitelisted'
+  | 'isBlocked'
+  | 'isDelegatedExecutorApproved'
+  | 'isDelegatedExecutorApproved'
   | 'isFollowModuleWhitelisted'
+  | 'isFollowing'
   | 'isProfileCreatorWhitelisted'
   | 'isReferenceModuleWhitelisted'
   | 'mintTimestampOf'
   | 'mirror'
   | 'mirrorWithSig'
   | 'name'
+  | 'nonces'
   | 'ownerOf'
-  | 'permit'
-  | 'permitForAll'
   | 'post'
   | 'postWithSig'
+  | 'quote'
+  | 'quoteWithSig'
+  | 'royaltyInfo'
   | 'safeTransferFrom'
   | 'safeTransferFrom'
   | 'setApprovalForAll'
-  | 'setDefaultProfile'
-  | 'setDefaultProfileWithSig'
-  | 'setDispatcher'
-  | 'setDispatcherWithSig'
+  | 'setBlockStatus'
+  | 'setBlockStatusWithSig'
   | 'setEmergencyAdmin'
   | 'setFollowModule'
   | 'setFollowModuleWithSig'
-  | 'setFollowNFTURI'
-  | 'setFollowNFTURIWithSig'
   | 'setGovernance'
-  | 'setProfileImageURI'
-  | 'setProfileImageURIWithSig'
+  | 'setMigrationAdmins'
+  | 'setProfileMetadataURI'
+  | 'setProfileMetadataURIWithSig'
+  | 'setRoyalty'
   | 'setState'
-  | 'sigNonces'
   | 'supportsInterface'
   | 'symbol'
-  | 'tokenByIndex'
   | 'tokenDataOf'
-  | 'tokenOfOwnerByIndex'
   | 'tokenURI'
   | 'totalSupply'
   | 'transferFrom'
-  | 'whitelistCollectModule'
+  | 'unfollow'
+  | 'unfollowWithSig'
+  | 'whitelistActionModule'
   | 'whitelistFollowModule'
   | 'whitelistProfileCreator'
   | 'whitelistReferenceModule';
+export interface MigrationParamsRequest {
+  lensHandlesAddress: string;
+  tokenHandleRegistryAddress: string;
+  legacyFeeFollowModule: string;
+  legacyProfileFollowModule: string;
+  newFeeFollowModule: string;
+  migrationAdmin: string;
+}
 export interface ApprovalEventEmittedResponse {
   owner: string;
   approved: string;
@@ -151,18 +165,53 @@ export interface TransferEventEmittedResponse {
   to: string;
   tokenId: BigNumberish;
 }
-export interface SigRequest {
+export interface PublicationActionParamsRequest {
+  publicationActedProfileId: BigNumberish;
+  publicationActedId: BigNumberish;
+  actorProfileId: BigNumberish;
+  referrerProfileIds: BigNumberish[];
+  referrerPubIds: BigNumberish[];
+  actionModuleAddress: string;
+  actionModuleData: Arrayish;
+}
+export interface SignatureRequest {
+  signer: string;
   v: BigNumberish;
   r: Arrayish;
   s: Arrayish;
   deadline: BigNumberish;
 }
-export interface VarsRequest {
-  collector: string;
+export interface CollectParamsRequest {
+  publicationCollectedProfileId: BigNumberish;
+  publicationCollectedId: BigNumberish;
+  collectorProfileId: BigNumberish;
+  referrerProfileId: BigNumberish;
+  referrerPubId: BigNumberish;
+  collectModuleData: Arrayish;
+}
+export interface CommentParamsRequest {
   profileId: BigNumberish;
-  pubId: BigNumberish;
-  data: Arrayish;
-  sig: SigRequest;
+  contentURI: string;
+  pointedProfileId: BigNumberish;
+  pointedPubId: BigNumberish;
+  referrerProfileIds: BigNumberish[];
+  referrerPubIds: BigNumberish[];
+  referenceModuleData: Arrayish;
+  actionModules: string[];
+  actionModulesInitDatas: Arrayish[];
+  referenceModule: string;
+  referenceModuleInitData: Arrayish;
+}
+export interface CreateProfileParamsRequest {
+  to: string;
+  followModule: string;
+  followModuleInitData: Arrayish;
+}
+export interface ActionmodulewhitelistdataResponse {
+  id: BigNumber;
+  0: BigNumber;
+  isWhitelisted: boolean;
+  1: boolean;
 }
 export interface ProfileResponse {
   pubCount: BigNumber;
@@ -171,30 +220,69 @@ export interface ProfileResponse {
   1: string;
   followNFT: string;
   2: string;
-  handle: string;
+  __DEPRECATED__handle: string;
   3: string;
-  imageURI: string;
+  __DEPRECATED__imageURI: string;
   4: string;
-  followNFTURI: string;
+  __DEPRECATED__followNFTURI: string;
   5: string;
+  metadataURI: string;
+  6: string;
 }
 export interface PublicationResponse {
-  profileIdPointed: BigNumber;
+  pointedProfileId: BigNumber;
   0: BigNumber;
-  pubIdPointed: BigNumber;
+  pointedPubId: BigNumber;
   1: BigNumber;
   contentURI: string;
   2: string;
   referenceModule: string;
   3: string;
-  collectModule: string;
+  __DEPRECATED__collectModule: string;
   4: string;
-  collectNFT: string;
+  __DEPRECATED__collectNFT: string;
   5: string;
+  pubType: number;
+  6: number;
+  rootProfileId: BigNumber;
+  7: BigNumber;
+  rootPubId: BigNumber;
+  8: BigNumber;
+  enabledActionModulesBitmap: BigNumber;
+  9: BigNumber;
 }
-export interface GetPubPointerResponse {
-  result0: BigNumber;
-  0: BigNumber;
+export interface MirrorParamsRequest {
+  profileId: BigNumberish;
+  pointedProfileId: BigNumberish;
+  pointedPubId: BigNumberish;
+  referrerProfileIds: BigNumberish[];
+  referrerPubIds: BigNumberish[];
+  referenceModuleData: Arrayish;
+}
+export interface PostParamsRequest {
+  profileId: BigNumberish;
+  contentURI: string;
+  actionModules: string[];
+  actionModulesInitDatas: Arrayish[];
+  referenceModule: string;
+  referenceModuleInitData: Arrayish;
+}
+export interface QuoteParamsRequest {
+  profileId: BigNumberish;
+  contentURI: string;
+  pointedProfileId: BigNumberish;
+  pointedPubId: BigNumberish;
+  referrerProfileIds: BigNumberish[];
+  referrerPubIds: BigNumberish[];
+  referenceModuleData: Arrayish;
+  actionModules: string[];
+  actionModulesInitDatas: Arrayish[];
+  referenceModule: string;
+  referenceModuleInitData: Arrayish;
+}
+export interface RoyaltyInfoResponse {
+  result0: string;
+  0: string;
   result1: BigNumber;
   1: BigNumber;
   length: 2;
@@ -211,12 +299,51 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: constructor
+   * @param moduleGlobals Type: address, Indexed: false
    * @param followNFTImpl Type: address, Indexed: false
    * @param collectNFTImpl Type: address, Indexed: false
+   * @param tokenGuardianCooldown Type: uint256, Indexed: false
+   * @param migrationParams Type: tuple, Indexed: false
    */
   'new'(
+    moduleGlobals: string,
     followNFTImpl: string,
     collectNFTImpl: string,
+    tokenGuardianCooldown: BigNumberish,
+    migrationParams: MigrationParamsRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   */
+  DANGER__disableTokenGuardian(
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param publicationActionParams Type: tuple, Indexed: false
+   */
+  act(
+    publicationActionParams: PublicationActionParamsRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param publicationActionParams Type: tuple, Indexed: false
+   * @param signature Type: tuple, Indexed: false
+   */
+  actWithSig(
+    publicationActionParams: PublicationActionParamsRequest,
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -245,6 +372,58 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
+   * @param profileIds Type: uint256[], Indexed: false
+   */
+  batchMigrateFollowModules(
+    profileIds: BigNumberish[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param followerProfileIds Type: uint256[], Indexed: false
+   * @param idOfProfileFollowed Type: uint256, Indexed: false
+   * @param followTokenIds Type: uint256[], Indexed: false
+   */
+  batchMigrateFollowers(
+    followerProfileIds: BigNumberish[],
+    idOfProfileFollowed: BigNumberish,
+    followTokenIds: BigNumberish[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param followerProfileId Type: uint256, Indexed: false
+   * @param idsOfProfileFollowed Type: uint256[], Indexed: false
+   * @param followTokenIds Type: uint256[], Indexed: false
+   */
+  batchMigrateFollows(
+    followerProfileId: BigNumberish,
+    idsOfProfileFollowed: BigNumberish[],
+    followTokenIds: BigNumberish[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param profileIds Type: uint256[], Indexed: false
+   */
+  batchMigrateProfiles(
+    profileIds: BigNumberish[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
    * @param tokenId Type: uint256, Indexed: false
    */
   burn(
@@ -256,12 +435,18 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param tokenId Type: uint256, Indexed: false
-   * @param sig Type: tuple, Indexed: false
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   * @param delegatedExecutors Type: address[], Indexed: false
+   * @param approvals Type: bool[], Indexed: false
+   * @param configNumber Type: uint64, Indexed: false
+   * @param switchToGivenConfig Type: bool, Indexed: false
    */
-  burnWithSig(
-    tokenId: BigNumberish,
-    sig: SigRequest,
+  changeDelegatedExecutorsConfig(
+    delegatorProfileId: BigNumberish,
+    delegatedExecutors: string[],
+    approvals: boolean[],
+    configNumber: BigNumberish,
+    switchToGivenConfig: boolean,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -269,14 +454,46 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param pubId Type: uint256, Indexed: false
-   * @param data Type: bytes, Indexed: false
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   * @param delegatedExecutors Type: address[], Indexed: false
+   * @param approvals Type: bool[], Indexed: false
+   */
+  changeDelegatedExecutorsConfig(
+    delegatorProfileId: BigNumberish,
+    delegatedExecutors: string[],
+    approvals: boolean[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   * @param delegatedExecutors Type: address[], Indexed: false
+   * @param approvals Type: bool[], Indexed: false
+   * @param configNumber Type: uint64, Indexed: false
+   * @param switchToGivenConfig Type: bool, Indexed: false
+   * @param signature Type: tuple, Indexed: false
+   */
+  changeDelegatedExecutorsConfigWithSig(
+    delegatorProfileId: BigNumberish,
+    delegatedExecutors: string[],
+    approvals: boolean[],
+    configNumber: BigNumberish,
+    switchToGivenConfig: boolean,
+    signature: SignatureRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param collectParams Type: tuple, Indexed: false
    */
   collect(
-    profileId: BigNumberish,
-    pubId: BigNumberish,
-    data: Arrayish,
+    collectParams: CollectParamsRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -284,10 +501,12 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param collectParams Type: tuple, Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
   collectWithSig(
-    vars: VarsRequest,
+    collectParams: CollectParamsRequest,
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -295,10 +514,10 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param commentParams Type: tuple, Indexed: false
    */
   comment(
-    vars: VarsRequest,
+    commentParams: CommentParamsRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -306,10 +525,12 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param commentParams Type: tuple, Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
   commentWithSig(
-    vars: VarsRequest,
+    commentParams: CommentParamsRequest,
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -317,20 +538,12 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param createProfileParams Type: tuple, Indexed: false
    */
   createProfile(
-    vars: VarsRequest,
+    createProfileParams: CreateProfileParamsRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param wallet Type: address, Indexed: false
-   */
-  defaultProfile(wallet: string, overrides?: ContractCallOverrides): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: false
@@ -355,18 +568,23 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param followNFTId Type: uint256, Indexed: false
-   * @param from Type: address, Indexed: false
-   * @param to Type: address, Indexed: false
+   * @param unfollowerProfileId Type: uint256, Indexed: false
+   * @param idOfProfileUnfollowed Type: uint256, Indexed: false
+   * @param transactionExecutor Type: address, Indexed: false
    */
-  emitFollowNFTTransferEvent(
-    profileId: BigNumberish,
-    followNFTId: BigNumberish,
-    from: string,
-    to: string,
+  emitUnfollowedEvent(
+    unfollowerProfileId: BigNumberish,
+    idOfProfileUnfollowed: BigNumberish,
+    transactionExecutor: string,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   */
+  enableTokenGuardian(overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: true
@@ -380,11 +598,15 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param profileIds Type: uint256[], Indexed: false
+   * @param followerProfileId Type: uint256, Indexed: false
+   * @param idsOfProfilesToFollow Type: uint256[], Indexed: false
+   * @param followTokenIds Type: uint256[], Indexed: false
    * @param datas Type: bytes[], Indexed: false
    */
   follow(
-    profileIds: BigNumberish[],
+    followerProfileId: BigNumberish,
+    idsOfProfilesToFollow: BigNumberish[],
+    followTokenIds: BigNumberish[],
     datas: Arrayish[],
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
@@ -393,12 +615,39 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param followerProfileId Type: uint256, Indexed: false
+   * @param idsOfProfilesToFollow Type: uint256[], Indexed: false
+   * @param followTokenIds Type: uint256[], Indexed: false
+   * @param datas Type: bytes[], Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
   followWithSig(
-    vars: VarsRequest,
+    followerProfileId: BigNumberish,
+    idsOfProfilesToFollow: BigNumberish[],
+    followTokenIds: BigNumberish[],
+    datas: Arrayish[],
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param id Type: uint256, Indexed: false
+   */
+  getActionModuleById(id: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param actionModule Type: address, Indexed: false
+   */
+  getActionModuleWhitelistData(
+    actionModule: string,
+    overrides?: ContractCallOverrides
+  ): Promise<ActionmodulewhitelistdataResponse>;
   /**
    * Payable: false
    * Constant: true
@@ -407,32 +656,6 @@ export interface LensHub {
    * @param tokenId Type: uint256, Indexed: false
    */
   getApproved(tokenId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param pubId Type: uint256, Indexed: false
-   */
-  getCollectModule(
-    profileId: BigNumberish,
-    pubId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param pubId Type: uint256, Indexed: false
-   */
-  getCollectNFT(
-    profileId: BigNumberish,
-    pubId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<string>;
   /**
    * Payable: false
    * Constant: true
@@ -458,9 +681,34 @@ export interface LensHub {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
+   * @param delegatorProfileId Type: uint256, Indexed: false
    */
-  getDispatcher(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
+  getDelegatedExecutorsConfigNumber(
+    delegatorProfileId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   */
+  getDelegatedExecutorsMaxConfigNumberSet(
+    delegatorProfileId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   */
+  getDelegatedExecutorsPrevConfigNumber(
+    delegatorProfileId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: true
@@ -473,32 +721,8 @@ export interface LensHub {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   */
-  getFollowModule(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   */
-  getFollowNFT(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
    */
   getFollowNFTImpl(overrides?: ContractCallOverrides): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   */
-  getFollowNFTURI(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
   /**
    * Payable: false
    * Constant: true
@@ -513,23 +737,18 @@ export interface LensHub {
    * Type: function
    * @param profileId Type: uint256, Indexed: false
    */
-  getHandle(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   */
   getProfile(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<ProfileResponse>;
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param handle Type: string, Indexed: false
+   * @param handleHash Type: bytes32, Indexed: false
    */
-  getProfileIdByHandle(handle: string, overrides?: ContractCallOverrides): Promise<BigNumber>;
+  getProfileIdByHandleHash(
+    handleHash: Arrayish,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: true
@@ -538,7 +757,7 @@ export interface LensHub {
    * @param profileId Type: uint256, Indexed: false
    * @param pubId Type: uint256, Indexed: false
    */
-  getPub(
+  getPublication(
     profileId: BigNumberish,
     pubId: BigNumberish,
     overrides?: ContractCallOverrides
@@ -549,30 +768,9 @@ export interface LensHub {
    * StateMutability: view
    * Type: function
    * @param profileId Type: uint256, Indexed: false
-   */
-  getPubCount(profileId: BigNumberish, overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
    * @param pubId Type: uint256, Indexed: false
    */
-  getPubPointer(
-    profileId: BigNumberish,
-    pubId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<GetPubPointerResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param pubId Type: uint256, Indexed: false
-   */
-  getPubType(
+  getPublicationType(
     profileId: BigNumberish,
     pubId: BigNumberish,
     overrides?: ContractCallOverrides
@@ -582,36 +780,19 @@ export interface LensHub {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param pubId Type: uint256, Indexed: false
    */
-  getReferenceModule(
-    profileId: BigNumberish,
-    pubId: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<string>;
+  getState(overrides?: ContractCallOverrides): Promise<number>;
   /**
    * Payable: false
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param wallet Type: address, Indexed: false
    */
-  getState(overrides?: ContractCallOverrides): Promise<number>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param name Type: string, Indexed: false
-   * @param symbol Type: string, Indexed: false
-   * @param newGovernance Type: address, Indexed: false
-   */
-  initialize(
-    name: string,
-    symbol: string,
-    newGovernance: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
+  getTokenGuardianDisablingTimestamp(
+    wallet: string,
+    overrides?: ContractCallOverrides
+  ): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: true
@@ -630,10 +811,40 @@ export interface LensHub {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param collectModule Type: address, Indexed: false
+   * @param profileId Type: uint256, Indexed: false
+   * @param byProfileId Type: uint256, Indexed: false
    */
-  isCollectModuleWhitelisted(
-    collectModule: string,
+  isBlocked(
+    profileId: BigNumberish,
+    byProfileId: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   * @param delegatedExecutor Type: address, Indexed: false
+   */
+  isDelegatedExecutorApproved(
+    delegatorProfileId: BigNumberish,
+    delegatedExecutor: string,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param delegatorProfileId Type: uint256, Indexed: false
+   * @param delegatedExecutor Type: address, Indexed: false
+   * @param configNumber Type: uint64, Indexed: false
+   */
+  isDelegatedExecutorApproved(
+    delegatorProfileId: BigNumberish,
+    delegatedExecutor: string,
+    configNumber: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<boolean>;
   /**
@@ -645,6 +856,19 @@ export interface LensHub {
    */
   isFollowModuleWhitelisted(
     followModule: string,
+    overrides?: ContractCallOverrides
+  ): Promise<boolean>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param followerProfileId Type: uint256, Indexed: false
+   * @param followedProfileId Type: uint256, Indexed: false
+   */
+  isFollowing(
+    followerProfileId: BigNumberish,
+    followedProfileId: BigNumberish,
     overrides?: ContractCallOverrides
   ): Promise<boolean>;
   /**
@@ -682,18 +906,23 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param mirrorParams Type: tuple, Indexed: false
    */
-  mirror(vars: VarsRequest, overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
+  mirror(
+    mirrorParams: MirrorParamsRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
   /**
    * Payable: false
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param mirrorParams Type: tuple, Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
   mirrorWithSig(
-    vars: VarsRequest,
+    mirrorParams: MirrorParamsRequest,
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -708,6 +937,14 @@ export interface LensHub {
    * Constant: true
    * StateMutability: view
    * Type: function
+   * @param signer Type: address, Indexed: false
+   */
+  nonces(signer: string, overrides?: ContractCallOverrides): Promise<BigNumber>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
    * @param tokenId Type: uint256, Indexed: false
    */
   ownerOf(tokenId: BigNumberish, overrides?: ContractCallOverrides): Promise<string>;
@@ -716,14 +953,10 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param spender Type: address, Indexed: false
-   * @param tokenId Type: uint256, Indexed: false
-   * @param sig Type: tuple, Indexed: false
+   * @param postParams Type: tuple, Indexed: false
    */
-  permit(
-    spender: string,
-    tokenId: BigNumberish,
-    sig: SigRequest,
+  post(
+    postParams: PostParamsRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -731,37 +964,51 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param owner Type: address, Indexed: false
-   * @param operator Type: address, Indexed: false
-   * @param approved Type: bool, Indexed: false
-   * @param sig Type: tuple, Indexed: false
-   */
-  permitForAll(
-    owner: string,
-    operator: string,
-    approved: boolean,
-    sig: SigRequest,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param vars Type: tuple, Indexed: false
-   */
-  post(vars: VarsRequest, overrides?: ContractTransactionOverrides): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param postParams Type: tuple, Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
   postWithSig(
-    vars: VarsRequest,
+    postParams: PostParamsRequest,
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param quoteParams Type: tuple, Indexed: false
+   */
+  quote(
+    quoteParams: QuoteParamsRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param quoteParams Type: tuple, Indexed: false
+   * @param signature Type: tuple, Indexed: false
+   */
+  quoteWithSig(
+    quoteParams: QuoteParamsRequest,
+    signature: SignatureRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: true
+   * StateMutability: view
+   * Type: function
+   * @param tokenId Type: uint256, Indexed: false
+   * @param salePrice Type: uint256, Indexed: false
+   */
+  royaltyInfo(
+    tokenId: BigNumberish,
+    salePrice: BigNumberish,
+    overrides?: ContractCallOverrides
+  ): Promise<RoyaltyInfoResponse>;
   /**
    * Payable: false
    * Constant: false
@@ -812,10 +1059,14 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
+   * @param byProfileId Type: uint256, Indexed: false
+   * @param idsOfProfilesToSetBlockStatus Type: uint256[], Indexed: false
+   * @param blockStatus Type: bool[], Indexed: false
    */
-  setDefaultProfile(
-    profileId: BigNumberish,
+  setBlockStatus(
+    byProfileId: BigNumberish,
+    idsOfProfilesToSetBlockStatus: BigNumberish[],
+    blockStatus: boolean[],
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -823,34 +1074,16 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param byProfileId Type: uint256, Indexed: false
+   * @param idsOfProfilesToSetBlockStatus Type: uint256[], Indexed: false
+   * @param blockStatus Type: bool[], Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
-  setDefaultProfileWithSig(
-    vars: VarsRequest,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param dispatcher Type: address, Indexed: false
-   */
-  setDispatcher(
-    profileId: BigNumberish,
-    dispatcher: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param vars Type: tuple, Indexed: false
-   */
-  setDispatcherWithSig(
-    vars: VarsRequest,
+  setBlockStatusWithSig(
+    byProfileId: BigNumberish,
+    idsOfProfilesToSetBlockStatus: BigNumberish[],
+    blockStatus: boolean[],
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -884,34 +1117,16 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param profileId Type: uint256, Indexed: false
+   * @param followModule Type: address, Indexed: false
+   * @param followModuleInitData Type: bytes, Indexed: false
+   * @param signature Type: tuple, Indexed: false
    */
   setFollowModuleWithSig(
-    vars: VarsRequest,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param followNFTURI Type: string, Indexed: false
-   */
-  setFollowNFTURI(
     profileId: BigNumberish,
-    followNFTURI: string,
-    overrides?: ContractTransactionOverrides
-  ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: false
-   * StateMutability: nonpayable
-   * Type: function
-   * @param vars Type: tuple, Indexed: false
-   */
-  setFollowNFTURIWithSig(
-    vars: VarsRequest,
+    followModule: string,
+    followModuleInitData: Arrayish,
+    signature: SignatureRequest,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -930,12 +1145,12 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param profileId Type: uint256, Indexed: false
-   * @param imageURI Type: string, Indexed: false
+   * @param migrationAdmins Type: address[], Indexed: false
+   * @param whitelisted Type: bool, Indexed: false
    */
-  setProfileImageURI(
-    profileId: BigNumberish,
-    imageURI: string,
+  setMigrationAdmins(
+    migrationAdmins: string[],
+    whitelisted: boolean,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -943,10 +1158,38 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param vars Type: tuple, Indexed: false
+   * @param profileId Type: uint256, Indexed: false
+   * @param metadataURI Type: string, Indexed: false
    */
-  setProfileImageURIWithSig(
-    vars: VarsRequest,
+  setProfileMetadataURI(
+    profileId: BigNumberish,
+    metadataURI: string,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param profileId Type: uint256, Indexed: false
+   * @param metadataURI Type: string, Indexed: false
+   * @param signature Type: tuple, Indexed: false
+   */
+  setProfileMetadataURIWithSig(
+    profileId: BigNumberish,
+    metadataURI: string,
+    signature: SignatureRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param royaltiesInBasisPoints Type: uint256, Indexed: false
+   */
+  setRoyalty(
+    royaltiesInBasisPoints: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
   /**
@@ -960,14 +1203,6 @@ export interface LensHub {
     newState: BigNumberish,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param parameter0 Type: address, Indexed: false
-   */
-  sigNonces(parameter0: string, overrides?: ContractCallOverrides): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: true
@@ -988,30 +1223,9 @@ export interface LensHub {
    * Constant: true
    * StateMutability: view
    * Type: function
-   * @param index Type: uint256, Indexed: false
-   */
-  tokenByIndex(index: BigNumberish, overrides?: ContractCallOverrides): Promise<BigNumber>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
    * @param tokenId Type: uint256, Indexed: false
    */
   tokenDataOf(tokenId: BigNumberish, overrides?: ContractCallOverrides): Promise<TokendataResponse>;
-  /**
-   * Payable: false
-   * Constant: true
-   * StateMutability: view
-   * Type: function
-   * @param owner Type: address, Indexed: false
-   * @param index Type: uint256, Indexed: false
-   */
-  tokenOfOwnerByIndex(
-    owner: string,
-    index: BigNumberish,
-    overrides?: ContractCallOverrides
-  ): Promise<BigNumber>;
   /**
    * Payable: false
    * Constant: true
@@ -1047,11 +1261,39 @@ export interface LensHub {
    * Constant: false
    * StateMutability: nonpayable
    * Type: function
-   * @param collectModule Type: address, Indexed: false
+   * @param unfollowerProfileId Type: uint256, Indexed: false
+   * @param idsOfProfilesToUnfollow Type: uint256[], Indexed: false
+   */
+  unfollow(
+    unfollowerProfileId: BigNumberish,
+    idsOfProfilesToUnfollow: BigNumberish[],
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param unfollowerProfileId Type: uint256, Indexed: false
+   * @param idsOfProfilesToUnfollow Type: uint256[], Indexed: false
+   * @param signature Type: tuple, Indexed: false
+   */
+  unfollowWithSig(
+    unfollowerProfileId: BigNumberish,
+    idsOfProfilesToUnfollow: BigNumberish[],
+    signature: SignatureRequest,
+    overrides?: ContractTransactionOverrides
+  ): Promise<ContractTransaction>;
+  /**
+   * Payable: false
+   * Constant: false
+   * StateMutability: nonpayable
+   * Type: function
+   * @param actionModule Type: address, Indexed: false
    * @param whitelist Type: bool, Indexed: false
    */
-  whitelistCollectModule(
-    collectModule: string,
+  whitelistActionModule(
+    actionModule: string,
     whitelist: boolean,
     overrides?: ContractTransactionOverrides
   ): Promise<ContractTransaction>;
