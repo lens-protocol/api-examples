@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { getAddressFromSigner } from '../ethers.service';
-import { VerifyDocument, VerifyRequest } from '../../graphql-v1/generated';
+import { VerifyDocument, VerifyRequest } from '../graphql/generated';
 import { login } from './login';
 
 const verify = async (request: VerifyRequest) => {
