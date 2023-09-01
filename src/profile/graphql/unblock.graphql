@@ -1,0 +1,39 @@
+mutation CreateUnblockProfilesTypedData($request: UnblockRequest!) {
+  createUnblockProfilesTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        SetBlockStatus {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        byProfileId
+        idsOfProfilesToSetBlockStatus
+        blockStatus
+      }
+    }
+  }
+}
+
+mutation Unblock($request: UnblockRequest!) {
+  unblock(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

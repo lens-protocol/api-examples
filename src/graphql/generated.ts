@@ -1795,6 +1795,7 @@ export type LensTransactionStatusRequest = {
 export enum LensTransactionStatusType {
   Complete = 'COMPLETE',
   Failed = 'FAILED',
+  OptimisticallyUpdated = 'OPTIMISTICALLY_UPDATED',
   Progressing = 'PROGRESSING',
 }
 
@@ -4920,6 +4921,55 @@ export type CreateChangeProfileManagersTypedDataMutation = {
   };
 };
 
+export type CreateBlockProfilesTypedDataMutationVariables = Exact<{
+  request: BlockRequest;
+}>;
+
+export type CreateBlockProfilesTypedDataMutation = {
+  __typename?: 'Mutation';
+  createBlockProfilesTypedData: {
+    __typename?: 'CreateBlockProfilesBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateBlockProfilesEIP712TypedData';
+      value: {
+        __typename?: 'CreateBlockProfilesEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        byProfileId: any;
+        idsOfProfilesToSetBlockStatus: Array<any>;
+        blockStatus: Array<boolean>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      types: {
+        __typename?: 'CreateBlockProfilesEIP712TypedDataTypes';
+        SetBlockStatus: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+    };
+  };
+};
+
+export type BlockMutationVariables = Exact<{
+  request: BlockRequest;
+}>;
+
+export type BlockMutation = {
+  __typename?: 'Mutation';
+  block:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
 export type CreateProfileWithHandleMutationVariables = Exact<{
   request: CreateProfileWithHandleRequest;
 }>;
@@ -4979,6 +5029,55 @@ export type SetProfileMetadataMutationVariables = Exact<{
 export type SetProfileMetadataMutation = {
   __typename?: 'Mutation';
   setProfileMetadata:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
+export type CreateUnblockProfilesTypedDataMutationVariables = Exact<{
+  request: UnblockRequest;
+}>;
+
+export type CreateUnblockProfilesTypedDataMutation = {
+  __typename?: 'Mutation';
+  createUnblockProfilesTypedData: {
+    __typename?: 'CreateUnblockProfilesBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateUnblockProfilesEIP712TypedData';
+      types: {
+        __typename?: 'CreateUnblockProfilesEIP712TypedDataTypes';
+        SetBlockStatus: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: {
+        __typename?: 'CreateUnblockProfilesEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        byProfileId: any;
+        idsOfProfilesToSetBlockStatus: Array<any>;
+        blockStatus: Array<boolean>;
+      };
+    };
+  };
+};
+
+export type UnblockMutationVariables = Exact<{
+  request: UnblockRequest;
+}>;
+
+export type UnblockMutation = {
+  __typename?: 'Mutation';
+  unblock:
     | {
         __typename?: 'LensProfileManagerRelayError';
         reason: LensProfileManagerRelayErrorReasonType;
@@ -5781,6 +5880,177 @@ export const CreateChangeProfileManagersTypedDataDocument = {
   CreateChangeProfileManagersTypedDataMutation,
   CreateChangeProfileManagersTypedDataMutationVariables
 >;
+export const CreateBlockProfilesTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateBlockProfilesTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BlockRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createBlockProfilesTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'byProfileId' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'idsOfProfilesToSetBlockStatus' },
+                            },
+                            { kind: 'Field', name: { kind: 'Name', value: 'blockStatus' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'SetBlockStatus' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateBlockProfilesTypedDataMutation,
+  CreateBlockProfilesTypedDataMutationVariables
+>;
+export const BlockDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Block' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BlockRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'block' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<BlockMutation, BlockMutationVariables>;
 export const CreateProfileWithHandleDocument = {
   kind: 'Document',
   definitions: [
@@ -6026,6 +6296,177 @@ export const SetProfileMetadataDocument = {
     },
   ],
 } as unknown as DocumentNode<SetProfileMetadataMutation, SetProfileMetadataMutationVariables>;
+export const CreateUnblockProfilesTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateUnblockProfilesTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnblockRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createUnblockProfilesTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'SetBlockStatus' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'byProfileId' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'idsOfProfilesToSetBlockStatus' },
+                            },
+                            { kind: 'Field', name: { kind: 'Name', value: 'blockStatus' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateUnblockProfilesTypedDataMutation,
+  CreateUnblockProfilesTypedDataMutationVariables
+>;
+export const UnblockDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'Unblock' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnblockRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'unblock' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<UnblockMutation, UnblockMutationVariables>;
 export const CreateMomokaPostTypedDataDocument = {
   kind: 'Document',
   definitions: [

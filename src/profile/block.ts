@@ -3,45 +3,46 @@ import { login } from '../authentication/login';
 import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../graphql/generated';
+import { BlockRequest, CreateBlockProfilesTypedDataDocument } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
-const createUnfollowTypedData = async (request: UnfollowRequest) => {
+const createBlockProfilesTypedData = async (request: BlockRequest) => {
   const result = await apolloClient.mutate({
-    mutation: CreateUnfollowTypedDataDocument,
+    mutation: CreateBlockProfilesTypedDataDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.createUnfollowTypedData;
+  return result.data!.createBlockProfilesTypedData;
 };
 
-export const unfollow = async () => {
+export const block = async () => {
   const address = getAddressFromSigner();
-  console.log('unfollow: address', address);
+  console.log('block: address', address);
 
   await login(address);
 
-  const { id, typedData } = await createUnfollowTypedData({ profiles: ['0x02'] });
-  console.log('unfollow: result', { id, typedData });
+  const { id, typedData } = await createBlockProfilesTypedData({ profiles: ['0x02'] });
+  console.log('block: result', { id, typedData });
 
-  console.log('unfollow: typedData', typedData);
+  console.log('block: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('unfollow: signature', signature);
+  console.log('block: signature', signature);
 
   if (USE_GASLESS) {
     const broadcastResult = await broadcastOnchainRequest({ id, signature });
 
-    await waitUntilBroadcastTransactionIsComplete(broadcastResult, 'unfollow');
+    await waitUntilBroadcastTransactionIsComplete(broadcastResult, 'block');
   } else {
     const { v, r, s } = splitSignature(signature);
 
-    const tx = await lensHub.unfollowWithSig(
-      typedData.value.unfollowerProfileId,
-      typedData.value.idsOfProfilesToUnfollow,
+    const tx = await lensHub.setBlockStatusWithSig(
+      typedData.value.byProfileId,
+      typedData.value.idsOfProfilesToSetBlockStatus,
+      typedData.value.blockStatus,
       {
         signer: address,
         v,
@@ -50,11 +51,11 @@ export const unfollow = async () => {
         deadline: typedData.value.deadline,
       }
     );
-    console.log('unfollow: tx hash', tx.hash);
+    console.log('block: tx hash', tx.hash);
     return tx.hash;
   }
 };
 
 (async () => {
-  await unfollow();
+  await block();
 })();
