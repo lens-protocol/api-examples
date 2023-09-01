@@ -60,7 +60,7 @@ export const INFURA_PROJECT_ID = getParam('INFURA_PROJECT_ID');
 
 export const INFURA_SECRET = getParam('INFURA_SECRET');
 
-export const USE_GASLESS = Boolean(getParam('USE_GASLESS'));
+export const USE_GASLESS = getParam('USE_GASLESS') === 'true';
 
 export const ORIGIN = USE_GASLESS
   ? getParamOrExit('ORIGIN', 'You must supply the ORIGIN env var when USE_GASLESS is enabled')
