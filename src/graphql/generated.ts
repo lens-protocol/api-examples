@@ -2754,7 +2754,7 @@ export type OnchainCommentRequest = {
   commentOn: Scalars['PublicationId'];
   commentOnReferenceModuleData?: InputMaybe<Scalars['BlockchainData']>;
   contentURI: Scalars['URI'];
-  openActionModules: Array<OpenActionModuleInput>;
+  openActionModules?: InputMaybe<Array<OpenActionModuleInput>>;
   referenceModule?: InputMaybe<ReferenceModuleInput>;
   referrers?: InputMaybe<Array<OnchainReferrer>>;
 };
@@ -2767,13 +2767,13 @@ export type OnchainMirrorRequest = {
 
 export type OnchainPostRequest = {
   contentURI: Scalars['URI'];
-  openActionModules: Array<OpenActionModuleInput>;
+  openActionModules?: InputMaybe<Array<OpenActionModuleInput>>;
   referenceModule?: InputMaybe<ReferenceModuleInput>;
 };
 
 export type OnchainQuoteRequest = {
   contentURI: Scalars['URI'];
-  openActionModules: Array<OpenActionModuleInput>;
+  openActionModules?: InputMaybe<Array<OpenActionModuleInput>>;
   quoteOn: Scalars['PublicationId'];
   quoteOnReferenceModuleData?: InputMaybe<Scalars['BlockchainData']>;
   referenceModule?: InputMaybe<ReferenceModuleInput>;
@@ -5240,6 +5240,224 @@ export type CreateMomokaPostTypedDataMutation = {
   };
 };
 
+export type CreateOnchainPostTypedDataMutationVariables = Exact<{
+  request: OnchainPostRequest;
+}>;
+
+export type CreateOnchainPostTypedDataMutation = {
+  __typename?: 'Mutation';
+  createOnchainPostTypedData: {
+    __typename?: 'CreateOnchainPostBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateOnchainPostEIP712TypedData';
+      types: {
+        __typename?: 'CreateOnchainPostEIP712TypedDataTypes';
+        Post: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: {
+        __typename?: 'CreateOnchainPostEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        contentURI: any;
+        actionModules: Array<any>;
+        actionModulesInitDatas: Array<any>;
+        referenceModule: any;
+        referenceModuleInitData: any;
+      };
+    };
+  };
+};
+
+export type PostOnchainMutationVariables = Exact<{
+  request: OnchainPostRequest;
+}>;
+
+export type PostOnchainMutation = {
+  __typename?: 'Mutation';
+  postOnchain:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
+export type CreateOnchainQuoteTypedDataMutationVariables = Exact<{
+  request: OnchainQuoteRequest;
+}>;
+
+export type CreateOnchainQuoteTypedDataMutation = {
+  __typename?: 'Mutation';
+  createOnchainQuoteTypedData: {
+    __typename?: 'CreateOnchainQuoteBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateOnchainQuoteEIP712TypedData';
+      types: {
+        __typename?: 'CreateOnchainQuoteEIP712TypedDataTypes';
+        Quote: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: {
+        __typename?: 'CreateOnchainQuoteEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        contentURI: any;
+        pointedProfileId: any;
+        pointedPubId: any;
+        referrerProfileIds: Array<any>;
+        referrerPubIds: Array<any>;
+        referenceModuleData: any;
+        actionModules: Array<any>;
+        actionModulesInitDatas: Array<any>;
+        referenceModule: any;
+        referenceModuleInitData: any;
+      };
+    };
+  };
+};
+
+export type QuoteOnchainMutationVariables = Exact<{
+  request: OnchainQuoteRequest;
+}>;
+
+export type QuoteOnchainMutation = {
+  __typename?: 'Mutation';
+  quoteOnchain:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
+export type CreateOnchainCommentTypedDataMutationVariables = Exact<{
+  request: OnchainCommentRequest;
+}>;
+
+export type CreateOnchainCommentTypedDataMutation = {
+  __typename?: 'Mutation';
+  createOnchainCommentTypedData: {
+    __typename?: 'CreateOnchainCommentBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateOnchainCommentEIP712TypedData';
+      types: {
+        __typename?: 'CreateOnchainCommentEIP712TypedDataTypes';
+        Comment: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      value: {
+        __typename?: 'CreateOnchainCommentEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        contentURI: any;
+        pointedProfileId: any;
+        pointedPubId: any;
+        referrerProfileIds: Array<any>;
+        referrerPubIds: Array<any>;
+        referenceModuleData: any;
+        actionModules: Array<any>;
+        actionModulesInitDatas: Array<any>;
+        referenceModule: any;
+        referenceModuleInitData: any;
+      };
+    };
+  };
+};
+
+export type CommentOnchainMutationVariables = Exact<{
+  request: OnchainCommentRequest;
+}>;
+
+export type CommentOnchainMutation = {
+  __typename?: 'Mutation';
+  commentOnchain:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
+export type CreateOnchainMirrorTypedDataMutationVariables = Exact<{
+  request: OnchainMirrorRequest;
+}>;
+
+export type CreateOnchainMirrorTypedDataMutation = {
+  __typename?: 'Mutation';
+  createOnchainMirrorTypedData: {
+    __typename?: 'CreateOnchainMirrorBroadcastItemResult';
+    id: any;
+    expiresAt: any;
+    typedData: {
+      __typename?: 'CreateOnchainMirrorEIP712TypedData';
+      domain: {
+        __typename?: 'EIP712TypedDataDomain';
+        name: string;
+        chainId: any;
+        version: string;
+        verifyingContract: any;
+      };
+      types: {
+        __typename?: 'CreateOnchainMirrorEIP712TypedDataTypes';
+        Mirror: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
+      };
+      value: {
+        __typename?: 'CreateOnchainMirrorEIP712TypedDataValue';
+        nonce: any;
+        deadline: any;
+        profileId: any;
+        pointedProfileId: any;
+        pointedPubId: any;
+        referrerProfileIds: Array<any>;
+        referrerPubIds: Array<any>;
+        referenceModuleData: any;
+      };
+    };
+  };
+};
+
+export type MirrorOnchainMutationVariables = Exact<{
+  request: OnchainMirrorRequest;
+}>;
+
+export type MirrorOnchainMutation = {
+  __typename?: 'Mutation';
+  mirrorOnchain:
+    | {
+        __typename?: 'LensProfileManagerRelayError';
+        reason: LensProfileManagerRelayErrorReasonType;
+      }
+    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
+};
+
 export type LensTransactionStatusQueryVariables = Exact<{
   request: LensTransactionStatusRequest;
 }>;
@@ -7213,6 +7431,718 @@ export const CreateMomokaPostTypedDataDocument = {
   CreateMomokaPostTypedDataMutation,
   CreateMomokaPostTypedDataMutationVariables
 >;
+export const CreateOnchainPostTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateOnchainPostTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainPostRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createOnchainPostTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'Post' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'contentURI' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'actionModules' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actionModulesInitDatas' },
+                            },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModule' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'referenceModuleInitData' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateOnchainPostTypedDataMutation,
+  CreateOnchainPostTypedDataMutationVariables
+>;
+export const PostOnchainDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'PostOnchain' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainPostRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'postOnchain' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<PostOnchainMutation, PostOnchainMutationVariables>;
+export const CreateOnchainQuoteTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateOnchainQuoteTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainQuoteRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createOnchainQuoteTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'Quote' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'contentURI' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pointedProfileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pointedPubId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referrerProfileIds' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referrerPubIds' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModuleData' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'actionModules' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actionModulesInitDatas' },
+                            },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModule' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'referenceModuleInitData' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateOnchainQuoteTypedDataMutation,
+  CreateOnchainQuoteTypedDataMutationVariables
+>;
+export const QuoteOnchainDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'QuoteOnchain' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainQuoteRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'quoteOnchain' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<QuoteOnchainMutation, QuoteOnchainMutationVariables>;
+export const CreateOnchainCommentTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateOnchainCommentTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainCommentRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createOnchainCommentTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'Comment' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'contentURI' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pointedProfileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pointedPubId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referrerProfileIds' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referrerPubIds' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModuleData' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'actionModules' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'actionModulesInitDatas' },
+                            },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModule' } },
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'referenceModuleInitData' },
+                            },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateOnchainCommentTypedDataMutation,
+  CreateOnchainCommentTypedDataMutationVariables
+>;
+export const CommentOnchainDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CommentOnchain' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainCommentRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'commentOnchain' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<CommentOnchainMutation, CommentOnchainMutationVariables>;
+export const CreateOnchainMirrorTypedDataDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'CreateOnchainMirrorTypedData' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainMirrorRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'createOnchainMirrorTypedData' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'typedData' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'domain' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'types' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            {
+                              kind: 'Field',
+                              name: { kind: 'Name', value: 'Mirror' },
+                              selectionSet: {
+                                kind: 'SelectionSet',
+                                selections: [
+                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
+                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
+                                ],
+                              },
+                            },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'value' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pointedProfileId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'pointedPubId' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referrerProfileIds' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referrerPubIds' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModuleData' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<
+  CreateOnchainMirrorTypedDataMutation,
+  CreateOnchainMirrorTypedDataMutationVariables
+>;
+export const MirrorOnchainDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'mutation',
+      name: { kind: 'Name', value: 'MirrorOnchain' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+          type: {
+            kind: 'NonNullType',
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainMirrorRequest' } },
+          },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'mirrorOnchain' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'request' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'RelaySuccess' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'InlineFragment',
+                  typeCondition: {
+                    kind: 'NamedType',
+                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
+                  },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
+                  },
+                },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode<MirrorOnchainMutation, MirrorOnchainMutationVariables>;
 export const LensTransactionStatusDocument = {
   kind: 'Document',
   definitions: [

@@ -1,14 +1,14 @@
 import { v4 as uuidv4 } from 'uuid';
+import {
+  PublicationMetadataV2Input as MetadataV2,
+  PublicationMainFocus,
+} from '../../graphql-v1/generated';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import {
-  PublicationMainFocus,
-  PublicationMetadataV2Input as MetadataV2,
-} from '../../graphql-v1/generated';
-import { pollAndIndexPost } from './post';
 import { postGasless } from './post-gasless';
 import { createGatedPublicPostRequest, followAccessCondition } from './post-gated';
+import { pollAndIndexPost } from './post_old';
 
 const prefix = 'create gated post gasless';
 

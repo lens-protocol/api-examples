@@ -1,19 +1,19 @@
 import { EncryptedMetadata, LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { v4 as uuidv4 } from 'uuid';
-import { login } from '../authentication/login';
-import { explicitStart, PROFILE_ID } from '../config';
-import { ethersProvider, getAddressFromSigner, getSigner, splitSignature } from '../ethers.service';
 import {
   AccessConditionOutput,
   ContractType,
   CreatePublicPostRequest,
-  PublicationMainFocus,
   PublicationMetadataV2Input as MetadataV2,
+  PublicationMainFocus,
   ScalarOperator,
 } from '../../graphql-v1/generated';
+import { login } from '../authentication/login';
+import { PROFILE_ID, explicitStart } from '../config';
+import { ethersProvider, getAddressFromSigner, getSigner, splitSignature } from '../ethers.service';
 import { uploadIpfsGetPath } from '../ipfs';
 import { lensHub } from '../lens-hub';
-import { pollAndIndexPost, signCreatePostTypedData } from './post';
+import { pollAndIndexPost, signCreatePostTypedData } from './post_old';
 
 const prefix = 'create gated post';
 

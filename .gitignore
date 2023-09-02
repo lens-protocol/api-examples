@@ -1,5 +1,3 @@
 dist
 .env
 node_modules
-src/random-sign.ts
-src/mock-upload.ts

@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
@@ -10,6 +11,7 @@ import {
 import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
+import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
 export const createOnchainSetProfileMetadataTypedData = async (
   request: OnchainSetProfileMetadataRequest
@@ -64,6 +66,9 @@ const setProfileMetadata = async () => {
   console.log('set profile metadata: signature', signature);
 
   if (USE_GASLESS) {
+    const broadcastResult = await broadcastOnchainRequest({ id, signature });
+
+    await waitUntilBroadcastTransactionIsComplete(broadcastResult, 'set profile metadata');
   } else {
     const { v, r, s } = splitSignature(signature);
 
