@@ -29,6 +29,8 @@
     "publications:post-onchain-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/post-onchain-lens-profile-manager",
     "publications:comment-onchain": "env-cmd -f .env ts-node ./src/publications/comment-onchain",
     "publications:comment-onchain-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/comment-onchain-lens-profile-manager",
+    "publications:quote-onchain": "env-cmd -f .env ts-node ./src/publications/quote-onchain",
+    "publications:quote-onchain-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/quote-onchain-lens-profile-manager",
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
