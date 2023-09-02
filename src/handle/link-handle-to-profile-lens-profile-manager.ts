@@ -2,38 +2,35 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import {
-  HandleUnlinkFromProfileDocument,
-  HandleUnlinkFromProfileRequest,
-} from '../graphql/generated';
+import { HandleLinkToProfileDocument, HandleLinkToProfileRequest } from '../graphql/generated';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
-const unlinkHandleFromProfile = async (request: HandleUnlinkFromProfileRequest) => {
+const linkHandleToProfile = async (request: HandleLinkToProfileRequest) => {
   const result = await apolloClient.mutate({
-    mutation: HandleUnlinkFromProfileDocument,
+    mutation: HandleLinkToProfileDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.handleUnlinkFromProfile;
+  return result.data!.handleLinkToProfile;
 };
 
-export const unlinkHandleFromProfileManager = async () => {
+export const linkHandleToProfileProfileManager = async () => {
   const address = getAddressFromSigner();
-  console.log('unlink handle from profile lens profile manager: address', address);
+  console.log('link handle to profile: lens profile manager: address', address);
 
   await login(address);
 
-  const result = await unlinkHandleFromProfile({
+  const result = await linkHandleToProfile({
     handleId: '0x443e20e50db22e9d9b71d12d2d6e67a50096909698e387edd5a38f71707fb1d4',
   });
-  console.log('unlink handle from profile lens profile manager: result', result);
+  console.log('link handle to profile: lens profile manager: result', result);
   await waitUntilLensManagerTransactionIsComplete(result, 'unlinkHandleFromProfile');
 };
 
 (async () => {
   if (explicitStart(__filename)) {
-    await unlinkHandleFromProfileManager();
+    await linkHandleToProfileProfileManager();
   }
 })();

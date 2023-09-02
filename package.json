@@ -22,6 +22,8 @@
     "module:set-follow-module-lens-profile-manager": "env-cmd -f .env ts-node ./src/module/set-follow-module-lens-profile-manager",
     "handle:unlink-handle-from-profile": "env-cmd -f .env ts-node ./src/handle/unlink-handle-from-profile",
     "handle:unlink-handle-from-profile-lens-profile-manager": "env-cmd -f .env ts-node ./src/handle/unlink-handle-from-profile-lens-profile-manager",
+    "handle:link-handle-to-profile": "env-cmd -f .env ts-node ./src/handle/link-handle-to-profile",
+    "handle:link-handle-to-profile-lens-profile-manager": "env-cmd -f .env ts-node ./src/handle/link-handle-to-profile-lens-profile-manager",
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
