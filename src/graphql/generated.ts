@@ -2760,8 +2760,8 @@ export type OnchainCommentRequest = {
 };
 
 export type OnchainMirrorRequest = {
+  mirrorOn: Scalars['PublicationId'];
   mirrorReferenceModuleData?: InputMaybe<Scalars['BlockchainData']>;
-  on: Scalars['PublicationId'];
   referrers?: InputMaybe<Array<OnchainReferrer>>;
 };
 
