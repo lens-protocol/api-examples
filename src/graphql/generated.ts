@@ -2102,7 +2102,7 @@ export type MultirecipientFeeCollectModuleInput = {
   amount: AmountInput;
   collectLimit?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['DateTime']>;
-  followerOnly: Scalars['Boolean'];
+  followerOnly?: InputMaybe<Scalars['Boolean']>;
   recipients: Array<RecipientDataInput>;
   referralFee?: InputMaybe<Scalars['Float']>;
 };
@@ -4405,7 +4405,7 @@ export type SimpleCollectOpenActionModuleInput = {
   amount?: InputMaybe<AmountInput>;
   collectLimit?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['DateTime']>;
-  followerOnly: Scalars['Boolean'];
+  followerOnly?: InputMaybe<Scalars['Boolean']>;
   recipient?: InputMaybe<Scalars['EvmAddress']>;
   referralFee?: InputMaybe<Scalars['Float']>;
 };

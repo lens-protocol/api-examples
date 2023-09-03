@@ -6,7 +6,7 @@ import { OnchainQuoteRequest, QuoteOnchainDocument } from '../graphql/generated'
 import { uploadIpfs } from '../ipfs';
 import { knownPostId } from '../known-common-input-constants';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
-import { simpleCollectAmountAndLimitAnyone } from './helpers/publication-open-action-options';
+import { simpleCollectAmountAndLimit } from './helpers/publication-open-action-options';
 
 const quoteOnChain = async (request: OnchainQuoteRequest) => {
   const result = await apolloClient.mutate({
@@ -52,7 +52,7 @@ export const QuoteOnChainLensProfileManager = async (profileId: string = '0x02')
     contentURI: `ipfs://${ipfsResult.path}`,
     // you can play around with open actions modules here all request
     // objects are in `publication-open-action-options.ts`
-    openActionModules: [simpleCollectAmountAndLimitAnyone(address)],
+    openActionModules: [simpleCollectAmountAndLimit(address)],
     //
     // you can play around with reference modules here
     // all request objects are in `publication-reference-module-options.ts`,
