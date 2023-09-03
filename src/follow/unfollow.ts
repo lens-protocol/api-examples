@@ -24,7 +24,7 @@ export const unfollow = async () => {
 
   await login(address);
 
-  const { id, typedData } = await createUnfollowTypedData({ profiles: ['0x02'] });
+  const { id, typedData } = await createUnfollowTypedData({ unfollow: ['0x02'] });
   console.log('unfollow: result', { id, typedData });
 
   console.log('unfollow: typedData', typedData);

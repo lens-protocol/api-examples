@@ -4612,7 +4612,7 @@ export type UnblockRequest = {
 };
 
 export type UnfollowRequest = {
-  profiles: Array<Scalars['ProfileId']>;
+  unfollow: Array<Scalars['ProfileId']>;
 };
 
 export type UnknownFollowModuleInput = {

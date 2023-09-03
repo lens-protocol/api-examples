@@ -23,7 +23,7 @@ export const followLensProfileManager = async (profileId: string = '0x02') => {
   await login(address);
 
   const result = await unfollow({
-    profiles: [profileId],
+    unfollow: [profileId],
   });
   console.log('unfollow lens profile manager: result', result);
   await waitUntilLensManagerTransactionIsComplete(result, 'unfollow');
