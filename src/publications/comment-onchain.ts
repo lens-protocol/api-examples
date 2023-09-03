@@ -5,6 +5,7 @@ import { explicitStart, PROFILE_ID, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateOnchainCommentTypedDataDocument, OnchainCommentRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
+import { knownPostId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -53,8 +54,15 @@ const commentOnChain = async () => {
 
   // TODO! in docs make sure we talk about onchain referrals
   const request: OnchainCommentRequest = {
-    commentOn: '0x03-0x03',
+    commentOn: knownPostId,
     contentURI: `ipfs://${ipfsResult.path}`,
+    // you can play around with open actions modules here all request
+    // objects are in `publication-open-action-options.ts`
+    // openActionModules: [simpleCollectAmountAndLimitAnyone(address)],
+    //
+    // you can play around with reference modules here
+    // all request objects are in `publication-reference-module-options.ts`,
+    // referenceModule: referenceModuleFollowOnly,
   };
 
   const { id, typedData } = await createOnchainCommentTypedData(request);

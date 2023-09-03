@@ -46,6 +46,13 @@ export const postOnChainLensProfileManager = async (profileId: string = '0x02') 
 
   const request: OnchainPostRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
+    // you can play around with open actions modules here all request
+    // objects are in `publication-open-action-options.ts`
+    // openActionModules: [simpleCollectAmountAndLimitAnyone(address)],
+    //
+    // you can play around with reference modules here
+    // all request objects are in `publication-reference-module-options.ts`,
+    // referenceModule: referenceModuleFollowOnly,
   };
 
   const result = await postOnChain(request);

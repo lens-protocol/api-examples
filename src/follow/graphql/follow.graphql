@@ -27,7 +27,7 @@ mutation CreateFollowTypedData($request: FollowRequest!) {
   }
 }
 
-mutation Follow($request: FollowRequest!) {
+mutation Follow($request: FollowLensManagerRequest!) {
   follow(request: $request) {
     ... on RelaySuccess {
       txHash

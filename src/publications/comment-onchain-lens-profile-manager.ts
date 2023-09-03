@@ -4,6 +4,7 @@ import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { CommentOnchainDocument, OnchainCommentRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
+import { knownPostId } from '../known-common-input-constants';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
 const commentOnChain = async (request: OnchainCommentRequest) => {
@@ -46,8 +47,15 @@ export const CommentOnChainLensProfileManager = async (profileId: string = '0x02
 
   // TODO! in docs make sure we talk about onchain referrals
   const request: OnchainCommentRequest = {
-    commentOn: '0x03-0x03',
+    commentOn: knownPostId,
     contentURI: `ipfs://${ipfsResult.path}`,
+    // you can play around with open actions modules here all request
+    // objects are in `publication-open-action-options.ts`
+    // openActionModules: [simpleCollectAmountAndLimitAnyone(address)],
+    //
+    // you can play around with reference modules here
+    // all request objects are in `publication-reference-module-options.ts`,
+    // referenceModule: referenceModuleFollowOnly,
   };
 
   const result = await commentOnChain(request);

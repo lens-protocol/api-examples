@@ -5,6 +5,7 @@ import { explicitStart, PROFILE_ID, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateOnchainQuoteTypedDataDocument, OnchainQuoteRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
+import { knownPostId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -53,12 +54,22 @@ const quoteOnChain = async () => {
 
   // TODO! in docs make sure we talk about onchain referrals
   const request: OnchainQuoteRequest = {
-    quoteOn: '0x03-0x03',
+    quoteOn: knownPostId,
     contentURI: `ipfs://${ipfsResult.path}`,
+    // you can play around with open actions modules here all request
+    // objects are in `publication-open-action-options.ts`
+    // openActionModules: [simpleCollectAmountAndLimitAnyone(address)],
+    //
+    // you can play around with reference modules here
+    // all request objects are in `publication-reference-module-options.ts`,
+    // referenceModule: referenceModuleFollowOnly,
   };
 
   const { id, typedData } = await createOnchainQuoteTypedData(request);
   console.log('quote onchain: result', { id, typedData });
+
+  const jsonString = JSON.stringify(typedData, null, 2);
+  console.log(jsonString);
 
   console.log('quote onchain: typedData', typedData);
 
@@ -92,8 +103,8 @@ const quoteOnChain = async () => {
         r,
         s,
         deadline: typedData.value.deadline,
-      },
-      { gasLimit: 10000000 }
+      }
+      // { gasLimit: 10000000 }
     );
     console.log('quote onchain: tx hash', tx.hash);
   }

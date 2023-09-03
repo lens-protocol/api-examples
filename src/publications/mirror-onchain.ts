@@ -4,6 +4,7 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, PROFILE_ID, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateOnchainMirrorTypedDataDocument, OnchainMirrorRequest } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -31,7 +32,7 @@ const mirrorOnChain = async () => {
 
   // TODO! in docs make sure we talk about onchain referrals
   const request: OnchainMirrorRequest = {
-    mirrorOn: '0x03-0x03',
+    mirrorOn: knownPostId,
   };
 
   const { id, typedData } = await createOnchainMirrorTypedData(request);

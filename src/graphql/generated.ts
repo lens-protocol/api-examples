@@ -106,7 +106,7 @@ export type AmountRateArgs = {
 
 export type AmountInput = {
   /** The currency */
-  currency: NetworkAddressInput;
+  currency: Scalars['EvmAddress'];
   /** Floating point number as string (e.g. 42.009837). It could have the entire precision of the Asset or be truncated to the last significant decimal. */
   value: Scalars['String'];
 };
@@ -1351,6 +1351,20 @@ export type FollowCondition = {
   follow: Scalars['ProfileId'];
 };
 
+export type FollowLensManager = {
+  followModule?: InputMaybe<FollowLensManagerModuleRedeemInput>;
+  profileId: Scalars['ProfileId'];
+};
+
+/** The lens manager will only support FREE follow modules */
+export type FollowLensManagerModuleRedeemInput = {
+  unknownFollowModule?: InputMaybe<UnknownFollowModuleRedeemInput>;
+};
+
+export type FollowLensManagerRequest = {
+  follow: Array<FollowLensManager>;
+};
+
 export type FollowModule =
   | FeeFollowModuleSettings
   | RevertFollowModuleSettings
@@ -2338,7 +2352,7 @@ export type MutationDssArgs = {
 };
 
 export type MutationFollowArgs = {
-  request: FollowRequest;
+  request: FollowLensManagerRequest;
 };
 
 export type MutationGciArgs = {
@@ -3113,6 +3127,7 @@ export type Profile = {
   guardian?: Maybe<ProfileGuardianResult>;
   /** The profile handle - a profile may not have one */
   handle?: Maybe<Scalars['Handle']>;
+  haveBlocked: OptimisticStatusResult;
   /** The profile id */
   id: Scalars['ProfileId'];
   interests: Array<Scalars['String']>;
@@ -3900,6 +3915,7 @@ export type Query = {
   /** Get the most popular NFT collections. Popularity is based on how many Lens Profiles own NFTs from a given collection. */
   popularNftCollections: PaginatedPopularNftCollectionsResult;
   profile?: Maybe<Profile>;
+  profileActionHistory: Scalars['Void'];
   profileAlreadyInvited: Scalars['Boolean'];
   profileBookmarks: PaginatedPublicationsResult;
   profileInterestsOptions: Array<Scalars['String']>;
@@ -3923,7 +3939,8 @@ export type Query = {
   userSigNonces: UserSigNonces;
   validatePublicationMetadata: PublicationValidateMetadataResult;
   verify: Scalars['Boolean'];
-  whoActedOnPublication?: Maybe<PaginatedProfileResult>;
+  whoActedOnPublication: PaginatedProfileResult;
+  whoHaveBlocked: PaginatedProfileResult;
   whoReactedPublication: PaginatedWhoReactedResult;
 };
 
@@ -4063,6 +4080,10 @@ export type QueryProfileArgs = {
   request: ProfileRequest;
 };
 
+export type QueryProfileActionHistoryArgs = {
+  request: WhoHaveBlockedRequest;
+};
+
 export type QueryProfileAlreadyInvitedArgs = {
   request: AlreadyInvitedCheckRequest;
 };
@@ -4137,6 +4158,10 @@ export type QueryVerifyArgs = {
 
 export type QueryWhoActedOnPublicationArgs = {
   request: WhoActedOnPublicationRequest;
+};
+
+export type QueryWhoHaveBlockedArgs = {
+  request: WhoHaveBlockedRequest;
 };
 
 export type QueryWhoReactedPublicationArgs = {
@@ -4584,6 +4609,7 @@ export type UnknownFollowModuleInput = {
 };
 
 export type UnknownFollowModuleRedeemInput = {
+  address: Scalars['EvmAddress'];
   data: Scalars['BlockchainData'];
 };
 
@@ -4677,6 +4703,11 @@ export type WhoActedOnPublicationRequest = {
 
 export type WhoActedOnPublicationWhere = {
   anyOf: Array<OpenActionFilter>;
+};
+
+export type WhoHaveBlockedRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export type WhoReactedPublicationRequest = {
@@ -4801,7 +4832,7 @@ export type CreateFollowTypedDataMutation = {
 };
 
 export type FollowMutationVariables = Exact<{
-  request: FollowRequest;
+  request: FollowLensManagerRequest;
 }>;
 
 export type FollowMutation = {
@@ -5895,7 +5926,7 @@ export const FollowDocument = {
           variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
           type: {
             kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'FollowRequest' } },
+            type: { kind: 'NamedType', name: { kind: 'Name', value: 'FollowLensManagerRequest' } },
           },
         },
       ],

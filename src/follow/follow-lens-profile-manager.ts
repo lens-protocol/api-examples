@@ -2,10 +2,10 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { FollowDocument, FollowRequest } from '../graphql/generated';
+import { FollowDocument, FollowLensManagerRequest } from '../graphql/generated';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
-const follow = async (request: FollowRequest) => {
+const follow = async (request: FollowLensManagerRequest) => {
   const result = await apolloClient.mutate({
     mutation: FollowDocument,
     variables: {

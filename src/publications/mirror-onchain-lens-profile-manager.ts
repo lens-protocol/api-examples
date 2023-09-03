@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { MirrorOnchainDocument, OnchainMirrorRequest } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
 const mirrorOnChain = async (request: OnchainMirrorRequest) => {
@@ -24,7 +25,7 @@ export const MirrorOnChainLensProfileManager = async (profileId: string = '0x02'
 
   // TODO! in docs make sure we talk about onchain referrals
   const request: OnchainMirrorRequest = {
-    mirrorOn: '0x03-0x03',
+    mirrorOn: knownPostId,
   };
 
   const result = await mirrorOnChain(request);
