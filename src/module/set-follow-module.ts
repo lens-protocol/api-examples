@@ -9,6 +9,7 @@ import {
 } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
+import { freeFollowModule } from './helpers/follow-module-options';
 
 const createSetFollowModuleTypedData = async (request: SetFollowModuleRequest) => {
   const result = await apolloClient.mutate({
@@ -28,10 +29,10 @@ export const setFollowModule = async () => {
   await login(address);
 
   // hard coded to make the code example clear
-  const setFollowModuleRequest = {
-    followModule: {
-      freeFollowModule: true,
-    },
+  const setFollowModuleRequest: SetFollowModuleRequest = {
+    // you can play around with follow modules here
+    // all request objects are in `follow-module-options.ts`
+    followModule: freeFollowModule,
   };
 
   const { id, typedData } = await createSetFollowModuleTypedData(setFollowModuleRequest);

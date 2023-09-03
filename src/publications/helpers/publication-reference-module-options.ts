@@ -1,6 +1,7 @@
 import {
   DegreesOfSeparationReferenceModuleInput,
   ReferenceModuleInput,
+  UnknownReferenceModuleInput,
 } from '../../graphql/generated';
 
 export const referenceModuleFollowOnly: ReferenceModuleInput = {
@@ -12,5 +13,13 @@ export const referenceModuleDegreesOfSeparation = (
 ): ReferenceModuleInput => {
   return {
     degreesOfSeparationReferenceModule: input,
+  };
+};
+
+export const referenceModuleUnknownReferenceModule = (
+  input: UnknownReferenceModuleInput
+): ReferenceModuleInput => {
+  return {
+    unknownReferenceModule: input,
   };
 };

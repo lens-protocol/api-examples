@@ -2100,7 +2100,7 @@ export type MomokaVerificationStatusSuccess = {
 
 export type MultirecipientFeeCollectModuleInput = {
   amount: AmountInput;
-  collectLimit: Scalars['String'];
+  collectLimit?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['DateTime']>;
   followerOnly: Scalars['Boolean'];
   recipients: Array<RecipientDataInput>;
@@ -4402,11 +4402,11 @@ export type SignedAuthChallenge = {
 };
 
 export type SimpleCollectOpenActionModuleInput = {
-  amount: AmountInput;
-  collectLimit: Scalars['String'];
+  amount?: InputMaybe<AmountInput>;
+  collectLimit?: InputMaybe<Scalars['String']>;
   endsAt?: InputMaybe<Scalars['DateTime']>;
   followerOnly: Scalars['Boolean'];
-  recipient: Scalars['EvmAddress'];
+  recipient?: InputMaybe<Scalars['EvmAddress']>;
   referralFee?: InputMaybe<Scalars['Float']>;
 };
 
