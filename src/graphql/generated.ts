@@ -74,6 +74,18 @@ export type ActOnOpenActionInput = {
   unknownOpenAction?: InputMaybe<UnknownOpenActionActRedeemInput>;
 };
 
+/** The lens manager will only support FREE open action modules, if you want your unknown module allowed to be signless please contact us */
+export type ActOnOpenActionLensManagerInput = {
+  simpleCollectOpenAction?: InputMaybe<Scalars['Boolean']>;
+  unknownOpenAction?: InputMaybe<UnknownOpenActionActRedeemInput>;
+};
+
+export type ActOnOpenActionLensManagerRequest = {
+  actOn: ActOnOpenActionLensManagerInput;
+  for?: InputMaybe<Scalars['PublicationId']>;
+  referrers?: InputMaybe<Array<OnchainReferrer>>;
+};
+
 export type ActOnOpenActionRequest = {
   actOn: ActOnOpenActionInput;
   for?: InputMaybe<Scalars['PublicationId']>;
@@ -1356,7 +1368,7 @@ export type FollowLensManager = {
   profileId: Scalars['ProfileId'];
 };
 
-/** The lens manager will only support FREE follow modules */
+/** The lens manager will only support FREE follow modules, if you want your unknown module allowed to be signless please contact us */
 export type FollowLensManagerModuleRedeemInput = {
   unknownFollowModule?: InputMaybe<UnknownFollowModuleRedeemInput>;
 };
@@ -2193,7 +2205,7 @@ export type MutationAchArgs = {
 };
 
 export type MutationActOnOpenActionArgs = {
-  request: ActOnOpenActionRequest;
+  request: ActOnOpenActionLensManagerRequest;
 };
 
 export type MutationAddProfileInterestsArgs = {
