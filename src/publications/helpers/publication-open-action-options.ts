@@ -7,15 +7,17 @@ export const simpleCollectAmountAndLimit = (
   followerOnly = false
 ): OpenActionModuleInput => {
   return {
-    simpleCollectOpenAction: {
-      amount: {
-        currency: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
-        value: '10',
+    collectOpenAction: {
+      simpleCollectOpenAction: {
+        amount: {
+          currency: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
+          value: '10',
+        },
+        collectLimit,
+        followerOnly,
+        referralFee,
+        recipient,
       },
-      collectLimit,
-      followerOnly,
-      referralFee,
-      recipient,
     },
   };
 };
@@ -28,16 +30,18 @@ export const simpleCollectAmountAndLimitAndEndsAt = (
   followerOnly = false
 ): OpenActionModuleInput => {
   return {
-    simpleCollectOpenAction: {
-      amount: {
-        currency: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
-        value: '10',
+    collectOpenAction: {
+      simpleCollectOpenAction: {
+        amount: {
+          currency: '0x2058A9D7613eEE744279e3856Ef0eAda5FCbaA7e',
+          value: '10',
+        },
+        collectLimit,
+        followerOnly,
+        referralFee,
+        recipient,
+        endsAt: endsAt.toISOString(),
       },
-      collectLimit,
-      followerOnly,
-      referralFee,
-      recipient,
-      endsAt: endsAt.toISOString(),
     },
   };
 };
@@ -47,9 +51,11 @@ export const simpleCollectFreeAndLimit = (
   followerOnly = false
 ): OpenActionModuleInput => {
   return {
-    simpleCollectOpenAction: {
-      collectLimit,
-      followerOnly,
+    collectOpenAction: {
+      simpleCollectOpenAction: {
+        collectLimit,
+        followerOnly,
+      },
     },
   };
 };
@@ -60,18 +66,22 @@ export const simpleCollectFreeAndLimitEndsAt = (
   followerOnly = false
 ): OpenActionModuleInput => {
   return {
-    simpleCollectOpenAction: {
-      collectLimit,
-      followerOnly,
-      endsAt: endsAt.toISOString(),
+    collectOpenAction: {
+      simpleCollectOpenAction: {
+        collectLimit,
+        followerOnly,
+        endsAt: endsAt.toISOString(),
+      },
     },
   };
 };
 
 export const simpleCollectFreeAndNoLimit = (followerOnly = false): OpenActionModuleInput => {
   return {
-    simpleCollectOpenAction: {
-      followerOnly,
+    collectOpenAction: {
+      simpleCollectOpenAction: {
+        followerOnly,
+      },
     },
   };
 };
@@ -81,9 +91,11 @@ export const simpleCollectFreeAndNoLimitEndsAt = (
   followerOnly = false
 ): OpenActionModuleInput => {
   return {
-    simpleCollectOpenAction: {
-      followerOnly,
-      endsAt: endsAt.toISOString(),
+    collectOpenAction: {
+      simpleCollectOpenAction: {
+        followerOnly,
+        endsAt: endsAt.toISOString(),
+      },
     },
   };
 };

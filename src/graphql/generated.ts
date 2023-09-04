@@ -292,6 +292,11 @@ export type ClaimableProfilesResult = {
   reserved: Array<ReservedClaimable>;
 };
 
+export type CollectActionModuleInput = {
+  multirecipientCollectOpenAction?: InputMaybe<MultirecipientFeeCollectModuleInput>;
+  simpleCollectOpenAction?: InputMaybe<SimpleCollectOpenActionModuleInput>;
+};
+
 export type CollectCondition = {
   __typename?: 'CollectCondition';
   publicationId?: Maybe<Scalars['PublicationId']>;
@@ -2841,8 +2846,7 @@ export type OpenActionModule =
   | UnknownOpenActionModuleSettings;
 
 export type OpenActionModuleInput = {
-  multirecipientCollectOpenAction?: InputMaybe<MultirecipientFeeCollectModuleInput>;
-  simpleCollectOpenAction?: InputMaybe<SimpleCollectOpenActionModuleInput>;
+  collectOpenAction?: InputMaybe<CollectActionModuleInput>;
   unknownOpenAction?: InputMaybe<UnknownOpenActionModuleInput>;
 };
 
