@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "ts examples in how to call the API",
   "scripts": {
+    "build": "tsc",
     "generate": "graphql-codegen",
     "health:ping": "env-cmd -f .env ts-node ./src/health/ping",
     "authentication:login": "env-cmd -f .env ts-node ./src/authentication/login",
