@@ -7,7 +7,6 @@ import {
   MomokaPostRequest,
   PostOnMomokaDocument,
 } from '../graphql/generated';
-import { PublicationMetadataSchema } from '@lens-protocol/metadata';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 const createMomokaPostWithLensManager = async (request: MomokaPostRequest) => {
@@ -24,14 +23,14 @@ const createMomokaPostWithLensManager = async (request: MomokaPostRequest) => {
 const createPostOnMomoka = async (
   createMomokaPostRequest: MomokaPostRequest,
 ) => {
-  const dispatcherResult = await createMomokaPostWithLensManager(createMomokaPostRequest);
+  const result = await createMomokaPostWithLensManager(createMomokaPostRequest);
 
   console.log(
-    'create DA post via dispatcher: createMomokaPostWithLensManager',
-    dispatcherResult
+    'create momoka post with lens-manager: createMomokaPostWithLensManager',
+    result
   );
 
-  return dispatcherResult;
+  return result;
 };
 
 export const postOnMomokaLensProfileManager = async () => {
@@ -42,7 +41,7 @@ export const postOnMomokaLensProfileManager = async () => {
 
   const ipfsResult = await uploadIpfs(publicationMetadataTextOnly);
 
-  console.log('post onchain: ipfs result', ipfsResult);
+  console.log('post momoka: ipfs result', ipfsResult);
 
   const request: MomokaPostRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,

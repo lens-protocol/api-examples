@@ -23,7 +23,7 @@ export const createMomokaPostTypedData = async (request: MomokaPostRequest) => {
 
 export const signCreateMomokaPostTypedData = async (request: MomokaPostRequest) => {
   const result = await createMomokaPostTypedData(request);
-  console.log('create momoka post: createDAPostTypedData', result);
+  console.log('create momoka post: createMomokaPostTypedData', result);
 
   const typedData = result.typedData;
   console.log('create momoka post: typedData', typedData);
@@ -35,9 +35,9 @@ export const signCreateMomokaPostTypedData = async (request: MomokaPostRequest) 
 };
 
 const createPostOnMomoka = async (
-  createDAPostRequest: MomokaPostRequest,
+  momokaPostRequest: MomokaPostRequest,
 ) => {
-  const signedResult = await signCreateMomokaPostTypedData(createDAPostRequest);
+  const signedResult = await signCreateMomokaPostTypedData(momokaPostRequest);
   console.log('create momoka post via broadcast: signedResult', signedResult);
 
   const broadcastResult = await broadcastOnMomokaRequest({
@@ -63,7 +63,7 @@ export const postOnMomoka = async () => {
 
   const ipfsResult = await uploadIpfs(publicationMetadataTextOnly);
 
-  console.log('post onchain: ipfs result', ipfsResult);
+  console.log('post momoka: ipfs result', ipfsResult);
 
   const request: MomokaPostRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,

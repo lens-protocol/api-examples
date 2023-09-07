@@ -1543,6 +1543,25 @@ export type Image = {
   width?: Maybe<Scalars['Int']>;
 };
 
+export type ImageMetadataV3 = {
+  __typename?: 'ImageMetadataV3';
+  appId?: Maybe<Scalars['AppId']>;
+  attachments?: Maybe<Array<PublicationMetadataAttachment>>;
+  attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
+  content?: Maybe<Scalars['Markdown']>;
+  contentWarning?: Maybe<PublicationContentWarningType>;
+  encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
+  globalReach: Scalars['Boolean'];
+  hideFromFeed: Scalars['Boolean'];
+  id: Scalars['String'];
+  image: PublicationMetadataMediaImage;
+  locale?: Maybe<Scalars['Locale']>;
+  mainContentFocus: PublicationImageMetadataV3MainFocusType;
+  marketplace?: Maybe<MarketplaceMetadata>;
+  rawURI: Scalars['URI'];
+  tags?: Maybe<Array<Scalars['String']>>;
+};
+
 export enum ImageMimeType {
   Png = 'PNG'
 }
@@ -1553,7 +1572,7 @@ export type ImageSet = {
   altTag?: Maybe<Scalars['String']>;
   image: Image;
   rawURI: Scalars['URI'];
-  transformed: Image;
+  transformed?: Maybe<Image>;
 };
 
 
@@ -3509,27 +3528,8 @@ export type PublicationForYou = Post | Quote;
 
 export type PublicationForYouRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  for: Scalars['ProfileId'];
+  for?: InputMaybe<Scalars['ProfileId']>;
   limit?: InputMaybe<Scalars['LimitScalar']>;
-};
-
-export type PublicationImageMetadataV3 = {
-  __typename?: 'PublicationImageMetadataV3';
-  appId?: Maybe<Scalars['AppId']>;
-  attachments?: Maybe<Array<PublicationMetadataAttachment>>;
-  attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
-  contentWarning?: Maybe<PublicationContentWarningType>;
-  encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
-  globalReach: Scalars['Boolean'];
-  hideFromFeed: Scalars['Boolean'];
-  id: Scalars['String'];
-  image: PublicationMetadataMediaImage;
-  locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationImageMetadataV3MainFocusType;
-  marketplace?: Maybe<MarketplaceMetadata>;
-  rawURI: Scalars['URI'];
-  tags?: Maybe<Array<Scalars['String']>>;
 };
 
 export enum PublicationImageMetadataV3MainFocusType {
@@ -3557,7 +3557,7 @@ export enum PublicationMarketplaceMetadataAttributeDisplayType {
   String = 'STRING'
 }
 
-export type PublicationMetadata = ArticleMetadataV3 | AudioMetadataV3 | CheckingInMetadataV3 | EmbedMetadataV3 | EventMetadataV3 | LinkMetadataV3 | LiveStreamMetadataV3 | MintMetadataV3 | PublicationImageMetadataV3 | PublicationMetadataV1 | PublicationMetadataV2 | PublicationVideoMetadataV3 | SpaceMetadataV3 | StoryMetadataV3 | TextOnlyMetadataV3 | ThreeDMetadataV1 | TransactionMetadataV3;
+export type PublicationMetadata = ArticleMetadataV3 | AudioMetadataV3 | CheckingInMetadataV3 | EmbedMetadataV3 | EventMetadataV3 | ImageMetadataV3 | LinkMetadataV3 | LiveStreamMetadataV3 | MintMetadataV3 | PublicationMetadataV1 | PublicationMetadataV2 | SpaceMetadataV3 | StoryMetadataV3 | TextOnlyMetadataV3 | ThreeDMetadataV3 | TransactionMetadataV3 | VideoMetadataV3;
 
 export type PublicationMetadataAttachment = PublicationMetadataMediaAudio | PublicationMetadataMediaImage | PublicationMetadataMediaVideo;
 
@@ -3711,11 +3711,12 @@ export type PublicationNotInterestedRequest = {
 
 export type PublicationOperations = {
   __typename?: 'PublicationOperations';
-  canAct: Scalars['Boolean'];
-  canComment: Scalars['Boolean'];
+  actedOn: Array<OpenActionResult>;
+  canAct: TriStateValue;
+  canComment: TriStateValue;
   canDecrypt: CanDecryptResponse;
   canMirror: Scalars['Boolean'];
-  hasActed: Array<OpenActionResult>;
+  hasActed: OptimisticStatusResult;
   hasBookmarked: Scalars['Boolean'];
   hasMirrored: Scalars['Boolean'];
   hasReacted: Scalars['Boolean'];
@@ -3725,8 +3726,27 @@ export type PublicationOperations = {
 };
 
 
+export type PublicationOperationsActedOnArgs = {
+  request?: InputMaybe<PublicationOperationsActedArgs>;
+};
+
+
+export type PublicationOperationsCanActArgs = {
+  request?: InputMaybe<PublicationOperationsActedArgs>;
+};
+
+
+export type PublicationOperationsHasActedArgs = {
+  request?: InputMaybe<PublicationOperationsActedArgs>;
+};
+
+
 export type PublicationOperationsHasReactedArgs = {
-  request: PublicationOperationsReactionArgs;
+  request?: InputMaybe<PublicationOperationsReactionArgs>;
+};
+
+export type PublicationOperationsActedArgs = {
+  filter?: InputMaybe<OpenActionFilter>;
 };
 
 export type PublicationOperationsReactionArgs = {
@@ -3883,25 +3903,6 @@ export type PublicationValidateMetadataResult = {
   __typename?: 'PublicationValidateMetadataResult';
   reason?: Maybe<Scalars['String']>;
   valid: Scalars['Boolean'];
-};
-
-export type PublicationVideoMetadataV3 = {
-  __typename?: 'PublicationVideoMetadataV3';
-  appId?: Maybe<Scalars['AppId']>;
-  attachments?: Maybe<Array<PublicationMetadataAttachment>>;
-  attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
-  contentWarning?: Maybe<PublicationContentWarningType>;
-  encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
-  globalReach: Scalars['Boolean'];
-  hideFromFeed: Scalars['Boolean'];
-  id: Scalars['String'];
-  locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationVideoMetadataV3MainFocusType;
-  marketplace?: Maybe<MarketplaceMetadata>;
-  rawURI: Scalars['URI'];
-  tags?: Maybe<Array<Scalars['String']>>;
-  video: PublicationMetadataMediaVideo;
 };
 
 export enum PublicationVideoMetadataV3MainFocusType {
@@ -4709,10 +4710,10 @@ export type TextOnlyMetadataV3 = {
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
-export type ThreeDMetadataV1 = {
-  __typename?: 'ThreeDMetadataV1';
+export type ThreeDMetadataV3 = {
+  __typename?: 'ThreeDMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
-  assets: Array<ThreeDMetadataV1Asset>;
+  assets: Array<ThreeDMetadataV3Asset>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
   content?: Maybe<Scalars['Markdown']>;
@@ -4728,8 +4729,8 @@ export type ThreeDMetadataV1 = {
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
-export type ThreeDMetadataV1Asset = {
-  __typename?: 'ThreeDMetadataV1Asset';
+export type ThreeDMetadataV3Asset = {
+  __typename?: 'ThreeDMetadataV3Asset';
   format: Scalars['String'];
   license?: Maybe<PublicationMetadataLicenseType>;
   playerURL: Scalars['URL'];
@@ -4862,6 +4863,25 @@ export type Video = {
   __typename?: 'Video';
   mimeType?: Maybe<VideoMimeType>;
   url: Scalars['URI'];
+};
+
+export type VideoMetadataV3 = {
+  __typename?: 'VideoMetadataV3';
+  appId?: Maybe<Scalars['AppId']>;
+  attachments?: Maybe<Array<PublicationMetadataAttachment>>;
+  attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
+  content?: Maybe<Scalars['Markdown']>;
+  contentWarning?: Maybe<PublicationContentWarningType>;
+  encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
+  globalReach: Scalars['Boolean'];
+  hideFromFeed: Scalars['Boolean'];
+  id: Scalars['String'];
+  locale?: Maybe<Scalars['Locale']>;
+  mainContentFocus: PublicationVideoMetadataV3MainFocusType;
+  marketplace?: Maybe<MarketplaceMetadata>;
+  rawURI: Scalars['URI'];
+  tags?: Maybe<Array<Scalars['String']>>;
+  video: PublicationMetadataMediaVideo;
 };
 
 export enum VideoMimeType {
@@ -5103,6 +5123,48 @@ export type PostOnMomokaMutationVariables = Exact<{
 
 export type PostOnMomokaMutation = { __typename?: 'Mutation', postOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } };
 
+export type CreateMomokaCommentTypedDataMutationVariables = Exact<{
+  request: MomokaCommentRequest;
+}>;
+
+
+export type CreateMomokaCommentTypedDataMutation = { __typename?: 'Mutation', createMomokaCommentTypedData: { __typename?: 'CreateMomokaCommentBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateMomokaCommentEIP712TypedData', types: { __typename?: 'CreateMomokaCommentEIP712TypedDataTypes', Comment: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateMomokaCommentEIP712TypedDataValue', actionModules: Array<any>, actionModulesInitDatas: Array<any>, contentURI: any, deadline: any, nonce: any, pointedProfileId: any, pointedPubId: any, profileId: any, referenceModule: any, referenceModuleData: any, referenceModuleInitData: any, referrerProfileIds: Array<any>, referrerPubIds: Array<any> } } } };
+
+export type CommentOnMomokaMutationVariables = Exact<{
+  request: MomokaCommentRequest;
+}>;
+
+
+export type CommentOnMomokaMutation = { __typename?: 'Mutation', commentOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } };
+
+export type CreateMomokaQuoteTypedDataMutationVariables = Exact<{
+  request: MomokaQuoteRequest;
+}>;
+
+
+export type CreateMomokaQuoteTypedDataMutation = { __typename?: 'Mutation', createMomokaQuoteTypedData: { __typename?: 'CreateMomokaQuoteBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateMomokaQuoteEIP712TypedData', types: { __typename?: 'CreateMomokaQuoteEIP712TypedDataTypes', Quote: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateMomokaQuoteEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, contentURI: any, pointedProfileId: any, pointedPubId: any, referrerProfileIds: Array<any>, referrerPubIds: Array<any>, actionModules: Array<any>, actionModulesInitDatas: Array<any>, referenceModule: any, referenceModuleData: any, referenceModuleInitData: any } } } };
+
+export type QuoteOnMomokaMutationVariables = Exact<{
+  request: MomokaQuoteRequest;
+}>;
+
+
+export type QuoteOnMomokaMutation = { __typename?: 'Mutation', quoteOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } };
+
+export type CreateMomokaMirrorTypedDataMutationVariables = Exact<{
+  request: MomokaMirrorRequest;
+}>;
+
+
+export type CreateMomokaMirrorTypedDataMutation = { __typename?: 'Mutation', createMomokaMirrorTypedData: { __typename?: 'CreateMomokaMirrorBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateMomokaMirrorEIP712TypedData', types: { __typename?: 'CreateMomokaMirrorEIP712TypedDataTypes', Mirror: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateMomokaMirrorEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, pointedProfileId: any, pointedPubId: any, referrerProfileIds: Array<any>, referrerPubIds: Array<any>, referenceModuleData: any } } } };
+
+export type MirrorOnMomokaMutationVariables = Exact<{
+  request: MomokaMirrorRequest;
+}>;
+
+
+export type MirrorOnMomokaMutation = { __typename?: 'Mutation', mirrorOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } };
+
 export type CreateOnchainPostTypedDataMutationVariables = Exact<{
   request: OnchainPostRequest;
 }>;
@@ -5193,6 +5255,12 @@ export const CreateUnblockProfilesTypedDataDocument = {"kind":"Document","defini
 export const UnblockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Unblock"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnblockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unblock"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<UnblockMutation, UnblockMutationVariables>;
 export const CreateMomokaPostTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMomokaPostTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMomokaPostTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Post"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateMomokaPostTypedDataMutation, CreateMomokaPostTypedDataMutationVariables>;
 export const PostOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PostOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"postOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<PostOnMomokaMutation, PostOnMomokaMutationVariables>;
+export const CreateMomokaCommentTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMomokaCommentTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaCommentRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMomokaCommentTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Comment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateMomokaCommentTypedDataMutation, CreateMomokaCommentTypedDataMutationVariables>;
+export const CommentOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CommentOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaCommentRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"commentOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<CommentOnMomokaMutation, CommentOnMomokaMutationVariables>;
+export const CreateMomokaQuoteTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMomokaQuoteTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaQuoteRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMomokaQuoteTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Quote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateMomokaQuoteTypedDataMutation, CreateMomokaQuoteTypedDataMutationVariables>;
+export const QuoteOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"QuoteOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaQuoteRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"quoteOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<QuoteOnMomokaMutation, QuoteOnMomokaMutationVariables>;
+export const CreateMomokaMirrorTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMomokaMirrorTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaMirrorRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMomokaMirrorTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Mirror"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateMomokaMirrorTypedDataMutation, CreateMomokaMirrorTypedDataMutationVariables>;
+export const MirrorOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MirrorOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaMirrorRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mirrorOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<MirrorOnMomokaMutation, MirrorOnMomokaMutationVariables>;
 export const CreateOnchainPostTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainPostTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainPostTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Post"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainPostTypedDataMutation, CreateOnchainPostTypedDataMutationVariables>;
 export const PostOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PostOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"postOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<PostOnchainMutation, PostOnchainMutationVariables>;
 export const CreateOnchainQuoteTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainQuoteTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainQuoteRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainQuoteTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Quote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainQuoteTypedDataMutation, CreateOnchainQuoteTypedDataMutationVariables>;
@@ -5325,18 +5393,18 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
       "CheckingInMetadataV3",
       "EmbedMetadataV3",
       "EventMetadataV3",
+      "ImageMetadataV3",
       "LinkMetadataV3",
       "LiveStreamMetadataV3",
       "MintMetadataV3",
-      "PublicationImageMetadataV3",
       "PublicationMetadataV1",
       "PublicationMetadataV2",
-      "PublicationVideoMetadataV3",
       "SpaceMetadataV3",
       "StoryMetadataV3",
       "TextOnlyMetadataV3",
-      "ThreeDMetadataV1",
-      "TransactionMetadataV3"
+      "ThreeDMetadataV3",
+      "TransactionMetadataV3",
+      "VideoMetadataV3"
     ],
     "PublicationMetadataAttachment": [
       "PublicationMetadataMediaAudio",
