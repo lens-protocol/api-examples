@@ -1,7 +1,7 @@
 // import { PublicationMetadataSchema } from '@lens-protocol/metadata';
 
 export const publicationMetadataTextOnly = {
-  $schema: 'https://json-schemas.lens.dev/publications/text-only/1-0-0.json',
+  $schema: 'https://json-schemas.lens.dev/publications/text-only/3.0.0.json',
   name: 'My text3',
   description: 'My text Description',
   external_url: 'https://mytext.com',

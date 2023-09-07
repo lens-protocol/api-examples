@@ -8,6 +8,7 @@ import {
   PostOnMomokaDocument,
 } from '../graphql/generated';
 import { PublicationMetadataSchema } from '@lens-protocol/metadata';
+import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 const createMomokaPostWithLensManager = async (request: MomokaPostRequest) => {
   const result = await apolloClient.mutate({
@@ -39,25 +40,8 @@ export const postOnMomokaLensProfileManager = async () => {
 
   await login(address);
 
-  // TODO! USE METADATA PACKAGE FOR NICE TYPINGS
-  const ipfsResult = await uploadIpfs<any>(PublicationMetadataSchema.parse({
-    $schema:
-      'https://json-schemas.lens.dev/publications/text-only/3.0.0.json',
-    name: 'My text',
-    description: 'My text Description',
-    external_url: 'https://mytext.com',
-    attributes: [],
-    image: 'https://text.com/image.png',
-    lens: {
-      title: 'My text',
-      id: '1030ee6e-51cb-4a09-a74a-abdccc6ef890',
-      locale: 'en-US',
-      mainContentFocus: 'TEXT_ONLY',
-      content: 'My text Content',
-      tags: ['text'],
-      appId: 'my-app-id',
-    },
-  }));
+  const ipfsResult = await uploadIpfs(publicationMetadataTextOnly);
+
   console.log('post onchain: ipfs result', ipfsResult);
 
   const request: MomokaPostRequest = {
