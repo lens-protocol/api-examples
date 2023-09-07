@@ -19,7 +19,7 @@ const setProfileMetadata = async (request: OnchainSetProfileMetadataRequest) => 
   return result.data!.setProfileMetadata;
 };
 
-export const followLensProfileManager = async (profileId: string = '0x02') => {
+export const setProfileMetadataLensProfileManager = async (profileId: string = '0x02') => {
   const address = getAddressFromSigner();
   console.log('set profile metadata lens profile manager: address', address);
 
@@ -52,6 +52,6 @@ export const followLensProfileManager = async (profileId: string = '0x02') => {
 
 (async () => {
   if (explicitStart(__filename)) {
-    await followLensProfileManager();
+    await setProfileMetadataLensProfileManager();
   }
 })();
