@@ -7,6 +7,7 @@ import { CreateOnchainPostTypedDataDocument, OnchainPostRequest } from '../graph
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
+import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 export const createOnchainPostTypedData = async (request: OnchainPostRequest) => {
   const result = await apolloClient.mutate({
@@ -30,24 +31,7 @@ const postOnChain = async () => {
 
   await login(address);
 
-  // TODO! USE METADATA PACKAGE FOR NICE TYPINGS
-  const ipfsResult = await uploadIpfs<any>({
-    $schema: 'https://json-schemas.lens.dev/publications/text-only/3.0.0.json',
-    name: 'My text',
-    description: 'My text Description',
-    external_url: 'https://mytext.com',
-    attributes: [],
-    image: 'https://text.com/image.png',
-    lens: {
-      title: 'My text',
-      id: '1030ee6e-51cb-4a09-a74a-abdccc6ef890',
-      locale: 'en-US',
-      mainContentFocus: 'TEXT_ONLY',
-      content: 'My text Content',
-      tags: ['text'],
-      appId: 'my-app-id',
-    },
-  });
+  const ipfsResult = await uploadIpfs(publicationMetadataTextOnly);
   console.log('post onchain: ipfs result', ipfsResult);
 
   const request: OnchainPostRequest = {
