@@ -23,8 +23,6 @@ export const createProfile = async () => {
   const address = getAddressFromSigner();
   console.log('create profile with handle: address', address);
 
-  await login(address);
-
   const result = await createProfileWithHandleRequest({
     handle: new Date().getTime().toString(),
     to: address,

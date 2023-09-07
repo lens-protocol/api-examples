@@ -32,8 +32,7 @@ const postOnChain = async () => {
 
   // TODO! USE METADATA PACKAGE FOR NICE TYPINGS
   const ipfsResult = await uploadIpfs<any>({
-    $schema:
-      'https://raw.githubusercontent.com/lens-protocol/LIPs/feat/metadata-standards/lens-metadata-standards/publication/text-only/1.0.0/schema.json',
+    $schema: 'https://json-schemas.lens.dev/publications/text-only/3.0.0.json',
     name: 'My text',
     description: 'My text Description',
     external_url: 'https://mytext.com',

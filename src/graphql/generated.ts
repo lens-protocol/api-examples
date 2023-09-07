@@ -25,7 +25,6 @@ export type Scalars = {
   EvmAddress: any;
   Handle: any;
   ImageSizeTransform: any;
-  IpfsCid: any;
   Jwt: any;
   LimitScalar: any;
   Locale: any;
@@ -49,15 +48,7 @@ export type Scalars = {
   Void: any;
 };
 
-export type AccessCondition =
-  | AndCondition
-  | CollectCondition
-  | EoaOwnershipCondition
-  | Erc20OwnershipCondition
-  | FollowCondition
-  | NftOwnershipCondition
-  | OrCondition
-  | ProfileOwnershipCondition;
+export type AccessCondition = AndCondition | CollectCondition | EoaOwnershipCondition | Erc20OwnershipCondition | FollowCondition | NftOwnershipCondition | OrCondition | ProfileOwnershipCondition;
 
 export type AchRequest = {
   address: Scalars['EvmAddress'];
@@ -94,7 +85,7 @@ export type ActOnOpenActionRequest = {
 
 export type ActedNotification = {
   __typename?: 'ActedNotification';
-  actions: Array<ProfileActedResult>;
+  actions: Array<OpenActionProfileActed>;
   id: Scalars['String'];
   publication: AnyPublication;
 };
@@ -111,6 +102,7 @@ export type Amount = {
   /** Floating point number as string (e.g. 42.009837). It could have the entire precision of the Asset or be truncated to the last significant decimal. */
   value: Scalars['String'];
 };
+
 
 export type AmountRateArgs = {
   request: Scalars['String'];
@@ -138,13 +130,12 @@ export type App = {
 export type ApprovedAllowanceAmountResult = {
   __typename?: 'ApprovedAllowanceAmountResult';
   allowance: Scalars['String'];
-  currency: Scalars['EvmAddress'];
   moduleContract: NetworkAddress;
   moduleName: Scalars['String'];
 };
 
 export type ApprovedModuleAllowanceAmountRequest = {
-  currencies?: InputMaybe<Array<Scalars['EvmAddress']>>;
+  currencies: Array<Scalars['EvmAddress']>;
   followModules?: InputMaybe<Array<FollowModuleType>>;
   openActionModules?: InputMaybe<Array<OpenActionModuleType>>;
   referenceModules?: InputMaybe<Array<ReferenceModuleType>>;
@@ -153,8 +144,8 @@ export type ApprovedModuleAllowanceAmountRequest = {
   unknownReferenceModules?: InputMaybe<Array<Scalars['EvmAddress']>>;
 };
 
-export type ArticleMetadataV1 = {
-  __typename?: 'ArticleMetadataV1';
+export type ArticleMetadataV3 = {
+  __typename?: 'ArticleMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -165,7 +156,7 @@ export type ArticleMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationArticleMetadataV1MainFocusType;
+  mainContentFocus: PublicationArticleMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
@@ -174,14 +165,51 @@ export type ArticleMetadataV1 = {
 
 export type Asset = Erc20;
 
+export type Attribute = {
+  __typename?: 'Attribute';
+  /** Identifier of this attribute, used for updating */
+  key: Scalars['String'];
+  /** The type of the attribute */
+  type: AttributeType;
+  /** Value of the attribute */
+  value: Scalars['String'];
+};
+
+export enum AttributeType {
+  Boolean = 'BOOLEAN',
+  Date = 'DATE',
+  Json = 'JSON',
+  Number = 'NUMBER',
+  String = 'STRING'
+}
+
 export type Audio = {
   __typename?: 'Audio';
   mimeType?: Maybe<AudioMimeType>;
   url: Scalars['URI'];
 };
 
+export type AudioMetadataV3 = {
+  __typename?: 'AudioMetadataV3';
+  appId?: Maybe<Scalars['AppId']>;
+  attachments?: Maybe<Array<PublicationMetadataAttachment>>;
+  attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
+  audio: PublicationMetadataMediaAudio;
+  content?: Maybe<Scalars['Markdown']>;
+  contentWarning?: Maybe<PublicationContentWarningType>;
+  encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
+  globalReach: Scalars['Boolean'];
+  hideFromFeed: Scalars['Boolean'];
+  id: Scalars['String'];
+  locale?: Maybe<Scalars['Locale']>;
+  mainContentFocus: PublicationAudioMetadataV3MainFocusType;
+  marketplace?: Maybe<MarketplaceMetadata>;
+  rawURI: Scalars['URI'];
+  tags?: Maybe<Array<Scalars['String']>>;
+};
+
 export enum AudioMimeType {
-  Mp3 = 'MP3',
+  Mp3 = 'MP3'
 }
 
 export type AudioSet = {
@@ -238,7 +266,7 @@ export type ChangeProfileManager = {
 
 export enum ChangeProfileManagerActionType {
   Add = 'ADD',
-  Remove = 'REMOVE',
+  Remove = 'REMOVE'
 }
 
 export type ChangeProfileManagersRequest = {
@@ -246,8 +274,8 @@ export type ChangeProfileManagersRequest = {
   changeManagers?: InputMaybe<Array<ChangeProfileManager>>;
 };
 
-export type CheckingInMetadataV1 = {
-  __typename?: 'CheckingInMetadataV1';
+export type CheckingInMetadataV3 = {
+  __typename?: 'CheckingInMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -260,7 +288,7 @@ export type CheckingInMetadataV1 = {
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
   location: Scalars['String'];
-  mainContentFocus: PublicationCheckingInMetadataV1MainFocusType;
+  mainContentFocus: PublicationCheckingInMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
@@ -275,7 +303,7 @@ export type ClaimProfileRequest = {
 export enum ClaimProfileStatusType {
   AlreadyClaimed = 'ALREADY_CLAIMED',
   ClaimFailed = 'CLAIM_FAILED',
-  NotClaimed = 'NOT_CLAIMED',
+  NotClaimed = 'NOT_CLAIMED'
 }
 
 export type ClaimableProfilesResult = {
@@ -306,19 +334,8 @@ export enum CollectOpenActionModuleType {
   LegacyRevertCollectModule = 'LegacyRevertCollectModule',
   LegacySimpleCollectModule = 'LegacySimpleCollectModule',
   LegacyTimedFeeCollectModule = 'LegacyTimedFeeCollectModule',
-  UnknownOpenActionModule = 'UnknownOpenActionModule',
+  UnknownOpenActionModule = 'UnknownOpenActionModule'
 }
-
-export type CollectOpenActionResult = {
-  __typename?: 'CollectOpenActionResult';
-  type: CollectOpenActionModuleType;
-};
-
-export type CollectedEvent = {
-  __typename?: 'CollectedEvent';
-  by: Profile;
-  timestamp: Scalars['DateTime'];
-};
 
 export type Comment = {
   __typename?: 'Comment';
@@ -340,6 +357,7 @@ export type Comment = {
   txHash: Scalars['TxHash'];
 };
 
+
 export type CommentStatsArgs = {
   request: PublicationStatsInput;
 };
@@ -352,7 +370,7 @@ export type CommentNotification = {
 
 export enum CommentRankingFilterType {
   NoneRelevant = 'NONE_RELEVANT',
-  Relevant = 'RELEVANT',
+  Relevant = 'RELEVANT'
 }
 
 export enum ComparisonOperatorConditionType {
@@ -361,7 +379,7 @@ export enum ComparisonOperatorConditionType {
   GreaterThanOrEqual = 'GREATER_THAN_OR_EQUAL',
   LessThan = 'LESS_THAN',
   LessThanOrEqual = 'LESS_THAN_OR_EQUAL',
-  NotEqual = 'NOT_EQUAL',
+  NotEqual = 'NOT_EQUAL'
 }
 
 export type CreateActOnOpenActionBroadcastItemResult = {
@@ -944,7 +962,7 @@ export type CreateOnchainSetProfileMetadataEip712TypedDataValue = {
 
 export enum CreateProfileWithHandleErrorReasonType {
   Failed = 'FAILED',
-  HandleTaken = 'HANDLE_TAKEN',
+  HandleTaken = 'HANDLE_TAKEN'
 }
 
 export type CreateProfileWithHandleErrorResult = {
@@ -1066,7 +1084,7 @@ export type CurRequest = {
 };
 
 export enum CustomFiltersType {
-  Gardeners = 'GARDENERS',
+  Gardeners = 'GARDENERS'
 }
 
 export enum DecryptFailReasonType {
@@ -1082,7 +1100,7 @@ export enum DecryptFailReasonType {
   ProfileDoesNotExist = 'PROFILE_DOES_NOT_EXIST',
   PublicationIsNotGated = 'PUBLICATION_IS_NOT_GATED',
   UnauthorizedAddress = 'UNAUTHORIZED_ADDRESS',
-  UnauthorizedBalance = 'UNAUTHORIZED_BALANCE',
+  UnauthorizedBalance = 'UNAUTHORIZED_BALANCE'
 }
 
 export type DegreesOfSeparationReferenceModuleInput = {
@@ -1131,15 +1149,8 @@ export type Eip712TypedDataField = {
   type: Scalars['String'];
 };
 
-export type ElectedMirror = {
-  __typename?: 'ElectedMirror';
-  by: Profile;
-  mirrorId: Scalars['PublicationId'];
-  timestamp: Scalars['DateTime'];
-};
-
-export type EmbedMetadataV1 = {
-  __typename?: 'EmbedMetadataV1';
+export type EmbedMetadataV3 = {
+  __typename?: 'EmbedMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1151,7 +1162,7 @@ export type EmbedMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationEmbedMetadataV1MainFocusType;
+  mainContentFocus: PublicationEmbedMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
@@ -1193,11 +1204,10 @@ export type Erc20OwnershipCondition = {
   __typename?: 'Erc20OwnershipCondition';
   amount: Amount;
   condition: ComparisonOperatorConditionType;
-  contract: NetworkAddress;
 };
 
-export type EventMetadataV1 = {
-  __typename?: 'EventMetadataV1';
+export type EventMetadataV3 = {
+  __typename?: 'EventMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1212,7 +1222,7 @@ export type EventMetadataV1 = {
   links?: Maybe<Array<Scalars['URL']>>;
   locale?: Maybe<Scalars['Locale']>;
   location: Scalars['String'];
-  mainContentFocus: PublicationEventMetadataV1MainFocusType;
+  mainContentFocus: PublicationEventMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   startsAt: Scalars['DateTime'];
@@ -1228,7 +1238,7 @@ export enum ExploreProfileOrderBy {
   MostFollowers = 'MOST_FOLLOWERS',
   MostMirrors = 'MOST_MIRRORS',
   MostPosts = 'MOST_POSTS',
-  MostPublication = 'MOST_PUBLICATION',
+  MostPublication = 'MOST_PUBLICATION'
 }
 
 export type ExploreProfilesRequest = {
@@ -1259,7 +1269,7 @@ export type ExplorePublicationRequest = {
 export enum ExplorePublicationType {
   Comment = 'COMMENT',
   Post = 'POST',
-  Quote = 'QUOTE',
+  Quote = 'QUOTE'
 }
 
 export enum ExplorePublicationsOrderByType {
@@ -1268,7 +1278,7 @@ export enum ExplorePublicationsOrderByType {
   TopCollectedOpenAction = 'TOP_COLLECTED_OPEN_ACTION',
   TopCommented = 'TOP_COMMENTED',
   TopMirrored = 'TOP_MIRRORED',
-  TopQuoted = 'TOP_QUOTED',
+  TopQuoted = 'TOP_QUOTED'
 }
 
 export type ExplorePublicationsWhere = {
@@ -1293,20 +1303,20 @@ export type FeeFollowModuleSettings = {
 };
 
 export enum FeedEventItemType {
-  CollectComment = 'COLLECT_COMMENT',
-  CollectPost = 'COLLECT_POST',
+  Acted = 'ACTED',
+  Collect = 'COLLECT',
   Comment = 'COMMENT',
   Mirror = 'MIRROR',
   Post = 'POST',
   Quote = 'QUOTE',
-  ReactionComment = 'REACTION_COMMENT',
-  ReactionPost = 'REACTION_POST',
+  Reaction = 'REACTION'
 }
 
 export type FeedHighlight = Post | Quote;
 
 export type FeedHighlightWhere = {
-  metadata: PublicationMetadataFilters;
+  for?: InputMaybe<Scalars['ProfileId']>;
+  metadata?: InputMaybe<PublicationMetadataFilters>;
 };
 
 export type FeedHighlightsRequest = {
@@ -1317,12 +1327,10 @@ export type FeedHighlightsRequest = {
 
 export type FeedItem = {
   __typename?: 'FeedItem';
-  collects: Array<CollectedEvent>;
+  acted: Array<OpenActionProfileActed>;
   comments: Array<Comment>;
-  electedMirror?: Maybe<ElectedMirror>;
   id: Scalars['String'];
-  mirrors: Array<MirrorEvent>;
-  quotes: Array<Quote>;
+  mirrors: Array<Mirror>;
   reactions: Array<ReactionEvent>;
   root: PrimaryPublication;
 };
@@ -1335,8 +1343,8 @@ export type FeedRequest = {
 
 export type FeedWhere = {
   feedEventItemTypes?: InputMaybe<Array<FeedEventItemType>>;
-  for: Scalars['ProfileId'];
-  metadata: PublicationMetadataFilters;
+  for?: InputMaybe<Scalars['ProfileId']>;
+  metadata?: InputMaybe<PublicationMetadataFilters>;
 };
 
 export type Fiat = {
@@ -1376,10 +1384,7 @@ export type FollowLensManagerRequest = {
   follow: Array<FollowLensManager>;
 };
 
-export type FollowModule =
-  | FeeFollowModuleSettings
-  | RevertFollowModuleSettings
-  | UnknownFollowModuleSettings;
+export type FollowModule = FeeFollowModuleSettings | RevertFollowModuleSettings | UnknownFollowModuleSettings;
 
 export type FollowModuleInput = {
   feeFollowModule?: InputMaybe<FeeFollowModuleInput>;
@@ -1396,7 +1401,7 @@ export type FollowModuleRedeemInput = {
 export enum FollowModuleType {
   FeeFollowModule = 'FeeFollowModule',
   RevertFollowModule = 'RevertFollowModule',
-  UnknownFollowModule = 'UnknownFollowModule',
+  UnknownFollowModule = 'UnknownFollowModule'
 }
 
 export type FollowNotification = {
@@ -1440,21 +1445,6 @@ export type FraudReasonInput = {
   subreason: PublicationReportingFraudSubreason;
 };
 
-export type FutureProofNotification = {
-  __typename?: 'FutureProofNotification';
-  id?: Maybe<Scalars['String']>;
-};
-
-export type FutureProofPublicationEncryptionStrategy = {
-  __typename?: 'FutureProofPublicationEncryptionStrategy';
-  id?: Maybe<Scalars['String']>;
-};
-
-export type FutureProofPublicationMetadata = {
-  __typename?: 'FutureProofPublicationMetadata';
-  id: Scalars['String'];
-};
-
 export type Gasless = {
   __typename?: 'Gasless';
   enabled: Scalars['Boolean'];
@@ -1487,14 +1477,8 @@ export type GdmRequest = {
 };
 
 export type GenerateModuleCurrencyApprovalDataRequest = {
-  currency: Scalars['EvmAddress'];
-  followModule?: InputMaybe<FollowModuleType>;
-  openActionModule?: InputMaybe<OpenActionModuleType>;
-  referenceModule?: InputMaybe<ReferenceModuleType>;
-  unknownFollowModule?: InputMaybe<Scalars['EvmAddress']>;
-  unknownOpenActionModule?: InputMaybe<Scalars['EvmAddress']>;
-  unknownReferenceModule?: InputMaybe<Scalars['EvmAddress']>;
-  value: Scalars['String'];
+  allowance: Scalars['EvmAddress'];
+  module: ModuleCurrencyApproval;
 };
 
 export type GenerateModuleCurrencyApprovalResult = {
@@ -1540,7 +1524,7 @@ export type IdKitPhoneVerifyWebhookRequest = {
 
 export enum IdKitPhoneVerifyWebhookResultStatusType {
   AlreadyVerified = 'ALREADY_VERIFIED',
-  Success = 'SUCCESS',
+  Success = 'SUCCESS'
 }
 
 export type IllegalReasonInput = {
@@ -1560,7 +1544,7 @@ export type Image = {
 };
 
 export enum ImageMimeType {
-  Png = 'PNG',
+  Png = 'PNG'
 }
 
 export type ImageSet = {
@@ -1571,6 +1555,7 @@ export type ImageSet = {
   rawURI: Scalars['URI'];
   transformed: Image;
 };
+
 
 export type ImageSetTransformedArgs = {
   request: ImageTransform;
@@ -1596,17 +1581,6 @@ export type InTotalRequest = {
   secret: Scalars['String'];
 };
 
-export type InternalPinRequest = {
-  items: Array<Scalars['URL']>;
-  secret: Scalars['String'];
-};
-
-export type InternalPinResult = {
-  __typename?: 'InternalPinResult';
-  ipfs: Scalars['IpfsCid'];
-  referenceItem: Scalars['URL'];
-};
-
 export type InviteRequest = {
   invites: Array<Scalars['EvmAddress']>;
   secret: Scalars['String'];
@@ -1617,6 +1591,20 @@ export type InvitedResult = {
   invited: Scalars['EvmAddress'];
   profileMinted?: Maybe<Profile>;
   when: Scalars['DateTime'];
+};
+
+export type KnownCollectOpenActionResult = {
+  __typename?: 'KnownCollectOpenActionResult';
+  type: CollectOpenActionModuleType;
+};
+
+export type KnownSupportedModule = {
+  __typename?: 'KnownSupportedModule';
+  contract: NetworkAddress;
+  moduleInput: Array<ModuleInfo>;
+  moduleName: Scalars['String'];
+  redeemInput: Array<ModuleInfo>;
+  returnDataInput: Array<ModuleInfo>;
 };
 
 export type LegacyAaveFeeCollectModuleSettings = {
@@ -1730,7 +1718,7 @@ export type LegacyMultirecipientFeeCollectModuleSettings = {
 
 export enum LegacyPublicationMetadataVersions {
   V1 = 'V1',
-  V2 = 'V2',
+  V2 = 'V2'
 }
 
 export type LegacyRevertCollectModuleSettings = {
@@ -1779,7 +1767,7 @@ export type LensMetadataTransaction = {
 
 export enum LensMetadataTransactionFailureType {
   MetadataError = 'METADATA_ERROR',
-  Reverted = 'REVERTED',
+  Reverted = 'REVERTED'
 }
 
 export type LensProfileManagerRelayError = {
@@ -1792,7 +1780,7 @@ export enum LensProfileManagerRelayErrorReasonType {
   Failed = 'FAILED',
   NoLensManagerEnabled = 'NO_LENS_MANAGER_ENABLED',
   RateLimited = 'RATE_LIMITED',
-  RequiresSignature = 'REQUIRES_SIGNATURE',
+  RequiresSignature = 'REQUIRES_SIGNATURE'
 }
 
 export type LensProfileManagerRelayResult = LensProfileManagerRelayError | RelaySuccess;
@@ -1806,7 +1794,7 @@ export type LensTransaction = {
 };
 
 export enum LensTransactionFailureType {
-  Reverted = 'REVERTED',
+  Reverted = 'REVERTED'
 }
 
 export type LensTransactionResult = LensMetadataTransaction | LensTransaction;
@@ -1822,11 +1810,11 @@ export enum LensTransactionStatusType {
   Complete = 'COMPLETE',
   Failed = 'FAILED',
   OptimisticallyUpdated = 'OPTIMISTICALLY_UPDATED',
-  Progressing = 'PROGRESSING',
+  Progressing = 'PROGRESSING'
 }
 
-export type LinkMetadataV1 = {
-  __typename?: 'LinkMetadataV1';
+export type LinkMetadataV3 = {
+  __typename?: 'LinkMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1837,15 +1825,15 @@ export type LinkMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationLinkMetadataV1MainFocusType;
+  mainContentFocus: PublicationLinkMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   sharingLink: Scalars['URL'];
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
-export type LiveStreamMetadataV1 = {
-  __typename?: 'LiveStreamMetadataV1';
+export type LiveStreamMetadataV3 = {
+  __typename?: 'LiveStreamMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1859,7 +1847,7 @@ export type LiveStreamMetadataV1 = {
   id: Scalars['String'];
   liveURL: Scalars['URL'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationLiveStreamMetadataV1MainFocusType;
+  mainContentFocus: PublicationLiveStreamMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   playbackURL: Scalars['URL'];
   rawURI: Scalars['URI'];
@@ -1886,8 +1874,8 @@ export type MentionNotification = {
   publication: PrimaryPublication;
 };
 
-export type MintMetadataV1 = {
-  __typename?: 'MintMetadataV1';
+export type MintMetadataV3 = {
+  __typename?: 'MintMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1898,7 +1886,7 @@ export type MintMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationMintMetadataV1MainFocusType;
+  mainContentFocus: PublicationMintMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   mintLink: Scalars['URL'];
   rawURI: Scalars['URI'];
@@ -1907,7 +1895,6 @@ export type MintMetadataV1 = {
 
 export type Mirror = {
   __typename?: 'Mirror';
-  by: Profile;
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
   isGated: Scalars['Boolean'];
@@ -1918,12 +1905,6 @@ export type Mirror = {
   txHash: Scalars['TxHash'];
 };
 
-export type MirrorEvent = {
-  __typename?: 'MirrorEvent';
-  by: Profile;
-  timestamp: Scalars['DateTime'];
-};
-
 export type MirrorNotification = {
   __typename?: 'MirrorNotification';
   id: Scalars['String'];
@@ -1932,6 +1913,15 @@ export type MirrorNotification = {
 };
 
 export type MirrorablePublication = Comment | Post | Quote;
+
+export type ModuleCurrencyApproval = {
+  followModule?: InputMaybe<FollowModuleType>;
+  openActionModule?: InputMaybe<OpenActionModuleType>;
+  referenceModule?: InputMaybe<ReferenceModuleType>;
+  unknownFollowModule?: InputMaybe<Scalars['EvmAddress']>;
+  unknownOpenActionModule?: InputMaybe<Scalars['EvmAddress']>;
+  unknownReferenceModule?: InputMaybe<Scalars['EvmAddress']>;
+};
 
 export type ModuleInfo = {
   __typename?: 'ModuleInfo';
@@ -1946,8 +1936,8 @@ export type MomokaCommentRequest = {
 
 export type MomokaCommentTransaction = {
   __typename?: 'MomokaCommentTransaction';
-  app: App;
-  commentedOnProfile: Profile;
+  app?: Maybe<App>;
+  commentedOnProfileId: Scalars['ProfileId'];
   commentedOnPublicationId: Scalars['PublicationId'];
   createdAt: Scalars['DateTime'];
   profile: Profile;
@@ -1963,15 +1953,14 @@ export type MomokaInfo = {
 };
 
 export type MomokaMirrorRequest = {
-  from: Scalars['ProfileId'];
-  mirror: Scalars['PublicationId'];
+  mirrorOf: Scalars['PublicationId'];
 };
 
 export type MomokaMirrorTransaction = {
   __typename?: 'MomokaMirrorTransaction';
-  app: App;
+  app?: Maybe<App>;
   createdAt: Scalars['DateTime'];
-  mirrorOfProfile: Profile;
+  mirrorOfProfileId: Scalars['ProfileId'];
   mirrorOfPublicationId: Scalars['PublicationId'];
   profile: Profile;
   publicationId: Scalars['PublicationId'];
@@ -1986,7 +1975,7 @@ export type MomokaPostRequest = {
 
 export type MomokaPostTransaction = {
   __typename?: 'MomokaPostTransaction';
-  app: App;
+  app?: Maybe<App>;
   createdAt: Scalars['DateTime'];
   profile: Profile;
   publicationId: Scalars['PublicationId'];
@@ -1997,15 +1986,16 @@ export type MomokaPostTransaction = {
 
 export type MomokaQuoteRequest = {
   contentURI: Scalars['URI'];
+  quoteOn: Scalars['PublicationId'];
 };
 
 export type MomokaQuoteTransaction = {
   __typename?: 'MomokaQuoteTransaction';
-  app: App;
+  app?: Maybe<App>;
   createdAt: Scalars['DateTime'];
   profile: Profile;
   publicationId: Scalars['PublicationId'];
-  quotedOnProfile: Profile;
+  quotedOnProfileId: Scalars['ProfileId'];
   quotedOnPublicationId: Scalars['PublicationId'];
   submitter: Scalars['EvmAddress'];
   transactionId: Scalars['String'];
@@ -2030,11 +2020,7 @@ export type MomokaSummaryResult = {
   totalTransactions: Scalars['Int'];
 };
 
-export type MomokaTransaction =
-  | MomokaCommentTransaction
-  | MomokaMirrorTransaction
-  | MomokaPostTransaction
-  | MomokaQuoteTransaction;
+export type MomokaTransaction = MomokaCommentTransaction | MomokaMirrorTransaction | MomokaPostTransaction | MomokaQuoteTransaction;
 
 export type MomokaTransactionRequest = {
   /** The momoka transaction id or internal publication id */
@@ -2043,7 +2029,7 @@ export type MomokaTransactionRequest = {
 
 export type MomokaTransactionsRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  for: Scalars['ProfileId'];
+  for?: InputMaybe<Scalars['ProfileId']>;
   limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
@@ -2053,7 +2039,7 @@ export type MomokaTransactionsResult = {
   pageInfo: PaginatedResultInfo;
 };
 
-export enum MomokaValidatorErrorType {
+export enum MomokaValidatorError {
   BlockCantBeReadFromNode = 'BLOCK_CANT_BE_READ_FROM_NODE',
   BlockTooFar = 'BLOCK_TOO_FAR',
   CanNotConnectToBundlr = 'CAN_NOT_CONNECT_TO_BUNDLR',
@@ -2081,16 +2067,14 @@ export enum MomokaValidatorErrorType {
   TimestampProofInvalidSignature = 'TIMESTAMP_PROOF_INVALID_SIGNATURE',
   TimestampProofInvalidType = 'TIMESTAMP_PROOF_INVALID_TYPE',
   TimestampProofNotSubmitter = 'TIMESTAMP_PROOF_NOT_SUBMITTER',
-  Unknown = 'UNKNOWN',
+  Unknown = 'UNKNOWN'
 }
 
-export type MomokaVerificationStatus =
-  | MomokaVerificationStatusFailure
-  | MomokaVerificationStatusSuccess;
+export type MomokaVerificationStatus = MomokaVerificationStatusFailure | MomokaVerificationStatusSuccess;
 
 export type MomokaVerificationStatusFailure = {
   __typename?: 'MomokaVerificationStatusFailure';
-  status: MomokaValidatorErrorType;
+  status: MomokaValidatorError;
 };
 
 export type MomokaVerificationStatusSuccess = {
@@ -2173,7 +2157,6 @@ export type Mutation = {
   hidePublication: Scalars['Void'];
   idKitPhoneVerifyWebhook: IdKitPhoneVerifyWebhookResultStatusType;
   in?: Maybe<Scalars['Void']>;
-  internalPin: InternalPinResult;
   inviteProfile?: Maybe<Scalars['Void']>;
   legacyCollect: LensProfileManagerRelayResult;
   mirrorOnMomoka: RelayMomokaResult;
@@ -2186,6 +2169,7 @@ export type Mutation = {
   quoteOnMomoka: RelayMomokaResult;
   quoteOnchain: LensProfileManagerRelayResult;
   refresh: AuthenticationResult;
+  refreshPublicationMetadata: RefreshPublicationMetadataResult;
   removeProfileInterests: Scalars['Void'];
   removePublicationBookmark: Scalars['Void'];
   removeReaction: Scalars['Void'];
@@ -2200,304 +2184,376 @@ export type Mutation = {
   updateNftGalleryOrder?: Maybe<Scalars['Void']>;
 };
 
+
 export type MutationAchArgs = {
   request: AchRequest;
 };
+
 
 export type MutationActOnOpenActionArgs = {
   request: ActOnOpenActionLensManagerRequest;
 };
 
+
 export type MutationAddProfileInterestsArgs = {
   request: ProfileInterestsRequest;
 };
+
 
 export type MutationAddPublicationBookmarkArgs = {
   request: PublicationBookmarkRequest;
 };
 
+
 export type MutationAddPublicationNotInterestedArgs = {
   request: PublicationNotInterestedRequest;
 };
+
 
 export type MutationAddReactionArgs = {
   request: ReactionRequest;
 };
 
+
 export type MutationAuthenticateArgs = {
   request: SignedAuthChallenge;
 };
+
 
 export type MutationBlockArgs = {
   request: BlockRequest;
 };
 
+
 export type MutationBroadcastOnMomokaArgs = {
   request: BroadcastRequest;
 };
+
 
 export type MutationBroadcastOnchainArgs = {
   request: BroadcastRequest;
 };
 
+
 export type MutationClaimProfileArgs = {
   request: ClaimProfileRequest;
 };
+
 
 export type MutationCommentOnMomokaArgs = {
   request: MomokaCommentRequest;
 };
 
+
 export type MutationCommentOnchainArgs = {
   request: OnchainCommentRequest;
 };
+
 
 export type MutationCreateActOnOpenActionTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: ActOnOpenActionRequest;
 };
 
+
 export type MutationCreateBlockProfilesTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: BlockRequest;
 };
+
 
 export type MutationCreateChangeProfileManagersTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: ChangeProfileManagersRequest;
 };
 
+
 export type MutationCreateFollowTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: FollowRequest;
 };
+
 
 export type MutationCreateHandleLinkToProfileTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: HandleLinkToProfileRequest;
 };
 
+
 export type MutationCreateHandleUnlinkFromProfileTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: HandleUnlinkFromProfileRequest;
 };
+
 
 export type MutationCreateLegacyCollectTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: LegacyCollectRequest;
 };
 
+
 export type MutationCreateMomokaCommentTypedDataArgs = {
   request: MomokaCommentRequest;
 };
+
 
 export type MutationCreateMomokaMirrorTypedDataArgs = {
   request: MomokaMirrorRequest;
 };
 
+
 export type MutationCreateMomokaPostTypedDataArgs = {
   request: MomokaPostRequest;
 };
+
 
 export type MutationCreateMomokaQuoteTypedDataArgs = {
   request: MomokaQuoteRequest;
 };
 
+
 export type MutationCreateNftGalleryArgs = {
   request: NftGalleryCreateRequest;
 };
+
 
 export type MutationCreateOnchainCommentTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainCommentRequest;
 };
 
+
 export type MutationCreateOnchainMirrorTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainMirrorRequest;
 };
+
 
 export type MutationCreateOnchainPostTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainPostRequest;
 };
 
+
 export type MutationCreateOnchainQuoteTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainQuoteRequest;
 };
+
 
 export type MutationCreateOnchainSetProfileMetadataTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: OnchainSetProfileMetadataRequest;
 };
 
+
 export type MutationCreateProfileWithHandleArgs = {
   request: CreateProfileWithHandleRequest;
 };
+
 
 export type MutationCreateSetFollowModuleTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: SetFollowModuleRequest;
 };
 
+
 export type MutationCreateUnblockProfilesTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: UnblockRequest;
 };
+
 
 export type MutationCreateUnfollowTypedDataArgs = {
   options?: InputMaybe<TypedDataOptions>;
   request: UnfollowRequest;
 };
 
+
 export type MutationDeleteNftGalleryArgs = {
   request: NftGalleryDeleteRequest;
 };
+
 
 export type MutationDismissRecommendedProfilesArgs = {
   request: DismissRecommendedProfilesRequest;
 };
 
+
 export type MutationDssArgs = {
   request: PrfRequest;
 };
+
 
 export type MutationFollowArgs = {
   request: FollowLensManagerRequest;
 };
 
+
 export type MutationGciArgs = {
   request: GciRequest;
 };
+
 
 export type MutationGcrArgs = {
   request: GcrRequest;
 };
 
+
 export type MutationGdiArgs = {
   request: GddRequest;
 };
+
 
 export type MutationHandleLinkToProfileArgs = {
   request: HandleLinkToProfileRequest;
 };
 
+
 export type MutationHandleUnlinkFromProfileArgs = {
   request: HandleUnlinkFromProfileRequest;
 };
+
 
 export type MutationHelArgs = {
   request: HelRequest;
 };
 
+
 export type MutationHidePublicationArgs = {
   request: HidePublicationRequest;
 };
+
 
 export type MutationIdKitPhoneVerifyWebhookArgs = {
   request: IdKitPhoneVerifyWebhookRequest;
 };
 
+
 export type MutationInArgs = {
   request: InRequest;
 };
 
-export type MutationInternalPinArgs = {
-  request: InternalPinRequest;
-};
 
 export type MutationInviteProfileArgs = {
   request: InviteRequest;
 };
 
+
 export type MutationLegacyCollectArgs = {
   request: LegacyCollectRequest;
 };
+
 
 export type MutationMirrorOnMomokaArgs = {
   request: MomokaMirrorRequest;
 };
 
+
 export type MutationMirrorOnchainArgs = {
   request: OnchainMirrorRequest;
 };
+
 
 export type MutationNftOwnershipChallengeArgs = {
   request: NftOwnershipChallengeRequest;
 };
 
+
 export type MutationNniArgs = {
   request: NniRequest;
 };
+
 
 export type MutationNnvArgs = {
   request: NnvRequest;
 };
 
+
 export type MutationPostOnMomokaArgs = {
   request: MomokaPostRequest;
 };
+
 
 export type MutationPostOnchainArgs = {
   request: OnchainPostRequest;
 };
 
+
 export type MutationQuoteOnMomokaArgs = {
   request: MomokaQuoteRequest;
 };
+
 
 export type MutationQuoteOnchainArgs = {
   request: OnchainQuoteRequest;
 };
 
+
 export type MutationRefreshArgs = {
   request: RefreshRequest;
 };
+
+
+export type MutationRefreshPublicationMetadataArgs = {
+  request: RefreshPublicationMetadataRequest;
+};
+
 
 export type MutationRemoveProfileInterestsArgs = {
   request: ProfileInterestsRequest;
 };
 
+
 export type MutationRemovePublicationBookmarkArgs = {
   request: PublicationBookmarkRequest;
 };
+
 
 export type MutationRemoveReactionArgs = {
   request: ReactionRequest;
 };
 
+
 export type MutationReportPublicationArgs = {
   request: ReportPublicationRequest;
 };
+
 
 export type MutationSetFollowModuleArgs = {
   request: SetFollowModuleRequest;
 };
 
+
 export type MutationSetProfileMetadataArgs = {
   request: OnchainSetProfileMetadataRequest;
 };
+
 
 export type MutationUnblockArgs = {
   request: UnblockRequest;
 };
 
+
 export type MutationUndoPublicationNotInterestedArgs = {
   request: PublicationNotInterestedRequest;
 };
+
 
 export type MutationUnfollowArgs = {
   request: UnfollowRequest;
 };
 
+
 export type MutationUpdateNftGalleryInfoArgs = {
   request: NftGalleryUpdateInfoRequest;
 };
 
+
 export type MutationUpdateNftGalleryItemsArgs = {
   request: NftGalleryUpdateItemsRequest;
 };
+
 
 export type MutationUpdateNftGalleryOrderArgs = {
   request: NftGalleryUpdateItemOrderRequest;
@@ -2573,7 +2629,7 @@ export type NftCollection = {
 
 export enum NftCollectionOwnersOrder {
   FollowersFirst = 'FollowersFirst',
-  None = 'None',
+  None = 'None'
 }
 
 /** NFT collection owners request */
@@ -2614,8 +2670,7 @@ export type NftCollectionsRequest = {
 
 export enum NftContractType {
   Erc721 = 'ERC721',
-  Erc721Enumerable = 'ERC721Enumerable',
-  Erc1155 = 'ERC1155',
+  Erc1155 = 'ERC1155'
 }
 
 export type NftGalleriesRequest = {
@@ -2655,6 +2710,18 @@ export type NftGalleryUpdateItemsRequest = {
   galleryId: Scalars['NftGalleryId'];
   toAdd?: InputMaybe<Array<NftInput>>;
   toRemove?: InputMaybe<Array<NftInput>>;
+};
+
+export type NftImage = {
+  __typename?: 'NftImage';
+  /** The contract address of the NFT collection */
+  collection: NetworkAddress;
+  /** The image set for the NFT */
+  image: ImageSet;
+  /** The token ID of the NFT */
+  tokenId: Scalars['TokenId'];
+  /** Indicates whether the NFT is from a verified collection or not */
+  verified: Scalars['Boolean'];
 };
 
 export type NftInput = {
@@ -2738,15 +2805,7 @@ export type NnvRequest = {
   secret: Scalars['String'];
 };
 
-export type Notification =
-  | ActedNotification
-  | CommentNotification
-  | FollowNotification
-  | FutureProofNotification
-  | MentionNotification
-  | MirrorNotification
-  | QuoteNotification
-  | ReactionNotification;
+export type Notification = ActedNotification | CommentNotification | FollowNotification | MentionNotification | MirrorNotification | QuoteNotification | ReactionNotification;
 
 export type NotificationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
@@ -2766,7 +2825,7 @@ export enum NotificationType {
   Mirrored = 'MIRRORED',
   OtherActed = 'OTHER_ACTED',
   Quoted = 'QUOTED',
-  Reacted = 'REACTED',
+  Reacted = 'REACTED'
 }
 
 export type NotificationWhere = {
@@ -2816,7 +2875,7 @@ export type OnchainSetProfileMetadataRequest = {
 };
 
 export enum OpenActionCategoryType {
-  Collect = 'COLLECT',
+  Collect = 'COLLECT'
 }
 
 export type OpenActionFilter = {
@@ -2825,20 +2884,7 @@ export type OpenActionFilter = {
   type?: InputMaybe<OpenActionModuleType>;
 };
 
-export type OpenActionModule =
-  | LegacyAaveFeeCollectModuleSettings
-  | LegacyErc4626FeeCollectModuleSettings
-  | LegacyFeeCollectModuleSettings
-  | LegacyFreeCollectModuleSettings
-  | LegacyLimitedFeeCollectModuleSettings
-  | LegacyLimitedTimedFeeCollectModuleSettings
-  | LegacyMultirecipientFeeCollectModuleSettings
-  | LegacyRevertCollectModuleSettings
-  | LegacySimpleCollectModuleSettings
-  | LegacyTimedFeeCollectModuleSettings
-  | MultirecipientFeeCollectOpenActionSettings
-  | SimpleCollectOpenActionSettings
-  | UnknownOpenActionModuleSettings;
+export type OpenActionModule = LegacyAaveFeeCollectModuleSettings | LegacyErc4626FeeCollectModuleSettings | LegacyFeeCollectModuleSettings | LegacyFreeCollectModuleSettings | LegacyLimitedFeeCollectModuleSettings | LegacyLimitedTimedFeeCollectModuleSettings | LegacyMultirecipientFeeCollectModuleSettings | LegacyRevertCollectModuleSettings | LegacySimpleCollectModuleSettings | LegacyTimedFeeCollectModuleSettings | MultirecipientFeeCollectOpenActionSettings | SimpleCollectOpenActionSettings | UnknownOpenActionModuleSettings;
 
 export type OpenActionModuleInput = {
   collectOpenAction?: InputMaybe<CollectActionModuleInput>;
@@ -2858,10 +2904,17 @@ export enum OpenActionModuleType {
   LegacyTimedFeeCollectModule = 'LegacyTimedFeeCollectModule',
   MultirecipientFeeCollectOpenActionModule = 'MultirecipientFeeCollectOpenActionModule',
   SimpleCollectOpenActionModule = 'SimpleCollectOpenActionModule',
-  UnknownOpenActionModule = 'UnknownOpenActionModule',
+  UnknownOpenActionModule = 'UnknownOpenActionModule'
 }
 
-export type OpenActionResult = CollectOpenActionResult | UnknownOpenActionResult;
+export type OpenActionProfileActed = {
+  __typename?: 'OpenActionProfileActed';
+  actedAt: Scalars['DateTime'];
+  action: OpenActionResult;
+  profile: Profile;
+};
+
+export type OpenActionResult = KnownCollectOpenActionResult | UnknownOpenActionResult;
 
 export type OptimisticStatusResult = {
   __typename?: 'OptimisticStatusResult';
@@ -2877,6 +2930,8 @@ export type OrCondition = {
 export type OwnedHandlesRequest = {
   /** The Ethereum address for which to retrieve owned handles */
   address: Scalars['EvmAddress'];
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export type Owner = {
@@ -3014,6 +3069,12 @@ export type PaginatedRevenueFromPublicationsResult = {
   pageInfo: PaginatedResultInfo;
 };
 
+export type PaginatedSupportedModules = {
+  __typename?: 'PaginatedSupportedModules';
+  items: Array<SupportedModule>;
+  pageInfo: PaginatedResultInfo;
+};
+
 export type PaginatedWhoReactedResult = {
   __typename?: 'PaginatedWhoReactedResult';
   items: Array<Profile>;
@@ -3068,7 +3129,7 @@ export type PoapToken = {
 
 export enum PoapTokenLayerType {
   Layer1 = 'Layer1',
-  Layer2 = 'Layer2',
+  Layer2 = 'Layer2'
 }
 
 /** Popular NFT collections request */
@@ -3099,6 +3160,7 @@ export type Post = {
   stats: PublicationStats;
   txHash: Scalars['TxHash'];
 };
+
 
 export type PostStatsArgs = {
   request: PublicationStatsInput;
@@ -3138,30 +3200,27 @@ export type Profile = {
   guardian?: Maybe<ProfileGuardianResult>;
   /** The profile handle - a profile may not have one */
   handle?: Maybe<Scalars['Handle']>;
-  haveBlocked: OptimisticStatusResult;
   /** The profile id */
   id: Scalars['ProfileId'];
   interests: Array<Scalars['String']>;
   invitedBy?: Maybe<Profile>;
   /** The number of invites left */
   invitesLeft?: Maybe<Scalars['Int']>;
-  isFollowedByMe: OptimisticStatusResult;
-  isFollowingMe: OptimisticStatusResult;
   /** The profile metadata */
   metadata?: Maybe<ProfileMetadata>;
   /** The on chain identity */
   onchainIdentity: ProfileOnchainIdentity;
+  operations: ProfileOperations;
   /** Who owns the profile */
   ownedBy: NetworkAddress;
   stats: ProfileStats;
   txHash: Scalars['TxHash'];
 };
 
-export type ProfileActedResult = {
-  __typename?: 'ProfileActedResult';
-  action: OpenActionResult;
-  id: Scalars['String'];
-  profile: Profile;
+
+/** The Profile */
+export type ProfileStatsArgs = {
+  request: ProfileStatsArg;
 };
 
 export type ProfileBookmarksRequest = {
@@ -3195,10 +3254,16 @@ export type ProfileManagersRequest = {
 
 export type ProfileMetadata = {
   __typename?: 'ProfileMetadata';
+  /** Optionals param to add extra attributes on the metadata */
+  attributes: Array<Attribute>;
   /** The bio for the profile */
   bio?: Maybe<Scalars['Markdown']>;
+  /** The cover picture for the profile */
+  coverPicture?: Maybe<ImageSet>;
   /** The display name for the profile */
   displayName?: Maybe<Scalars['String']>;
+  /** The picture for the profile */
+  picture?: Maybe<ProfilePicture>;
   /** The raw uri for the which the profile metadata was set as */
   rawURI: Scalars['URI'];
 };
@@ -3223,10 +3288,24 @@ export type ProfileOnchainIdentity = {
   worldcoin: WorldcoinIdentity;
 };
 
+export type ProfileOperations = {
+  __typename?: 'ProfileOperations';
+  canBlock: Scalars['Boolean'];
+  canFollow: TriStateValue;
+  canUnblock: Scalars['Boolean'];
+  canUnfollow: Scalars['Boolean'];
+  id: Scalars['ProfileId'];
+  isBlockedByMe: OptimisticStatusResult;
+  isFollowedByMe: OptimisticStatusResult;
+  isFollowingMe: OptimisticStatusResult;
+};
+
 export type ProfileOwnershipCondition = {
   __typename?: 'ProfileOwnershipCondition';
   profileId: Scalars['ProfileId'];
 };
+
+export type ProfilePicture = ImageSet | NftImage;
 
 export type ProfileReactedResult = {
   __typename?: 'ProfileReactedResult';
@@ -3290,52 +3369,61 @@ export type ProfileStats = {
   reactions: Scalars['Int'];
 };
 
+
 /** The Profile Stats */
 export type ProfileStatsCommentsArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsCountOpenActionsArgs = {
   request: ProfileStatsCountOpenActionArgs;
 };
 
+
 /** The Profile Stats */
 export type ProfileStatsFollowersArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsFollowingArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsMirrorsArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsPostsArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsPublicationsArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsQuotesArgs = {
-  request: ProfileStatsArgs;
+  request: ProfileStatsArg;
 };
+
 
 /** The Profile Stats */
 export type ProfileStatsReactionsArgs = {
   request: ProfileStatsReactionArgs;
 };
 
-export type ProfileStatsArgs = {
+export type ProfileStatsArg = {
   customFilters?: InputMaybe<Array<CustomFiltersType>>;
   forApps?: InputMaybe<Array<Scalars['AppId']>>;
 };
@@ -3382,16 +3470,20 @@ export type ProfilesRequestWhere = {
   whoQuotedPublication?: InputMaybe<Scalars['PublicationId']>;
 };
 
-export enum PublicationArticleMetadataV1MainFocusType {
-  Article = 'ARTICLE',
+export enum PublicationArticleMetadataV3MainFocusType {
+  Article = 'ARTICLE'
+}
+
+export enum PublicationAudioMetadataV3MainFocusType {
+  Audio = 'AUDIO'
 }
 
 export type PublicationBookmarkRequest = {
   on: Scalars['PublicationId'];
 };
 
-export enum PublicationCheckingInMetadataV1MainFocusType {
-  CheckingIn = 'CHECKING_IN',
+export enum PublicationCheckingInMetadataV3MainFocusType {
+  CheckingIn = 'CHECKING_IN'
 }
 
 export type PublicationCommentOf = {
@@ -3402,15 +3494,15 @@ export type PublicationCommentOf = {
 export enum PublicationContentWarningType {
   Nsfw = 'NSFW',
   Sensitive = 'SENSITIVE',
-  Spoiler = 'SPOILER',
+  Spoiler = 'SPOILER'
 }
 
-export enum PublicationEmbedMetadataV1MainFocusType {
-  Embed = 'EMBED',
+export enum PublicationEmbedMetadataV3MainFocusType {
+  Embed = 'EMBED'
 }
 
-export enum PublicationEventMetadataV1MainFocusType {
-  Event = 'EVENT',
+export enum PublicationEventMetadataV3MainFocusType {
+  Event = 'EVENT'
 }
 
 export type PublicationForYou = Post | Quote;
@@ -3421,8 +3513,8 @@ export type PublicationForYouRequest = {
   limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
-export type PublicationImageMetadataV1 = {
-  __typename?: 'PublicationImageMetadataV1';
+export type PublicationImageMetadataV3 = {
+  __typename?: 'PublicationImageMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -3434,22 +3526,22 @@ export type PublicationImageMetadataV1 = {
   id: Scalars['String'];
   image: PublicationMetadataMediaImage;
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationImageMetadataV1MainFocusType;
+  mainContentFocus: PublicationImageMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
-export enum PublicationImageMetadataV1MainFocusType {
-  Image = 'IMAGE',
+export enum PublicationImageMetadataV3MainFocusType {
+  Image = 'IMAGE'
 }
 
-export enum PublicationLinkMetadataV1MainFocusType {
-  Link = 'LINK',
+export enum PublicationLinkMetadataV3MainFocusType {
+  Link = 'LINK'
 }
 
-export enum PublicationLiveStreamMetadataV1MainFocusType {
-  Livestream = 'LIVESTREAM',
+export enum PublicationLiveStreamMetadataV3MainFocusType {
+  Livestream = 'LIVESTREAM'
 }
 
 export type PublicationMarketplaceMetadataAttribute = {
@@ -3462,40 +3554,18 @@ export type PublicationMarketplaceMetadataAttribute = {
 export enum PublicationMarketplaceMetadataAttributeDisplayType {
   Date = 'DATE',
   Number = 'NUMBER',
-  String = 'STRING',
+  String = 'STRING'
 }
 
-export type PublicationMetadata =
-  | ArticleMetadataV1
-  | CheckingInMetadataV1
-  | EmbedMetadataV1
-  | EventMetadataV1
-  | FutureProofPublicationMetadata
-  | LinkMetadataV1
-  | LiveStreamMetadataV1
-  | MintMetadataV1
-  | PublicationImageMetadataV1
-  | PublicationMetadataV1
-  | PublicationMetadataV2
-  | PublicationVideoMetadataV1
-  | SpaceMetadataV1
-  | StoryMetadataV1
-  | TextOnlyMetadataV1
-  | ThreeDMetadataV1
-  | TransactionMetadataV1;
+export type PublicationMetadata = ArticleMetadataV3 | AudioMetadataV3 | CheckingInMetadataV3 | EmbedMetadataV3 | EventMetadataV3 | LinkMetadataV3 | LiveStreamMetadataV3 | MintMetadataV3 | PublicationImageMetadataV3 | PublicationMetadataV1 | PublicationMetadataV2 | PublicationVideoMetadataV3 | SpaceMetadataV3 | StoryMetadataV3 | TextOnlyMetadataV3 | ThreeDMetadataV1 | TransactionMetadataV3;
 
-export type PublicationMetadataAttachment =
-  | PublicationMetadataMediaAudio
-  | PublicationMetadataMediaImage
-  | PublicationMetadataMediaVideo;
+export type PublicationMetadataAttachment = PublicationMetadataMediaAudio | PublicationMetadataMediaImage | PublicationMetadataMediaVideo;
 
 export type PublicationMetadataContentWarningFilter = {
   oneOf?: InputMaybe<Array<PublicationContentWarningType>>;
 };
 
-export type PublicationMetadataEncryptionStrategy =
-  | FutureProofPublicationEncryptionStrategy
-  | PublicationMetadataV3LitEncryption;
+export type PublicationMetadataEncryptionStrategy = PublicationMetadataV3LitEncryption;
 
 export type PublicationMetadataFilters = {
   contentWarning?: InputMaybe<PublicationMetadataContentWarningFilter>;
@@ -3506,7 +3576,7 @@ export type PublicationMetadataFilters = {
 };
 
 export enum PublicationMetadataLicenseType {
-  AllRightsReserved = 'ALL_RIGHTS_RESERVED',
+  AllRightsReserved = 'ALL_RIGHTS_RESERVED'
 }
 
 export enum PublicationMetadataMainFocusType {
@@ -3525,13 +3595,12 @@ export enum PublicationMetadataMainFocusType {
   TextOnly = 'TEXT_ONLY',
   ThreeD = 'THREE_D',
   Transaction = 'TRANSACTION',
-  Video = 'VIDEO',
+  Video = 'VIDEO'
 }
 
 export type PublicationMetadataMediaAudio = {
   __typename?: 'PublicationMetadataMediaAudio';
   artist?: Maybe<Scalars['String']>;
-  audioType?: Maybe<PublicationMetadataMediaAudioType>;
   cover?: Maybe<ImageSet>;
   credits?: Maybe<Scalars['String']>;
   duration?: Maybe<Scalars['Int']>;
@@ -3542,10 +3611,6 @@ export type PublicationMetadataMediaAudio = {
   recordLabel?: Maybe<Scalars['String']>;
   type: AudioMimeType;
 };
-
-export enum PublicationMetadataMediaAudioType {
-  Mp3 = 'MP3',
-}
 
 export type PublicationMetadataMediaImage = {
   __typename?: 'PublicationMetadataMediaImage';
@@ -3621,7 +3686,7 @@ export enum PublicationMetadataV2MainFocusType {
   Image = 'IMAGE',
   Link = 'LINK',
   TextOnly = 'TEXT_ONLY',
-  Video = 'VIDEO',
+  Video = 'VIDEO'
 }
 
 export type PublicationMetadataV3Attribute = {
@@ -3636,8 +3701,8 @@ export type PublicationMetadataV3LitEncryption = {
   encryptionKey: Scalars['ContentEncryptionKey'];
 };
 
-export enum PublicationMintMetadataV1MainFocusType {
-  Mint = 'MINT',
+export enum PublicationMintMetadataV3MainFocusType {
+  Mint = 'MINT'
 }
 
 export type PublicationNotInterestedRequest = {
@@ -3646,6 +3711,7 @@ export type PublicationNotInterestedRequest = {
 
 export type PublicationOperations = {
   __typename?: 'PublicationOperations';
+  canAct: Scalars['Boolean'];
   canComment: Scalars['Boolean'];
   canDecrypt: CanDecryptResponse;
   canMirror: Scalars['Boolean'];
@@ -3658,6 +3724,7 @@ export type PublicationOperations = {
   isNotInterested: Scalars['Boolean'];
 };
 
+
 export type PublicationOperationsHasReactedArgs = {
   request: PublicationOperationsReactionArgs;
 };
@@ -3668,12 +3735,12 @@ export type PublicationOperationsReactionArgs = {
 
 export enum PublicationReactionType {
   Downvote = 'DOWNVOTE',
-  Upvote = 'UPVOTE',
+  Upvote = 'UPVOTE'
 }
 
 export enum PublicationReportingFraudSubreason {
   Impersonation = 'IMPERSONATION',
-  Scam = 'SCAM',
+  Scam = 'SCAM'
 }
 
 export enum PublicationReportingIllegalSubreason {
@@ -3681,19 +3748,19 @@ export enum PublicationReportingIllegalSubreason {
   DirectThreat = 'DIRECT_THREAT',
   HumanAbuse = 'HUMAN_ABUSE',
   ThreatIndividual = 'THREAT_INDIVIDUAL',
-  Violence = 'VIOLENCE',
+  Violence = 'VIOLENCE'
 }
 
 export enum PublicationReportingReason {
   Fraud = 'FRAUD',
   Illegal = 'ILLEGAL',
   Sensitive = 'SENSITIVE',
-  Spam = 'SPAM',
+  Spam = 'SPAM'
 }
 
 export enum PublicationReportingSensitiveSubreason {
   Nsfw = 'NSFW',
-  Offensive = 'OFFENSIVE',
+  Offensive = 'OFFENSIVE'
 }
 
 export enum PublicationReportingSpamSubreason {
@@ -3704,7 +3771,7 @@ export enum PublicationReportingSpamSubreason {
   MisuseHashtags = 'MISUSE_HASHTAGS',
   Repetitive = 'REPETITIVE',
   SomethingElse = 'SOMETHING_ELSE',
-  Unrelated = 'UNRELATED',
+  Unrelated = 'UNRELATED'
 }
 
 export type PublicationRequest = {
@@ -3735,8 +3802,8 @@ export type PublicationSearchWhere = {
   publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
 };
 
-export enum PublicationSpaceMetadataV1MainFocusType {
-  Space = 'SPACE',
+export enum PublicationSpaceMetadataV3MainFocusType {
+  Space = 'SPACE'
 }
 
 export type PublicationStats = {
@@ -3750,9 +3817,11 @@ export type PublicationStats = {
   reactions: Scalars['Int'];
 };
 
+
 export type PublicationStatsCountOpenActionsArgs = {
   request: PublicationStatsCountOpenActionArgs;
 };
+
 
 export type PublicationStatsReactionsArgs = {
   request: PublicationStatsReactionArgs;
@@ -3781,33 +3850,33 @@ export type PublicationStatsSubscriptionRequest = {
   for: Scalars['PublicationId'];
 };
 
-export enum PublicationStoryMetadataV1MainFocusType {
-  Story = 'STORY',
+export enum PublicationStoryMetadataV3MainFocusType {
+  Story = 'STORY'
 }
 
-export enum PublicationTextOnlyMetadataV1MainFocusType {
-  TextOnly = 'TEXT_ONLY',
+export enum PublicationTextOnlyMetadataV3MainFocusType {
+  TextOnly = 'TEXT_ONLY'
 }
 
-export enum PublicationThreeDMetadataV1MainFocusType {
-  ThreeD = 'THREE_D',
+export enum PublicationThreeDMetadataV3MainFocusType {
+  ThreeD = 'THREE_D'
 }
 
 export enum PublicationTransactionMetadataType {
   Erc20 = 'ERC20',
   Erc721 = 'ERC721',
-  Other = 'OTHER',
+  Other = 'OTHER'
 }
 
-export enum PublicationTransactionMetadataV1MainFocusType {
-  Transaction = 'TRANSACTION',
+export enum PublicationTransactionMetadataV3MainFocusType {
+  Transaction = 'TRANSACTION'
 }
 
 export enum PublicationType {
   Comment = 'COMMENT',
   Mirror = 'MIRROR',
   Post = 'POST',
-  Quote = 'QUOTE',
+  Quote = 'QUOTE'
 }
 
 export type PublicationValidateMetadataResult = {
@@ -3816,8 +3885,8 @@ export type PublicationValidateMetadataResult = {
   valid: Scalars['Boolean'];
 };
 
-export type PublicationVideoMetadataV1 = {
-  __typename?: 'PublicationVideoMetadataV1';
+export type PublicationVideoMetadataV3 = {
+  __typename?: 'PublicationVideoMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -3828,16 +3897,16 @@ export type PublicationVideoMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationVideoMetadataV1MainFocusType;
+  mainContentFocus: PublicationVideoMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
   video: PublicationMetadataMediaVideo;
 };
 
-export enum PublicationVideoMetadataV1MainFocusType {
+export enum PublicationVideoMetadataV3MainFocusType {
   ShortVideo = 'SHORT_VIDEO',
-  Video = 'VIDEO',
+  Video = 'VIDEO'
 }
 
 export enum PublicationsOrderByType {
@@ -3846,7 +3915,7 @@ export enum PublicationsOrderByType {
   TopCollectedOpenAction = 'TOP_COLLECTED_OPEN_ACTION',
   TopCommented = 'TOP_COMMENTED',
   TopMirrored = 'TOP_MIRRORED',
-  TopQuoted = 'TOP_QUOTED',
+  TopQuoted = 'TOP_QUOTED'
 }
 
 export type PublicationsRequest = {
@@ -3884,7 +3953,7 @@ export type PublicationsWhere = {
 
 export type Query = {
   __typename?: 'Query';
-  approvedModuleAllowanceAmount: ApprovedAllowanceAmountResult;
+  approvedModuleAllowanceAmount: Array<ApprovedAllowanceAmountResult>;
   challenge: AuthChallengeResult;
   claimableProfiles: ClaimableProfilesResult;
   claimableStatus: ClaimProfileStatusType;
@@ -3908,7 +3977,7 @@ export type Query = {
   lensTransactionStatus: LensTransactionResult;
   momokaSubmitters: MomokaSubmittersResult;
   momokaSummary: MomokaSummaryResult;
-  momokaTransaction: MomokaTransaction;
+  momokaTransaction?: Maybe<MomokaTransaction>;
   momokaTransactions: MomokaTransactionsResult;
   mutualFollowers: PaginatedProfileResult;
   /** Get the NFT collections that the given two profiles own at least one NFT of. */
@@ -3948,7 +4017,10 @@ export type Query = {
   searchNfts: PaginatedNftsResult;
   searchProfiles: PaginatedProfileResult;
   searchPublications: PaginatedPublicationPrimaryResult;
-  supportedModules: Array<SupportedModules>;
+  supportedFollowModules: PaginatedSupportedModules;
+  supportedOpenActionCollectModules: PaginatedSupportedModules;
+  supportedOpenActionModules: PaginatedSupportedModules;
+  supportedReferenceModules: PaginatedSupportedModules;
   txIdToTxHash?: Maybe<Scalars['TxHash']>;
   userSigNonces: UserSigNonces;
   validatePublicationMetadata: PublicationValidateMetadataResult;
@@ -3958,225 +4030,301 @@ export type Query = {
   whoReactedPublication: PaginatedWhoReactedResult;
 };
 
+
 export type QueryApprovedModuleAllowanceAmountArgs = {
   request: ApprovedModuleAllowanceAmountRequest;
 };
+
 
 export type QueryChallengeArgs = {
   request: ChallengeRequest;
 };
 
+
 export type QueryCurArgs = {
   request: CurRequest;
 };
+
 
 export type QueryCurrenciesArgs = {
   request: PaginatedOffsetRequest;
 };
 
+
 export type QueryExploreProfilesArgs = {
   request: ExploreProfilesRequest;
 };
+
 
 export type QueryExplorePublicationsArgs = {
   request: ExplorePublicationRequest;
 };
 
+
 export type QueryFeedArgs = {
   request: FeedRequest;
 };
+
 
 export type QueryFeedHighlightsArgs = {
   request: FeedHighlightsRequest;
 };
 
+
 export type QueryFollowRevenuesArgs = {
   request: FollowRevenueRequest;
 };
+
 
 export type QueryFollowersArgs = {
   request: FollowersRequest;
 };
 
+
 export type QueryFollowingArgs = {
   request: FollowingRequest;
 };
+
 
 export type QueryForYouArgs = {
   request: PublicationForYouRequest;
 };
 
+
 export type QueryGctArgs = {
   request: GctRequest;
 };
+
 
 export type QueryGdmArgs = {
   request: GdmRequest;
 };
 
+
 export type QueryGenerateModuleCurrencyApprovalDataArgs = {
   request: GenerateModuleCurrencyApprovalDataRequest;
 };
+
 
 export type QueryIntotalArgs = {
   request: InTotalRequest;
 };
 
+
 export type QueryIssArgs = {
   request: PriRequest;
 };
+
 
 export type QueryLensTransactionStatusArgs = {
   request: LensTransactionStatusRequest;
 };
 
+
 export type QueryMomokaTransactionArgs = {
   request: MomokaTransactionRequest;
 };
+
 
 export type QueryMomokaTransactionsArgs = {
   request: MomokaTransactionsRequest;
 };
 
+
 export type QueryMutualFollowersArgs = {
   request: MutualFollowersRequest;
 };
+
 
 export type QueryMutualNftCollectionsArgs = {
   request: MutualNftCollectionsRequest;
 };
 
+
 export type QueryMutualPoapsArgs = {
   request: MutualPoapsQueryRequest;
 };
+
 
 export type QueryNftCollectionOwnersArgs = {
   request: NftCollectionOwnersRequest;
 };
 
+
 export type QueryNftCollectionsArgs = {
   request: NftCollectionsRequest;
 };
+
 
 export type QueryNftGalleriesArgs = {
   request: NftGalleriesRequest;
 };
 
+
 export type QueryNftsArgs = {
   request: NftsRequest;
 };
+
 
 export type QueryNotificationsArgs = {
   request: NotificationRequest;
 };
 
+
 export type QueryOwnedHandlesArgs = {
   request: OwnedHandlesRequest;
 };
+
 
 export type QueryPoapEventArgs = {
   request: PoapEventQueryRequest;
 };
 
+
 export type QueryPoapHoldersArgs = {
   request: PoapHoldersQueryRequest;
 };
+
 
 export type QueryPoapsArgs = {
   request: UserPoapsQueryRequest;
 };
 
+
 export type QueryPopularNftCollectionsArgs = {
   request: PopularNftCollectionsRequest;
 };
+
 
 export type QueryProfileArgs = {
   request: ProfileRequest;
 };
 
+
 export type QueryProfileActionHistoryArgs = {
   request: WhoHaveBlockedRequest;
 };
+
 
 export type QueryProfileAlreadyInvitedArgs = {
   request: AlreadyInvitedCheckRequest;
 };
 
+
 export type QueryProfileBookmarksArgs = {
   request: ProfileBookmarksRequest;
 };
+
 
 export type QueryProfileManagersArgs = {
   request: ProfileManagersRequest;
 };
 
+
 export type QueryProfileRecommendationsArgs = {
   request: ProfileRecommendationsRequest;
 };
+
 
 export type QueryProfilesArgs = {
   request: ProfilesRequest;
 };
 
+
 export type QueryProfilesManagedArgs = {
   request: ProfilesManagedRequest;
 };
+
 
 export type QueryPublicationArgs = {
   request: PublicationRequest;
 };
 
+
 export type QueryPublicationsArgs = {
   request: PublicationsRequest;
 };
+
 
 export type QueryPublicationsTagsArgs = {
   request: PublicationsTagsRequest;
 };
 
+
 export type QueryRelArgs = {
   request: RelRequest;
 };
+
 
 export type QueryRevenueForPublicationArgs = {
   request: PublicationRevenueRequest;
 };
 
+
 export type QueryRevenueFromPublicationsArgs = {
   request: RevenueFromPublicationsRequest;
 };
+
 
 export type QuerySearchNftsArgs = {
   request: NftSearchRequest;
 };
 
+
 export type QuerySearchProfilesArgs = {
   request: ProfileSearchRequest;
 };
+
 
 export type QuerySearchPublicationsArgs = {
   request: PublicationSearchRequest;
 };
 
+
+export type QuerySupportedFollowModulesArgs = {
+  request: SupportedModulesRequest;
+};
+
+
+export type QuerySupportedOpenActionCollectModulesArgs = {
+  request: SupportedModulesRequest;
+};
+
+
+export type QuerySupportedOpenActionModulesArgs = {
+  request: SupportedModulesRequest;
+};
+
+
+export type QuerySupportedReferenceModulesArgs = {
+  request: SupportedModulesRequest;
+};
+
+
 export type QueryTxIdToTxHashArgs = {
   txId: Scalars['TxId'];
 };
+
 
 export type QueryValidatePublicationMetadataArgs = {
   request: ValidatePublicationMetadataRequest;
 };
 
+
 export type QueryVerifyArgs = {
   request: VerifyRequest;
 };
+
 
 export type QueryWhoActedOnPublicationArgs = {
   request: WhoActedOnPublicationRequest;
 };
 
+
 export type QueryWhoHaveBlockedArgs = {
   request: WhoHaveBlockedRequest;
 };
+
 
 export type QueryWhoReactedPublicationArgs = {
   request: WhoReactedPublicationRequest;
@@ -4200,6 +4348,7 @@ export type Quote = {
   txHash: Scalars['TxHash'];
 };
 
+
 export type QuoteStatsArgs = {
   request: PublicationStatsInput;
 };
@@ -4219,8 +4368,8 @@ export type ReactedResult = {
 export type ReactionEvent = {
   __typename?: 'ReactionEvent';
   by: Profile;
+  createdAt: Scalars['DateTime'];
   reaction: PublicationReactionType;
-  timestamp: Scalars['DateTime'];
 };
 
 export type ReactionNotification = {
@@ -4250,10 +4399,7 @@ export type RecipientDataOutput = {
   split: Scalars['Float'];
 };
 
-export type ReferenceModule =
-  | DegreesOfSeparationReferenceModuleSettings
-  | FollowOnlyReferenceModuleSettings
-  | UnknownReferenceModuleSettings;
+export type ReferenceModule = DegreesOfSeparationReferenceModuleSettings | FollowOnlyReferenceModuleSettings | UnknownReferenceModuleSettings;
 
 export type ReferenceModuleInput = {
   degreesOfSeparationReferenceModule?: InputMaybe<DegreesOfSeparationReferenceModuleInput>;
@@ -4264,7 +4410,22 @@ export type ReferenceModuleInput = {
 export enum ReferenceModuleType {
   DegreesOfSeparationReferenceModule = 'DegreesOfSeparationReferenceModule',
   FollowerOnlyReferenceModule = 'FollowerOnlyReferenceModule',
-  UnknownReferenceModule = 'UnknownReferenceModule',
+  UnknownReferenceModule = 'UnknownReferenceModule'
+}
+
+export type RefreshPublicationMetadataRequest = {
+  for: Scalars['PublicationId'];
+};
+
+export type RefreshPublicationMetadataResult = {
+  __typename?: 'RefreshPublicationMetadataResult';
+  result: RefreshPublicationMetadataResultType;
+};
+
+export enum RefreshPublicationMetadataResultType {
+  AlreadyPending = 'ALREADY_PENDING',
+  Queued = 'QUEUED',
+  ValidPublicationNotFound = 'VALID_PUBLICATION_NOT_FOUND'
 }
 
 /** The refresh request */
@@ -4288,10 +4449,10 @@ export enum RelayErrorReasonType {
   Expired = 'EXPIRED',
   Failed = 'FAILED',
   RateLimited = 'RATE_LIMITED',
-  WrongWalletSigned = 'WRONG_WALLET_SIGNED',
+  WrongWalletSigned = 'WRONG_WALLET_SIGNED'
 }
 
-export type RelayMomokaResult = CreateMomokaPublicationResult | RelayError;
+export type RelayMomokaResult = CreateMomokaPublicationResult | LensProfileManagerRelayError;
 
 export type RelayQueueResult = {
   __typename?: 'RelayQueueResult';
@@ -4332,7 +4493,7 @@ export enum RelayRoleKey {
   WithSig_7 = 'WITH_SIG_7',
   WithSig_8 = 'WITH_SIG_8',
   WithSig_9 = 'WITH_SIG_9',
-  WithSig_10 = 'WITH_SIG_10',
+  WithSig_10 = 'WITH_SIG_10'
 }
 
 export type RelaySuccess = {
@@ -4428,8 +4589,8 @@ export type SimpleCollectOpenActionSettings = {
   referralFee: Scalars['Float'];
 };
 
-export type SpaceMetadataV1 = {
-  __typename?: 'SpaceMetadataV1';
+export type SpaceMetadataV3 = {
+  __typename?: 'SpaceMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -4441,7 +4602,7 @@ export type SpaceMetadataV1 = {
   id: Scalars['String'];
   link: Scalars['URL'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationSpaceMetadataV1MainFocusType;
+  mainContentFocus: PublicationSpaceMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   startsAt: Scalars['DateTime'];
@@ -4454,8 +4615,8 @@ export type SpamReasonInput = {
   subreason: PublicationReportingSpamSubreason;
 };
 
-export type StoryMetadataV1 = {
-  __typename?: 'StoryMetadataV1';
+export type StoryMetadataV3 = {
+  __typename?: 'StoryMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   asset: PublicationMetadataAttachment;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -4466,7 +4627,7 @@ export type StoryMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationStoryMetadataV1MainFocusType;
+  mainContentFocus: PublicationStoryMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
@@ -4480,33 +4641,27 @@ export type Subscription = {
   watchLensTransaction: LensTransactionResult;
 };
 
+
 export type SubscriptionNewNotificationArgs = {
   request: NotificationSubscriptionRequest;
 };
+
 
 export type SubscriptionNewPublicationStatsArgs = {
   request: PublicationStatsSubscriptionRequest;
 };
 
+
 export type SubscriptionWatchLensTransactionArgs = {
   request: LensTransactionStatusRequest;
 };
 
-export type SupportedModule = {
-  __typename?: 'SupportedModule';
-  contract: NetworkAddress;
-  isTypeSafe: Scalars['Boolean'];
-  moduleInput: Array<ModuleInfo>;
-  moduleName: Scalars['String'];
-  redeemInput: Array<ModuleInfo>;
-  returnDataInput: Array<ModuleInfo>;
-};
+export type SupportedModule = KnownSupportedModule | UnknownSupportedModule;
 
-export type SupportedModules = {
-  __typename?: 'SupportedModules';
-  followModules: Array<SupportedModule>;
-  openActionsModules: Array<SupportedModule>;
-  referenceModules: Array<SupportedModule>;
+export type SupportedModulesRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  includeUnknown?: InputMaybe<Scalars['Boolean']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export type SybilDotOrgIdentity = {
@@ -4534,11 +4689,11 @@ export type TagResult = {
 
 export enum TagSortCriteriaType {
   Alphabetical = 'ALPHABETICAL',
-  MostPopular = 'MOST_POPULAR',
+  MostPopular = 'MOST_POPULAR'
 }
 
-export type TextOnlyMetadataV1 = {
-  __typename?: 'TextOnlyMetadataV1';
+export type TextOnlyMetadataV3 = {
+  __typename?: 'TextOnlyMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
   content: Scalars['Markdown'];
@@ -4548,7 +4703,7 @@ export type TextOnlyMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationTextOnlyMetadataV1MainFocusType;
+  mainContentFocus: PublicationTextOnlyMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
@@ -4567,7 +4722,7 @@ export type ThreeDMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationThreeDMetadataV1MainFocusType;
+  mainContentFocus: PublicationThreeDMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
@@ -4582,8 +4737,8 @@ export type ThreeDMetadataV1Asset = {
   zipPath?: Maybe<Scalars['String']>;
 };
 
-export type TransactionMetadataV1 = {
-  __typename?: 'TransactionMetadataV1';
+export type TransactionMetadataV3 = {
+  __typename?: 'TransactionMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -4595,13 +4750,19 @@ export type TransactionMetadataV1 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  mainContentFocus: PublicationTransactionMetadataV1MainFocusType;
+  mainContentFocus: PublicationTransactionMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
   txHash: Scalars['TxHash'];
   type: PublicationTransactionMetadataType;
 };
+
+export enum TriStateValue {
+  No = 'NO',
+  Unknown = 'UNKNOWN',
+  Yes = 'YES'
+}
 
 export type TypedDataOptions = {
   /** If you wish to override the nonce for the sig if you want to do some clever stuff in the client */
@@ -4653,7 +4814,8 @@ export type UnknownOpenActionModuleSettings = {
 export type UnknownOpenActionResult = {
   __typename?: 'UnknownOpenActionResult';
   address: Scalars['EvmAddress'];
-  redeemData: Scalars['BlockchainData'];
+  category?: Maybe<OpenActionCategoryType>;
+  initReturnData: Scalars['BlockchainData'];
 };
 
 export type UnknownReferenceModuleInput = {
@@ -4668,6 +4830,12 @@ export type UnknownReferenceModuleSettings = {
   referenceModuleReturnData: Scalars['BlockchainData'];
 };
 
+export type UnknownSupportedModule = {
+  __typename?: 'UnknownSupportedModule';
+  contract: NetworkAddress;
+  moduleName: Scalars['String'];
+};
+
 export type UserPoapsQueryRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   for: Scalars['ProfileId'];
@@ -4677,7 +4845,7 @@ export type UserPoapsQueryRequest = {
 export type UserSigNonces = {
   __typename?: 'UserSigNonces';
   lensHubOnchainSigNonce: Scalars['Nonce'];
-  peripheryOnchainSigNonce: Scalars['Nonce'];
+  lensTokenHandleRegistryOnchainSigNonce: Scalars['Nonce'];
 };
 
 export type ValidatePublicationMetadataRequest = {
@@ -4697,7 +4865,7 @@ export type Video = {
 };
 
 export enum VideoMimeType {
-  Mp4 = 'MP4',
+  Mp4 = 'MP4'
 }
 
 export type VideoSet = {
@@ -4744,7 +4912,7 @@ export type WorldcoinIdentity = {
 
 export enum WorldcoinPhoneVerifyType {
   Orb = 'ORB',
-  Phone = 'PHONE',
+  Phone = 'PHONE'
 }
 
 export type WorldcoinPhoneVerifyWebhookRequest = {
@@ -4757,3619 +4925,445 @@ export type AuthenticateMutationVariables = Exact<{
   request: SignedAuthChallenge;
 }>;
 
-export type AuthenticateMutation = {
-  __typename?: 'Mutation';
-  authenticate: { __typename?: 'AuthenticationResult'; accessToken: any; refreshToken: any };
-};
+
+export type AuthenticateMutation = { __typename?: 'Mutation', authenticate: { __typename?: 'AuthenticationResult', accessToken: any, refreshToken: any } };
 
 export type ChallengeQueryVariables = Exact<{
   request: ChallengeRequest;
 }>;
 
-export type ChallengeQuery = {
-  __typename?: 'Query';
-  challenge: { __typename?: 'AuthChallengeResult'; id: any; text: string };
-};
+
+export type ChallengeQuery = { __typename?: 'Query', challenge: { __typename?: 'AuthChallengeResult', id: any, text: string } };
 
 export type RefreshMutationVariables = Exact<{
   request: RefreshRequest;
 }>;
 
-export type RefreshMutation = {
-  __typename?: 'Mutation';
-  refresh: { __typename?: 'AuthenticationResult'; accessToken: any; refreshToken: any };
-};
+
+export type RefreshMutation = { __typename?: 'Mutation', refresh: { __typename?: 'AuthenticationResult', accessToken: any, refreshToken: any } };
 
 export type VerifyQueryVariables = Exact<{
   request: VerifyRequest;
 }>;
 
-export type VerifyQuery = { __typename?: 'Query'; verify: boolean };
+
+export type VerifyQuery = { __typename?: 'Query', verify: boolean };
 
 export type BroadcastOnchainMutationVariables = Exact<{
   request: BroadcastRequest;
 }>;
 
-export type BroadcastOnchainMutation = {
-  __typename?: 'Mutation';
-  broadcastOnchain:
-    | { __typename: 'RelayError'; reason: RelayErrorReasonType }
-    | { __typename: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type BroadcastOnchainMutation = { __typename?: 'Mutation', broadcastOnchain: { __typename: 'RelayError', reason: RelayErrorReasonType } | { __typename: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type BroadcastOnMomokaMutationVariables = Exact<{
   request: BroadcastRequest;
 }>;
 
-export type BroadcastOnMomokaMutation = {
-  __typename?: 'Mutation';
-  broadcastOnMomoka:
-    | { __typename?: 'CreateMomokaPublicationResult'; id: any; proof: any; momokaId: any }
-    | { __typename: 'RelayError'; reason: RelayErrorReasonType };
-};
+
+export type BroadcastOnMomokaMutation = { __typename?: 'Mutation', broadcastOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename: 'RelayError', reason: RelayErrorReasonType } };
 
 export type CreateFollowTypedDataMutationVariables = Exact<{
   request: FollowRequest;
 }>;
 
-export type CreateFollowTypedDataMutation = {
-  __typename?: 'Mutation';
-  createFollowTypedData: {
-    __typename?: 'CreateFollowBroadcastItemResult';
-    expiresAt: any;
-    id: any;
-    typedData: {
-      __typename?: 'CreateFollowEIP712TypedData';
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      types: {
-        __typename?: 'CreateFollowEIP712TypedDataTypes';
-        Follow: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      value: {
-        __typename?: 'CreateFollowEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        followerProfileId: any;
-        idsOfProfilesToFollow: Array<any>;
-        followTokenIds: Array<any>;
-        datas: Array<any>;
-      };
-    };
-  };
-};
+
+export type CreateFollowTypedDataMutation = { __typename?: 'Mutation', createFollowTypedData: { __typename?: 'CreateFollowBroadcastItemResult', expiresAt: any, id: any, typedData: { __typename?: 'CreateFollowEIP712TypedData', domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, types: { __typename?: 'CreateFollowEIP712TypedDataTypes', Follow: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, value: { __typename?: 'CreateFollowEIP712TypedDataValue', nonce: any, deadline: any, followerProfileId: any, idsOfProfilesToFollow: Array<any>, followTokenIds: Array<any>, datas: Array<any> } } } };
 
 export type FollowMutationVariables = Exact<{
   request: FollowLensManagerRequest;
 }>;
 
-export type FollowMutation = {
-  __typename?: 'Mutation';
-  follow:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type FollowMutation = { __typename?: 'Mutation', follow: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateUnfollowTypedDataMutationVariables = Exact<{
   request: UnfollowRequest;
 }>;
 
-export type CreateUnfollowTypedDataMutation = {
-  __typename?: 'Mutation';
-  createUnfollowTypedData: {
-    __typename?: 'CreateUnfollowBroadcastItemResult';
-    expiresAt: any;
-    id: any;
-    typedData: {
-      __typename?: 'CreateUnfollowEIP712TypedData';
-      types: {
-        __typename?: 'CreateUnfollowEIP712TypedDataTypes';
-        Unfollow: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateUnfollowEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        unfollowerProfileId: any;
-        idsOfProfilesToUnfollow: Array<any>;
-      };
-    };
-  };
-};
+
+export type CreateUnfollowTypedDataMutation = { __typename?: 'Mutation', createUnfollowTypedData: { __typename?: 'CreateUnfollowBroadcastItemResult', expiresAt: any, id: any, typedData: { __typename?: 'CreateUnfollowEIP712TypedData', types: { __typename?: 'CreateUnfollowEIP712TypedDataTypes', Unfollow: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateUnfollowEIP712TypedDataValue', nonce: any, deadline: any, unfollowerProfileId: any, idsOfProfilesToUnfollow: Array<any> } } } };
 
 export type UnfollowMutationVariables = Exact<{
   request: UnfollowRequest;
 }>;
 
-export type UnfollowMutation = {
-  __typename?: 'Mutation';
-  unfollow:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type UnfollowMutation = { __typename?: 'Mutation', unfollow: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateHandleLinkToProfileTypedDataMutationVariables = Exact<{
   request: HandleLinkToProfileRequest;
 }>;
 
-export type CreateHandleLinkToProfileTypedDataMutation = {
-  __typename?: 'Mutation';
-  createHandleLinkToProfileTypedData: {
-    __typename?: 'CreateHandleLinkToProfileBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateHandleLinkToProfileEIP712TypedData';
-      types: {
-        __typename?: 'CreateHandleLinkToProfileEIP712TypedDataTypes';
-        Link: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateHandleLinkToProfileEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        handleId: any;
-      };
-    };
-  };
-};
+
+export type CreateHandleLinkToProfileTypedDataMutation = { __typename?: 'Mutation', createHandleLinkToProfileTypedData: { __typename?: 'CreateHandleLinkToProfileBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateHandleLinkToProfileEIP712TypedData', types: { __typename?: 'CreateHandleLinkToProfileEIP712TypedDataTypes', Link: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateHandleLinkToProfileEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, handleId: any } } } };
 
 export type HandleLinkToProfileMutationVariables = Exact<{
   request: HandleLinkToProfileRequest;
 }>;
 
-export type HandleLinkToProfileMutation = {
-  __typename?: 'Mutation';
-  handleLinkToProfile:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type HandleLinkToProfileMutation = { __typename?: 'Mutation', handleLinkToProfile: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateHandleUnlinkFromProfileTypedDataMutationVariables = Exact<{
   request: HandleUnlinkFromProfileRequest;
 }>;
 
-export type CreateHandleUnlinkFromProfileTypedDataMutation = {
-  __typename?: 'Mutation';
-  createHandleUnlinkFromProfileTypedData: {
-    __typename?: 'CreateHandleUnlinkFromProfileBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedData';
-      types: {
-        __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataTypes';
-        Unlink: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        handleId: any;
-      };
-    };
-  };
-};
+
+export type CreateHandleUnlinkFromProfileTypedDataMutation = { __typename?: 'Mutation', createHandleUnlinkFromProfileTypedData: { __typename?: 'CreateHandleUnlinkFromProfileBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedData', types: { __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataTypes', Unlink: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateHandleUnlinkFromProfileEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, handleId: any } } } };
 
 export type HandleUnlinkFromProfileMutationVariables = Exact<{
   request: HandleUnlinkFromProfileRequest;
 }>;
 
-export type HandleUnlinkFromProfileMutation = {
-  __typename?: 'Mutation';
-  handleUnlinkFromProfile:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type HandleUnlinkFromProfileMutation = { __typename?: 'Mutation', handleUnlinkFromProfile: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateSetFollowModuleTypedDataMutationVariables = Exact<{
   request: SetFollowModuleRequest;
 }>;
 
-export type CreateSetFollowModuleTypedDataMutation = {
-  __typename?: 'Mutation';
-  createSetFollowModuleTypedData: {
-    __typename?: 'CreateSetFollowModuleBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateSetFollowModuleEIP712TypedData';
-      types: {
-        __typename?: 'CreateSetFollowModuleEIP712TypedDataTypes';
-        SetFollowModule: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateSetFollowModuleEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        followModule: any;
-        followModuleInitData: any;
-      };
-    };
-  };
-};
+
+export type CreateSetFollowModuleTypedDataMutation = { __typename?: 'Mutation', createSetFollowModuleTypedData: { __typename?: 'CreateSetFollowModuleBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateSetFollowModuleEIP712TypedData', types: { __typename?: 'CreateSetFollowModuleEIP712TypedDataTypes', SetFollowModule: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateSetFollowModuleEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, followModule: any, followModuleInitData: any } } } };
 
 export type SetFollowModuleMutationVariables = Exact<{
   request: SetFollowModuleRequest;
 }>;
 
-export type SetFollowModuleMutation = {
-  __typename?: 'Mutation';
-  setFollowModule:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type SetFollowModuleMutation = { __typename?: 'Mutation', setFollowModule: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateChangeProfileManagersTypedDataMutationVariables = Exact<{
   request: ChangeProfileManagersRequest;
 }>;
 
-export type CreateChangeProfileManagersTypedDataMutation = {
-  __typename?: 'Mutation';
-  createChangeProfileManagersTypedData: {
-    __typename?: 'CreateChangeProfileManagersBroadcastItemResult';
-    expiresAt: any;
-    id: any;
-    typedData: {
-      __typename?: 'CreateChangeProfileManagersEIP712TypedData';
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      types: {
-        __typename?: 'CreateChangeProfileManagersEIP712TypedDataTypes';
-        ChangeDelegatedExecutorsConfig: Array<{
-          __typename?: 'EIP712TypedDataField';
-          name: string;
-          type: string;
-        }>;
-      };
-      value: {
-        __typename?: 'CreateChangeProfileManagersEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        delegatorProfileId: any;
-        delegatedExecutors: Array<any>;
-        approvals: Array<boolean>;
-        configNumber: number;
-        switchToGivenConfig: boolean;
-      };
-    };
-  };
-};
+
+export type CreateChangeProfileManagersTypedDataMutation = { __typename?: 'Mutation', createChangeProfileManagersTypedData: { __typename?: 'CreateChangeProfileManagersBroadcastItemResult', expiresAt: any, id: any, typedData: { __typename?: 'CreateChangeProfileManagersEIP712TypedData', domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, types: { __typename?: 'CreateChangeProfileManagersEIP712TypedDataTypes', ChangeDelegatedExecutorsConfig: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, value: { __typename?: 'CreateChangeProfileManagersEIP712TypedDataValue', nonce: any, deadline: any, delegatorProfileId: any, delegatedExecutors: Array<any>, approvals: Array<boolean>, configNumber: number, switchToGivenConfig: boolean } } } };
 
 export type CreateBlockProfilesTypedDataMutationVariables = Exact<{
   request: BlockRequest;
 }>;
 
-export type CreateBlockProfilesTypedDataMutation = {
-  __typename?: 'Mutation';
-  createBlockProfilesTypedData: {
-    __typename?: 'CreateBlockProfilesBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateBlockProfilesEIP712TypedData';
-      value: {
-        __typename?: 'CreateBlockProfilesEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        byProfileId: any;
-        idsOfProfilesToSetBlockStatus: Array<any>;
-        blockStatus: Array<boolean>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      types: {
-        __typename?: 'CreateBlockProfilesEIP712TypedDataTypes';
-        SetBlockStatus: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-    };
-  };
-};
+
+export type CreateBlockProfilesTypedDataMutation = { __typename?: 'Mutation', createBlockProfilesTypedData: { __typename?: 'CreateBlockProfilesBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateBlockProfilesEIP712TypedData', value: { __typename?: 'CreateBlockProfilesEIP712TypedDataValue', nonce: any, deadline: any, byProfileId: any, idsOfProfilesToSetBlockStatus: Array<any>, blockStatus: Array<boolean> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, types: { __typename?: 'CreateBlockProfilesEIP712TypedDataTypes', SetBlockStatus: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> } } } };
 
 export type BlockMutationVariables = Exact<{
   request: BlockRequest;
 }>;
 
-export type BlockMutation = {
-  __typename?: 'Mutation';
-  block:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type BlockMutation = { __typename?: 'Mutation', block: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateProfileWithHandleMutationVariables = Exact<{
   request: CreateProfileWithHandleRequest;
 }>;
 
-export type CreateProfileWithHandleMutation = {
-  __typename?: 'Mutation';
-  createProfileWithHandle:
-    | {
-        __typename?: 'CreateProfileWithHandleErrorResult';
-        reason: CreateProfileWithHandleErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type CreateProfileWithHandleMutation = { __typename?: 'Mutation', createProfileWithHandle: { __typename?: 'CreateProfileWithHandleErrorResult', reason: CreateProfileWithHandleErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateOnchainSetProfileMetadataTypedDataMutationVariables = Exact<{
   request: OnchainSetProfileMetadataRequest;
 }>;
 
-export type CreateOnchainSetProfileMetadataTypedDataMutation = {
-  __typename?: 'Mutation';
-  createOnchainSetProfileMetadataTypedData: {
-    __typename?: 'CreateOnchainSetProfileMetadataBroadcastItemResult';
-    expiresAt: any;
-    id: any;
-    typedData: {
-      __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedData';
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      types: {
-        __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataTypes';
-        SetProfileMetadataURI: Array<{
-          __typename?: 'EIP712TypedDataField';
-          name: string;
-          type: string;
-        }>;
-      };
-      value: {
-        __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        metadataURI: any;
-      };
-    };
-  };
-};
+
+export type CreateOnchainSetProfileMetadataTypedDataMutation = { __typename?: 'Mutation', createOnchainSetProfileMetadataTypedData: { __typename?: 'CreateOnchainSetProfileMetadataBroadcastItemResult', expiresAt: any, id: any, typedData: { __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedData', domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, types: { __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataTypes', SetProfileMetadataURI: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, value: { __typename?: 'CreateOnchainSetProfileMetadataEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, metadataURI: any } } } };
 
 export type SetProfileMetadataMutationVariables = Exact<{
   request: OnchainSetProfileMetadataRequest;
 }>;
 
-export type SetProfileMetadataMutation = {
-  __typename?: 'Mutation';
-  setProfileMetadata:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type SetProfileMetadataMutation = { __typename?: 'Mutation', setProfileMetadata: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateUnblockProfilesTypedDataMutationVariables = Exact<{
   request: UnblockRequest;
 }>;
 
-export type CreateUnblockProfilesTypedDataMutation = {
-  __typename?: 'Mutation';
-  createUnblockProfilesTypedData: {
-    __typename?: 'CreateUnblockProfilesBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateUnblockProfilesEIP712TypedData';
-      types: {
-        __typename?: 'CreateUnblockProfilesEIP712TypedDataTypes';
-        SetBlockStatus: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateUnblockProfilesEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        byProfileId: any;
-        idsOfProfilesToSetBlockStatus: Array<any>;
-        blockStatus: Array<boolean>;
-      };
-    };
-  };
-};
+
+export type CreateUnblockProfilesTypedDataMutation = { __typename?: 'Mutation', createUnblockProfilesTypedData: { __typename?: 'CreateUnblockProfilesBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateUnblockProfilesEIP712TypedData', types: { __typename?: 'CreateUnblockProfilesEIP712TypedDataTypes', SetBlockStatus: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateUnblockProfilesEIP712TypedDataValue', nonce: any, deadline: any, byProfileId: any, idsOfProfilesToSetBlockStatus: Array<any>, blockStatus: Array<boolean> } } } };
 
 export type UnblockMutationVariables = Exact<{
   request: UnblockRequest;
 }>;
 
-export type UnblockMutation = {
-  __typename?: 'Mutation';
-  unblock:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type UnblockMutation = { __typename?: 'Mutation', unblock: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateMomokaPostTypedDataMutationVariables = Exact<{
   request: MomokaPostRequest;
 }>;
 
-export type CreateMomokaPostTypedDataMutation = {
-  __typename?: 'Mutation';
-  createMomokaPostTypedData: {
-    __typename?: 'CreateMomokaPostBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateMomokaPostEIP712TypedData';
-      types: {
-        __typename?: 'CreateMomokaPostEIP712TypedDataTypes';
-        Post: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: { __typename?: 'CreateMomokaPostEIP712TypedDataValue'; nonce: any; deadline: any };
-    };
-  };
-};
+
+export type CreateMomokaPostTypedDataMutation = { __typename?: 'Mutation', createMomokaPostTypedData: { __typename?: 'CreateMomokaPostBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateMomokaPostEIP712TypedData', types: { __typename?: 'CreateMomokaPostEIP712TypedDataTypes', Post: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateMomokaPostEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, contentURI: any, actionModules: Array<any>, actionModulesInitDatas: Array<any>, referenceModule: any, referenceModuleInitData: any } } } };
+
+export type PostOnMomokaMutationVariables = Exact<{
+  request: MomokaPostRequest;
+}>;
+
+
+export type PostOnMomokaMutation = { __typename?: 'Mutation', postOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } };
 
 export type CreateOnchainPostTypedDataMutationVariables = Exact<{
   request: OnchainPostRequest;
 }>;
 
-export type CreateOnchainPostTypedDataMutation = {
-  __typename?: 'Mutation';
-  createOnchainPostTypedData: {
-    __typename?: 'CreateOnchainPostBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateOnchainPostEIP712TypedData';
-      types: {
-        __typename?: 'CreateOnchainPostEIP712TypedDataTypes';
-        Post: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateOnchainPostEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        contentURI: any;
-        actionModules: Array<any>;
-        actionModulesInitDatas: Array<any>;
-        referenceModule: any;
-        referenceModuleInitData: any;
-      };
-    };
-  };
-};
+
+export type CreateOnchainPostTypedDataMutation = { __typename?: 'Mutation', createOnchainPostTypedData: { __typename?: 'CreateOnchainPostBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateOnchainPostEIP712TypedData', types: { __typename?: 'CreateOnchainPostEIP712TypedDataTypes', Post: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateOnchainPostEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, contentURI: any, actionModules: Array<any>, actionModulesInitDatas: Array<any>, referenceModule: any, referenceModuleInitData: any } } } };
 
 export type PostOnchainMutationVariables = Exact<{
   request: OnchainPostRequest;
 }>;
 
-export type PostOnchainMutation = {
-  __typename?: 'Mutation';
-  postOnchain:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type PostOnchainMutation = { __typename?: 'Mutation', postOnchain: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateOnchainQuoteTypedDataMutationVariables = Exact<{
   request: OnchainQuoteRequest;
 }>;
 
-export type CreateOnchainQuoteTypedDataMutation = {
-  __typename?: 'Mutation';
-  createOnchainQuoteTypedData: {
-    __typename?: 'CreateOnchainQuoteBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateOnchainQuoteEIP712TypedData';
-      types: {
-        __typename?: 'CreateOnchainQuoteEIP712TypedDataTypes';
-        Quote: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateOnchainQuoteEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        contentURI: any;
-        pointedProfileId: any;
-        pointedPubId: any;
-        referrerProfileIds: Array<any>;
-        referrerPubIds: Array<any>;
-        referenceModuleData: any;
-        actionModules: Array<any>;
-        actionModulesInitDatas: Array<any>;
-        referenceModule: any;
-        referenceModuleInitData: any;
-      };
-    };
-  };
-};
+
+export type CreateOnchainQuoteTypedDataMutation = { __typename?: 'Mutation', createOnchainQuoteTypedData: { __typename?: 'CreateOnchainQuoteBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateOnchainQuoteEIP712TypedData', types: { __typename?: 'CreateOnchainQuoteEIP712TypedDataTypes', Quote: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateOnchainQuoteEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, contentURI: any, pointedProfileId: any, pointedPubId: any, referrerProfileIds: Array<any>, referrerPubIds: Array<any>, referenceModuleData: any, actionModules: Array<any>, actionModulesInitDatas: Array<any>, referenceModule: any, referenceModuleInitData: any } } } };
 
 export type QuoteOnchainMutationVariables = Exact<{
   request: OnchainQuoteRequest;
 }>;
 
-export type QuoteOnchainMutation = {
-  __typename?: 'Mutation';
-  quoteOnchain:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type QuoteOnchainMutation = { __typename?: 'Mutation', quoteOnchain: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateOnchainCommentTypedDataMutationVariables = Exact<{
   request: OnchainCommentRequest;
 }>;
 
-export type CreateOnchainCommentTypedDataMutation = {
-  __typename?: 'Mutation';
-  createOnchainCommentTypedData: {
-    __typename?: 'CreateOnchainCommentBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateOnchainCommentEIP712TypedData';
-      types: {
-        __typename?: 'CreateOnchainCommentEIP712TypedDataTypes';
-        Comment: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      value: {
-        __typename?: 'CreateOnchainCommentEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        contentURI: any;
-        pointedProfileId: any;
-        pointedPubId: any;
-        referrerProfileIds: Array<any>;
-        referrerPubIds: Array<any>;
-        referenceModuleData: any;
-        actionModules: Array<any>;
-        actionModulesInitDatas: Array<any>;
-        referenceModule: any;
-        referenceModuleInitData: any;
-      };
-    };
-  };
-};
+
+export type CreateOnchainCommentTypedDataMutation = { __typename?: 'Mutation', createOnchainCommentTypedData: { __typename?: 'CreateOnchainCommentBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateOnchainCommentEIP712TypedData', types: { __typename?: 'CreateOnchainCommentEIP712TypedDataTypes', Comment: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, value: { __typename?: 'CreateOnchainCommentEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, contentURI: any, pointedProfileId: any, pointedPubId: any, referrerProfileIds: Array<any>, referrerPubIds: Array<any>, referenceModuleData: any, actionModules: Array<any>, actionModulesInitDatas: Array<any>, referenceModule: any, referenceModuleInitData: any } } } };
 
 export type CommentOnchainMutationVariables = Exact<{
   request: OnchainCommentRequest;
 }>;
 
-export type CommentOnchainMutation = {
-  __typename?: 'Mutation';
-  commentOnchain:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type CommentOnchainMutation = { __typename?: 'Mutation', commentOnchain: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type CreateOnchainMirrorTypedDataMutationVariables = Exact<{
   request: OnchainMirrorRequest;
 }>;
 
-export type CreateOnchainMirrorTypedDataMutation = {
-  __typename?: 'Mutation';
-  createOnchainMirrorTypedData: {
-    __typename?: 'CreateOnchainMirrorBroadcastItemResult';
-    id: any;
-    expiresAt: any;
-    typedData: {
-      __typename?: 'CreateOnchainMirrorEIP712TypedData';
-      domain: {
-        __typename?: 'EIP712TypedDataDomain';
-        name: string;
-        chainId: any;
-        version: string;
-        verifyingContract: any;
-      };
-      types: {
-        __typename?: 'CreateOnchainMirrorEIP712TypedDataTypes';
-        Mirror: Array<{ __typename?: 'EIP712TypedDataField'; name: string; type: string }>;
-      };
-      value: {
-        __typename?: 'CreateOnchainMirrorEIP712TypedDataValue';
-        nonce: any;
-        deadline: any;
-        profileId: any;
-        pointedProfileId: any;
-        pointedPubId: any;
-        referrerProfileIds: Array<any>;
-        referrerPubIds: Array<any>;
-        referenceModuleData: any;
-      };
-    };
-  };
-};
+
+export type CreateOnchainMirrorTypedDataMutation = { __typename?: 'Mutation', createOnchainMirrorTypedData: { __typename?: 'CreateOnchainMirrorBroadcastItemResult', id: any, expiresAt: any, typedData: { __typename?: 'CreateOnchainMirrorEIP712TypedData', domain: { __typename?: 'EIP712TypedDataDomain', name: string, chainId: any, version: string, verifyingContract: any }, types: { __typename?: 'CreateOnchainMirrorEIP712TypedDataTypes', Mirror: Array<{ __typename?: 'EIP712TypedDataField', name: string, type: string }> }, value: { __typename?: 'CreateOnchainMirrorEIP712TypedDataValue', nonce: any, deadline: any, profileId: any, pointedProfileId: any, pointedPubId: any, referrerProfileIds: Array<any>, referrerPubIds: Array<any>, referenceModuleData: any } } } };
 
 export type MirrorOnchainMutationVariables = Exact<{
   request: OnchainMirrorRequest;
 }>;
 
-export type MirrorOnchainMutation = {
-  __typename?: 'Mutation';
-  mirrorOnchain:
-    | {
-        __typename?: 'LensProfileManagerRelayError';
-        reason: LensProfileManagerRelayErrorReasonType;
-      }
-    | { __typename?: 'RelaySuccess'; txHash?: any | null; txId?: any | null };
-};
+
+export type MirrorOnchainMutation = { __typename?: 'Mutation', mirrorOnchain: { __typename?: 'LensProfileManagerRelayError', reason: LensProfileManagerRelayErrorReasonType } | { __typename?: 'RelaySuccess', txHash?: any | null, txId?: any | null } };
 
 export type LensTransactionStatusQueryVariables = Exact<{
   request: LensTransactionStatusRequest;
 }>;
 
-export type LensTransactionStatusQuery = {
-  __typename?: 'Query';
-  lensTransactionStatus:
-    | {
-        __typename: 'LensMetadataTransaction';
-        status: LensTransactionStatusType;
-        metadataFailedReason?: LensMetadataTransactionFailureType | null;
-        extraInfo?: string | null;
+
+export type LensTransactionStatusQuery = { __typename?: 'Query', lensTransactionStatus: { __typename: 'LensMetadataTransaction', status: LensTransactionStatusType, metadataFailedReason?: LensMetadataTransactionFailureType | null, extraInfo?: string | null } | { __typename: 'LensTransaction', status: LensTransactionStatusType, txHash: any, reason?: LensTransactionFailureType | null, extraInfo?: string | null } };
+
+
+export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignedAuthChallenge"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
+export const ChallengeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Challenge"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChallengeRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"challenge"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]} as unknown as DocumentNode<ChallengeQuery, ChallengeQueryVariables>;
+export const RefreshDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Refresh"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refresh"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
+export const VerifyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Verify"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VerifyRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verify"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<VerifyQuery, VerifyQueryVariables>;
+export const BroadcastOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnchainMutation, BroadcastOnchainMutationVariables>;
+export const BroadcastOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnMomokaMutation, BroadcastOnMomokaMutationVariables>;
+export const CreateFollowTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFollowTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFollowTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Follow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"followerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToFollow"}},{"kind":"Field","name":{"kind":"Name","value":"followTokenIds"}},{"kind":"Field","name":{"kind":"Name","value":"datas"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateFollowTypedDataMutation, CreateFollowTypedDataMutationVariables>;
+export const FollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Follow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowLensManagerRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"follow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<FollowMutation, FollowMutationVariables>;
+export const CreateUnfollowTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUnfollowTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnfollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUnfollowTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Unfollow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"unfollowerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToUnfollow"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateUnfollowTypedDataMutation, CreateUnfollowTypedDataMutationVariables>;
+export const UnfollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Unfollow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnfollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unfollow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<UnfollowMutation, UnfollowMutationVariables>;
+export const CreateHandleLinkToProfileTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateHandleLinkToProfileTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleLinkToProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createHandleLinkToProfileTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Link"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"handleId"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateHandleLinkToProfileTypedDataMutation, CreateHandleLinkToProfileTypedDataMutationVariables>;
+export const HandleLinkToProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"HandleLinkToProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleLinkToProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"handleLinkToProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<HandleLinkToProfileMutation, HandleLinkToProfileMutationVariables>;
+export const CreateHandleUnlinkFromProfileTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateHandleUnlinkFromProfileTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleUnlinkFromProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createHandleUnlinkFromProfileTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Unlink"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"handleId"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateHandleUnlinkFromProfileTypedDataMutation, CreateHandleUnlinkFromProfileTypedDataMutationVariables>;
+export const HandleUnlinkFromProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"HandleUnlinkFromProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleUnlinkFromProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"handleUnlinkFromProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<HandleUnlinkFromProfileMutation, HandleUnlinkFromProfileMutationVariables>;
+export const CreateSetFollowModuleTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateSetFollowModuleTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SetFollowModuleRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createSetFollowModuleTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"SetFollowModule"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"followModule"}},{"kind":"Field","name":{"kind":"Name","value":"followModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateSetFollowModuleTypedDataMutation, CreateSetFollowModuleTypedDataMutationVariables>;
+export const SetFollowModuleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetFollowModule"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SetFollowModuleRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setFollowModule"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<SetFollowModuleMutation, SetFollowModuleMutationVariables>;
+export const CreateChangeProfileManagersTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateChangeProfileManagersTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChangeProfileManagersRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createChangeProfileManagersTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ChangeDelegatedExecutorsConfig"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"delegatorProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"delegatedExecutors"}},{"kind":"Field","name":{"kind":"Name","value":"approvals"}},{"kind":"Field","name":{"kind":"Name","value":"configNumber"}},{"kind":"Field","name":{"kind":"Name","value":"switchToGivenConfig"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateChangeProfileManagersTypedDataMutation, CreateChangeProfileManagersTypedDataMutationVariables>;
+export const CreateBlockProfilesTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateBlockProfilesTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BlockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createBlockProfilesTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"byProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToSetBlockStatus"}},{"kind":"Field","name":{"kind":"Name","value":"blockStatus"}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"SetBlockStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateBlockProfilesTypedDataMutation, CreateBlockProfilesTypedDataMutationVariables>;
+export const BlockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Block"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BlockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"block"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BlockMutation, BlockMutationVariables>;
+export const CreateProfileWithHandleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateProfileWithHandle"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProfileWithHandleRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProfileWithHandle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProfileWithHandleErrorResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<CreateProfileWithHandleMutation, CreateProfileWithHandleMutationVariables>;
+export const CreateOnchainSetProfileMetadataTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainSetProfileMetadataTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainSetProfileMetadataRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainSetProfileMetadataTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"SetProfileMetadataURI"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"metadataURI"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainSetProfileMetadataTypedDataMutation, CreateOnchainSetProfileMetadataTypedDataMutationVariables>;
+export const SetProfileMetadataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetProfileMetadata"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainSetProfileMetadataRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setProfileMetadata"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<SetProfileMetadataMutation, SetProfileMetadataMutationVariables>;
+export const CreateUnblockProfilesTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUnblockProfilesTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnblockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUnblockProfilesTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"SetBlockStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"byProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToSetBlockStatus"}},{"kind":"Field","name":{"kind":"Name","value":"blockStatus"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateUnblockProfilesTypedDataMutation, CreateUnblockProfilesTypedDataMutationVariables>;
+export const UnblockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Unblock"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnblockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unblock"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<UnblockMutation, UnblockMutationVariables>;
+export const CreateMomokaPostTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateMomokaPostTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createMomokaPostTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Post"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateMomokaPostTypedDataMutation, CreateMomokaPostTypedDataMutationVariables>;
+export const PostOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PostOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MomokaPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"postOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<PostOnMomokaMutation, PostOnMomokaMutationVariables>;
+export const CreateOnchainPostTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainPostTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainPostTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Post"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainPostTypedDataMutation, CreateOnchainPostTypedDataMutationVariables>;
+export const PostOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PostOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainPostRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"postOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<PostOnchainMutation, PostOnchainMutationVariables>;
+export const CreateOnchainQuoteTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainQuoteTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainQuoteRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainQuoteTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Quote"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainQuoteTypedDataMutation, CreateOnchainQuoteTypedDataMutationVariables>;
+export const QuoteOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"QuoteOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainQuoteRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"quoteOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<QuoteOnchainMutation, QuoteOnchainMutationVariables>;
+export const CreateOnchainCommentTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainCommentTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainCommentRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainCommentTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Comment"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"contentURI"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}},{"kind":"Field","name":{"kind":"Name","value":"actionModules"}},{"kind":"Field","name":{"kind":"Name","value":"actionModulesInitDatas"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModule"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleInitData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainCommentTypedDataMutation, CreateOnchainCommentTypedDataMutationVariables>;
+export const CommentOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CommentOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainCommentRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"commentOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<CommentOnchainMutation, CommentOnchainMutationVariables>;
+export const CreateOnchainMirrorTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainMirrorTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainMirrorRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainMirrorTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Mirror"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainMirrorTypedDataMutation, CreateOnchainMirrorTypedDataMutationVariables>;
+export const MirrorOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MirrorOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainMirrorRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mirrorOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<MirrorOnchainMutation, MirrorOnchainMutationVariables>;
+export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LensTransactionStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransactionStatusRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lensTransactionStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransaction"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensMetadataTransaction"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"metadataFailedReason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}}]}}]}}]} as unknown as DocumentNode<LensTransactionStatusQuery, LensTransactionStatusQueryVariables>;
+
+      export interface PossibleTypesResultData {
+        possibleTypes: {
+          [key: string]: string[]
+        }
       }
-    | {
-        __typename: 'LensTransaction';
-        status: LensTransactionStatusType;
-        txHash: any;
-        reason?: LensTransactionFailureType | null;
-        extraInfo?: string | null;
-      };
+      const result: PossibleTypesResultData = {
+  "possibleTypes": {
+    "AccessCondition": [
+      "AndCondition",
+      "CollectCondition",
+      "EoaOwnershipCondition",
+      "Erc20OwnershipCondition",
+      "FollowCondition",
+      "NftOwnershipCondition",
+      "OrCondition",
+      "ProfileOwnershipCondition"
+    ],
+    "AnyPublication": [
+      "Comment",
+      "Mirror",
+      "Post",
+      "Quote"
+    ],
+    "Asset": [
+      "Erc20"
+    ],
+    "BroadcastMomokaResult": [
+      "CreateMomokaPublicationResult",
+      "RelayError"
+    ],
+    "CreateProfileWithHandleResult": [
+      "CreateProfileWithHandleErrorResult",
+      "RelaySuccess"
+    ],
+    "ExplorePublication": [
+      "Post",
+      "Quote"
+    ],
+    "FeedHighlight": [
+      "Post",
+      "Quote"
+    ],
+    "FollowModule": [
+      "FeeFollowModuleSettings",
+      "RevertFollowModuleSettings",
+      "UnknownFollowModuleSettings"
+    ],
+    "LensProfileManagerRelayResult": [
+      "LensProfileManagerRelayError",
+      "RelaySuccess"
+    ],
+    "LensTransactionResult": [
+      "LensMetadataTransaction",
+      "LensTransaction"
+    ],
+    "MediaSet": [
+      "AudioSet",
+      "ImageSet",
+      "VideoSet"
+    ],
+    "MirrorablePublication": [
+      "Comment",
+      "Post",
+      "Quote"
+    ],
+    "MomokaTransaction": [
+      "MomokaCommentTransaction",
+      "MomokaMirrorTransaction",
+      "MomokaPostTransaction",
+      "MomokaQuoteTransaction"
+    ],
+    "MomokaVerificationStatus": [
+      "MomokaVerificationStatusFailure",
+      "MomokaVerificationStatusSuccess"
+    ],
+    "Notification": [
+      "ActedNotification",
+      "CommentNotification",
+      "FollowNotification",
+      "MentionNotification",
+      "MirrorNotification",
+      "QuoteNotification",
+      "ReactionNotification"
+    ],
+    "OpenActionModule": [
+      "LegacyAaveFeeCollectModuleSettings",
+      "LegacyERC4626FeeCollectModuleSettings",
+      "LegacyFeeCollectModuleSettings",
+      "LegacyFreeCollectModuleSettings",
+      "LegacyLimitedFeeCollectModuleSettings",
+      "LegacyLimitedTimedFeeCollectModuleSettings",
+      "LegacyMultirecipientFeeCollectModuleSettings",
+      "LegacyRevertCollectModuleSettings",
+      "LegacySimpleCollectModuleSettings",
+      "LegacyTimedFeeCollectModuleSettings",
+      "MultirecipientFeeCollectOpenActionSettings",
+      "SimpleCollectOpenActionSettings",
+      "UnknownOpenActionModuleSettings"
+    ],
+    "OpenActionResult": [
+      "KnownCollectOpenActionResult",
+      "UnknownOpenActionResult"
+    ],
+    "PrimaryPublication": [
+      "Comment",
+      "Post",
+      "Quote"
+    ],
+    "ProfilePicture": [
+      "ImageSet",
+      "NftImage"
+    ],
+    "PublicationForYou": [
+      "Post",
+      "Quote"
+    ],
+    "PublicationMetadata": [
+      "ArticleMetadataV3",
+      "AudioMetadataV3",
+      "CheckingInMetadataV3",
+      "EmbedMetadataV3",
+      "EventMetadataV3",
+      "LinkMetadataV3",
+      "LiveStreamMetadataV3",
+      "MintMetadataV3",
+      "PublicationImageMetadataV3",
+      "PublicationMetadataV1",
+      "PublicationMetadataV2",
+      "PublicationVideoMetadataV3",
+      "SpaceMetadataV3",
+      "StoryMetadataV3",
+      "TextOnlyMetadataV3",
+      "ThreeDMetadataV1",
+      "TransactionMetadataV3"
+    ],
+    "PublicationMetadataAttachment": [
+      "PublicationMetadataMediaAudio",
+      "PublicationMetadataMediaImage",
+      "PublicationMetadataMediaVideo"
+    ],
+    "PublicationMetadataEncryptionStrategy": [
+      "PublicationMetadataV3LitEncryption"
+    ],
+    "ReferenceModule": [
+      "DegreesOfSeparationReferenceModuleSettings",
+      "FollowOnlyReferenceModuleSettings",
+      "UnknownReferenceModuleSettings"
+    ],
+    "RelayMomokaResult": [
+      "CreateMomokaPublicationResult",
+      "LensProfileManagerRelayError"
+    ],
+    "RelayResult": [
+      "RelayError",
+      "RelaySuccess"
+    ],
+    "SupportedModule": [
+      "KnownSupportedModule",
+      "UnknownSupportedModule"
+    ]
+  }
 };
-
-export const AuthenticateDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Authenticate' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'SignedAuthChallenge' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'authenticate' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'accessToken' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'refreshToken' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
-export const ChallengeDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Challenge' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'ChallengeRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'challenge' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'text' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<ChallengeQuery, ChallengeQueryVariables>;
-export const RefreshDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Refresh' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'RefreshRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'refresh' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'accessToken' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'refreshToken' } },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
-export const VerifyDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'Verify' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'VerifyRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'verify' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<VerifyQuery, VerifyQueryVariables>;
-export const BroadcastOnchainDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'BroadcastOnchain' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BroadcastRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'broadcastOnchain' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RelayError' } },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'reason' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<BroadcastOnchainMutation, BroadcastOnchainMutationVariables>;
-export const BroadcastOnMomokaDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'BroadcastOnMomoka' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BroadcastRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'broadcastOnMomoka' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'CreateMomokaPublicationResult' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'proof' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'momokaId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: { kind: 'NamedType', name: { kind: 'Name', value: 'RelayError' } },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'reason' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<BroadcastOnMomokaMutation, BroadcastOnMomokaMutationVariables>;
-export const CreateFollowTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateFollowTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'FollowRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createFollowTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Follow' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'followerProfileId' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'idsOfProfilesToFollow' },
-                            },
-                            { kind: 'Field', name: { kind: 'Name', value: 'followTokenIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'datas' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<CreateFollowTypedDataMutation, CreateFollowTypedDataMutationVariables>;
-export const FollowDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Follow' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'FollowLensManagerRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'follow' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<FollowMutation, FollowMutationVariables>;
-export const CreateUnfollowTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateUnfollowTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnfollowRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createUnfollowTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Unfollow' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'unfollowerProfileId' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'idsOfProfilesToUnfollow' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateUnfollowTypedDataMutation,
-  CreateUnfollowTypedDataMutationVariables
->;
-export const UnfollowDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Unfollow' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnfollowRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'unfollow' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<UnfollowMutation, UnfollowMutationVariables>;
-export const CreateHandleLinkToProfileTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateHandleLinkToProfileTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'HandleLinkToProfileRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createHandleLinkToProfileTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Link' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'handleId' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateHandleLinkToProfileTypedDataMutation,
-  CreateHandleLinkToProfileTypedDataMutationVariables
->;
-export const HandleLinkToProfileDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'HandleLinkToProfile' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'HandleLinkToProfileRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'handleLinkToProfile' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<HandleLinkToProfileMutation, HandleLinkToProfileMutationVariables>;
-export const CreateHandleUnlinkFromProfileTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateHandleUnlinkFromProfileTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'HandleUnlinkFromProfileRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createHandleUnlinkFromProfileTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Unlink' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'handleId' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateHandleUnlinkFromProfileTypedDataMutation,
-  CreateHandleUnlinkFromProfileTypedDataMutationVariables
->;
-export const HandleUnlinkFromProfileDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'HandleUnlinkFromProfile' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'HandleUnlinkFromProfileRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'handleUnlinkFromProfile' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  HandleUnlinkFromProfileMutation,
-  HandleUnlinkFromProfileMutationVariables
->;
-export const CreateSetFollowModuleTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateSetFollowModuleTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'SetFollowModuleRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createSetFollowModuleTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'SetFollowModule' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'followModule' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'followModuleInitData' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateSetFollowModuleTypedDataMutation,
-  CreateSetFollowModuleTypedDataMutationVariables
->;
-export const SetFollowModuleDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'SetFollowModule' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'SetFollowModuleRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'setFollowModule' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<SetFollowModuleMutation, SetFollowModuleMutationVariables>;
-export const CreateChangeProfileManagersTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateChangeProfileManagersTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'ChangeProfileManagersRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createChangeProfileManagersTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'ChangeDelegatedExecutorsConfig' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'delegatorProfileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'delegatedExecutors' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'approvals' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'configNumber' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'switchToGivenConfig' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateChangeProfileManagersTypedDataMutation,
-  CreateChangeProfileManagersTypedDataMutationVariables
->;
-export const CreateBlockProfilesTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateBlockProfilesTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BlockRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createBlockProfilesTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'byProfileId' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'idsOfProfilesToSetBlockStatus' },
-                            },
-                            { kind: 'Field', name: { kind: 'Name', value: 'blockStatus' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'SetBlockStatus' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateBlockProfilesTypedDataMutation,
-  CreateBlockProfilesTypedDataMutationVariables
->;
-export const BlockDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Block' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'BlockRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'block' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<BlockMutation, BlockMutationVariables>;
-export const CreateProfileWithHandleDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateProfileWithHandle' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'CreateProfileWithHandleRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createProfileWithHandle' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'CreateProfileWithHandleErrorResult' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateProfileWithHandleMutation,
-  CreateProfileWithHandleMutationVariables
->;
-export const CreateOnchainSetProfileMetadataTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateOnchainSetProfileMetadataTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'OnchainSetProfileMetadataRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createOnchainSetProfileMetadataTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'SetProfileMetadataURI' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'metadataURI' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateOnchainSetProfileMetadataTypedDataMutation,
-  CreateOnchainSetProfileMetadataTypedDataMutationVariables
->;
-export const SetProfileMetadataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'SetProfileMetadata' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'OnchainSetProfileMetadataRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'setProfileMetadata' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<SetProfileMetadataMutation, SetProfileMetadataMutationVariables>;
-export const CreateUnblockProfilesTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateUnblockProfilesTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnblockRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createUnblockProfilesTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'SetBlockStatus' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'byProfileId' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'idsOfProfilesToSetBlockStatus' },
-                            },
-                            { kind: 'Field', name: { kind: 'Name', value: 'blockStatus' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateUnblockProfilesTypedDataMutation,
-  CreateUnblockProfilesTypedDataMutationVariables
->;
-export const UnblockDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'Unblock' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'UnblockRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'unblock' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<UnblockMutation, UnblockMutationVariables>;
-export const CreateMomokaPostTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateMomokaPostTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'MomokaPostRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createMomokaPostTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Post' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateMomokaPostTypedDataMutation,
-  CreateMomokaPostTypedDataMutationVariables
->;
-export const CreateOnchainPostTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateOnchainPostTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainPostRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createOnchainPostTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Post' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'contentURI' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'actionModules' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'actionModulesInitDatas' },
-                            },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModule' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'referenceModuleInitData' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateOnchainPostTypedDataMutation,
-  CreateOnchainPostTypedDataMutationVariables
->;
-export const PostOnchainDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'PostOnchain' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainPostRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'postOnchain' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<PostOnchainMutation, PostOnchainMutationVariables>;
-export const CreateOnchainQuoteTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateOnchainQuoteTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainQuoteRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createOnchainQuoteTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Quote' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'contentURI' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'pointedProfileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'pointedPubId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referrerProfileIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referrerPubIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModuleData' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'actionModules' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'actionModulesInitDatas' },
-                            },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModule' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'referenceModuleInitData' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateOnchainQuoteTypedDataMutation,
-  CreateOnchainQuoteTypedDataMutationVariables
->;
-export const QuoteOnchainDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'QuoteOnchain' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainQuoteRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'quoteOnchain' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<QuoteOnchainMutation, QuoteOnchainMutationVariables>;
-export const CreateOnchainCommentTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateOnchainCommentTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainCommentRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createOnchainCommentTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Comment' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'contentURI' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'pointedProfileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'pointedPubId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referrerProfileIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referrerPubIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModuleData' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'actionModules' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'actionModulesInitDatas' },
-                            },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModule' } },
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'referenceModuleInitData' },
-                            },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateOnchainCommentTypedDataMutation,
-  CreateOnchainCommentTypedDataMutationVariables
->;
-export const CommentOnchainDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CommentOnchain' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainCommentRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'commentOnchain' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<CommentOnchainMutation, CommentOnchainMutationVariables>;
-export const CreateOnchainMirrorTypedDataDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'CreateOnchainMirrorTypedData' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainMirrorRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'createOnchainMirrorTypedData' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                { kind: 'Field', name: { kind: 'Name', value: 'id' } },
-                { kind: 'Field', name: { kind: 'Name', value: 'expiresAt' } },
-                {
-                  kind: 'Field',
-                  name: { kind: 'Name', value: 'typedData' },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'domain' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'chainId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'version' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'verifyingContract' } },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'types' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            {
-                              kind: 'Field',
-                              name: { kind: 'Name', value: 'Mirror' },
-                              selectionSet: {
-                                kind: 'SelectionSet',
-                                selections: [
-                                  { kind: 'Field', name: { kind: 'Name', value: 'name' } },
-                                  { kind: 'Field', name: { kind: 'Name', value: 'type' } },
-                                ],
-                              },
-                            },
-                          ],
-                        },
-                      },
-                      {
-                        kind: 'Field',
-                        name: { kind: 'Name', value: 'value' },
-                        selectionSet: {
-                          kind: 'SelectionSet',
-                          selections: [
-                            { kind: 'Field', name: { kind: 'Name', value: 'nonce' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'deadline' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'profileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'pointedProfileId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'pointedPubId' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referrerProfileIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referrerPubIds' } },
-                            { kind: 'Field', name: { kind: 'Name', value: 'referenceModuleData' } },
-                          ],
-                        },
-                      },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<
-  CreateOnchainMirrorTypedDataMutation,
-  CreateOnchainMirrorTypedDataMutationVariables
->;
-export const MirrorOnchainDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'mutation',
-      name: { kind: 'Name', value: 'MirrorOnchain' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: { kind: 'NamedType', name: { kind: 'Name', value: 'OnchainMirrorRequest' } },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'mirrorOnchain' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'RelaySuccess' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txId' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensProfileManagerRelayError' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [{ kind: 'Field', name: { kind: 'Name', value: 'reason' } }],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<MirrorOnchainMutation, MirrorOnchainMutationVariables>;
-export const LensTransactionStatusDocument = {
-  kind: 'Document',
-  definitions: [
-    {
-      kind: 'OperationDefinition',
-      operation: 'query',
-      name: { kind: 'Name', value: 'LensTransactionStatus' },
-      variableDefinitions: [
-        {
-          kind: 'VariableDefinition',
-          variable: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-          type: {
-            kind: 'NonNullType',
-            type: {
-              kind: 'NamedType',
-              name: { kind: 'Name', value: 'LensTransactionStatusRequest' },
-            },
-          },
-        },
-      ],
-      selectionSet: {
-        kind: 'SelectionSet',
-        selections: [
-          {
-            kind: 'Field',
-            name: { kind: 'Name', value: 'lensTransactionStatus' },
-            arguments: [
-              {
-                kind: 'Argument',
-                name: { kind: 'Name', value: 'request' },
-                value: { kind: 'Variable', name: { kind: 'Name', value: 'request' } },
-              },
-            ],
-            selectionSet: {
-              kind: 'SelectionSet',
-              selections: [
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensTransaction' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'txHash' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'reason' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'extraInfo' } },
-                    ],
-                  },
-                },
-                {
-                  kind: 'InlineFragment',
-                  typeCondition: {
-                    kind: 'NamedType',
-                    name: { kind: 'Name', value: 'LensMetadataTransaction' },
-                  },
-                  selectionSet: {
-                    kind: 'SelectionSet',
-                    selections: [
-                      { kind: 'Field', name: { kind: 'Name', value: '__typename' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'metadataFailedReason' } },
-                      { kind: 'Field', name: { kind: 'Name', value: 'extraInfo' } },
-                    ],
-                  },
-                },
-              ],
-            },
-          },
-        ],
-      },
-    },
-  ],
-} as unknown as DocumentNode<LensTransactionStatusQuery, LensTransactionStatusQueryVariables>;
-
-export interface PossibleTypesResultData {
-  possibleTypes: {
-    [key: string]: string[];
-  };
-}
-const result: PossibleTypesResultData = {
-  possibleTypes: {
-    AccessCondition: [
-      'AndCondition',
-      'CollectCondition',
-      'EoaOwnershipCondition',
-      'Erc20OwnershipCondition',
-      'FollowCondition',
-      'NftOwnershipCondition',
-      'OrCondition',
-      'ProfileOwnershipCondition',
-    ],
-    AnyPublication: ['Comment', 'Mirror', 'Post', 'Quote'],
-    Asset: ['Erc20'],
-    BroadcastMomokaResult: ['CreateMomokaPublicationResult', 'RelayError'],
-    CreateProfileWithHandleResult: ['CreateProfileWithHandleErrorResult', 'RelaySuccess'],
-    ExplorePublication: ['Post', 'Quote'],
-    FeedHighlight: ['Post', 'Quote'],
-    FollowModule: [
-      'FeeFollowModuleSettings',
-      'RevertFollowModuleSettings',
-      'UnknownFollowModuleSettings',
-    ],
-    LensProfileManagerRelayResult: ['LensProfileManagerRelayError', 'RelaySuccess'],
-    LensTransactionResult: ['LensMetadataTransaction', 'LensTransaction'],
-    MediaSet: ['AudioSet', 'ImageSet', 'VideoSet'],
-    MirrorablePublication: ['Comment', 'Post', 'Quote'],
-    MomokaTransaction: [
-      'MomokaCommentTransaction',
-      'MomokaMirrorTransaction',
-      'MomokaPostTransaction',
-      'MomokaQuoteTransaction',
-    ],
-    MomokaVerificationStatus: [
-      'MomokaVerificationStatusFailure',
-      'MomokaVerificationStatusSuccess',
-    ],
-    Notification: [
-      'ActedNotification',
-      'CommentNotification',
-      'FollowNotification',
-      'FutureProofNotification',
-      'MentionNotification',
-      'MirrorNotification',
-      'QuoteNotification',
-      'ReactionNotification',
-    ],
-    OpenActionModule: [
-      'LegacyAaveFeeCollectModuleSettings',
-      'LegacyERC4626FeeCollectModuleSettings',
-      'LegacyFeeCollectModuleSettings',
-      'LegacyFreeCollectModuleSettings',
-      'LegacyLimitedFeeCollectModuleSettings',
-      'LegacyLimitedTimedFeeCollectModuleSettings',
-      'LegacyMultirecipientFeeCollectModuleSettings',
-      'LegacyRevertCollectModuleSettings',
-      'LegacySimpleCollectModuleSettings',
-      'LegacyTimedFeeCollectModuleSettings',
-      'MultirecipientFeeCollectOpenActionSettings',
-      'SimpleCollectOpenActionSettings',
-      'UnknownOpenActionModuleSettings',
-    ],
-    OpenActionResult: ['CollectOpenActionResult', 'UnknownOpenActionResult'],
-    PrimaryPublication: ['Comment', 'Post', 'Quote'],
-    PublicationForYou: ['Post', 'Quote'],
-    PublicationMetadata: [
-      'ArticleMetadataV1',
-      'CheckingInMetadataV1',
-      'EmbedMetadataV1',
-      'EventMetadataV1',
-      'FutureProofPublicationMetadata',
-      'LinkMetadataV1',
-      'LiveStreamMetadataV1',
-      'MintMetadataV1',
-      'PublicationImageMetadataV1',
-      'PublicationMetadataV1',
-      'PublicationMetadataV2',
-      'PublicationVideoMetadataV1',
-      'SpaceMetadataV1',
-      'StoryMetadataV1',
-      'TextOnlyMetadataV1',
-      'ThreeDMetadataV1',
-      'TransactionMetadataV1',
-    ],
-    PublicationMetadataAttachment: [
-      'PublicationMetadataMediaAudio',
-      'PublicationMetadataMediaImage',
-      'PublicationMetadataMediaVideo',
-    ],
-    PublicationMetadataEncryptionStrategy: [
-      'FutureProofPublicationEncryptionStrategy',
-      'PublicationMetadataV3LitEncryption',
-    ],
-    ReferenceModule: [
-      'DegreesOfSeparationReferenceModuleSettings',
-      'FollowOnlyReferenceModuleSettings',
-      'UnknownReferenceModuleSettings',
-    ],
-    RelayMomokaResult: ['CreateMomokaPublicationResult', 'RelayError'],
-    RelayResult: ['RelayError', 'RelaySuccess'],
-  },
-};
-export default result;
+      export default result;
+    

@@ -18,7 +18,26 @@ mutation CreateMomokaPostTypedData($request: MomokaPostRequest!) {
       value {
         nonce
         deadline
+        profileId
+        contentURI
+        actionModules
+        actionModulesInitDatas
+        referenceModule
+        referenceModuleInitData
       }
+    }
+  }
+}
+
+mutation PostOnMomoka($request: MomokaPostRequest!) {
+  postOnMomoka(request: $request) {
+    ... on CreateMomokaPublicationResult {
+      id
+      proof
+      momokaId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
     }
   }
 }
