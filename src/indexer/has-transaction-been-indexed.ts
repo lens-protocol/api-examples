@@ -21,18 +21,18 @@ const hasTxBeenIndexed = async (request: LensTransactionStatusRequest) => {
 export const waitUntilComplete = async (input: { txHash: string } | { txId: string }) => {
   while (true) {
     const response = await hasTxBeenIndexed(input);
+
+    if (!response) {
+      break;
+    }
+
     console.log('pool until indexed: result', response);
 
     switch (response.status) {
       case LensTransactionStatusType.Failed:
-        if (response.__typename === 'LensTransaction') {
-          // it got reverted and failed!
           throw new Error(response.reason ?? 'Transaction failed');
-        } else {
-          throw new Error(response.metadataFailedReason ?? 'Transaction failed');
-        }
 
-      case LensTransactionStatusType.Progressing:
+      case LensTransactionStatusType.Processing:
         console.log('still in progress');
         break;
 

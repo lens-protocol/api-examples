@@ -66,7 +66,7 @@ export const mirrorOnMomoka = async () => {
   console.log('mirror momoka: ipfs result', ipfsResult);
 
   const request: MomokaMirrorRequest = {
-    mirrorOf: "0x07-0x04-DA-967942cb"
+    mirrorOf: "0x0a-0x01-DA-18b862fe"
   };
 
   // hard coded to make the code example clearer

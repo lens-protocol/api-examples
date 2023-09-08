@@ -344,7 +344,7 @@ export type Comment = {
   createdAt: Scalars['DateTime'];
   firstComment?: Maybe<Comment>;
   id: Scalars['PublicationId'];
-  isGated: Scalars['Boolean'];
+  isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
@@ -1777,18 +1777,6 @@ export type LegacyTimedFeeCollectModuleSettings = {
   referralFee: Scalars['Float'];
 };
 
-export type LensMetadataTransaction = {
-  __typename?: 'LensMetadataTransaction';
-  extraInfo?: Maybe<Scalars['String']>;
-  metadataFailedReason?: Maybe<LensMetadataTransactionFailureType>;
-  status: LensTransactionStatusType;
-};
-
-export enum LensMetadataTransactionFailureType {
-  MetadataError = 'METADATA_ERROR',
-  Reverted = 'REVERTED'
-}
-
 export type LensProfileManagerRelayError = {
   __typename?: 'LensProfileManagerRelayError';
   reason: LensProfileManagerRelayErrorReasonType;
@@ -1804,19 +1792,18 @@ export enum LensProfileManagerRelayErrorReasonType {
 
 export type LensProfileManagerRelayResult = LensProfileManagerRelayError | RelaySuccess;
 
-export type LensTransaction = {
-  __typename?: 'LensTransaction';
+export enum LensTransactionFailureType {
+  MetadataError = 'METADATA_ERROR',
+  Reverted = 'REVERTED'
+}
+
+export type LensTransactionResult = {
+  __typename?: 'LensTransactionResult';
   extraInfo?: Maybe<Scalars['String']>;
   reason?: Maybe<LensTransactionFailureType>;
   status: LensTransactionStatusType;
   txHash: Scalars['TxHash'];
 };
-
-export enum LensTransactionFailureType {
-  Reverted = 'REVERTED'
-}
-
-export type LensTransactionResult = LensMetadataTransaction | LensTransaction;
 
 export type LensTransactionStatusRequest = {
   /** Transaction hash for retrieving transaction status */
@@ -1829,7 +1816,7 @@ export enum LensTransactionStatusType {
   Complete = 'COMPLETE',
   Failed = 'FAILED',
   OptimisticallyUpdated = 'OPTIMISTICALLY_UPDATED',
-  Progressing = 'PROGRESSING'
+  Processing = 'PROCESSING'
 }
 
 export type LinkMetadataV3 = {
@@ -1916,7 +1903,7 @@ export type Mirror = {
   __typename?: 'Mirror';
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
-  isGated: Scalars['Boolean'];
+  isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   mirrorOf: MirrorablePublication;
   momoka?: Maybe<MomokaInfo>;
@@ -3168,7 +3155,7 @@ export type Post = {
   by: Profile;
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
-  isGated: Scalars['Boolean'];
+  isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
@@ -3975,7 +3962,7 @@ export type Query = {
   intotal: Scalars['Int'];
   invitedProfiles: Array<InvitedResult>;
   iss: Array<PrfResult>;
-  lensTransactionStatus: LensTransactionResult;
+  lensTransactionStatus?: Maybe<LensTransactionResult>;
   momokaSubmitters: MomokaSubmittersResult;
   momokaSummary: MomokaSummaryResult;
   momokaTransaction?: Maybe<MomokaTransaction>;
@@ -4336,7 +4323,7 @@ export type Quote = {
   by: Profile;
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
-  isGated: Scalars['Boolean'];
+  isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
@@ -5226,7 +5213,7 @@ export type LensTransactionStatusQueryVariables = Exact<{
 }>;
 
 
-export type LensTransactionStatusQuery = { __typename?: 'Query', lensTransactionStatus: { __typename: 'LensMetadataTransaction', status: LensTransactionStatusType, metadataFailedReason?: LensMetadataTransactionFailureType | null, extraInfo?: string | null } | { __typename: 'LensTransaction', status: LensTransactionStatusType, txHash: any, reason?: LensTransactionFailureType | null, extraInfo?: string | null } };
+export type LensTransactionStatusQuery = { __typename?: 'Query', lensTransactionStatus?: { __typename: 'LensTransactionResult', status: LensTransactionStatusType, txHash: any, reason?: LensTransactionFailureType | null, extraInfo?: string | null } | null };
 
 
 export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignedAuthChallenge"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
@@ -5269,7 +5256,7 @@ export const CreateOnchainCommentTypedDataDocument = {"kind":"Document","definit
 export const CommentOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CommentOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainCommentRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"commentOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<CommentOnchainMutation, CommentOnchainMutationVariables>;
 export const CreateOnchainMirrorTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainMirrorTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainMirrorRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainMirrorTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Mirror"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"pointedPubId"}},{"kind":"Field","name":{"kind":"Name","value":"referrerProfileIds"}},{"kind":"Field","name":{"kind":"Name","value":"referrerPubIds"}},{"kind":"Field","name":{"kind":"Name","value":"referenceModuleData"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainMirrorTypedDataMutation, CreateOnchainMirrorTypedDataMutationVariables>;
 export const MirrorOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"MirrorOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainMirrorRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mirrorOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<MirrorOnchainMutation, MirrorOnchainMutationVariables>;
-export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LensTransactionStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransactionStatusRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lensTransactionStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransaction"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensMetadataTransaction"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"metadataFailedReason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}}]}}]}}]} as unknown as DocumentNode<LensTransactionStatusQuery, LensTransactionStatusQueryVariables>;
+export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LensTransactionStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"LensTransactionStatusRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lensTransactionStatus"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}},{"kind":"Field","name":{"kind":"Name","value":"extraInfo"}}]}}]}}]} as unknown as DocumentNode<LensTransactionStatusQuery, LensTransactionStatusQueryVariables>;
 
       export interface PossibleTypesResultData {
         possibleTypes: {
@@ -5321,10 +5308,6 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
     "LensProfileManagerRelayResult": [
       "LensProfileManagerRelayError",
       "RelaySuccess"
-    ],
-    "LensTransactionResult": [
-      "LensMetadataTransaction",
-      "LensTransaction"
     ],
     "MediaSet": [
       "AudioSet",
