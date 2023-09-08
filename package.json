@@ -42,6 +42,8 @@
     "publications:comment-momoka-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/comment-momoka-lens-profile-manager",
     "publications:mirror-momoka": "env-cmd -f .env ts-node ./src/publications/mirror-momoka",
     "publications:mirror-momoka-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/mirror-momoka-lens-profile-manager",
+    "publications:quote-momoka": "env-cmd -f .env ts-node ./src/publications/quote-momoka",
+    "publications:quote-momoka-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/quote-momoka-lens-profile-manager",
 
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
