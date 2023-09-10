@@ -1,0 +1,13 @@
+query PoapEvent($request: PoapEventQueryRequest!) {
+  poapEvent(request: $request) {
+    id
+  }
+}
+
+query PoapHolders($request: PoapHoldersQueryRequest!) {
+  poapHolders(request: $request) {
+    items {
+      id
+    }
+  }
+}

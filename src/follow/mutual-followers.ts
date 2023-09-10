@@ -16,7 +16,7 @@ const mutualFollowersRequest = async (request: MutualFollowersRequest) => {
 
 export const mutualFollowers = async () => {
   const result = await mutualFollowersRequest({ observer: '0x01', viewing: '0x03' });
-  console.log('followers: result', result);
+  console.log('mutualFollowers: result', result);
 
   return result;
 };

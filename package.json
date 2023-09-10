@@ -44,6 +44,12 @@
     "publications:mirror-momoka-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/mirror-momoka-lens-profile-manager",
     "publications:quote-momoka": "env-cmd -f .env ts-node ./src/publications/quote-momoka",
     "publications:quote-momoka-lens-profile-manager": "env-cmd -f .env ts-node ./src/publications/quote-momoka-lens-profile-manager",
+    "currencies:get-currencies": "env-cmd -f .env ts-node ./src/currencies/currencies",
+    "nfts:mutual-nft-collections": "env-cmd -f .env ts-node ./src/nfts/mutual-nft-collections",
+    "follow:mutual-followers": "env-cmd -f .env ts-node ./src/follow/mutual-followers",
+    "handle:owned-handles": "env-cmd -f .env ts-node ./src/handle/owned-handles",
+    "poap:poap-event": "env-cmd -f .env ts-node ./src/poap/poap-event",
+    "poap:poap-holders": "env-cmd -f .env ts-node ./src/poap/poap-holders",
 
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
