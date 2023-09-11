@@ -22,7 +22,5 @@ export const currencies = async () => {
 };
 
 (async () => {
-  if (explicitStart(__filename)) {
-    await currencies();
-  }
+  await currencies();
 })();
