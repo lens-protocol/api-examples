@@ -58,6 +58,8 @@
     "nfts:nft-collection-owners": "env-cmd -f .env ts-node ./src/nfts/nft-collection-owners",
     "nfts:nft-collections": "env-cmd -f .env ts-node ./src/nfts/nft-collections",
     "nfts:nft-galleries": "env-cmd -f .env ts-node ./src/nfts/nft-galleries",
+    "feed:feed-highlights": "env-cmd -f .env ts-node ./src/feed/feed-highlights",
+    "profile:profile-action-history": "env-cmd -f .env ts-node ./src/profile/profile-action-history",
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",

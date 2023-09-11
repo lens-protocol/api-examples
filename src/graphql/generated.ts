@@ -44,6 +44,7 @@ export type Scalars = {
   TxId: any;
   URI: any;
   URL: any;
+  UUID: any;
   UnixTimestamp: any;
   Void: any;
 };
@@ -79,14 +80,14 @@ export type ActOnOpenActionLensManagerRequest = {
 
 export type ActOnOpenActionRequest = {
   actOn: ActOnOpenActionInput;
-  for?: InputMaybe<Scalars['PublicationId']>;
+  for: Scalars['PublicationId'];
   referrers?: InputMaybe<Array<OnchainReferrer>>;
 };
 
 export type ActedNotification = {
   __typename?: 'ActedNotification';
   actions: Array<OpenActionProfileActed>;
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   publication: AnyPublication;
 };
 
@@ -365,7 +366,7 @@ export type CommentStatsArgs = {
 export type CommentNotification = {
   __typename?: 'CommentNotification';
   comment: Comment;
-  id: Scalars['String'];
+  id: Scalars['UUID'];
 };
 
 export enum CommentRankingFilterType {
@@ -1337,7 +1338,6 @@ export type FeedItem = {
 
 export type FeedRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  limit?: InputMaybe<Scalars['LimitScalar']>;
   where?: InputMaybe<FeedWhere>;
 };
 
@@ -1407,7 +1407,7 @@ export enum FollowModuleType {
 export type FollowNotification = {
   __typename?: 'FollowNotification';
   followers: Array<Profile>;
-  id: Scalars['String'];
+  id: Scalars['UUID'];
 };
 
 export type FollowOnlyReferenceModuleSettings = {
@@ -1645,6 +1645,7 @@ export type LegacyAaveFeeCollectModuleSettings = {
 
 export type LegacyCollectRequest = {
   on: Scalars['PublicationId'];
+  referrer?: InputMaybe<Scalars['PublicationId']>;
 };
 
 export type LegacyErc4626FeeCollectModuleSettings = {
@@ -1869,14 +1870,14 @@ export type MarketplaceMetadata = {
   description?: Maybe<Scalars['Markdown']>;
   externalURL?: Maybe<Scalars['URL']>;
   image?: Maybe<Scalars['URI']>;
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
 };
 
 export type MediaSet = AudioSet | ImageSet | VideoSet;
 
 export type MentionNotification = {
   __typename?: 'MentionNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   publication: PrimaryPublication;
 };
 
@@ -1913,7 +1914,7 @@ export type Mirror = {
 
 export type MirrorNotification = {
   __typename?: 'MirrorNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   mirrors: Array<ProfileMirrorResult>;
   publication: PrimaryPublication;
 };
@@ -2612,8 +2613,9 @@ export type Nft = {
   contract: NetworkAddress;
   contractType: NftContractType;
   metadata: NftMetadata;
-  ownerInfo: Owner;
+  owner: Owner;
   tokenId: Scalars['TokenId'];
+  totalSupply: Scalars['String'];
 };
 
 /** Nft Collection type */
@@ -2657,8 +2659,8 @@ export type NftCollectionWithOwners = {
   __typename?: 'NftCollectionWithOwners';
   /** The Nft collection */
   collection: NftCollection;
-  /** The total number of Lens profiles that own this collection */
-  totalProfiles: Scalars['Float'];
+  /** The total number of Lens profile owners that have at least 1 NFT from this collection */
+  totalOwners: Scalars['Float'];
 };
 
 /** NFT collections request */
@@ -2671,7 +2673,7 @@ export type NftCollectionsRequest = {
   for?: InputMaybe<Scalars['ProfileId']>;
   /** Filter by owner address */
   forAddress?: InputMaybe<Scalars['EvmAddress']>;
-  limit?: InputMaybe<Scalars['Float']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export enum NftContractType {
@@ -2680,7 +2682,9 @@ export enum NftContractType {
 }
 
 export type NftGalleriesRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
   for: Scalars['ProfileId'];
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export type NftGallery = {
@@ -2737,25 +2741,23 @@ export type NftInput = {
 
 export type NftMetadata = {
   __typename?: 'NftMetadata';
-  description: Scalars['String'];
-  image: Scalars['URI'];
-  name: Scalars['String'];
-};
-
-export type NftOwnershipChallenge = {
-  contract: NetworkAddressInput;
-  tokenId: Scalars['TokenId'];
+  animationUrl?: Maybe<Scalars['URI']>;
+  attributes?: Maybe<Array<PublicationMarketplaceMetadataAttribute>>;
+  description?: Maybe<Scalars['Markdown']>;
+  externalURL?: Maybe<Scalars['URL']>;
+  image?: Maybe<Scalars['URI']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type NftOwnershipChallengeRequest = {
   for: Scalars['EvmAddress'];
-  nfts: Array<NftOwnershipChallenge>;
+  nfts: Array<NftInput>;
 };
 
 export type NftOwnershipChallengeResult = {
   __typename?: 'NftOwnershipChallengeResult';
-  id: Scalars['String'];
-  text: Scalars['String'];
+  info?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
 };
 
 export type NftOwnershipCondition = {
@@ -2763,22 +2765,6 @@ export type NftOwnershipCondition = {
   contract: NetworkAddress;
   contractType: NftContractType;
   tokenIds?: Maybe<Array<Scalars['TokenId']>>;
-};
-
-/** NFT search query */
-export type NftSearchRequest = {
-  /** Chain IDs to search. Supports Ethereum and Polygon. If omitted, it will search in both chains */
-  chainIds?: InputMaybe<Array<Scalars['ChainId']>>;
-  cursor?: InputMaybe<Scalars['Cursor']>;
-  /** Exclude follower NFTs from the search */
-  excludeFollowers?: InputMaybe<Scalars['Boolean']>;
-  /** Ethereum address of the owner. If unknown you can also search by profile ID */
-  forAddress?: InputMaybe<Scalars['EvmAddress']>;
-  /** Profile ID of the owner */
-  forProfileId?: InputMaybe<Scalars['ProfileId']>;
-  limit?: InputMaybe<Scalars['LimitScalar']>;
-  /** Search query. Has to be part of a collection name */
-  query: Scalars['String'];
 };
 
 export type NftUpdateItemOrder = {
@@ -2794,10 +2780,17 @@ export type NftsRequest = {
 };
 
 export type NftsRequestWhere = {
+  /** Chain IDs to search. Supports Ethereum and Polygon. If omitted, it will search in both chains */
   chainIds?: InputMaybe<Array<Scalars['ChainId']>>;
   excludeCollections?: InputMaybe<Array<NetworkAddressInput>>;
-  for?: InputMaybe<Scalars['ProfileId']>;
+  /** Exclude follower NFTs from the search */
+  excludeFollowers?: InputMaybe<Scalars['Boolean']>;
+  /** Ethereum address of the owner. If unknown you can also search by profile ID */
+  forAddress?: InputMaybe<Scalars['EvmAddress']>;
+  /** Profile ID of the owner */
+  forProfileId?: InputMaybe<Scalars['ProfileId']>;
   includeCollections?: InputMaybe<Array<NetworkAddressInput>>;
+  /** Search query. Has to be part of a collection name */
   query?: InputMaybe<Scalars['String']>;
 };
 
@@ -2815,7 +2808,6 @@ export type Notification = ActedNotification | CommentNotification | FollowNotif
 
 export type NotificationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  limit?: InputMaybe<Scalars['LimitScalar']>;
   where?: InputMaybe<NotificationWhere>;
 };
 
@@ -2824,12 +2816,11 @@ export type NotificationSubscriptionRequest = {
 };
 
 export enum NotificationType {
-  CollectActed = 'COLLECT_ACTED',
+  Acted = 'ACTED',
   Commented = 'COMMENTED',
   Followed = 'FOLLOWED',
   Mentioned = 'MENTIONED',
   Mirrored = 'MIRRORED',
-  OtherActed = 'OTHER_ACTED',
   Quoted = 'QUOTED',
   Reacted = 'REACTED'
 }
@@ -2943,7 +2934,7 @@ export type OwnedHandlesRequest = {
 export type Owner = {
   __typename?: 'Owner';
   address: Scalars['EvmAddress'];
-  amount: Scalars['Int'];
+  amount: Scalars['String'];
 };
 
 export type PaginatedCurrenciesResult = {
@@ -3028,6 +3019,12 @@ export type PaginatedPopularNftCollectionsResult = {
   pageInfo: PaginatedResultInfo;
 };
 
+export type PaginatedProfileActionHistoryResult = {
+  __typename?: 'PaginatedProfileActionHistoryResult';
+  items: Array<ProfileActionHistory>;
+  pageInfo: PaginatedResultInfo;
+};
+
 /** The paginated profile managers result */
 export type PaginatedProfileManagersResult = {
   __typename?: 'PaginatedProfileManagersResult';
@@ -3091,15 +3088,17 @@ export type PaginatedWhoReactedResult = {
 /** The POAP Event result */
 export type PoapEvent = {
   __typename?: 'PoapEvent';
-  animation_url?: Maybe<Scalars['URL']>;
+  animation_url?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   end_date?: Maybe<Scalars['DateTime']>;
   event_template_id?: Maybe<Scalars['Int']>;
   event_url: Scalars['URL'];
+  expiry_date?: Maybe<Scalars['DateTime']>;
   fancy_id: Scalars['String'];
-  id: Scalars['Int'];
+  from_admin?: Maybe<Scalars['Boolean']>;
+  id: Scalars['TokenId'];
   image_url?: Maybe<Scalars['URL']>;
   name: Scalars['String'];
   private_event?: Maybe<Scalars['Boolean']>;
@@ -3109,7 +3108,7 @@ export type PoapEvent = {
 };
 
 export type PoapEventQueryRequest = {
-  eventId: Scalars['Float'];
+  eventId: Scalars['String'];
 };
 
 export type PoapHoldersQueryRequest = {
@@ -3124,13 +3123,13 @@ export type PoapToken = {
   created: Scalars['DateTime'];
   event: PoapEvent;
   /** Poap Event Id */
-  eventId: Scalars['Float'];
+  eventId: Scalars['TokenId'];
   /** Which network the token is: L1 (eth) or L2 (Gnosis) */
   layer: PoapTokenLayerType;
   /** migrated to L1 at */
   migrated?: Maybe<Scalars['DateTime']>;
   owner: NetworkAddress;
-  tokenId: Scalars['Int'];
+  tokenId: Scalars['TokenId'];
 };
 
 export enum PoapTokenLayerType {
@@ -3229,6 +3228,41 @@ export type ProfileStatsArgs = {
   request: ProfileStatsArg;
 };
 
+/** The Profile */
+export type ProfileActionHistory = {
+  __typename?: 'ProfileActionHistory';
+  actionType: ProfileActionHistoryType;
+  actionedOn: Scalars['DateTime'];
+  id: Scalars['UUID'];
+  txHash?: Maybe<Scalars['TxHash']>;
+  who: Scalars['EvmAddress'];
+};
+
+export type ProfileActionHistoryRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
+};
+
+/** Profile action history type */
+export enum ProfileActionHistoryType {
+  Acted = 'ACTED',
+  Blocked = 'BLOCKED',
+  Collected = 'COLLECTED',
+  Comment = 'COMMENT',
+  Follow = 'FOLLOW',
+  LinkHandle = 'LINK_HANDLE',
+  LoggedIn = 'LOGGED_IN',
+  Mirror = 'MIRROR',
+  Post = 'POST',
+  Quote = 'QUOTE',
+  RefreshAuthToken = 'REFRESH_AUTH_TOKEN',
+  SetProfileMetadata = 'SET_PROFILE_METADATA',
+  SetProfileModule = 'SET_PROFILE_MODULE',
+  Unblocked = 'UNBLOCKED',
+  Unfollow = 'UNFOLLOW',
+  UnlinkHandle = 'UNLINK_HANDLE'
+}
+
 export type ProfileBookmarksRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<Scalars['LimitScalar']>;
@@ -3248,7 +3282,7 @@ export type ProfileGuardianResult = {
 };
 
 export type ProfileInterestsRequest = {
-  interests: Scalars['String'];
+  interests: Array<Scalars['String']>;
 };
 
 export type ProfileManagersRequest = {
@@ -3276,7 +3310,6 @@ export type ProfileMetadata = {
 
 export type ProfileMirrorResult = {
   __typename?: 'ProfileMirrorResult';
-  id: Scalars['String'];
   mirrorId: Scalars['PublicationId'];
   mirroredAt: Scalars['DateTime'];
   profile: Profile;
@@ -3986,7 +4019,7 @@ export type Query = {
   /** Get the most popular NFT collections. Popularity is based on how many Lens Profiles own NFTs from a given collection. */
   popularNftCollections: PaginatedPopularNftCollectionsResult;
   profile?: Maybe<Profile>;
-  profileActionHistory: Scalars['Void'];
+  profileActionHistory: PaginatedProfileActionHistoryResult;
   profileAlreadyInvited: Scalars['Boolean'];
   profileBookmarks: PaginatedPublicationsResult;
   profileInterestsOptions: Array<Scalars['String']>;
@@ -4001,8 +4034,6 @@ export type Query = {
   relayQueues: Array<RelayQueueResult>;
   revenueForPublication: PublicationRevenue;
   revenueFromPublications: PaginatedRevenueFromPublicationsResult;
-  /** Search for NFTs in a wallet by collection name. Supports Polygon and Ethereum and searches in both by default. */
-  searchNfts: PaginatedNftsResult;
   searchProfiles: PaginatedProfileResult;
   searchPublications: PaginatedPublicationPrimaryResult;
   supportedFollowModules: PaginatedSupportedModules;
@@ -4190,7 +4221,7 @@ export type QueryProfileArgs = {
 
 
 export type QueryProfileActionHistoryArgs = {
-  request: WhoHaveBlockedRequest;
+  request: ProfileActionHistoryRequest;
 };
 
 
@@ -4251,11 +4282,6 @@ export type QueryRevenueForPublicationArgs = {
 
 export type QueryRevenueFromPublicationsArgs = {
   request: RevenueFromPublicationsRequest;
-};
-
-
-export type QuerySearchNftsArgs = {
-  request: NftSearchRequest;
 };
 
 
@@ -4343,7 +4369,7 @@ export type QuoteStatsArgs = {
 
 export type QuoteNotification = {
   __typename?: 'QuoteNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   quote: Quote;
 };
 
@@ -4362,7 +4388,7 @@ export type ReactionEvent = {
 
 export type ReactionNotification = {
   __typename?: 'ReactionNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   publication: PrimaryPublication;
   reactions: Array<ProfileReactedResult>;
 };
@@ -4626,7 +4652,6 @@ export type Subscription = {
   newMomokaTransaction: MomokaTransaction;
   newNotification: Notification;
   newPublicationStats: PublicationStats;
-  watchLensTransaction: LensTransactionResult;
 };
 
 
@@ -4637,11 +4662,6 @@ export type SubscriptionNewNotificationArgs = {
 
 export type SubscriptionNewPublicationStatsArgs = {
   request: PublicationStatsSubscriptionRequest;
-};
-
-
-export type SubscriptionWatchLensTransactionArgs = {
-  request: LensTransactionStatusRequest;
 };
 
 export type SupportedModule = KnownSupportedModule | UnknownSupportedModule;
@@ -4983,6 +5003,13 @@ export type CurrenciesQueryVariables = Exact<{
 
 export type CurrenciesQuery = { __typename?: 'Query', currencies: { __typename?: 'PaginatedCurrenciesResult', items: Array<{ __typename?: 'Erc20', name: string }> } };
 
+export type FeedHighlightsQueryVariables = Exact<{
+  request: FeedHighlightsRequest;
+}>;
+
+
+export type FeedHighlightsQuery = { __typename?: 'Query', feedHighlights: { __typename?: 'PaginatedFeedHighlightsResult', items: Array<{ __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }> } };
+
 export type CreateFollowTypedDataMutationVariables = Exact<{
   request: FollowRequest;
 }>;
@@ -5120,7 +5147,7 @@ export type PoapEventQueryVariables = Exact<{
 }>;
 
 
-export type PoapEventQuery = { __typename?: 'Query', poapEvent: { __typename?: 'PoapEvent', id: number } };
+export type PoapEventQuery = { __typename?: 'Query', poapEvent: { __typename?: 'PoapEvent', id: any } };
 
 export type PoapHoldersQueryVariables = Exact<{
   request: PoapHoldersQueryRequest;
@@ -5134,7 +5161,7 @@ export type MutualPoapsQueryVariables = Exact<{
 }>;
 
 
-export type MutualPoapsQuery = { __typename?: 'Query', mutualPoaps: { __typename?: 'PaginatedPoapEventResult', items: Array<{ __typename?: 'PoapEvent', id: number }> } };
+export type MutualPoapsQuery = { __typename?: 'Query', mutualPoaps: { __typename?: 'PaginatedPoapEventResult', items: Array<{ __typename?: 'PoapEvent', id: any }> } };
 
 export type CreateChangeProfileManagersTypedDataMutationVariables = Exact<{
   request: ChangeProfileManagersRequest;
@@ -5196,6 +5223,13 @@ export type ProfilesQueryVariables = Exact<{
 
 
 export type ProfilesQuery = { __typename?: 'Query', profiles: { __typename?: 'PaginatedProfileResult', items: Array<{ __typename?: 'Profile', id: any, txHash: any, createdAt: any, interests: Array<string>, invitesLeft?: number | null, handle?: any | null, ownedBy: { __typename?: 'NetworkAddress', address: any, chainId: any }, gasless: { __typename?: 'Gasless', enabled: boolean, relay?: { __typename?: 'NetworkAddress', address: any, chainId: any } | null }, stats: { __typename?: 'ProfileStats', id: any, followers: number, following: number, comments: number, posts: number, mirrors: number, quotes: number, publications: number, reactions: number, countOpenActions: number }, operations: { __typename?: 'ProfileOperations', id: any, canBlock: boolean, canUnblock: boolean, canFollow: TriStateValue, canUnfollow: boolean, isBlockedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, isFollowedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, isFollowingMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean } }, guardian?: { __typename?: 'ProfileGuardianResult', protected: boolean, cooldownEndsOn?: any | null } | null, invitedBy?: { __typename?: 'Profile', id: any } | null, onchainIdentity: { __typename?: 'ProfileOnchainIdentity', proofOfHumanity: boolean, ens?: { __typename?: 'EnsOnchainIdentity', name?: any | null } | null, sybilDotOrg: { __typename?: 'SybilDotOrgIdentity', verified: boolean, source?: { __typename?: 'SybilDotOrgIdentitySource', twitter: { __typename?: 'SybilDotOrgTwitterIdentity', handle?: string | null } } | null }, worldcoin: { __typename?: 'WorldcoinIdentity', isHuman: boolean } }, followNftAddress?: { __typename?: 'NetworkAddress', address: any, chainId: any } | null, metadata?: { __typename?: 'ProfileMetadata', bio?: any | null } | null, followModule?: { __typename?: 'FeeFollowModuleSettings', recipient: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, amount: { __typename?: 'Amount', value: string, asset: { __typename?: 'Erc20', name: string, symbol: string, decimals: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } } } | { __typename?: 'RevertFollowModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownFollowModuleSettings', followModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null }>, pageInfo: { __typename?: 'PaginatedResultInfo', next?: any | null, prev?: any | null } } };
+
+export type ProfileActionHistoryQueryVariables = Exact<{
+  request: ProfileActionHistoryRequest;
+}>;
+
+
+export type ProfileActionHistoryQuery = { __typename?: 'Query', profileActionHistory: { __typename?: 'PaginatedProfileActionHistoryResult', items: Array<{ __typename?: 'ProfileActionHistory', id: any }> } };
 
 export type ProfileFieldsFragment = { __typename?: 'Profile', id: any, txHash: any, createdAt: any, interests: Array<string>, invitesLeft?: number | null, handle?: any | null, ownedBy: { __typename?: 'NetworkAddress', address: any, chainId: any }, gasless: { __typename?: 'Gasless', enabled: boolean, relay?: { __typename?: 'NetworkAddress', address: any, chainId: any } | null }, stats: { __typename?: 'ProfileStats', id: any, followers: number, following: number, comments: number, posts: number, mirrors: number, quotes: number, publications: number, reactions: number, countOpenActions: number }, operations: { __typename?: 'ProfileOperations', id: any, canBlock: boolean, canUnblock: boolean, canFollow: TriStateValue, canUnfollow: boolean, isBlockedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, isFollowedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, isFollowingMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean } }, guardian?: { __typename?: 'ProfileGuardianResult', protected: boolean, cooldownEndsOn?: any | null } | null, invitedBy?: { __typename?: 'Profile', id: any } | null, onchainIdentity: { __typename?: 'ProfileOnchainIdentity', proofOfHumanity: boolean, ens?: { __typename?: 'EnsOnchainIdentity', name?: any | null } | null, sybilDotOrg: { __typename?: 'SybilDotOrgIdentity', verified: boolean, source?: { __typename?: 'SybilDotOrgIdentitySource', twitter: { __typename?: 'SybilDotOrgTwitterIdentity', handle?: string | null } } | null }, worldcoin: { __typename?: 'WorldcoinIdentity', isHuman: boolean } }, followNftAddress?: { __typename?: 'NetworkAddress', address: any, chainId: any } | null, metadata?: { __typename?: 'ProfileMetadata', bio?: any | null } | null, followModule?: { __typename?: 'FeeFollowModuleSettings', recipient: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, amount: { __typename?: 'Amount', value: string, asset: { __typename?: 'Erc20', name: string, symbol: string, decimals: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } } } | { __typename?: 'RevertFollowModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownFollowModuleSettings', followModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
 
@@ -5368,6 +5402,7 @@ export const VerifyDocument = {"kind":"Document","definitions":[{"kind":"Operati
 export const BroadcastOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnchainMutation, BroadcastOnchainMutationVariables>;
 export const BroadcastOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnMomokaMutation, BroadcastOnMomokaMutationVariables>;
 export const CurrenciesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Currencies"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginatedOffsetRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currencies"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]}}]} as unknown as DocumentNode<CurrenciesQuery, CurrenciesQueryVariables>;
+export const FeedHighlightsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FeedHighlights"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FeedHighlightsRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"feedHighlights"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<FeedHighlightsQuery, FeedHighlightsQueryVariables>;
 export const CreateFollowTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFollowTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFollowTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Follow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"followerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToFollow"}},{"kind":"Field","name":{"kind":"Name","value":"followTokenIds"}},{"kind":"Field","name":{"kind":"Name","value":"datas"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateFollowTypedDataMutation, CreateFollowTypedDataMutationVariables>;
 export const FollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Follow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowLensManagerRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"follow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<FollowMutation, FollowMutationVariables>;
 export const FollowersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Followers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowersRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"statsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsArg"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reactionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsReactionArgs"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"countOpenActionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsCountOpenActionArgs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"followers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<FollowersQuery, FollowersQueryVariables>;
@@ -5396,6 +5431,7 @@ export const CreateProfileWithHandleDocument = {"kind":"Document","definitions":
 export const GetInvitedProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetInvitedProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"invitedProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"invited"}},{"kind":"Field","name":{"kind":"Name","value":"profileMinted"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"when"}}]}}]}}]} as unknown as DocumentNode<GetInvitedProfilesQuery, GetInvitedProfilesQueryVariables>;
 export const ProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Profile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"statsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsArg"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reactionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsReactionArgs"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"countOpenActionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsCountOpenActionArgs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<ProfileQuery, ProfileQueryVariables>;
 export const ProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Profiles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfilesRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"statsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsArg"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reactionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsReactionArgs"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"countOpenActionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsCountOpenActionArgs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profiles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"next"}},{"kind":"Field","name":{"kind":"Name","value":"prev"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<ProfilesQuery, ProfilesQueryVariables>;
+export const ProfileActionHistoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProfileActionHistory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileActionHistoryRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profileActionHistory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ProfileActionHistoryQuery, ProfileActionHistoryQueryVariables>;
 export const ProfileRecommendationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProfileRecommendations"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileRecommendationsRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"statsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsArg"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reactionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsReactionArgs"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"countOpenActionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsCountOpenActionArgs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profileRecommendations"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<ProfileRecommendationsQuery, ProfileRecommendationsQueryVariables>;
 export const CreateOnchainSetProfileMetadataTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateOnchainSetProfileMetadataTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainSetProfileMetadataRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createOnchainSetProfileMetadataTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"SetProfileMetadataURI"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"metadataURI"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateOnchainSetProfileMetadataTypedDataMutation, CreateOnchainSetProfileMetadataTypedDataMutationVariables>;
 export const SetProfileMetadataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"SetProfileMetadata"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"OnchainSetProfileMetadataRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"setProfileMetadata"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<SetProfileMetadataMutation, SetProfileMetadataMutationVariables>;

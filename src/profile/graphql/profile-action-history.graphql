@@ -1,0 +1,7 @@
+query ProfileActionHistory($request: ProfileActionHistoryRequest!) {
+  profileActionHistory(request: $request) {
+    items {
+      id
+    }
+  }
+}
