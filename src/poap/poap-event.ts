@@ -14,6 +14,7 @@ const getPoapEvent = async (request: PoapEventQueryRequest) => {
 
 const poapEvent = async () => {
   const poapEvent = await getPoapEvent({
+    // @ts-expect-error TODO: This is intentionally a number instead of a string since the backend throws when its a string (which should be correct)
     eventId: 1,
   });
 
