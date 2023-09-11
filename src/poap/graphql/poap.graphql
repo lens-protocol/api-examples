@@ -11,3 +11,11 @@ query PoapHolders($request: PoapHoldersQueryRequest!) {
     }
   }
 }
+
+query MutualPoaps($request: MutualPoapsQueryRequest!) {
+  mutualPoaps(request: $request) {
+    items {
+      id
+    }
+  }
+}

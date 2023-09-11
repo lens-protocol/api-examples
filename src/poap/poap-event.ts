@@ -14,7 +14,7 @@ const getPoapEvent = async (request: PoapEventQueryRequest) => {
 
 const poapEvent = async () => {
   const poapEvent = await getPoapEvent({
-    eventId: '1',
+    eventId: 1,
   });
 
   console.log('poap event: result', poapEvent);
