@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { MutualNftCollectionsDocument, MutualNftCollectionsRequest } from '../graphql/generated';
 
-const getMutualNFTCollections = async (request: MutualNftCollectionsRequest) => {
+const getMutualNftCollections = async (request: MutualNftCollectionsRequest) => {
   const result = await apolloClient.query({
     query: MutualNftCollectionsDocument,
     variables: {
@@ -13,7 +13,7 @@ const getMutualNFTCollections = async (request: MutualNftCollectionsRequest) => 
 };
 
 export const usersNfts = async () => {
-  const mutualNftCollections = await getMutualNFTCollections({
+  const mutualNftCollections = await getMutualNftCollections({
     viewingProfileId: '0x01',
     yourProfileId: '0x03',
   });

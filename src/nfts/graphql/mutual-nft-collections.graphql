@@ -1,7 +1,0 @@
-query MutualNftCollections($request: MutualNftCollectionsRequest!) {
-  mutualNftCollections(request: $request) {
-    items {
-      name
-    }
-  }
-}

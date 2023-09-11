@@ -1,0 +1,29 @@
+query MutualNftCollections($request: MutualNftCollectionsRequest!) {
+  mutualNftCollections(request: $request) {
+    items {
+      name
+    }
+  }
+}
+
+query NftCollectionOwners($request: NftCollectionOwnersRequest!) {
+  nftCollectionOwners(request: $request) {
+    items {
+      id
+    }
+  }
+}
+
+query NftCollections($request: NftCollectionsRequest!) {
+  nftCollections(request: $request) {
+    items {
+      name
+    }
+  }
+}
+
+query NftGalleries($request: NftGalleriesRequest!) {
+  nftGalleries(request: $request) {
+    name
+  }
+}
