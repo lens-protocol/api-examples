@@ -1,0 +1,18 @@
+#import "../../profile/graphql/profile-fields-fragment.graphql"
+
+query Followers(
+  $request: FollowersRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  followers(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
