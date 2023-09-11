@@ -1,0 +1,24 @@
+#import "../../common/graphql/common.graphql"
+
+fragment FollowModuleFields on FollowModule {
+  ... on FeeFollowModuleSettings {
+    contract {
+      ...NetworkAddressFields
+    }
+    amount {
+      ...AmountFields
+    }
+    recipient
+  }
+  ... on RevertFollowModuleSettings {
+    contract {
+      ...NetworkAddressFields
+    }
+  }
+  ... on UnknownFollowModuleSettings {
+    contract {
+      ...NetworkAddressFields
+    }
+    followModuleReturnData
+  }
+}

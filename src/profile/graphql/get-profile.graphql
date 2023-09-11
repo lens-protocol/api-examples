@@ -1,0 +1,92 @@
+#import "../../common/graphql/common.graphql"
+#import "./follow-module-fragment.graphql"
+
+query Profile(
+  $request: ProfileRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  profile(request: $request) {
+    id
+    ownedBy {
+      ...NetworkAddressFields
+    }
+    gasless {
+      enabled
+      relay {
+        ...NetworkAddressFields
+      }
+    }
+    txHash
+    createdAt
+    stats(request: $statsRequest) {
+      id
+      followers(request: $statsRequest)
+      following(request: $statsRequest)
+      comments(request: $statsRequest)
+      posts(request: $statsRequest)
+      mirrors(request: $statsRequest)
+      quotes(request: $statsRequest)
+      publications(request: $statsRequest)
+      reactions(request: $reactionsRequest)
+      countOpenActions(request: $countOpenActionsRequest)
+    }
+    operations {
+      id
+      isBlockedByMe {
+        value
+        isFinalisedOnchain
+      }
+      isFollowedByMe {
+        value
+        isFinalisedOnchain
+      }
+      isFollowingMe {
+        value
+        isFinalisedOnchain
+      }
+      canBlock
+      canUnblock
+      canFollow
+      canUnfollow
+    }
+    interests
+    guardian {
+      protected
+      cooldownEndsOn
+    }
+    invitedBy {
+      id
+    }
+    invitesLeft
+    onchainIdentity {
+      proofOfHumanity
+      ens {
+        name
+      }
+      sybilDotOrg {
+        verified
+        source {
+          twitter {
+            handle
+          }
+        }
+      }
+      worldcoin {
+        isHuman
+      }
+    }
+    followNftAddress {
+      address
+      chainId
+    }
+    metadata {
+      bio
+    }
+    followModule {
+      ...FollowModuleFields
+    }
+    handle
+  }
+}
