@@ -1,0 +1,18 @@
+#import "./profile-fields-fragment.graphql"
+
+query MutualFollowers(
+  $request: MutualFollowersRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  mutualFollowers(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
