@@ -1,0 +1,7 @@
+query MutualFollowers($request: MutualFollowersRequest!) {
+  mutualFollowers(request: $request) {
+    items {
+      id
+    }
+  }
+}

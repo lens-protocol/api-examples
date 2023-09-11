@@ -1,0 +1,7 @@
+query Currencies($request: PaginatedOffsetRequest!) {
+  currencies(request: $request) {
+    items {
+      name
+    }
+  }
+}

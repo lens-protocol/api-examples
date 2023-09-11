@@ -30,7 +30,7 @@ export const waitUntilComplete = async (input: { txHash: string } | { txId: stri
 
     switch (response.status) {
       case LensTransactionStatusType.Failed:
-          throw new Error(response.reason ?? 'Transaction failed');
+        throw new Error(response.reason ?? 'Transaction failed');
 
       case LensTransactionStatusType.Processing:
         console.log('still in progress');
