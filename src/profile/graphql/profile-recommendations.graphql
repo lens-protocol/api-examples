@@ -1,12 +1,12 @@
 #import "./profile-fields-fragment.graphql"
 
-query MutualFollowers(
-  $request: MutualFollowersRequest!
+query ProfileRecommendations(
+  $request: ProfileRecommendationsRequest!
   $statsRequest: ProfileStatsArg!
   $reactionsRequest: ProfileStatsReactionArgs!
   $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
 ) {
-  mutualFollowers(request: $request) {
+  profileRecommendations(request: $request) {
     items {
       ...ProfileFields
     }

@@ -25,7 +25,6 @@
     "profile-manager:enable-lens-manager": "env-cmd -f .env ts-node ./src/profile-manager/enable-profile-manager",
     "profile:get-profile": "env-cmd -f .env ts-node ./src/profile/get-profile",
     "profile:get-profiles": "env-cmd -f .env ts-node ./src/profile/get-profiles",
-    "profile:mutual-profile-follows": "env-cmd -f .env ts-node ./src/profile/mutual-profile-follows",
     "module:set-follow-module": "env-cmd -f .env ts-node ./src/module/set-follow-module",
     "module:set-follow-module-lens-profile-manager": "env-cmd -f .env ts-node ./src/module/set-follow-module-lens-profile-manager",
     "handle:unlink-handle-from-profile": "env-cmd -f .env ts-node ./src/handle/unlink-handle-from-profile",
@@ -54,7 +53,6 @@
     "handle:owned-handles": "env-cmd -f .env ts-node ./src/handle/owned-handles",
     "poap:poap-event": "env-cmd -f .env ts-node ./src/poap/poap-event",
     "poap:poap-holders": "env-cmd -f .env ts-node ./src/poap/poap-holders",
-
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
