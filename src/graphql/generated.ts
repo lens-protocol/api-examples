@@ -4975,6 +4975,7 @@ export type NetworkAddressFieldsFragment = { __typename?: 'NetworkAddress', addr
 export type Erc20FieldsFragment = { __typename?: 'Erc20', name: string, symbol: string, decimals: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } };
 
 export type AmountFieldsFragment = { __typename?: 'Amount', value: string, asset: { __typename?: 'Erc20', name: string, symbol: string, decimals: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } };
+
 export type CurrenciesQueryVariables = Exact<{
   request: PaginatedOffsetRequest;
 }>;
