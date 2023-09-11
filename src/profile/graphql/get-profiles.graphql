@@ -1,0 +1,18 @@
+#import "./profile-fields.graphql"
+
+query Profiles(
+  $request: ProfilesRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  profiles(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      next
+      prev
+    }
+  }
+}
