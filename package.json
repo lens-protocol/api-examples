@@ -53,6 +53,7 @@
     "handle:owned-handles": "env-cmd -f .env ts-node ./src/handle/owned-handles",
     "poap:poap-event": "env-cmd -f .env ts-node ./src/poap/poap-event",
     "poap:poap-holders": "env-cmd -f .env ts-node ./src/poap/poap-holders",
+    "profile:invited-profiles": "env-cmd -f .env ts-node ./src/profile/get-invited-profiles",
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
