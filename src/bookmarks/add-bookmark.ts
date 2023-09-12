@@ -2,20 +2,17 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import {
-  AddPublicationProfileBookmarkDocument,
-  PublicationProfileBookmarkRequest,
-} from '../../graphql-v1/generated';
+import { AddPublicationBookmarkDocument, PublicationBookmarkRequest } from '../graphql/generated';
 
-const addPublicationProfileBookmark = async (request: PublicationProfileBookmarkRequest) => {
+const addPublicationProfileBookmark = async (request: PublicationBookmarkRequest) => {
   const result = await apolloClient.mutate({
-    mutation: AddPublicationProfileBookmarkDocument,
+    mutation: AddPublicationBookmarkDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.addPublicationProfileBookmark;
+  return result.data!.addPublicationBookmark;
 };
 
 export const addBookmark = async () => {
@@ -30,8 +27,7 @@ export const addBookmark = async () => {
   await login(address);
 
   await addPublicationProfileBookmark({
-    profileId,
-    publicationId: '0x2f-0x01be',
+    on: '0x01-0x07',
   });
 
   console.log('add bookmark: success');

@@ -1,6 +1,4 @@
 import { apolloClient } from '../apollo-client';
-import { PROFILE_ID } from '../config';
-import { QueryMutualFollowersProfilesArgs } from '../../graphql-v1/generated';
 import { MutualFollowersDocument, MutualFollowersRequest } from '../graphql/generated';
 
 const mutualFollowersRequest = async (request: MutualFollowersRequest) => {

@@ -1,0 +1,25 @@
+query ProfileBookmarks($request: ProfileBookmarksRequest!, $statsRequest: PublicationStatsInput!) {
+  profileBookmarks(request: $request) {
+    items {
+      ... on Post {
+        ...PostFields
+      }
+
+      ... on Comment {
+        ...CommentFields
+      }
+
+      ... on Mirror {
+        ...MirrorFields
+      }
+
+      ... on Quote {
+        ...QuoteFields
+      }
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

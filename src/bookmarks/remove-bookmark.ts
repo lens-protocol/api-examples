@@ -3,19 +3,19 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
-  PublicationProfileBookmarkRequest,
-  RemovePublicationProfileBookmarkDocument,
-} from '../../graphql-v1/generated';
+  PublicationBookmarkRequest,
+  RemovePublicationBookmarkDocument,
+} from '../graphql/generated';
 
-const removePublicationProfileBookmark = async (request: PublicationProfileBookmarkRequest) => {
+const removePublicationProfileBookmark = async (request: PublicationBookmarkRequest) => {
   const result = await apolloClient.mutate({
-    mutation: RemovePublicationProfileBookmarkDocument,
+    mutation: RemovePublicationBookmarkDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.removePublicationProfileBookmark;
+  return result.data!.removePublicationBookmark;
 };
 
 export const removeBookmark = async () => {
@@ -30,8 +30,7 @@ export const removeBookmark = async () => {
   await login(address);
 
   await removePublicationProfileBookmark({
-    profileId,
-    publicationId: '0x2f-0x01be',
+    on: '0x2f-0x01be',
   });
 
   console.log('remove bookmark: success');

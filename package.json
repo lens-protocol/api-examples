@@ -9,6 +9,9 @@
     "authentication:login": "env-cmd -f .env ts-node ./src/authentication/login",
     "authentication:refresh": "env-cmd -f .env ts-node ./src/authentication/refresh",
     "authentication:verify": "env-cmd -f .env ts-node ./src/authentication/verify",
+    "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
+    "bookmark:get": "env-cmd -f .env ts-node ./src/bookmarks/publications-profile-bookmarks",
+    "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
     "explore:explore-profiles": "env-cmd -f .env ts-node ./src/explore/explore-profiles",
     "explore:explore-publications": "env-cmd -f .env ts-node ./src/explore/explore-publications",
     "follow:follow": "env-cmd -f .env ts-node ./src/follow/follow",
@@ -83,11 +86,8 @@
     "profile:who-have-blocked": "env-cmd -f .env ts-node ./src/profile/who-have-blocked",
     "publications:who-acted-on-publication": "env-cmd -f .env ts-node ./src/publications/who-acted-on-publication",
     "profile:profiles-managed": "env-cmd -f .env ts-node ./src/profile/profiles-managed",
-
+    
     "V2-COMPLETE-ABOVE": "ABOVE",
-    "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
-    "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
-    "bookmark:get": "env-cmd -f .env ts-node ./src/bookmarks/publications-profile-bookmarks",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
     "follow:does-follow": "env-cmd -f .env ts-node ./src/follow/does-follow",
