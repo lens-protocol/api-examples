@@ -87,9 +87,6 @@
     "not-interested:remove": "env-cmd -f .env ts-node ./src/not-interested/remove-not-interested",
     "notifications:users-notifications": "env-cmd -f .env ts-node ./src/notifications/users-notifications",
     "profile:burn": "env-cmd -f .env ts-node ./src/profile/burn-profile",
-    "protocol-stats:global-protocol-stats": "env-cmd -f .env ts-node ./src/protocol-stats/global-protocol-stats",
-    "proxy-action:proxy-action-free-collect": "env-cmd -f .env ts-node ./src/proxy-action/proxy-action-free-collect",
-    "proxy-action:proxy-action-free-follow": "env-cmd -f .env ts-node ./src/proxy-action/proxy-action-free-follow",
     "publications:comment-gated": "env-cmd -f .env ts-node ./src/publications/comment-gated",
     "publications:comment-gated-gasless": "env-cmd -f .env ts-node ./src/publications/comment-gated-gasless",
     "publications:get-publication-gated": "env-cmd -f .env ts-node ./src/publications/get-publication-gated",
@@ -108,7 +105,6 @@
     "revenue:publication-revenue": "env-cmd -f .env ts-node ./src/revenue/publication-revenue",
     "search:search-profiles": "env-cmd -f .env ts-node ./src/search/search-profiles",
     "search:search-publications": "env-cmd -f .env ts-node ./src/search/search-publications",
-    "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment",
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5",
     "generate-lens-token-handle-registry-typings": "abi-types-generator './src/abis/lens-token-handle-registry-contract-abi.json' --output='./src/abis/types' --name=LensTokenHandleRegistry --provider=ethers_v5"
