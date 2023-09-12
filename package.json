@@ -74,6 +74,10 @@
     "revenue:profile-publication-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-publications-revenue",
     "revenue:profile-follow-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-follow-revenue",
     "nfts:get-users-nfts": "env-cmd -f .env ts-node ./src/nfts/get-users-nfts",
+    "module:supported-follow-modules": "env-cmd -f .env ts-node ./src/module/supported-follow-modules",
+    "module:supported-open-action-collect-modules": "env-cmd -f .env ts-node ./src/module/supported-open-action-collect-modules",
+    "module:supported-open-action-modules": "env-cmd -f .env ts-node ./src/module/supported-open-action-modules",
+    "module:supported-reference-modules": "env-cmd -f .env ts-node ./src/module/supported-reference-modules",
 
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",

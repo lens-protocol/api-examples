@@ -12,6 +12,7 @@ const getNftCollectionOwners = async (request: NftCollectionOwnersRequest) => {
   return result.data.nftCollectionOwners.items;
 };
 
+// Currently not working with sql error: syntax error at or near \"(\
 export const nftCollectionOwners = async () => {
   const nftCollectionOwners = await getNftCollectionOwners({
     address: '0x54be3a794282c030b15e43ae2bb182e14c409c5e',

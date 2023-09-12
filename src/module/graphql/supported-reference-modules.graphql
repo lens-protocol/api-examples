@@ -1,0 +1,16 @@
+query SupportedReferenceModules($request: SupportedModulesRequest!) {
+  supportedReferenceModules(request: $request) {
+    items {
+      ... on KnownSupportedModule {
+        contract {
+          address
+        }
+      }
+      ... on UnknownSupportedModule {
+        contract {
+          address
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+query SupportedOpenActionModules($request: SupportedModulesRequest!) {
+  supportedOpenActionModules(request: $request) {
+    items {
+      ... on KnownSupportedModule {
+        contract {
+          address
+        }
+      }
+      ... on UnknownSupportedModule {
+        contract {
+          address
+        }
+      }
+    }
+  }
+}
