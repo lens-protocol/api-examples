@@ -27,3 +27,7 @@ query NftGalleries($request: NftGalleriesRequest!) {
     name
   }
 }
+
+mutation CreateNftGallery($request: NftGalleryCreateRequest!) {
+  createNftGallery(request: $request)
+}

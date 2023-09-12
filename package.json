@@ -95,6 +95,7 @@
     "profile:dismiss-recommended-profiles": "env-cmd -f .env ts-node ./src/profile/dismiss-recommended-profiles",
     "profile:remove-profile-interests": "env-cmd -f .env ts-node ./src/profile/remove-profile-interests",
     "profile:add-profile-interests": "env-cmd -f .env ts-node ./src/profile/add-profile-interests",
+    "nfts:nft-gallery-operations": "env-cmd -f .env ts-node ./src/nfts/nft-gallery-operations",
     
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
