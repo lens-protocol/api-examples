@@ -2,7 +2,11 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { ReactionRequest, ReactionTypes, RemoveReactionDocument } from '../../graphql-v1/generated';
+import {
+  PublicationReactionType,
+  ReactionRequest,
+  RemoveReactionDocument,
+} from '../graphql/generated';
 
 const removeReactionRequest = async (request: ReactionRequest) => {
   const result = await apolloClient.mutate({
@@ -27,9 +31,8 @@ export const removeReaction = async () => {
   await login(address);
 
   await removeReactionRequest({
-    profileId,
-    reaction: ReactionTypes.Upvote,
-    publicationId: '0x0f-0x01',
+    reaction: PublicationReactionType.Upvote,
+    for: '0x0f-0x01',
   });
 
   console.log('remove reaction: success');

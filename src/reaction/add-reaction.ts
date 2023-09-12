@@ -2,7 +2,11 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { AddReactionDocument, ReactionRequest, ReactionTypes } from '../../graphql-v1/generated';
+import {
+  AddReactionDocument,
+  PublicationReactionType,
+  ReactionRequest,
+} from '../graphql/generated';
 
 const addReactionRequest = async (request: ReactionRequest) => {
   const result = await apolloClient.mutate({
@@ -27,9 +31,8 @@ export const addReaction = async () => {
   await login(address);
 
   await addReactionRequest({
-    profileId,
-    reaction: ReactionTypes.Upvote,
-    publicationId: '0x2f-0x01be',
+    reaction: PublicationReactionType.Upvote,
+    for: '0x2f-0x01be',
   });
 
   console.log('add reaction: success');
