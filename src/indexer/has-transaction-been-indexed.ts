@@ -36,15 +36,14 @@ export const waitUntilComplete = async (input: { txHash: string } | { txId: stri
         console.log('still in progress');
         break;
 
-        case LensTransactionStatusType.Complete:
-          console.log('complete and indexed onchain');
-          return response;
-      }
-
-      console.log('pool until indexed: sleep for 1500 milliseconds then try again');
-      // sleep for before trying again
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      case LensTransactionStatusType.Complete:
+        console.log('complete and indexed onchain');
+        return response;
     }
+
+    console.log('pool until indexed: sleep for 1500 milliseconds then try again');
+    // sleep for before trying again
+    await new Promise((resolve) => setTimeout(resolve, 1500));
   }
 };
 
