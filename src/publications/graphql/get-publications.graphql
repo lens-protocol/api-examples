@@ -1,0 +1,25 @@
+query Publications($request: PublicationsRequest!, $statsRequest: PublicationStatsInput!) {
+  publications(request: $request) {
+    items {
+      ... on Post {
+        ...PostFields
+      }
+
+      ... on Comment {
+        ...CommentFields
+      }
+
+      ... on Mirror {
+        ...MirrorFields
+      }
+
+      ... on Quote {
+        ...QuoteFields
+      }
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
