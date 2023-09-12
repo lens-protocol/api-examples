@@ -1,11 +1,13 @@
 import { apolloClient } from '../apollo-client';
-import { PublicationDocument, PublicationQueryRequest } from '../../graphql-v1/generated';
+import { PublicationDocument, PublicationRequest } from '../graphql/generated';
+// import { PublicationDocument, PublicationQueryRequest } from '../../graphql-v1/generated';
 
-const getPublicationRequest = async (request: PublicationQueryRequest) => {
+const getPublicationRequest = async (request: PublicationRequest) => {
   const result = await apolloClient.query({
     query: PublicationDocument,
     variables: {
       request,
+      statsRequest: {},
     },
   });
 
@@ -13,7 +15,9 @@ const getPublicationRequest = async (request: PublicationQueryRequest) => {
 };
 
 export const getPublication = async () => {
-  const result = await getPublicationRequest({ publicationId: '0x0f-0x01' });
+  const result = await getPublicationRequest({
+    for: '0x01-0x01',
+  });
   console.log('publication: result', result);
 
   return result;

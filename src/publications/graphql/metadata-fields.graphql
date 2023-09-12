@@ -1,0 +1,99 @@
+fragment MediaFields on MediaSet {
+  ... on VideoSet {
+    rawURI
+    video {
+      url
+      mimeType
+    }
+    altTag
+  }
+  ... on AudioSet {
+    rawURI
+    audio {
+      url
+      mimeType
+    }
+  }
+  ... on ImageSet {
+    rawURI
+    image {
+      url
+      mimeType
+      width
+      height
+    }
+    altTag
+  }
+}
+
+fragment MetadataV2Fields on PublicationMetadataV2 {
+  name
+  description
+  content
+  attributes {
+    displayType
+    traitType
+    value
+  }
+  locale
+  tags
+  contentWarning
+  mainContentFocus
+  animationUrl
+  encryptedWith {
+    encryptionKey
+    encryptedFields {
+      content
+      image
+      media {
+        uri
+        mimeType
+        altTag
+        cover
+      }
+      animationUrl
+      externalUrl
+    }
+  }
+  image {
+    rawURI
+    image {
+      url
+      mimeType
+      width
+      height
+    }
+    altTag
+  }
+  media {
+    ...MediaFields
+  }
+}
+
+fragment MetadataV1Fields on PublicationMetadataV1 {
+  version
+  metadata_id
+  appId
+  name
+  description
+  content
+  attributes {
+    displayType
+    traitType
+    value
+  }
+  image {
+    rawURI
+    image {
+      url
+      mimeType
+      width
+      height
+    }
+    altTag
+  }
+  media {
+    ...MediaFields
+  }
+  animationUrl
+}

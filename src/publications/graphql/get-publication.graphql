@@ -1,0 +1,21 @@
+#import "./publication-fragments.graphql"
+
+query Publication($request: PublicationRequest!, $statsRequest: PublicationStatsInput!) {
+  publication(request: $request) {
+    ... on Post {
+      ...PostFields
+    }
+
+    ... on Comment {
+      ...CommentFields
+    }
+
+    ... on Mirror {
+      ...MirrorFields
+    }
+
+    ... on Quote {
+      ...QuoteFields
+    }
+  }
+}
