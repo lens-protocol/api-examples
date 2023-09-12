@@ -20,6 +20,7 @@ export type Scalars = {
   CreateHandle: any;
   Cursor: any;
   DateTime: any;
+  EncryptedPath: any;
   EncryptedValue: any;
   Ens: any;
   EvmAddress: any;
@@ -44,6 +45,7 @@ export type Scalars = {
   TxId: any;
   URI: any;
   URL: any;
+  UUID: any;
   UnixTimestamp: any;
   Void: any;
 };
@@ -79,14 +81,14 @@ export type ActOnOpenActionLensManagerRequest = {
 
 export type ActOnOpenActionRequest = {
   actOn: ActOnOpenActionInput;
-  for?: InputMaybe<Scalars['PublicationId']>;
+  for: Scalars['PublicationId'];
   referrers?: InputMaybe<Array<OnchainReferrer>>;
 };
 
 export type ActedNotification = {
   __typename?: 'ActedNotification';
   actions: Array<OpenActionProfileActed>;
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   publication: AnyPublication;
 };
 
@@ -214,7 +216,7 @@ export enum AudioMimeType {
 
 export type AudioSet = {
   __typename?: 'AudioSet';
-  audio: Audio;
+  audio?: Maybe<Audio>;
   rawURI: Scalars['URI'];
 };
 
@@ -365,7 +367,7 @@ export type CommentStatsArgs = {
 export type CommentNotification = {
   __typename?: 'CommentNotification';
   comment: Comment;
-  id: Scalars['String'];
+  id: Scalars['UUID'];
 };
 
 export enum CommentRankingFilterType {
@@ -1337,7 +1339,6 @@ export type FeedItem = {
 
 export type FeedRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  limit?: InputMaybe<Scalars['LimitScalar']>;
   where?: InputMaybe<FeedWhere>;
 };
 
@@ -1407,7 +1408,7 @@ export enum FollowModuleType {
 export type FollowNotification = {
   __typename?: 'FollowNotification';
   followers: Array<Profile>;
-  id: Scalars['String'];
+  id: Scalars['UUID'];
 };
 
 export type FollowOnlyReferenceModuleSettings = {
@@ -1568,9 +1569,7 @@ export enum ImageMimeType {
 
 export type ImageSet = {
   __typename?: 'ImageSet';
-  /** Alternative text for the image */
-  altTag?: Maybe<Scalars['String']>;
-  image: Image;
+  image?: Maybe<Image>;
   rawURI: Scalars['URI'];
   transformed?: Maybe<Image>;
 };
@@ -1643,8 +1642,17 @@ export type LegacyAaveFeeCollectModuleSettings = {
   referralFee: Scalars['Float'];
 };
 
+export type LegacyAudioItem = {
+  __typename?: 'LegacyAudioItem';
+  /** Alternative text for the audio */
+  altTag?: Maybe<Scalars['String']>;
+  cover?: Maybe<ImageSet>;
+  item: AudioSet;
+};
+
 export type LegacyCollectRequest = {
   on: Scalars['PublicationId'];
+  referrer?: InputMaybe<Scalars['PublicationId']>;
 };
 
 export type LegacyErc4626FeeCollectModuleSettings = {
@@ -1686,6 +1694,13 @@ export type LegacyFreeCollectModuleSettings = {
   followerOnly: Scalars['Boolean'];
 };
 
+export type LegacyImageItem = {
+  __typename?: 'LegacyImageItem';
+  /** Alternative text for the image */
+  altTag?: Maybe<Scalars['String']>;
+  item: ImageSet;
+};
+
 export type LegacyLimitedFeeCollectModuleSettings = {
   __typename?: 'LegacyLimitedFeeCollectModuleSettings';
   /** The collect module amount info */
@@ -1717,6 +1732,8 @@ export type LegacyLimitedTimedFeeCollectModuleSettings = {
   /** The collect module referral fee */
   referralFee: Scalars['Float'];
 };
+
+export type LegacyMediaItem = LegacyAudioItem | LegacyImageItem | LegacyVideoItem;
 
 export type LegacyMultirecipientFeeCollectModuleSettings = {
   __typename?: 'LegacyMultirecipientFeeCollectModuleSettings';
@@ -1775,6 +1792,14 @@ export type LegacyTimedFeeCollectModuleSettings = {
   recipient: Scalars['EvmAddress'];
   /** The collect module referral fee */
   referralFee: Scalars['Float'];
+};
+
+export type LegacyVideoItem = {
+  __typename?: 'LegacyVideoItem';
+  /** Alternative text for the video */
+  altTag?: Maybe<Scalars['String']>;
+  cover?: Maybe<ImageSet>;
+  item: VideoSet;
 };
 
 export type LensProfileManagerRelayError = {
@@ -1869,14 +1894,12 @@ export type MarketplaceMetadata = {
   description?: Maybe<Scalars['Markdown']>;
   externalURL?: Maybe<Scalars['URL']>;
   image?: Maybe<Scalars['URI']>;
-  name: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
 };
-
-export type MediaSet = AudioSet | ImageSet | VideoSet;
 
 export type MentionNotification = {
   __typename?: 'MentionNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   publication: PrimaryPublication;
 };
 
@@ -1913,7 +1936,7 @@ export type Mirror = {
 
 export type MirrorNotification = {
   __typename?: 'MirrorNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   mirrors: Array<ProfileMirrorResult>;
   publication: PrimaryPublication;
 };
@@ -2612,8 +2635,9 @@ export type Nft = {
   contract: NetworkAddress;
   contractType: NftContractType;
   metadata: NftMetadata;
-  ownerInfo: Owner;
+  owner: Owner;
   tokenId: Scalars['TokenId'];
+  totalSupply: Scalars['String'];
 };
 
 /** Nft Collection type */
@@ -2657,8 +2681,8 @@ export type NftCollectionWithOwners = {
   __typename?: 'NftCollectionWithOwners';
   /** The Nft collection */
   collection: NftCollection;
-  /** The total number of Lens profiles that own this collection */
-  totalProfiles: Scalars['Float'];
+  /** The total number of Lens profile owners that have at least 1 NFT from this collection */
+  totalOwners: Scalars['Float'];
 };
 
 /** NFT collections request */
@@ -2671,7 +2695,7 @@ export type NftCollectionsRequest = {
   for?: InputMaybe<Scalars['ProfileId']>;
   /** Filter by owner address */
   forAddress?: InputMaybe<Scalars['EvmAddress']>;
-  limit?: InputMaybe<Scalars['Float']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export enum NftContractType {
@@ -2680,7 +2704,9 @@ export enum NftContractType {
 }
 
 export type NftGalleriesRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
   for: Scalars['ProfileId'];
+  limit?: InputMaybe<Scalars['LimitScalar']>;
 };
 
 export type NftGallery = {
@@ -2737,25 +2763,23 @@ export type NftInput = {
 
 export type NftMetadata = {
   __typename?: 'NftMetadata';
-  description: Scalars['String'];
-  image: Scalars['URI'];
-  name: Scalars['String'];
-};
-
-export type NftOwnershipChallenge = {
-  contract: NetworkAddressInput;
-  tokenId: Scalars['TokenId'];
+  animationUrl?: Maybe<Scalars['URI']>;
+  attributes?: Maybe<Array<PublicationMarketplaceMetadataAttribute>>;
+  description?: Maybe<Scalars['Markdown']>;
+  externalURL?: Maybe<Scalars['URL']>;
+  image?: Maybe<Scalars['URI']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 export type NftOwnershipChallengeRequest = {
   for: Scalars['EvmAddress'];
-  nfts: Array<NftOwnershipChallenge>;
+  nfts: Array<NftInput>;
 };
 
 export type NftOwnershipChallengeResult = {
   __typename?: 'NftOwnershipChallengeResult';
-  id: Scalars['String'];
-  text: Scalars['String'];
+  info?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
 };
 
 export type NftOwnershipCondition = {
@@ -2763,22 +2787,6 @@ export type NftOwnershipCondition = {
   contract: NetworkAddress;
   contractType: NftContractType;
   tokenIds?: Maybe<Array<Scalars['TokenId']>>;
-};
-
-/** NFT search query */
-export type NftSearchRequest = {
-  /** Chain IDs to search. Supports Ethereum and Polygon. If omitted, it will search in both chains */
-  chainIds?: InputMaybe<Array<Scalars['ChainId']>>;
-  cursor?: InputMaybe<Scalars['Cursor']>;
-  /** Exclude follower NFTs from the search */
-  excludeFollowers?: InputMaybe<Scalars['Boolean']>;
-  /** Ethereum address of the owner. If unknown you can also search by profile ID */
-  forAddress?: InputMaybe<Scalars['EvmAddress']>;
-  /** Profile ID of the owner */
-  forProfileId?: InputMaybe<Scalars['ProfileId']>;
-  limit?: InputMaybe<Scalars['LimitScalar']>;
-  /** Search query. Has to be part of a collection name */
-  query: Scalars['String'];
 };
 
 export type NftUpdateItemOrder = {
@@ -2794,10 +2802,17 @@ export type NftsRequest = {
 };
 
 export type NftsRequestWhere = {
+  /** Chain IDs to search. Supports Ethereum and Polygon. If omitted, it will search in both chains */
   chainIds?: InputMaybe<Array<Scalars['ChainId']>>;
   excludeCollections?: InputMaybe<Array<NetworkAddressInput>>;
-  for?: InputMaybe<Scalars['ProfileId']>;
+  /** Exclude follower NFTs from the search */
+  excludeFollowers?: InputMaybe<Scalars['Boolean']>;
+  /** Ethereum address of the owner. If unknown you can also search by profile ID */
+  forAddress?: InputMaybe<Scalars['EvmAddress']>;
+  /** Profile ID of the owner */
+  forProfileId?: InputMaybe<Scalars['ProfileId']>;
   includeCollections?: InputMaybe<Array<NetworkAddressInput>>;
+  /** Search query. Has to be part of a collection name */
   query?: InputMaybe<Scalars['String']>;
 };
 
@@ -2815,7 +2830,6 @@ export type Notification = ActedNotification | CommentNotification | FollowNotif
 
 export type NotificationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  limit?: InputMaybe<Scalars['LimitScalar']>;
   where?: InputMaybe<NotificationWhere>;
 };
 
@@ -2824,12 +2838,11 @@ export type NotificationSubscriptionRequest = {
 };
 
 export enum NotificationType {
-  CollectActed = 'COLLECT_ACTED',
+  Acted = 'ACTED',
   Commented = 'COMMENTED',
   Followed = 'FOLLOWED',
   Mentioned = 'MENTIONED',
   Mirrored = 'MIRRORED',
-  OtherActed = 'OTHER_ACTED',
   Quoted = 'QUOTED',
   Reacted = 'REACTED'
 }
@@ -2943,7 +2956,7 @@ export type OwnedHandlesRequest = {
 export type Owner = {
   __typename?: 'Owner';
   address: Scalars['EvmAddress'];
-  amount: Scalars['Int'];
+  amount: Scalars['String'];
 };
 
 export type PaginatedCurrenciesResult = {
@@ -3028,6 +3041,12 @@ export type PaginatedPopularNftCollectionsResult = {
   pageInfo: PaginatedResultInfo;
 };
 
+export type PaginatedProfileActionHistoryResult = {
+  __typename?: 'PaginatedProfileActionHistoryResult';
+  items: Array<ProfileActionHistory>;
+  pageInfo: PaginatedResultInfo;
+};
+
 /** The paginated profile managers result */
 export type PaginatedProfileManagersResult = {
   __typename?: 'PaginatedProfileManagersResult';
@@ -3091,15 +3110,17 @@ export type PaginatedWhoReactedResult = {
 /** The POAP Event result */
 export type PoapEvent = {
   __typename?: 'PoapEvent';
-  animation_url?: Maybe<Scalars['URL']>;
+  animation_url?: Maybe<Scalars['String']>;
   city?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   end_date?: Maybe<Scalars['DateTime']>;
   event_template_id?: Maybe<Scalars['Int']>;
   event_url: Scalars['URL'];
+  expiry_date?: Maybe<Scalars['DateTime']>;
   fancy_id: Scalars['String'];
-  id: Scalars['Int'];
+  from_admin?: Maybe<Scalars['Boolean']>;
+  id: Scalars['TokenId'];
   image_url?: Maybe<Scalars['URL']>;
   name: Scalars['String'];
   private_event?: Maybe<Scalars['Boolean']>;
@@ -3109,7 +3130,7 @@ export type PoapEvent = {
 };
 
 export type PoapEventQueryRequest = {
-  eventId: Scalars['Float'];
+  eventId: Scalars['String'];
 };
 
 export type PoapHoldersQueryRequest = {
@@ -3124,13 +3145,13 @@ export type PoapToken = {
   created: Scalars['DateTime'];
   event: PoapEvent;
   /** Poap Event Id */
-  eventId: Scalars['Float'];
+  eventId: Scalars['TokenId'];
   /** Which network the token is: L1 (eth) or L2 (Gnosis) */
   layer: PoapTokenLayerType;
   /** migrated to L1 at */
   migrated?: Maybe<Scalars['DateTime']>;
   owner: NetworkAddress;
-  tokenId: Scalars['Int'];
+  tokenId: Scalars['TokenId'];
 };
 
 export enum PoapTokenLayerType {
@@ -3229,6 +3250,41 @@ export type ProfileStatsArgs = {
   request: ProfileStatsArg;
 };
 
+/** The Profile */
+export type ProfileActionHistory = {
+  __typename?: 'ProfileActionHistory';
+  actionType: ProfileActionHistoryType;
+  actionedOn: Scalars['DateTime'];
+  id: Scalars['UUID'];
+  txHash?: Maybe<Scalars['TxHash']>;
+  who: Scalars['EvmAddress'];
+};
+
+export type ProfileActionHistoryRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  limit?: InputMaybe<Scalars['LimitScalar']>;
+};
+
+/** Profile action history type */
+export enum ProfileActionHistoryType {
+  Acted = 'ACTED',
+  Blocked = 'BLOCKED',
+  Collected = 'COLLECTED',
+  Comment = 'COMMENT',
+  Follow = 'FOLLOW',
+  LinkHandle = 'LINK_HANDLE',
+  LoggedIn = 'LOGGED_IN',
+  Mirror = 'MIRROR',
+  Post = 'POST',
+  Quote = 'QUOTE',
+  RefreshAuthToken = 'REFRESH_AUTH_TOKEN',
+  SetProfileMetadata = 'SET_PROFILE_METADATA',
+  SetProfileModule = 'SET_PROFILE_MODULE',
+  Unblocked = 'UNBLOCKED',
+  Unfollow = 'UNFOLLOW',
+  UnlinkHandle = 'UNLINK_HANDLE'
+}
+
 export type ProfileBookmarksRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<Scalars['LimitScalar']>;
@@ -3248,7 +3304,7 @@ export type ProfileGuardianResult = {
 };
 
 export type ProfileInterestsRequest = {
-  interests: Scalars['String'];
+  interests: Array<Scalars['String']>;
 };
 
 export type ProfileManagersRequest = {
@@ -3276,7 +3332,6 @@ export type ProfileMetadata = {
 
 export type ProfileMirrorResult = {
   __typename?: 'ProfileMirrorResult';
-  id: Scalars['String'];
   mirrorId: Scalars['PublicationId'];
   mirroredAt: Scalars['DateTime'];
   profile: Profile;
@@ -3601,6 +3656,8 @@ export type PublicationMetadataMediaAudio = {
 
 export type PublicationMetadataMediaImage = {
   __typename?: 'PublicationMetadataMediaImage';
+  /** Alternative text for the image */
+  altTag?: Maybe<Scalars['String']>;
   item: ImageSet;
   license?: Maybe<PublicationMetadataLicenseType>;
   type: ImageMimeType;
@@ -3608,6 +3665,8 @@ export type PublicationMetadataMediaImage = {
 
 export type PublicationMetadataMediaVideo = {
   __typename?: 'PublicationMetadataMediaVideo';
+  /** Alternative text for the video */
+  altTag?: Maybe<Scalars['String']>;
   cover?: Maybe<ImageSet>;
   duration?: Maybe<Scalars['Int']>;
   item: VideoSet;
@@ -3627,8 +3686,9 @@ export type PublicationMetadataV1 = {
   attributes?: Maybe<Array<PublicationMarketplaceMetadataAttribute>>;
   content?: Maybe<Scalars['Markdown']>;
   description?: Maybe<Scalars['Markdown']>;
+  externalUrl?: Maybe<Scalars['URI']>;
   image?: Maybe<ImageSet>;
-  media?: Maybe<Array<MediaSet>>;
+  media?: Maybe<Array<LegacyMediaItem>>;
   metadata_id: Scalars['String'];
   name?: Maybe<Scalars['Markdown']>;
   version: LegacyPublicationMetadataVersions;
@@ -3642,10 +3702,11 @@ export type PublicationMetadataV2 = {
   contentWarning?: Maybe<PublicationContentWarningType>;
   description?: Maybe<Scalars['Markdown']>;
   encryptedWith?: Maybe<PublicationMetadataV2Encryption>;
+  externalUrl?: Maybe<Scalars['URI']>;
   image?: Maybe<ImageSet>;
   locale?: Maybe<Scalars['Locale']>;
   mainContentFocus: PublicationMetadataV2MainFocusType;
-  media?: Maybe<Array<MediaSet>>;
+  media?: Maybe<Array<LegacyMediaItem>>;
   name?: Maybe<Scalars['Markdown']>;
   tags?: Maybe<Array<Scalars['String']>>;
 };
@@ -3685,6 +3746,7 @@ export type PublicationMetadataV3Attribute = {
 export type PublicationMetadataV3LitEncryption = {
   __typename?: 'PublicationMetadataV3LitEncryption';
   accessCondition: AccessCondition;
+  encryptedPaths: Array<Scalars['EncryptedPath']>;
   encryptionKey: Scalars['ContentEncryptionKey'];
 };
 
@@ -3986,7 +4048,7 @@ export type Query = {
   /** Get the most popular NFT collections. Popularity is based on how many Lens Profiles own NFTs from a given collection. */
   popularNftCollections: PaginatedPopularNftCollectionsResult;
   profile?: Maybe<Profile>;
-  profileActionHistory: Scalars['Void'];
+  profileActionHistory: PaginatedProfileActionHistoryResult;
   profileAlreadyInvited: Scalars['Boolean'];
   profileBookmarks: PaginatedPublicationsResult;
   profileInterestsOptions: Array<Scalars['String']>;
@@ -4001,8 +4063,6 @@ export type Query = {
   relayQueues: Array<RelayQueueResult>;
   revenueForPublication: PublicationRevenue;
   revenueFromPublications: PaginatedRevenueFromPublicationsResult;
-  /** Search for NFTs in a wallet by collection name. Supports Polygon and Ethereum and searches in both by default. */
-  searchNfts: PaginatedNftsResult;
   searchProfiles: PaginatedProfileResult;
   searchPublications: PaginatedPublicationPrimaryResult;
   supportedFollowModules: PaginatedSupportedModules;
@@ -4190,7 +4250,7 @@ export type QueryProfileArgs = {
 
 
 export type QueryProfileActionHistoryArgs = {
-  request: WhoHaveBlockedRequest;
+  request: ProfileActionHistoryRequest;
 };
 
 
@@ -4251,11 +4311,6 @@ export type QueryRevenueForPublicationArgs = {
 
 export type QueryRevenueFromPublicationsArgs = {
   request: RevenueFromPublicationsRequest;
-};
-
-
-export type QuerySearchNftsArgs = {
-  request: NftSearchRequest;
 };
 
 
@@ -4343,7 +4398,7 @@ export type QuoteStatsArgs = {
 
 export type QuoteNotification = {
   __typename?: 'QuoteNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   quote: Quote;
 };
 
@@ -4362,7 +4417,7 @@ export type ReactionEvent = {
 
 export type ReactionNotification = {
   __typename?: 'ReactionNotification';
-  id: Scalars['String'];
+  id: Scalars['UUID'];
   publication: PrimaryPublication;
   reactions: Array<ProfileReactedResult>;
 };
@@ -4626,7 +4681,6 @@ export type Subscription = {
   newMomokaTransaction: MomokaTransaction;
   newNotification: Notification;
   newPublicationStats: PublicationStats;
-  watchLensTransaction: LensTransactionResult;
 };
 
 
@@ -4637,11 +4691,6 @@ export type SubscriptionNewNotificationArgs = {
 
 export type SubscriptionNewPublicationStatsArgs = {
   request: PublicationStatsSubscriptionRequest;
-};
-
-
-export type SubscriptionWatchLensTransactionArgs = {
-  request: LensTransactionStatusRequest;
 };
 
 export type SupportedModule = KnownSupportedModule | UnknownSupportedModule;
@@ -4877,9 +4926,8 @@ export enum VideoMimeType {
 
 export type VideoSet = {
   __typename?: 'VideoSet';
-  altTag?: Maybe<Scalars['String']>;
   rawURI: Scalars['URI'];
-  video: Video;
+  video?: Maybe<Video>;
 };
 
 export type WhoActedOnPublicationRequest = {
@@ -4999,7 +5047,7 @@ export type ExplorePublicationsQueryVariables = Exact<{
 }>;
 
 
-export type ExplorePublicationsQuery = { __typename?: 'Query', explorePublications: { __typename?: 'PaginatedExplorePublicationResult', items: Array<{ __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
+export type ExplorePublicationsQuery = { __typename?: 'Query', explorePublications: { __typename?: 'PaginatedExplorePublicationResult', items: Array<{ __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
 
 export type FeedHighlightsQueryVariables = Exact<{
   request: FeedHighlightsRequest;
@@ -5041,6 +5089,20 @@ export type FollowingQueryVariables = Exact<{
 
 
 export type FollowingQuery = { __typename?: 'Query', following: { __typename?: 'PaginatedProfileResult', items: Array<{ __typename?: 'Profile', id: any, txHash: any, createdAt: any, interests: Array<string>, invitesLeft?: number | null, handle?: any | null, ownedBy: { __typename?: 'NetworkAddress', address: any, chainId: any }, gasless: { __typename?: 'Gasless', enabled: boolean, relay?: { __typename?: 'NetworkAddress', address: any, chainId: any } | null }, stats: { __typename?: 'ProfileStats', id: any, followers: number, following: number, comments: number, posts: number, mirrors: number, quotes: number, publications: number, reactions: number, countOpenActions: number }, operations: { __typename?: 'ProfileOperations', id: any, canBlock: boolean, canUnblock: boolean, canFollow: TriStateValue, canUnfollow: boolean, isBlockedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, isFollowedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, isFollowingMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean } }, guardian?: { __typename?: 'ProfileGuardianResult', protected: boolean, cooldownEndsOn?: any | null } | null, invitedBy?: { __typename?: 'Profile', id: any } | null, onchainIdentity: { __typename?: 'ProfileOnchainIdentity', proofOfHumanity: boolean, ens?: { __typename?: 'EnsOnchainIdentity', name?: any | null } | null, sybilDotOrg: { __typename?: 'SybilDotOrgIdentity', verified: boolean, source?: { __typename?: 'SybilDotOrgIdentitySource', twitter: { __typename?: 'SybilDotOrgTwitterIdentity', handle?: string | null } } | null }, worldcoin: { __typename?: 'WorldcoinIdentity', isHuman: boolean } }, followNftAddress?: { __typename?: 'NetworkAddress', address: any, chainId: any } | null, metadata?: { __typename?: 'ProfileMetadata', bio?: any | null } | null, followModule?: { __typename?: 'FeeFollowModuleSettings', recipient: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, amount: { __typename?: 'Amount', value: string, asset: { __typename?: 'Erc20', name: string, symbol: string, decimals: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } } } | { __typename?: 'RevertFollowModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownFollowModuleSettings', followModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null }>, pageInfo: { __typename?: 'PaginatedResultInfo', next?: any | null, prev?: any | null } } };
+
+export type IsFollowedByMeQueryVariables = Exact<{
+  request: ProfileRequest;
+}>;
+
+
+export type IsFollowedByMeQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', operations: { __typename?: 'ProfileOperations', isFollowedByMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean } } } | null };
+
+export type IsFollowingMeQueryVariables = Exact<{
+  request: ProfileRequest;
+}>;
+
+
+export type IsFollowingMeQuery = { __typename?: 'Query', profile?: { __typename?: 'Profile', operations: { __typename?: 'ProfileOperations', isFollowingMe: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean } } } | null };
 
 export type MutualFollowersQueryVariables = Exact<{
   request: MutualFollowersRequest;
@@ -5153,7 +5215,7 @@ export type PoapEventQueryVariables = Exact<{
 }>;
 
 
-export type PoapEventQuery = { __typename?: 'Query', poapEvent: { __typename?: 'PoapEvent', id: number } };
+export type PoapEventQuery = { __typename?: 'Query', poapEvent: { __typename?: 'PoapEvent', id: any } };
 
 export type PoapHoldersQueryVariables = Exact<{
   request: PoapHoldersQueryRequest;
@@ -5167,7 +5229,7 @@ export type MutualPoapsQueryVariables = Exact<{
 }>;
 
 
-export type MutualPoapsQuery = { __typename?: 'Query', mutualPoaps: { __typename?: 'PaginatedPoapEventResult', items: Array<{ __typename?: 'PoapEvent', id: number }> } };
+export type MutualPoapsQuery = { __typename?: 'Query', mutualPoaps: { __typename?: 'PaginatedPoapEventResult', items: Array<{ __typename?: 'PoapEvent', id: any }> } };
 
 export type CreateChangeProfileManagersTypedDataMutationVariables = Exact<{
   request: ChangeProfileManagersRequest;
@@ -5283,7 +5345,7 @@ export type PublicationQueryVariables = Exact<{
 }>;
 
 
-export type PublicationQuery = { __typename?: 'Query', publication?: { __typename?: 'Comment', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, root: { __typename?: 'Post', id: any }, commentOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, firstComment?: { __typename?: 'Comment', id: any } | null, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Mirror', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, mirrorOf: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any } } | { __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | null };
+export type PublicationQuery = { __typename?: 'Query', publication?: { __typename?: 'Comment', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, root: { __typename?: 'Post', id: any }, commentOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, firstComment?: { __typename?: 'Comment', id: any } | null, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Mirror', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, mirrorOf: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any } } | { __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | null };
 
 export type PublicationsQueryVariables = Exact<{
   request: PublicationsRequest;
@@ -5291,11 +5353,11 @@ export type PublicationsQueryVariables = Exact<{
 }>;
 
 
-export type PublicationsQuery = { __typename?: 'Query', publications: { __typename?: 'PaginatedPublicationsResult', items: Array<{ __typename?: 'Comment', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, root: { __typename?: 'Post', id: any }, commentOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, firstComment?: { __typename?: 'Comment', id: any } | null, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Mirror', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, mirrorOf: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any } } | { __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
+export type PublicationsQuery = { __typename?: 'Query', publications: { __typename?: 'PaginatedPublicationsResult', items: Array<{ __typename?: 'Comment', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, root: { __typename?: 'Post', id: any }, commentOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, firstComment?: { __typename?: 'Comment', id: any } | null, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Mirror', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, mirrorOf: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any } } | { __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null } | { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
 
-export type MetadataV2FieldsFragment = { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null };
+export type MetadataV2FieldsFragment = { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null };
 
-export type MetadataV1FieldsFragment = { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null };
+export type MetadataV1FieldsFragment = { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null };
 
 export type CreateMomokaPostTypedDataMutationVariables = Exact<{
   request: MomokaPostRequest;
@@ -5419,13 +5481,13 @@ export type PrimaryPublicationIdFragment = PrimaryPublicationId_Comment_Fragment
 
 export type PublicationOperationFieldsFragment = { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } };
 
-export type PostFieldsFragment = { __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
+export type PostFieldsFragment = { __typename?: 'Post', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
 
-export type QuoteFieldsFragment = { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
+export type QuoteFieldsFragment = { __typename?: 'Quote', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, quotedOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
 
 export type MirrorFieldsFragment = { __typename?: 'Mirror', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, mirrorOf: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any } };
 
-export type CommentFieldsFragment = { __typename?: 'Comment', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, root: { __typename?: 'Post', id: any }, commentOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, firstComment?: { __typename?: 'Comment', id: any } | null, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
+export type CommentFieldsFragment = { __typename?: 'Comment', id: any, isHidden: boolean, isEncrypted: boolean, txHash: any, createdAt: any, publishedOn?: { __typename?: 'App', id: any } | null, momoka?: { __typename?: 'MomokaInfo', proof: any } | null, by: { __typename?: 'Profile', id: any, handle?: any | null }, stats: { __typename?: 'PublicationStats', comments: number, mirrors: number, quotes: number }, operations: { __typename?: 'PublicationOperations', id: any, isNotInterested: boolean, hasBookmarked: boolean, hasReported: boolean, canAct: TriStateValue, hasReacted: boolean, canComment: TriStateValue, canMirror: boolean, hasMirrored: boolean, hasActed: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean }, actedOn: Array<{ __typename?: 'KnownCollectOpenActionResult', type: CollectOpenActionModuleType } | { __typename?: 'UnknownOpenActionResult', address: any, category?: OpenActionCategoryType | null, initReturnData: any }>, canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } }, metadata: { __typename?: 'ArticleMetadataV3' } | { __typename?: 'AudioMetadataV3' } | { __typename?: 'CheckingInMetadataV3' } | { __typename?: 'EmbedMetadataV3' } | { __typename?: 'EventMetadataV3' } | { __typename?: 'ImageMetadataV3' } | { __typename?: 'LinkMetadataV3' } | { __typename?: 'LiveStreamMetadataV3' } | { __typename?: 'MintMetadataV3' } | { __typename?: 'PublicationMetadataV1', version: LegacyPublicationMetadataVersions, metadata_id: string, appId?: any | null, name?: any | null, description?: any | null, content?: any | null, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'PublicationMetadataV2', name?: any | null, description?: any | null, content?: any | null, locale?: any | null, tags?: Array<string> | null, contentWarning?: PublicationContentWarningType | null, mainContentFocus: PublicationMetadataV2MainFocusType, animationUrl?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: PublicationMarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, encryptedWith?: { __typename?: 'PublicationMetadataV2Encryption', encryptionKey: any, encryptedFields: { __typename?: 'PublicationMetadataV2EncryptedFields', content?: any | null, image?: any | null, animationUrl?: any | null, externalUrl?: any | null, media?: Array<{ __typename?: 'EncryptedMedia', uri: any, mimeType?: any | null, cover?: any | null }> | null } } | null, image?: { __typename?: 'ImageSet', rawURI: any, image?: { __typename?: 'Image', url: any, mimeType?: ImageMimeType | null, width?: number | null, height?: number | null } | null } | null } | { __typename?: 'SpaceMetadataV3' } | { __typename?: 'StoryMetadataV3' } | { __typename?: 'TextOnlyMetadataV3' } | { __typename?: 'ThreeDMetadataV3' } | { __typename?: 'TransactionMetadataV3' } | { __typename?: 'VideoMetadataV3' }, root: { __typename?: 'Post', id: any }, commentOn: { __typename?: 'Comment', id: any } | { __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }, firstComment?: { __typename?: 'Comment', id: any } | null, referenceModule?: { __typename?: 'DegreesOfSeparationReferenceModuleSettings', commentsRestricted: boolean, mirrorsRestricted: boolean, quotesRestricted: boolean, degreesOfSeparation: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'FollowOnlyReferenceModuleSettings', contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | { __typename?: 'UnknownReferenceModuleSettings', referenceModuleReturnData: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } | null };
 
 export type LensTransactionStatusQueryVariables = Exact<{
   request: LensTransactionStatusRequest;
@@ -5462,6 +5524,8 @@ export const CreateFollowTypedDataDocument = {"kind":"Document","definitions":[{
 export const FollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Follow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowLensManagerRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"follow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<FollowMutation, FollowMutationVariables>;
 export const FollowersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Followers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowersRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"statsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsArg"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reactionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsReactionArgs"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"countOpenActionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsCountOpenActionArgs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"followers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<FollowersQuery, FollowersQueryVariables>;
 export const FollowingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Following"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowingRequest"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"statsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsArg"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"reactionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsReactionArgs"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"countOpenActionsRequest"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileStatsCountOpenActionArgs"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"following"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"next"}},{"kind":"Field","name":{"kind":"Name","value":"prev"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<FollowingQuery, FollowingQueryVariables>;
+export const IsFollowedByMeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"IsFollowedByMe"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isFollowedByMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}}]}}]}}]}}]} as unknown as DocumentNode<IsFollowedByMeQuery, IsFollowedByMeQueryVariables>;
+export const IsFollowingMeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"IsFollowingMe"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isFollowingMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}}]}}]}}]}}]} as unknown as DocumentNode<IsFollowingMeQuery, IsFollowingMeQueryVariables>;
 export const MutualFollowersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"MutualFollowers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"MutualFollowersRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"mutualFollowers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<MutualFollowersQuery, MutualFollowersQueryVariables>;
 export const CreateUnfollowTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateUnfollowTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnfollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createUnfollowTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Unfollow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"unfollowerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToUnfollow"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateUnfollowTypedDataMutation, CreateUnfollowTypedDataMutationVariables>;
 export const UnfollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Unfollow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnfollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unfollow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<UnfollowMutation, UnfollowMutationVariables>;
@@ -5559,14 +5623,14 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
       "RevertFollowModuleSettings",
       "UnknownFollowModuleSettings"
     ],
+    "LegacyMediaItem": [
+      "LegacyAudioItem",
+      "LegacyImageItem",
+      "LegacyVideoItem"
+    ],
     "LensProfileManagerRelayResult": [
       "LensProfileManagerRelayError",
       "RelaySuccess"
-    ],
-    "MediaSet": [
-      "AudioSet",
-      "ImageSet",
-      "VideoSet"
     ],
     "MirrorablePublication": [
       "Comment",

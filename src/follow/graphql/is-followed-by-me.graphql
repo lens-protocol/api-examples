@@ -1,0 +1,10 @@
+query IsFollowedByMe($request: ProfileRequest!) {
+  profile(request: $request) {
+    operations {
+      isFollowedByMe {
+        value
+        isFinalisedOnchain
+      }
+    }
+  }
+}

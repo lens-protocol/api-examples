@@ -16,6 +16,8 @@
     "follow:unfollow-lens-profile-manager": "env-cmd -f .env ts-node ./src/follow/unfollow-lens-profile-manager",
     "follow:following": "env-cmd -f .env ts-node ./src/follow/following",
     "follow:followers": "env-cmd -f .env ts-node ./src/follow/followers",
+    "follow:is-following-me": "env-cmd -f .env ts-node ./src/follow/is-following-me",
+    "follow:is-followed-by-me": "env-cmd -f .env ts-node ./src/follow/is-followed-by-me",
     "profile:block": "env-cmd -f .env ts-node ./src/profile/block",
     "profile:block-lens-profile-manager": "env-cmd -f .env ts-node ./src/profile/block-lens-profile-manager",
     "profile:unblock": "env-cmd -f .env ts-node ./src/profile/unblock",
@@ -65,7 +67,6 @@
     "feed:feed-highlights": "env-cmd -f .env ts-node ./src/feed/feed-highlights",
     "profile:profile-action-history": "env-cmd -f .env ts-node ./src/profile/profile-action-history",
     "profile:profile-already-invited": "env-cmd -f .env ts-node ./src/profile/profile-already-invited",
-
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",

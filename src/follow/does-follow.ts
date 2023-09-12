@@ -1,5 +1,5 @@
-import { apolloClient } from '../apollo-client';
 import { DoesFollowDocument, DoesFollowRequest } from '../../graphql-v1/generated';
+import { apolloClient } from '../apollo-client';
 
 const doesFollowRequest = async (request: DoesFollowRequest) => {
   const result = await apolloClient.query({
@@ -13,17 +13,21 @@ const doesFollowRequest = async (request: DoesFollowRequest) => {
 };
 
 export const doesFollow = async () => {
-  const followInfos = [
-    {
-      followerAddress: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
-      profileId: '0x02',
-    },
-  ];
+  throw new Error(
+    'ENDPOINT Does not exist anymore in lens-v2, please use isFollowingMe or isFollowedByMe '
+  );
 
-  const result = await doesFollowRequest({ followInfos });
-  console.log('does follow: result', result);
+  // const followInfos = [
+  //   {
+  //     followerAddress: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+  //     profileId: '0x02',
+  //   },
+  // ];
 
-  return result;
+  // const result = await doesFollowRequest({ followInfos });
+  // console.log('does follow: result', result);
+
+  // return result;
 };
 
 (async () => {
