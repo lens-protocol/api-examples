@@ -1,0 +1,62 @@
+#import "../../publications/graphql/publication-fragments.graphql"
+
+query Notifications($request: NotificationRequest!, $statsRequest: PublicationStatsInput!) {
+  notifications(request: $request) {
+    items {
+      ... on ReactionNotification {
+        id
+        publication {
+          ... on Post {
+            ...PostFields
+          }
+
+          ... on Comment {
+            ...CommentFields
+          }
+
+          ... on Quote {
+            ...QuoteFields
+          }
+        }
+        reactions {
+          profile {
+            id
+            handle
+          }
+          reactions {
+            reactedAt
+            reaction
+          }
+        }
+      }
+      ... on CommentNotification {
+        id
+        comment {
+          ...CommentFields
+        }
+      }
+      ... on MirrorNotification {
+        id
+      }
+      ... on QuoteNotification {
+        id
+        quote {
+          ...QuoteFields
+        }
+      }
+      ... on ActedNotification {
+        id
+      }
+      ... on FollowNotification {
+        id
+      }
+      ... on MentionNotification {
+        id
+      }
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
