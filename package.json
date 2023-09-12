@@ -92,7 +92,10 @@
     "profile:profiles-managed": "env-cmd -f .env ts-node ./src/profile/profiles-managed",
     "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed",
     "indexer:tx-id-to-tx-hash": "env-cmd -f .env ts-node ./src/indexer/tx-id-to-tx-hash",
-
+    "profile:dismiss-recommended-profiles": "env-cmd -f .env ts-node ./src/profile/dismiss-recommended-profiles",
+    "profile:remove-profile-interests": "env-cmd -f .env ts-node ./src/profile/remove-profile-interests",
+    "profile:add-profile-interests": "env-cmd -f .env ts-node ./src/profile/add-profile-interests",
+    
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
