@@ -1,0 +1,33 @@
+#import "../../common/graphql/common.graphql"
+#import "../../publications/graphql/publication-fragments.graphql"
+
+query RevenueForPublication(
+  $request: PublicationRevenueRequest!
+  $statsRequest: PublicationStatsInput!
+) {
+  revenueForPublication(request: $request) {
+    publication {
+      ... on Post {
+        ...PostFields
+      }
+
+      ... on Comment {
+        ...CommentFields
+      }
+
+      ... on Mirror {
+        ...MirrorFields
+      }
+
+      ... on Quote {
+        ...QuoteFields
+      }
+    }
+
+    revenue {
+      total {
+        ...AmountFields
+      }
+    }
+  }
+}

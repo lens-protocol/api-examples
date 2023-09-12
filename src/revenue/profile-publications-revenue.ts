@@ -1,24 +1,32 @@
 import { apolloClient } from '../apollo-client';
 import {
-  ProfilePublicationRevenueDocument,
-  ProfilePublicationRevenueQueryRequest,
-} from '../../graphql-v1/generated';
+  PublicationType,
+  RevenueFromPublicationsDocument,
+  RevenueFromPublicationsRequest,
+} from '../graphql/generated';
 
 export const profilePublicationsRevenueRequest = async (
-  request: ProfilePublicationRevenueQueryRequest
+  request: RevenueFromPublicationsRequest
 ) => {
   const result = await apolloClient.query({
-    query: ProfilePublicationRevenueDocument,
+    query: RevenueFromPublicationsDocument,
     variables: {
       request,
+      statsRequest: {},
     },
   });
 
-  return result.data.profilePublicationRevenue;
+  return result.data.revenueFromPublications;
 };
 
 export const profilePublicationsRevenue = async () => {
-  const result = await profilePublicationsRevenueRequest({ profileId: '0x41' });
+  const result = await profilePublicationsRevenueRequest({
+    for: '0x01',
+    where: {
+      fromCollects: true,
+      publicationTypes: [PublicationType.Post, PublicationType.Quote, PublicationType.Comment],
+    },
+  });
   console.log('publications profile revenues: result', result);
 
   return result;
