@@ -1,25 +1,23 @@
 import { apolloClient } from '../apollo-client';
-import {
-  SearchProfilesDocument,
-  SearchQueryRequest,
-  SearchRequestTypes,
-} from '../../graphql-v1/generated';
+import { ProfileSearchRequest, SearchProfilesDocument } from '../graphql/generated';
 
-const searchRequest = async (request: SearchQueryRequest) => {
+const searchRequest = async (request: ProfileSearchRequest) => {
   const result = await apolloClient.query({
     query: SearchProfilesDocument,
     variables: {
       request,
+      statsRequest: {},
+      countOpenActionsRequest: {},
+      reactionsRequest: {},
     },
   });
 
-  return result.data.search;
+  return result.data.searchProfiles;
 };
 
 export const search = async () => {
   const result = await searchRequest({
     query: 'josh',
-    type: SearchRequestTypes.Profile,
   });
   console.log('search profile: result', result);
 

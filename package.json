@@ -67,6 +67,9 @@
     "feed:feed-highlights": "env-cmd -f .env ts-node ./src/feed/feed-highlights",
     "profile:profile-action-history": "env-cmd -f .env ts-node ./src/profile/profile-action-history",
     "profile:profile-already-invited": "env-cmd -f .env ts-node ./src/profile/profile-already-invited",
+    "search:search-profiles": "env-cmd -f .env ts-node ./src/search/search-profiles",
+    "search:search-publications": "env-cmd -f .env ts-node ./src/search/search-publications",
+
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
@@ -103,8 +106,7 @@
     "revenue:profile-publication-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-publications-revenue",
     "revenue:profile-follow-revenue": "env-cmd -f .env ts-node ./src/revenue/profile-follow-revenue",
     "revenue:publication-revenue": "env-cmd -f .env ts-node ./src/revenue/publication-revenue",
-    "search:search-profiles": "env-cmd -f .env ts-node ./src/search/search-profiles",
-    "search:search-publications": "env-cmd -f .env ts-node ./src/search/search-publications",
+    "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment",
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5",
     "generate-lens-token-handle-registry-typings": "abi-types-generator './src/abis/lens-token-handle-registry-contract-abi.json' --output='./src/abis/types' --name=LensTokenHandleRegistry --provider=ethers_v5"
