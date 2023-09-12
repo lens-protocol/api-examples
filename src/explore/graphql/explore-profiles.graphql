@@ -1,0 +1,18 @@
+#import "../../profile/graphql/profile-fields-fragment.graphql"
+
+query ExploreProfiles(
+  $request: ExploreProfilesRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  exploreProfiles(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

@@ -1,0 +1,22 @@
+#import "../../publications/graphql/publication-fragments.graphql"
+
+query ExplorePublications(
+  $request: ExplorePublicationRequest!
+  $statsRequest: PublicationStatsInput!
+) {
+  explorePublications(request: $request) {
+    items {
+      ... on Post {
+        ...PostFields
+      }
+
+      ... on Quote {
+        ...QuoteFields
+      }
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

@@ -1,3 +1,5 @@
+#import "./publication-fragments.graphql"
+
 query Publications($request: PublicationsRequest!, $statsRequest: PublicationStatsInput!) {
   publications(request: $request) {
     items {
