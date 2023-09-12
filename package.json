@@ -59,6 +59,7 @@
     "publications:get-publications": "env-cmd -f .env ts-node ./src/publications/get-publications",
     "publications:get-publications-tags": "env-cmd -f .env ts-node ./src/publications/get-publications-tags",
     "publications:who-collected-publication": "env-cmd -f .env ts-node ./src/publications/who-collected-publication",
+    "publications:hide-publication": "env-cmd -f .env ts-node ./src/publications/hide-publication",
     "currencies:get-currencies": "env-cmd -f .env ts-node ./src/currencies/currencies",
     "nfts:mutual-nft-collections": "env-cmd -f .env ts-node ./src/nfts/mutual-nft-collections",
     "follow:mutual-followers": "env-cmd -f .env ts-node ./src/follow/mutual-followers",
@@ -89,7 +90,7 @@
     "profile:profiles-managed": "env-cmd -f .env ts-node ./src/profile/profiles-managed",
     "indexer:has-transaction-been-indexed": "env-cmd -f .env ts-node ./src/indexer/has-transaction-been-indexed",
     "indexer:tx-id-to-tx-hash": "env-cmd -f .env ts-node ./src/indexer/tx-id-to-tx-hash",
-    
+
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
@@ -107,7 +108,6 @@
     "publications:comment-gated": "env-cmd -f .env ts-node ./src/publications/comment-gated",
     "publications:comment-gated-gasless": "env-cmd -f .env ts-node ./src/publications/comment-gated-gasless",
     "publications:get-publication-gated": "env-cmd -f .env ts-node ./src/publications/get-publication-gated",
-    "publications:hide-publication": "env-cmd -f .env ts-node ./src/publications/hide-publication",
     "publications:post-gated-gasless": "env-cmd -f .env ts-node ./src/publications/post-gated-gasless",
     "publications:post-gated": "env-cmd -f .env ts-node ./src/publications/post-gated",
     "publications:post-encrypted": "env-cmd -f .env ts-node ./src/publications/post-encrypted",

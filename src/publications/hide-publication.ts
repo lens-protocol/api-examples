@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
-import { HidePublicationDocument, HidePublicationRequest } from '../../graphql-v1/generated';
+import { HidePublicationDocument, HidePublicationRequest } from '../graphql/generated';
 
 export const deletePublicationRequest = async (request: HidePublicationRequest) => {
   const result = await apolloClient.mutate({
@@ -20,7 +20,9 @@ export const deletePublication = async () => {
 
   await login(address);
 
-  await deletePublicationRequest({ publicationId: 'YOUR_PUBLICATION_ID' });
+  await deletePublicationRequest({
+    for: '0x0e-0x01',
+  });
 
   console.log('delete publication: success');
 };
