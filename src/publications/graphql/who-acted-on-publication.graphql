@@ -1,0 +1,12 @@
+query WhoActedOnPublication(
+  $request: WhoActedOnPublicationRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  whoActedOnPublication(request: $request) {
+    items {
+      ...ProfileFields
+    }
+  }
+}

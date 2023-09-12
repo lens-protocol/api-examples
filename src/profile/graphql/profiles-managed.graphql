@@ -1,0 +1,12 @@
+query ProfilesManaged(
+  $request: ProfilesManagedRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  profilesManaged(request: $request) {
+    items {
+      ...ProfileFields
+    }
+  }
+}

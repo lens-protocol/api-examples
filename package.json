@@ -79,6 +79,9 @@
     "module:supported-open-action-collect-modules": "env-cmd -f .env ts-node ./src/module/supported-open-action-collect-modules",
     "module:supported-open-action-modules": "env-cmd -f .env ts-node ./src/module/supported-open-action-modules",
     "module:supported-reference-modules": "env-cmd -f .env ts-node ./src/module/supported-reference-modules",
+    "profile:who-have-blocked": "env-cmd -f .env ts-node ./src/profile/who-have-blocked",
+    "publications:who-acted-on-publication": "env-cmd -f .env ts-node ./src/publications/who-acted-on-publication",
+    "profile:profiles-managed": "env-cmd -f .env ts-node ./src/profile/profiles-managed",
 
     "V2-COMPLETE-ABOVE": "ABOVE",
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",

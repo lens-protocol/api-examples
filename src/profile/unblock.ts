@@ -18,7 +18,7 @@ const createUnblockProfilesTypedData = async (request: BlockRequest) => {
   return result.data!.createUnblockProfilesTypedData;
 };
 
-export const block = async () => {
+export const unblock = async () => {
   const address = getAddressFromSigner();
   console.log('unblock: address', address);
 
@@ -57,5 +57,5 @@ export const block = async () => {
 };
 
 (async () => {
-  await block();
+  await unblock();
 })();

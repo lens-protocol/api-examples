@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
-import { USE_GASLESS } from '../config';
+import { explicitStart, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { BlockRequest, CreateBlockProfilesTypedDataDocument } from '../graphql/generated';
 import { lensHub } from '../lens-hub';
@@ -18,13 +18,13 @@ const createBlockProfilesTypedData = async (request: BlockRequest) => {
   return result.data!.createBlockProfilesTypedData;
 };
 
-export const block = async () => {
+export const block = async (profileIds: string[] = ['0x02']) => {
   const address = getAddressFromSigner();
   console.log('block: address', address);
 
   await login(address);
 
-  const { id, typedData } = await createBlockProfilesTypedData({ profiles: ['0x02'] });
+  const { id, typedData } = await createBlockProfilesTypedData({ profiles: profileIds });
   console.log('block: result', { id, typedData });
 
   console.log('block: typedData', typedData);
@@ -57,5 +57,7 @@ export const block = async () => {
 };
 
 (async () => {
-  await block();
+  if (explicitStart(__filename)) {
+    await block();
+  }
 })();

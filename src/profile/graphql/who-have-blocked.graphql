@@ -1,0 +1,12 @@
+query WhoHaveBlocked(
+  $request: WhoHaveBlockedRequest!
+  $statsRequest: ProfileStatsArg!
+  $reactionsRequest: ProfileStatsReactionArgs!
+  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
+) {
+  whoHaveBlocked(request: $request) {
+    items {
+      ...ProfileFields
+    }
+  }
+}
