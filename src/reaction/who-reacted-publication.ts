@@ -1,14 +1,14 @@
 import { apolloClient } from '../apollo-client';
-import {
-  WhoReactedPublicationDocument,
-  WhoReactedPublicationRequest,
-} from '../../graphql-v1/generated';
+import { WhoReactedPublicationDocument, WhoReactedPublicationRequest } from '../graphql/generated';
 
 export const whoReactedPublicationRequest = async (request: WhoReactedPublicationRequest) => {
   const result = await apolloClient.query({
     query: WhoReactedPublicationDocument,
     variables: {
       request,
+      statsRequest: {},
+      reactionsRequest: {},
+      countOpenActionsRequest: {},
     },
   });
 
@@ -16,8 +16,10 @@ export const whoReactedPublicationRequest = async (request: WhoReactedPublicatio
 };
 
 export const whoReactedPublication = async () => {
-  const result = await whoReactedPublicationRequest({ publicationId: '0x41-0x03' });
-  console.log('who collected: result', result);
+  const result = await whoReactedPublicationRequest({
+    for: '0x01-0x01',
+  });
+  console.log('who reacted to : result', result);
 
   return result;
 };
