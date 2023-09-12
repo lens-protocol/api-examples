@@ -2,13 +2,14 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { NotificationRequest, NotificationsDocument } from '../../graphql-v1/generated';
+import { NotificationRequest, NotificationsDocument } from '../graphql/generated';
 
 const getNotifications = async (request: NotificationRequest) => {
   const result = await apolloClient.mutate({
     mutation: NotificationsDocument,
     variables: {
       request,
+      statsRequest: {},
     },
   });
 
@@ -26,7 +27,7 @@ export const notifications = async () => {
 
   await login(address);
 
-  const result = await getNotifications({ profileId });
+  const result = await getNotifications({});
 
   console.log('notifications: result', result);
 
