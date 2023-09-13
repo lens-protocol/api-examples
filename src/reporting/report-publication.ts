@@ -6,7 +6,7 @@ import {
   PublicationReportingSensitiveSubreason,
   ReportPublicationDocument,
   ReportPublicationRequest,
-} from '../../graphql-v1/generated';
+} from '../graphql/generated';
 
 const reportPublicationRequest = async (request: ReportPublicationRequest) => {
   const result = await apolloClient.mutate({
@@ -26,7 +26,7 @@ export const reportPublication = async () => {
   await login(address);
 
   await reportPublicationRequest({
-    publicationId: '0x0f-0x01',
+    for: '0x0f-0x01',
     reason: {
       sensitiveReason: {
         reason: PublicationReportingReason.Sensitive,

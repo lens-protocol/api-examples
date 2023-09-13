@@ -97,6 +97,7 @@
     "profile:remove-profile-interests": "env-cmd -f .env ts-node ./src/profile/remove-profile-interests",
     "profile:add-profile-interests": "env-cmd -f .env ts-node ./src/profile/add-profile-interests",
     "nfts:nft-gallery-operations": "env-cmd -f .env ts-node ./src/nfts/nft-gallery-operations",
+    "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
     
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
@@ -118,7 +119,6 @@
     "publications:post-gated": "env-cmd -f .env ts-node ./src/publications/post-gated",
     "publications:post-encrypted": "env-cmd -f .env ts-node ./src/publications/post-encrypted",
     "publications:profile-publications-for-sale": "env-cmd -f .env ts-node ./src/publications/profile-publications-for-sale",
-    "reporting:report-publication": "env-cmd -f .env ts-node ./src/reporting/report-publication",
     "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment",
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5",
