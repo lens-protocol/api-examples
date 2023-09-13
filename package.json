@@ -109,6 +109,10 @@
     "momoka:momoka-transactions": "env-cmd -f .env ts-node ./src/momoka/momoka-transactions",
     "momoka:momoka-transaction": "env-cmd -f .env ts-node ./src/momoka/momoka-transaction",
     "publications:for-you": "env-cmd -f .env ts-node ./src/publications/for-you",
+    "profile-manager:profile-managers": "env-cmd -f .env ts-node ./src/profile-manager/profile-managers",
+    "open-action:act-on-open-action": "env-cmd -f .env ts-node ./src/open-action/act-on-open-action",
+    "publications:validate-publication-metadata": "env-cmd -f .env ts-node ./src/publications/validate-publication-metadata",
+    "publications:legacy-collect": "env-cmd -f .env ts-node ./src/publications/legacy-collect",
 
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",

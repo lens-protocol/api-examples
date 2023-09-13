@@ -1,0 +1,43 @@
+mutation CreateActOnOpenActionTypedData($request: ActOnOpenActionRequest!) {
+  createActOnOpenActionTypedData(request: $request) {
+    typedData {
+      domain {
+        chainId
+        name
+        verifyingContract
+        version
+      }
+
+      types {
+        Act {
+          name
+          type
+        }
+      }
+
+      value {
+        actionModuleAddress
+        actionModuleData
+        actorProfileId
+        deadline
+        nonce
+        publicationActedId
+        publicationActedProfileId
+        referrerProfileIds
+        referrerPubIds
+      }
+    }
+  }
+}
+
+mutation ActOnOpenAction($request: ActOnOpenActionLensManagerRequest!) {
+  actOnOpenAction(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

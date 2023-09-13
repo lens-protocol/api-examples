@@ -27,3 +27,11 @@ mutation CreateChangeProfileManagersTypedData($request: ChangeProfileManagersReq
     }
   }
 }
+
+query ProfileManagers($request: ProfileManagersRequest!) {
+  profileManagers(request: $request) {
+    items {
+      address
+    }
+  }
+}
