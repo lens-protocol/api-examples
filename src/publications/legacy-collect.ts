@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
 import { CreateLegacyCollectTypedDataDocument, LegacyCollectDocument } from '../graphql/generated';
 
+// This does not work correctly due to resolver returning unexpected data back
 (async function () {
   const address = getAddressFromSigner();
   console.log('legacy collect: address', address);
