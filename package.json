@@ -17,6 +17,7 @@
     "explore:explore-profiles": "env-cmd -f .env ts-node ./src/explore/explore-profiles",
     "explore:explore-publications": "env-cmd -f .env ts-node ./src/explore/explore-publications",
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
+    "follow:does-follow": "env-cmd -f .env ts-node ./src/follow/does-follow",
     "follow:follow": "env-cmd -f .env ts-node ./src/follow/follow",
     "follow:follow-lens-profile-manager": "env-cmd -f .env ts-node ./src/follow/follow-lens-profile-manager",
     "follow:unfollow": "env-cmd -f .env ts-node ./src/follow/unfollow",
@@ -107,11 +108,10 @@
     "momoka:momoka-summary": "env-cmd -f .env ts-node ./src/momoka/momoka-summary",
     "momoka:momoka-transactions": "env-cmd -f .env ts-node ./src/momoka/momoka-transactions",
     "momoka:momoka-transaction": "env-cmd -f .env ts-node ./src/momoka/momoka-transaction",
-
+    
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
-    "follow:does-follow": "env-cmd -f .env ts-node ./src/follow/does-follow",
     "follow:follower-nft-owned-token-ids": "env-cmd -f .env ts-node ./src/follow/follower-nft-owned-token-ids",
     "module:approve-module": "env-cmd -f .env ts-node ./src/module/approve-module",
     "module:approved-allowance-of-modules": "env-cmd -f .env ts-node ./src/module/approved-allowance-of-modules",

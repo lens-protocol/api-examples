@@ -1,5 +1,6 @@
-import { DoesFollowDocument, DoesFollowRequest } from '../../graphql-v1/generated';
 import { apolloClient } from '../apollo-client';
+import { DoesFollowDocument, DoesFollowRequest } from '../graphql/generated';
+import { followerProfileId, knownProfileId } from '../known-common-input-constants';
 
 const doesFollowRequest = async (request: DoesFollowRequest) => {
   const result = await apolloClient.query({
@@ -13,21 +14,21 @@ const doesFollowRequest = async (request: DoesFollowRequest) => {
 };
 
 export const doesFollow = async () => {
-  throw new Error(
-    'ENDPOINT Does not exist anymore in lens-v2, please use isFollowingMe or isFollowedByMe '
-  );
+  // Note this endpoint depends on PR https://github.com/lens-protocol/lens-monorepo/pull/182 on the api side
+  const followInfos = [
+    {
+      followerAddress: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+      profileId: '0x02',
+    },
+  ];
 
-  // const followInfos = [
-  //   {
-  //     followerAddress: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
-  //     profileId: '0x02',
-  //   },
-  // ];
+  const result = await doesFollowRequest({
+    following: knownProfileId,
+    follower: followerProfileId,
+  });
+  console.log('does follow: result', result);
 
-  // const result = await doesFollowRequest({ followInfos });
-  // console.log('does follow: result', result);
-
-  // return result;
+  return result;
 };
 
 (async () => {

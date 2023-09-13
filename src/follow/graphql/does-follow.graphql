@@ -1,0 +1,6 @@
+query DoesFollow($request: DoesFollowRequest!) {
+  doesFollow(request: $request) {
+    value
+    isFinalisedOnchain
+  }
+}
