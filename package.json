@@ -108,7 +108,8 @@
     "momoka:momoka-summary": "env-cmd -f .env ts-node ./src/momoka/momoka-summary",
     "momoka:momoka-transactions": "env-cmd -f .env ts-node ./src/momoka/momoka-transactions",
     "momoka:momoka-transaction": "env-cmd -f .env ts-node ./src/momoka/momoka-transaction",
-    
+    "publications:for-you": "env-cmd -f .env ts-node ./src/publications/for-you",
+
     "V2-COMPLETE-ABOVE": "ABOVE",
     "broadcast:example": "env-cmd -f .env ts-node ./src/broadcast/broadcast-follow-example",
     "dispatcher:disable-dispatcher": "env-cmd -f .env ts-node ./src/dispatcher/disable-dispatcher",
