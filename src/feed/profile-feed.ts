@@ -2,11 +2,11 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { FeedRequest, ProfileFeedDocument } from '../../graphql-v1/generated';
+import { FeedDocument, FeedRequest } from '../graphql/generated';
 
 const getProfileFeedRequest = async (request: FeedRequest) => {
   const result = await apolloClient.query({
-    query: ProfileFeedDocument,
+    query: FeedDocument,
     variables: {
       request,
     },
@@ -26,7 +26,7 @@ export const profileFeed = async () => {
 
   await login(address);
 
-  const result = await getProfileFeedRequest({ profileId, limit: 50 });
+  const result = await getProfileFeedRequest({});
   console.log('profile feed: result', result);
 
   return result;

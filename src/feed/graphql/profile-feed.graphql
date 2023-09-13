@@ -1,0 +1,11 @@
+query Feed($request: FeedRequest!) {
+  feed(request: $request) {
+    items {
+      id
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

@@ -14,6 +14,7 @@
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
     "explore:explore-profiles": "env-cmd -f .env ts-node ./src/explore/explore-profiles",
     "explore:explore-publications": "env-cmd -f .env ts-node ./src/explore/explore-publications",
+    "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "follow:follow": "env-cmd -f .env ts-node ./src/follow/follow",
     "follow:follow-lens-profile-manager": "env-cmd -f .env ts-node ./src/follow/follow-lens-profile-manager",
     "follow:unfollow": "env-cmd -f .env ts-node ./src/follow/unfollow",
@@ -120,7 +121,6 @@
     "publications:post-encrypted": "env-cmd -f .env ts-node ./src/publications/post-encrypted",
     "publications:profile-publications-for-sale": "env-cmd -f .env ts-node ./src/publications/profile-publications-for-sale",
     "media:create": "env-cmd -f .env ts-node ./src/media/create-attachment",
-    "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",
     "generate-lens-hub-typings": "abi-types-generator './src/abis/lens-hub-contract-abi.json' --output='./src/abis/types' --name=LensHub --provider=ethers_v5",
     "generate-lens-token-handle-registry-typings": "abi-types-generator './src/abis/lens-token-handle-registry-contract-abi.json' --output='./src/abis/types' --name=LensTokenHandleRegistry --provider=ethers_v5"
   },
