@@ -16,9 +16,9 @@ export const createMomokaPostTypedData = async (request: MomokaPostRequest) => {
   return result.data!.createMomokaPostTypedData;
 };
 
-const createMomokaPost = async () => {
+export const createMomokaPost = async () => {
   const address = getAddressFromSigner();
-  console.log('follow with broadcast: address', address);
+  console.log('post with broadcast: address', address);
 
   await login(address);
 
@@ -44,6 +44,8 @@ const createMomokaPost = async () => {
   }
 
   console.log('create post on momoka: complete');
+
+  return broadcastResult.momokaId;
 };
 
 (async () => {

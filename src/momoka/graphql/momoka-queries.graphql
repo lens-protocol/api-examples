@@ -1,0 +1,49 @@
+query MomokaSubmitters {
+  momokaSubmitters {
+    items {
+      address
+    }
+  }
+}
+
+query MomokaSummary {
+  momokaSummary {
+    totalTransactions
+  }
+}
+
+query MomokaTransaction($request: MomokaTransactionRequest!) {
+  momokaTransaction(request: $request) {
+    ... on MomokaPostTransaction {
+      publicationId
+    }
+    ... on MomokaCommentTransaction {
+      publicationId
+    }
+    ... on MomokaMirrorTransaction {
+      publicationId
+    }
+    ... on MomokaQuoteTransaction {
+      publicationId
+    }
+  }
+}
+
+query MomokaTransactions($request: MomokaTransactionsRequest!) {
+  momokaTransactions(request: $request) {
+    items {
+      ... on MomokaPostTransaction {
+        publicationId
+      }
+      ... on MomokaCommentTransaction {
+        publicationId
+      }
+      ... on MomokaMirrorTransaction {
+        publicationId
+      }
+      ... on MomokaQuoteTransaction {
+        publicationId
+      }
+    }
+  }
+}
