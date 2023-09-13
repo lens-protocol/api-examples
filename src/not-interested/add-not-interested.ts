@@ -3,21 +3,19 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
-  AddPublicationProfileNotInterestedDocument,
-  PublicationProfileNotInterestedRequest,
-} from '../../graphql-v1/generated';
+  AddPublicationNotInterestedDocument,
+  PublicationNotInterestedRequest,
+} from '../graphql/generated';
 
-const addPublicationProfileNotInterested = async (
-  request: PublicationProfileNotInterestedRequest
-) => {
+const addPublicationProfileNotInterested = async (request: PublicationNotInterestedRequest) => {
   const result = await apolloClient.mutate({
-    mutation: AddPublicationProfileNotInterestedDocument,
+    mutation: AddPublicationNotInterestedDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.addPublicationProfileNotInterested;
+  return result.data!.addPublicationNotInterested;
 };
 
 export const addNotInterested = async () => {
@@ -32,8 +30,7 @@ export const addNotInterested = async () => {
   await login(address);
 
   await addPublicationProfileNotInterested({
-    profileId,
-    publicationId: '0x2f-0x01be',
+    on: '0x2f-0x01be',
   });
 
   console.log('add not interested: success');

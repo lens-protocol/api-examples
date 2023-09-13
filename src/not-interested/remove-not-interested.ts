@@ -3,21 +3,19 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
-  PublicationProfileNotInterestedRequest,
-  RemovePublicationProfileNotInterestedDocument,
-} from '../../graphql-v1/generated';
+  PublicationNotInterestedRequest,
+  UndoPublicationNotInterestedDocument,
+} from '../graphql/generated';
 
-const removePublicationProfileNotInterested = async (
-  request: PublicationProfileNotInterestedRequest
-) => {
+const removePublicationProfileNotInterested = async (request: PublicationNotInterestedRequest) => {
   const result = await apolloClient.mutate({
-    mutation: RemovePublicationProfileNotInterestedDocument,
+    mutation: UndoPublicationNotInterestedDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.removePublicationProfileNotInterested;
+  return result.data!.undoPublicationNotInterested;
 };
 
 export const removeNotInterested = async () => {
@@ -32,8 +30,7 @@ export const removeNotInterested = async () => {
   await login(address);
 
   await removePublicationProfileNotInterested({
-    profileId,
-    publicationId: '0x2f-0x01be',
+    on: '0x2f-0x01be',
   });
 
   console.log('remove not interested: success');
