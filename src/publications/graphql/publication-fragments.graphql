@@ -63,7 +63,7 @@ fragment PostFields on Post {
     id
     handle
   }
-  stats(request: $statsRequest) {
+  stats {
     comments
     mirrors
     quotes
@@ -101,7 +101,7 @@ fragment QuoteFields on Quote {
     id
     handle
   }
-  stats(request: $statsRequest) {
+  stats {
     comments
     mirrors
     quotes
@@ -160,7 +160,7 @@ fragment CommentFields on Comment {
     id
     handle
   }
-  stats(request: $statsRequest) {
+  stats {
     comments
     mirrors
     quotes

@@ -1,4 +1,4 @@
-query ProfileBookmarks($request: ProfileBookmarksRequest!, $statsRequest: PublicationStatsInput!) {
+query ProfileBookmarks($request: ProfileBookmarksRequest!) {
   profileBookmarks(request: $request) {
     items {
       ... on Post {

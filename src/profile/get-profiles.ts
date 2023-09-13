@@ -10,9 +10,6 @@ const getProfilesRequest = async (request: ProfilesRequest) => {
     query: ProfilesDocument,
     variables: {
       request,
-      statsRequest: {},
-      countOpenActionsRequest: {},
-      reactionsRequest: {},
     },
   });
 

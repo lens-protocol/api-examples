@@ -1,11 +1,6 @@
 #import "../../profile/graphql/profile-fields-fragment.graphql"
 
-query Following(
-  $request: FollowingRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query Following($request: FollowingRequest!) {
   following(request: $request) {
     items {
       ...ProfileFields

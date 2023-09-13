@@ -2,12 +2,7 @@
 #import "./follow-module-fragment.graphql"
 #import "./profile-fields-fragment.graphql"
 
-query Profile(
-  $request: ProfileRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query Profile($request: ProfileRequest!) {
   profile(request: $request) {
     ...ProfileFields
   }

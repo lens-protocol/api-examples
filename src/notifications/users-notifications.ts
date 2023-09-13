@@ -9,7 +9,6 @@ const getNotifications = async (request: NotificationRequest) => {
     mutation: NotificationsDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 

@@ -12,9 +12,6 @@ const getRecommendedProfilesRequest = async (request: ProfileRecommendationsRequ
     query: ProfileRecommendationsDocument,
     variables: {
       request,
-      statsRequest: {},
-      countOpenActionsRequest: {},
-      reactionsRequest: {},
     },
   });
 

@@ -6,7 +6,6 @@ const getPublicationsTagsRequest = async (request: PublicationsTagsRequest) => {
     query: PublicationsTagsDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 

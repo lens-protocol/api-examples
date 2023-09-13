@@ -1,11 +1,6 @@
 #import "./profile-fields.graphql"
 
-query Profiles(
-  $request: ProfilesRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query Profiles($request: ProfilesRequest!) {
   profiles(request: $request) {
     items {
       ...ProfileFields

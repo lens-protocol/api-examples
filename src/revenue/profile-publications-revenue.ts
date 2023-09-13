@@ -12,7 +12,6 @@ export const profilePublicationsRevenueRequest = async (
     query: RevenueFromPublicationsDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 

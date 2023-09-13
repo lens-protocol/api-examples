@@ -1,11 +1,6 @@
 #import "../../profile/graphql/profile-fields-fragment.graphql"
 
-query ExploreProfiles(
-  $request: ExploreProfilesRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query ExploreProfiles($request: ExploreProfilesRequest!) {
   exploreProfiles(request: $request) {
     items {
       ...ProfileFields

@@ -1,6 +1,5 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { WhoHaveBlockedDocument } from '../graphql/generated';
 import { block } from './block';
@@ -10,9 +9,6 @@ const getWhoHaveBlocked = async () => {
     query: WhoHaveBlockedDocument,
     variables: {
       request: {},
-      statsRequest: {},
-      reactionsRequest: {},
-      countOpenActionsRequest: {},
     },
   });
 

@@ -8,9 +8,6 @@ const followingRequest = async (request: FollowingRequest) => {
     query: FollowingDocument,
     variables: {
       request,
-      statsRequest: {},
-      reactionsRequest: {},
-      countOpenActionsRequest: {},
     },
   });
 

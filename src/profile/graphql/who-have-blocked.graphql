@@ -1,9 +1,4 @@
-query WhoHaveBlocked(
-  $request: WhoHaveBlockedRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query WhoHaveBlocked($request: WhoHaveBlockedRequest!) {
   whoHaveBlocked(request: $request) {
     items {
       ...ProfileFields

@@ -1,6 +1,6 @@
 #import "../../publications/graphql/publication-fragments.graphql"
 
-query Notifications($request: NotificationRequest!, $statsRequest: PublicationStatsInput!) {
+query Notifications($request: NotificationRequest!) {
   notifications(request: $request) {
     items {
       ... on ReactionNotification {

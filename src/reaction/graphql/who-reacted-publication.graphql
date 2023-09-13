@@ -1,11 +1,6 @@
 #import "../../profile/graphql/profile-fields-fragment.graphql"
 
-query WhoReactedPublication(
-  $request: WhoReactedPublicationRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query WhoReactedPublication($request: WhoReactedPublicationRequest!) {
   whoReactedPublication(request: $request) {
     items {
       ...ProfileFields

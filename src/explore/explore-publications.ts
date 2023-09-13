@@ -10,7 +10,6 @@ const explorePublications = (request: ExplorePublicationRequest) => {
     query: ExplorePublicationsDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 };

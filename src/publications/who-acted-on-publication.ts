@@ -6,9 +6,6 @@ export const getWhoActedOnPublication = async (request: WhoActedOnPublicationReq
     query: WhoActedOnPublicationDocument,
     variables: {
       request,
-      countOpenActionsRequest: {},
-      reactionsRequest: {},
-      statsRequest: {},
     },
   });
 

@@ -1,9 +1,4 @@
-query WhoActedOnPublication(
-  $request: WhoActedOnPublicationRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query WhoActedOnPublication($request: WhoActedOnPublicationRequest!) {
   whoActedOnPublication(request: $request) {
     items {
       ...ProfileFields

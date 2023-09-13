@@ -1,9 +1,6 @@
 #import "../../publications/graphql/publication-fragments.graphql"
 
-query SearchPublications(
-  $request: PublicationSearchRequest!
-  $statsRequest: PublicationStatsInput!
-) {
+query SearchPublications($request: PublicationSearchRequest!) {
   searchPublications(request: $request) {
     items {
       ... on Post {

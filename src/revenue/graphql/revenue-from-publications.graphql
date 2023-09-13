@@ -1,10 +1,7 @@
 #import "../../common/graphql/common.graphql"
 #import "../../publications/graphql/publication-fragments.graphql"
 
-query RevenueFromPublications(
-  $request: RevenueFromPublicationsRequest!
-  $statsRequest: PublicationStatsInput!
-) {
+query RevenueFromPublications($request: RevenueFromPublicationsRequest!) {
   revenueFromPublications(request: $request) {
     items {
       publication {

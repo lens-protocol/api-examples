@@ -9,9 +9,6 @@ const getProfilesManaged = async (address: string) => {
       request: {
         address,
       },
-      statsRequest: {},
-      reactionsRequest: {},
-      countOpenActionsRequest: {},
     },
   });
 

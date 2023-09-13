@@ -11,9 +11,6 @@ export const exploreProfiles = async (request: ExploreProfilesRequest) => {
     query: ExploreProfilesDocument,
     variables: {
       request,
-      statsRequest: {},
-      countOpenActionsRequest: {},
-      reactionsRequest: {},
     },
   });
 

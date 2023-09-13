@@ -1,9 +1,4 @@
-query ProfilesManaged(
-  $request: ProfilesManagedRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query ProfilesManaged($request: ProfilesManagedRequest!) {
   profilesManaged(request: $request) {
     items {
       ...ProfileFields

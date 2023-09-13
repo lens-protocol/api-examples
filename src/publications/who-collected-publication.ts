@@ -10,9 +10,6 @@ export const whoCollectedRequest = async (request: WhoActedOnPublicationRequest)
     query: WhoActedOnPublicationDocument,
     variables: {
       request,
-      statsRequest: {},
-      countOpenActionsRequest: {},
-      reactionsRequest: {},
     },
   });
 

@@ -10,7 +10,6 @@ const searchRequest = async (request: PublicationSearchRequest) => {
     query: SearchPublicationsDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 

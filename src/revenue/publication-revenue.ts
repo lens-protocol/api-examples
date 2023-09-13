@@ -6,7 +6,6 @@ export const publicationRevenueRequest = async (request: PublicationRevenueReque
     query: RevenueForPublicationDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 

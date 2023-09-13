@@ -7,7 +7,6 @@ const getPublicationsRequest = async (request: PublicationsRequest) => {
     query: PublicationsDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 

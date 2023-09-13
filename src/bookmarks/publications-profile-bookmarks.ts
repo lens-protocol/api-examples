@@ -9,7 +9,6 @@ const publicationsProfileBookmarks = (request: ProfileBookmarksRequest) => {
     query: ProfileBookmarksDocument,
     variables: {
       request,
-      statsRequest: {},
     },
   });
 };

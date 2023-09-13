@@ -14,17 +14,17 @@ fragment ProfileFields on Profile {
   }
   txHash
   createdAt
-  stats(request: $statsRequest) {
+  stats {
     id
-    followers(request: $statsRequest)
-    following(request: $statsRequest)
-    comments(request: $statsRequest)
-    posts(request: $statsRequest)
-    mirrors(request: $statsRequest)
-    quotes(request: $statsRequest)
-    publications(request: $statsRequest)
-    reactions(request: $reactionsRequest)
-    countOpenActions(request: $countOpenActionsRequest)
+    followers
+    following
+    comments
+    posts
+    mirrors
+    quotes
+    publications
+    reactions
+    countOpenActions
   }
   operations {
     id

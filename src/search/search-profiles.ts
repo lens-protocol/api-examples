@@ -6,9 +6,6 @@ const searchRequest = async (request: ProfileSearchRequest) => {
     query: SearchProfilesDocument,
     variables: {
       request,
-      statsRequest: {},
-      countOpenActionsRequest: {},
-      reactionsRequest: {},
     },
   });
 

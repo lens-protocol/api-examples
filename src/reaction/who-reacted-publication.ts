@@ -6,9 +6,6 @@ export const whoReactedPublicationRequest = async (request: WhoReactedPublicatio
     query: WhoReactedPublicationDocument,
     variables: {
       request,
-      statsRequest: {},
-      reactionsRequest: {},
-      countOpenActionsRequest: {},
     },
   });
 

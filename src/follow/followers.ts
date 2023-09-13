@@ -7,9 +7,6 @@ const followersRequest = async (request: FollowersRequest) => {
     query: FollowersDocument,
     variables: {
       request,
-      statsRequest: {},
-      reactionsRequest: {},
-      countOpenActionsRequest: {},
     },
   });
 

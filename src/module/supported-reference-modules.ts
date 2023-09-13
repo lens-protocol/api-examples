@@ -4,9 +4,6 @@ import { SupportedReferenceModulesDocument } from '../graphql/generated';
 const getSupportedReferenceModules = async () => {
   const result = await apolloClient.query({
     query: SupportedReferenceModulesDocument,
-    variables: {
-      request: {},
-    },
   });
 
   return result.data.supportedReferenceModules.items;

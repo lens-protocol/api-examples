@@ -1,11 +1,6 @@
 #import "./profile-fields-fragment.graphql"
 
-query ProfileRecommendations(
-  $request: ProfileRecommendationsRequest!
-  $statsRequest: ProfileStatsArg!
-  $reactionsRequest: ProfileStatsReactionArgs!
-  $countOpenActionsRequest: ProfileStatsCountOpenActionArgs!
-) {
+query ProfileRecommendations($request: ProfileRecommendationsRequest!) {
   profileRecommendations(request: $request) {
     items {
       ...ProfileFields
