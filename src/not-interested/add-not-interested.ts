@@ -6,6 +6,7 @@ import {
   AddPublicationNotInterestedDocument,
   PublicationNotInterestedRequest,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const addPublicationProfileNotInterested = async (request: PublicationNotInterestedRequest) => {
   const result = await apolloClient.mutate({
@@ -30,7 +31,7 @@ export const addNotInterested = async () => {
   await login(address);
 
   await addPublicationProfileNotInterested({
-    on: '0x2f-0x01be',
+    on: knownPostId,
   });
 
   console.log('add not interested: success');

@@ -6,6 +6,7 @@ import {
   PublicationBookmarkRequest,
   RemovePublicationBookmarkDocument,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const removePublicationProfileBookmark = async (request: PublicationBookmarkRequest) => {
   const result = await apolloClient.mutate({
@@ -30,7 +31,7 @@ export const removeBookmark = async () => {
   await login(address);
 
   await removePublicationProfileBookmark({
-    on: '0x2f-0x01be',
+    on: knownPostId,
   });
 
   console.log('remove bookmark: success');

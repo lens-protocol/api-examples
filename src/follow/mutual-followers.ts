@@ -1,5 +1,7 @@
 import { apolloClient } from '../apollo-client';
+import { PROFILE_ID } from '../config';
 import { MutualFollowersDocument, MutualFollowersRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 
 const mutualFollowersRequest = async (request: MutualFollowersRequest) => {
   const result = await apolloClient.query({
@@ -13,7 +15,10 @@ const mutualFollowersRequest = async (request: MutualFollowersRequest) => {
 };
 
 export const mutualFollowers = async () => {
-  const result = await mutualFollowersRequest({ observer: '0x01', viewing: '0x03' });
+  const result = await mutualFollowersRequest({
+    observer: PROFILE_ID,
+    viewing: knownProfileId,
+  });
   console.log('mutualFollowers: result', result);
 
   return result;

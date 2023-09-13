@@ -1,8 +1,15 @@
 import { EncryptedMetadata, LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  AccessConditionOutput,
+  CreateCommentTypedDataDocument,
+  CreatePublicCommentRequest,
+  PublicationMetadataV2Input as MetadataV2,
+  PublicationMainFocus,
+} from '../../graphql-v1/generated';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { explicitStart, PROFILE_ID } from '../config';
+import { PROFILE_ID, explicitStart } from '../config';
 import {
   ethersProvider,
   getAddressFromSigner,
@@ -10,14 +17,8 @@ import {
   signedTypeData,
   splitSignature,
 } from '../ethers.service';
-import {
-  AccessConditionOutput,
-  CreateCommentTypedDataDocument,
-  CreatePublicCommentRequest,
-  PublicationMainFocus,
-  PublicationMetadataV2Input as MetadataV2,
-} from '../../graphql-v1/generated';
 import { uploadIpfsGetPath } from '../ipfs';
+import { knownPostId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { pollAndIndexComment } from './comment';
 import { followAccessCondition } from './post-gated';
@@ -115,7 +116,7 @@ export const signCreateCommentTypedData = async (request: CreatePublicCommentReq
 
 const createCommentGated = async () => {
   const profileId = PROFILE_ID;
-  const publicationId = '0x0f-0x01';
+  const publicationId = knownPostId;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }

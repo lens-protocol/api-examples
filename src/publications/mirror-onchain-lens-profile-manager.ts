@@ -17,7 +17,7 @@ const mirrorOnChain = async (request: OnchainMirrorRequest) => {
   return result.data!.mirrorOnchain;
 };
 
-export const MirrorOnChainLensProfileManager = async (profileId: string = '0x02') => {
+export const MirrorOnChainLensProfileManager = async () => {
   const address = getAddressFromSigner();
   console.log('mirror onchain lens profile manager: address', address);
 

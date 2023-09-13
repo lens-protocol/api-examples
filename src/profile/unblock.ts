@@ -4,6 +4,7 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { BlockRequest, CreateUnblockProfilesTypedDataDocument } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -24,7 +25,7 @@ export const unblock = async () => {
 
   await login(address);
 
-  const { id, typedData } = await createUnblockProfilesTypedData({ profiles: ['0x02'] });
+  const { id, typedData } = await createUnblockProfilesTypedData({ profiles: [knownProfileId] });
   console.log('unblock: result', { id, typedData });
 
   console.log('unblock: typedData', typedData);

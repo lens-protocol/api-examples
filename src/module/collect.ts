@@ -1,7 +1,8 @@
+import { CreateCollectRequest, CreateCollectTypedDataDocument } from '../../graphql-v1/generated';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { CreateCollectRequest, CreateCollectTypedDataDocument } from '../../graphql-v1/generated';
+import { knownPostId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 
 const createCollectTypedData = async (request: CreateCollectRequest) => {
@@ -28,7 +29,7 @@ export const collect = async () => {
   // remember you must make sure you approved allowance of
   // this currency on the module
   const collectRequest = {
-    publicationId: '0x06-0x01',
+    publicationId: knownPostId,
   };
 
   const result = await createCollectTypedData(collectRequest);

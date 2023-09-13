@@ -18,7 +18,7 @@ const postOnChain = async (request: OnchainPostRequest) => {
   return result.data!.postOnchain;
 };
 
-export const postOnChainLensProfileManager = async (profileId: string = '0x02') => {
+export const postOnChainLensProfileManager = async () => {
   const address = getAddressFromSigner();
   console.log('post onchain lens profile manager: address', address);
 

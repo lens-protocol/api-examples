@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { DismissRecommendedProfilesDocument } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const dismissRecommendedProfilesRequest = async (dismiss: string[]) => {
   await apolloClient.query({
@@ -25,7 +26,7 @@ export const dismissRecommendedProfiles = async () => {
   const address = getAddressFromSigner();
   await login(address);
 
-  await dismissRecommendedProfilesRequest(['0x0e']);
+  await dismissRecommendedProfilesRequest([knownPostId]);
 };
 
 (async () => {

@@ -28,7 +28,7 @@ export const profile = async (request?: ProfileRequest) => {
   await login(address);
 
   if (!request) {
-    request = { profileId: '0x07' };
+    request = { profileId: PROFILE_ID };
   }
 
   const profile = await getProfileRequest(request);

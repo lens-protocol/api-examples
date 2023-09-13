@@ -6,6 +6,7 @@ import {
   PublicationNotInterestedRequest,
   UndoPublicationNotInterestedDocument,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const removePublicationProfileNotInterested = async (request: PublicationNotInterestedRequest) => {
   const result = await apolloClient.mutate({
@@ -30,7 +31,7 @@ export const removeNotInterested = async () => {
   await login(address);
 
   await removePublicationProfileNotInterested({
-    on: '0x2f-0x01be',
+    on: knownPostId,
   });
 
   console.log('remove not interested: success');

@@ -1,5 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { PublicationRevenueRequest, RevenueForPublicationDocument } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 export const publicationRevenueRequest = async (request: PublicationRevenueRequest) => {
   const result = await apolloClient.query({
@@ -14,7 +15,7 @@ export const publicationRevenueRequest = async (request: PublicationRevenueReque
 
 export const publicationRevenue = async () => {
   const result = await publicationRevenueRequest({
-    for: '0x01-0x01',
+    for: knownPostId,
   });
   console.log('publication revenue: result', result);
 

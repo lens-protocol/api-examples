@@ -4,6 +4,7 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateUnfollowTypedDataDocument, UnfollowRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -24,7 +25,7 @@ export const unfollow = async () => {
 
   await login(address);
 
-  const { id, typedData } = await createUnfollowTypedData({ unfollow: ['0x02'] });
+  const { id, typedData } = await createUnfollowTypedData({ unfollow: [knownProfileId] });
   console.log('unfollow: result', { id, typedData });
 
   console.log('unfollow: typedData', typedData);

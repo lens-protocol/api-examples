@@ -1,11 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
+import {
+  PublicationMetadataV2Input as MetadataV2,
+  PublicationMainFocus,
+} from '../../graphql-v1/generated';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import {
-  PublicationMainFocus,
-  PublicationMetadataV2Input as MetadataV2,
-} from '../../graphql-v1/generated';
+import { knownPostId } from '../known-common-input-constants';
 import { pollAndIndexComment } from './comment';
 import { commentGasless } from './comment-gasless';
 import { createGatedPublicCommentRequest } from './comment-gated';
@@ -16,7 +17,7 @@ const prefix = 'create gated comment gasless';
 const commentGatedGasless = async () => {
   const address = getAddressFromSigner();
   const profileId = PROFILE_ID;
-  const publicationId = '0x0f-0x01';
+  const publicationId = knownPostId;
   console.log(`${prefix}: address`, address);
 
   await login(address);

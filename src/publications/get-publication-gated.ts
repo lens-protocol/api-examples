@@ -1,11 +1,12 @@
 import { LensEnvironment, LensGatedSDK } from '@lens-protocol/sdk-gated';
-import { apolloClient } from '../apollo-client';
-import { ethersProvider, getSigner } from '../ethers.service';
 import {
   PostCanDecryptArgs,
   PublicationEncryptedDocument,
   PublicationQueryRequest,
 } from '../../graphql-v1/generated';
+import { apolloClient } from '../apollo-client';
+import { ethersProvider, getSigner } from '../ethers.service';
+import { knownPostId, knownProfileId } from '../known-common-input-constants';
 
 const getPublicationRequest = async (
   request: PublicationQueryRequest,
@@ -24,8 +25,8 @@ const getPublicationRequest = async (
 
 export const getGatedPublication = async () => {
   const result = await getPublicationRequest(
-    { publicationId: '0x44c1-0x3e' },
-    { profileId: '0x44c1' }
+    { publicationId: knownPostId },
+    { profileId: knownProfileId }
   );
 
   if (!result) {

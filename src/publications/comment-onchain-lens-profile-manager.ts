@@ -19,7 +19,7 @@ const commentOnChain = async (request: OnchainCommentRequest) => {
   return result.data!.commentOnchain;
 };
 
-export const commentOnChainLensProfileManager = async (profileId: string = '0x02') => {
+export const commentOnChainLensProfileManager = async () => {
   const address = getAddressFromSigner();
   console.log('comment onchain lens profile manager: address', address);
 

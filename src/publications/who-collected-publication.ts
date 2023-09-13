@@ -4,6 +4,7 @@ import {
   WhoActedOnPublicationDocument,
   WhoActedOnPublicationRequest,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 export const whoCollectedRequest = async (request: WhoActedOnPublicationRequest) => {
   const result = await apolloClient.query({
@@ -18,7 +19,7 @@ export const whoCollectedRequest = async (request: WhoActedOnPublicationRequest)
 
 export const whoCollected = async () => {
   const result = await whoCollectedRequest({
-    on: '0x41-0x03',
+    on: knownPostId,
     where: {
       anyOf: [
         {

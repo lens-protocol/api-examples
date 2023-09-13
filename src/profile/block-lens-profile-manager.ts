@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { BlockDocument, BlockRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
 const block = async (request: BlockRequest) => {
@@ -16,7 +17,7 @@ const block = async (request: BlockRequest) => {
   return result.data!.block;
 };
 
-export const blockLensProfileManager = async (profileId: string = '0x02') => {
+export const blockLensProfileManager = async (profileId: string = knownProfileId) => {
   const address = getAddressFromSigner();
   console.log('block lens profile manager: address', address);
 

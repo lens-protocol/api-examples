@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { AddPublicationBookmarkDocument, PublicationBookmarkRequest } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const addPublicationProfileBookmark = async (request: PublicationBookmarkRequest) => {
   const result = await apolloClient.mutate({
@@ -27,7 +28,7 @@ export const addBookmark = async () => {
   await login(address);
 
   await addPublicationProfileBookmark({
-    on: '0x01-0x07',
+    on: knownPostId,
   });
 
   console.log('add bookmark: success');

@@ -4,6 +4,7 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { USE_GASLESS, explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { CreateFollowTypedDataDocument, FollowRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -18,7 +19,7 @@ export const createFollowTypedData = async (request: FollowRequest) => {
   return result.data!.createFollowTypedData;
 };
 
-export const follow = async (profileId: string = '0x02') => {
+export const follow = async (profileId: string = knownProfileId) => {
   const address = getAddressFromSigner();
   console.log('follow: address', address);
 

@@ -7,6 +7,7 @@ import {
   PublicationReactionType,
   ReactionRequest,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const addReactionRequest = async (request: ReactionRequest) => {
   const result = await apolloClient.mutate({
@@ -32,7 +33,7 @@ export const addReaction = async () => {
 
   await addReactionRequest({
     reaction: PublicationReactionType.Upvote,
-    for: '0x2f-0x01be',
+    for: knownPostId,
   });
 
   console.log('add reaction: success');

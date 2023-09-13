@@ -7,6 +7,7 @@ import {
   ReactionRequest,
   RemoveReactionDocument,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const removeReactionRequest = async (request: ReactionRequest) => {
   const result = await apolloClient.mutate({
@@ -32,7 +33,7 @@ export const removeReaction = async () => {
 
   await removeReactionRequest({
     reaction: PublicationReactionType.Upvote,
-    for: '0x0f-0x01',
+    for: knownPostId,
   });
 
   console.log('remove reaction: success');

@@ -4,6 +4,7 @@ import {
   RevenueFromPublicationsDocument,
   RevenueFromPublicationsRequest,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 export const profilePublicationsRevenueRequest = async (
   request: RevenueFromPublicationsRequest
@@ -20,7 +21,7 @@ export const profilePublicationsRevenueRequest = async (
 
 export const profilePublicationsRevenue = async () => {
   const result = await profilePublicationsRevenueRequest({
-    for: '0x01',
+    for: knownPostId,
     where: {
       fromCollects: true,
       publicationTypes: [PublicationType.Post, PublicationType.Quote, PublicationType.Comment],

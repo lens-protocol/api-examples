@@ -4,6 +4,7 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { explicitStart, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import { BlockRequest, CreateBlockProfilesTypedDataDocument } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
@@ -18,7 +19,7 @@ const createBlockProfilesTypedData = async (request: BlockRequest) => {
   return result.data!.createBlockProfilesTypedData;
 };
 
-export const block = async (profileIds: string[] = ['0x02']) => {
+export const block = async (profileIds: string[] = [knownProfileId]) => {
   const address = getAddressFromSigner();
   console.log('block: address', address);
 

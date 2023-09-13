@@ -1,8 +1,9 @@
-import { apolloClient } from '../apollo-client';
 import {
   ProfilePublicationsForSaleDocument,
   ProfilePublicationsForSaleRequest,
 } from '../../graphql-v1/generated';
+import { apolloClient } from '../apollo-client';
+import { knownProfileId } from '../known-common-input-constants';
 
 export const profilePublicationsForSaleRequest = async (
   request: ProfilePublicationsForSaleRequest
@@ -18,7 +19,7 @@ export const profilePublicationsForSaleRequest = async (
 };
 
 export const profilePublicationsForSale = async () => {
-  const result = await profilePublicationsForSaleRequest({ profileId: '0x01' });
+  const result = await profilePublicationsForSaleRequest({ profileId: knownProfileId });
   console.log('publications for sale: result', result);
 
   return result;

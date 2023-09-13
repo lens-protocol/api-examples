@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { FollowDocument, FollowLensManagerRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
 const follow = async (request: FollowLensManagerRequest) => {
@@ -16,7 +17,7 @@ const follow = async (request: FollowLensManagerRequest) => {
   return result.data!.follow;
 };
 
-export const followLensProfileManager = async (profileId: string = '0x02') => {
+export const followLensProfileManager = async (profileId: string = knownProfileId) => {
   const address = getAddressFromSigner();
   console.log('follow lens profile manager: address', address);
 

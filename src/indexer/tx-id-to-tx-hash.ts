@@ -34,17 +34,6 @@ export const waitUntilComplete = async (input: QueryTxIdToTxHashArgs) => {
   }
 };
 
-const testTransaction = async () => {
-  // TODO! make a tx Id and monitor it
-  // const address = getAddressFromSigner();
-  // // console.log('testTransaction: address', address);
-  // await login(address);
-  // const hash = await follow('0x06');
-  // console.log('testTransaction: hash', hash);
-  // const txHash = await waitUntilComplete({ txId: hash });
-  // console.log('testTransaction: Indexed');
-};
-
 (async () => {
   if (explicitStart(__filename)) {
     await testTransaction();

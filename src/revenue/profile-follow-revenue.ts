@@ -1,5 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { FollowRevenueRequest, FollowRevenuesDocument } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 
 export const profileFollowRevenueRequest = async (request: FollowRevenueRequest) => {
   const result = await apolloClient.query({
@@ -14,7 +15,7 @@ export const profileFollowRevenueRequest = async (request: FollowRevenueRequest)
 
 export const profileFollowRevenue = async () => {
   const result = await profileFollowRevenueRequest({
-    for: '0x15',
+    for: knownProfileId,
   });
   console.log('profiles follow revenues: result', result);
 

@@ -3,6 +3,7 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { UnfollowDocument, UnfollowRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
 const unfollow = async (request: UnfollowRequest) => {
@@ -16,7 +17,7 @@ const unfollow = async (request: UnfollowRequest) => {
   return result.data!.unfollow;
 };
 
-export const followLensProfileManager = async (profileId: string = '0x02') => {
+export const followLensProfileManager = async (profileId: string = knownProfileId) => {
   const address = getAddressFromSigner();
   console.log('unfollow lens profile manager: address', address);
 

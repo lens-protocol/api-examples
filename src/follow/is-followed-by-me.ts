@@ -2,6 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
 import { IsFollowedByMeDocument, ProfileRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 
 const isFollowedByMe = async (request: ProfileRequest) => {
   const result = await apolloClient.query({
@@ -21,7 +22,7 @@ export const doesFollow = async () => {
   await login(address);
 
   const result = await isFollowedByMe({
-    profileId: '0x01',
+    profileId: knownProfileId,
   });
   console.log('does follow: result', result);
 

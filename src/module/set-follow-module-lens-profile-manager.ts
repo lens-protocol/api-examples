@@ -17,7 +17,7 @@ const setFollowModule = async (request: SetFollowModuleRequest) => {
   return result.data!.setFollowModule;
 };
 
-export const setFollowModuleLensProfileManager = async (profileId: string = '0x02') => {
+export const setFollowModuleLensProfileManager = async () => {
   const address = getAddressFromSigner();
   console.log('set follow module lens profile manager: address', address);
 

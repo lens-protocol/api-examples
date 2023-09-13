@@ -20,7 +20,7 @@ const quoteOnChain = async (request: OnchainQuoteRequest) => {
   return result.data!.quoteOnchain;
 };
 
-export const quoteOnChainLensProfileManager = async (profileId: string = '0x02') => {
+export const quoteOnChainLensProfileManager = async () => {
   const address = getAddressFromSigner();
   console.log('quote onchain lens profile manager: address', address);
 

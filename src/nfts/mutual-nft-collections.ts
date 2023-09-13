@@ -1,5 +1,7 @@
 import { apolloClient } from '../apollo-client';
+import { PROFILE_ID } from '../config';
 import { MutualNftCollectionsDocument, MutualNftCollectionsRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 
 const getMutualNftCollections = async (request: MutualNftCollectionsRequest) => {
   const result = await apolloClient.query({
@@ -14,8 +16,8 @@ const getMutualNftCollections = async (request: MutualNftCollectionsRequest) => 
 
 export const usersNfts = async () => {
   const mutualNftCollections = await getMutualNftCollections({
-    viewingProfileId: '0x01',
-    yourProfileId: '0x03',
+    viewingProfileId: knownProfileId,
+    yourProfileId: PROFILE_ID,
   });
 
   console.log(`mutual nft collections: ${mutualNftCollections.length}`);

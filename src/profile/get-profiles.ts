@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { explicitStart } from '../config';
+import { PROFILE_ID, explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import { ProfilesDocument, ProfilesRequest } from '../graphql/generated';
 // import { ProfileQueryRequest, ProfilesDocument } from '../../graphql-v1/generated';
@@ -22,7 +22,7 @@ export const profiles = async () => {
 
   await login(address);
 
-  const profileIds: string[] = ['0x03']; // Ensure you follow this profileID
+  const profileIds: string[] = [PROFILE_ID!]; // Ensure you follow this profileID
 
   // only showing one example to query but you can see from request
   // above you can query many

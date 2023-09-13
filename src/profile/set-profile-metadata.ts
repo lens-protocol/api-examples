@@ -8,7 +8,6 @@ import {
   CreateOnchainSetProfileMetadataTypedDataDocument,
   OnchainSetProfileMetadataRequest,
 } from '../graphql/generated';
-import { ProfileMetadata } from '../interfaces/profile-metadata';
 import { uploadIpfs } from '../ipfs';
 import { lensHub } from '../lens-hub';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
@@ -37,7 +36,7 @@ const setProfileMetadata = async () => {
 
   await login(address);
 
-  const ipfsResult = await uploadIpfs<ProfileMetadata>({
+  const ipfsResult = await uploadIpfs({
     name: 'API examples',
     bio: 'API examples bio',
     cover_picture: 'https://pbs.twimg.com/profile_banners/1478109975406858245/1645016027/1500x500',

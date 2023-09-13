@@ -1,5 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { WhoReactedPublicationDocument, WhoReactedPublicationRequest } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 export const whoReactedPublicationRequest = async (request: WhoReactedPublicationRequest) => {
   const result = await apolloClient.query({
@@ -14,7 +15,7 @@ export const whoReactedPublicationRequest = async (request: WhoReactedPublicatio
 
 export const whoReactedPublication = async () => {
   const result = await whoReactedPublicationRequest({
-    for: '0x01-0x01',
+    for: knownPostId,
   });
   console.log('who reacted to : result', result);
 

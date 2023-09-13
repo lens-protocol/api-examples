@@ -2,9 +2,9 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { AddProfileInterestsDocument } from '../graphql/generated';
+import { AddProfileInterestsDocument, ProfileInterestTypes } from '../graphql/generated';
 
-const addProfileInterestsRequest = async (interests: string[]) => {
+const addProfileInterestsRequest = async (interests: ProfileInterestTypes[]) => {
   await apolloClient.query({
     query: AddProfileInterestsDocument,
     variables: {
@@ -25,7 +25,7 @@ export const addProfileInterests = async () => {
   const address = getAddressFromSigner();
   await login(address);
 
-  await addProfileInterestsRequest(['Art & Entertainment']);
+  await addProfileInterestsRequest([ProfileInterestTypes.ArtEntertainment]);
 };
 
 (async () => {

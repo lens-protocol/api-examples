@@ -3,6 +3,7 @@ import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
 import { createFollowTypedData } from '../follow/follow';
 import { waitUntilComplete } from '../indexer/has-transaction-been-indexed';
+import { knownProfileId } from '../known-common-input-constants';
 import { broadcastOnchainRequest } from './shared-broadcast';
 
 const broadcast = async () => {
@@ -14,7 +15,7 @@ const broadcast = async () => {
   const result = await createFollowTypedData({
     follow: [
       {
-        profile: '0x01',
+        profileId: knownProfileId,
       },
     ],
   });

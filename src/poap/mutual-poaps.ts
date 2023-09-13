@@ -1,5 +1,7 @@
 import { apolloClient } from '../apollo-client';
+import { PROFILE_ID } from '../config';
 import { MutualPoapsDocument, MutualPoapsQueryRequest } from '../graphql/generated';
+import { knownProfileId } from '../known-common-input-constants';
 
 const getMutualPoaps = async (request: MutualPoapsQueryRequest) => {
   const result = await apolloClient.query({
@@ -14,8 +16,8 @@ const getMutualPoaps = async (request: MutualPoapsQueryRequest) => {
 
 const mutualPoaps = async () => {
   const poapEvent = await getMutualPoaps({
-    observer: '0x01',
-    viewing: '0x02',
+    observer: PROFILE_ID,
+    viewing: knownProfileId,
   });
 
   console.log('mutual poaps: result', poapEvent);
