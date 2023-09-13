@@ -12,6 +12,8 @@
     "bookmark:add": "env-cmd -f .env ts-node ./src/bookmarks/add-bookmark",
     "bookmark:get": "env-cmd -f .env ts-node ./src/bookmarks/publications-profile-bookmarks",
     "bookmark:remove": "env-cmd -f .env ts-node ./src/bookmarks/remove-bookmark",
+    "claim:claimable-profiles": "env-cmd -f .env ts-node ./src/claim/claimable-profiles",
+    "claim:claimable-status": "env-cmd -f .env ts-node ./src/claim/claimable-status",
     "explore:explore-profiles": "env-cmd -f .env ts-node ./src/explore/explore-profiles",
     "explore:explore-publications": "env-cmd -f .env ts-node ./src/explore/explore-publications",
     "feed:profile-feed": "env-cmd -f .env ts-node ./src/feed/profile-feed",

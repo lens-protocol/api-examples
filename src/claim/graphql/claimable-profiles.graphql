@@ -1,0 +1,11 @@
+query ClaimableProfiles {
+  claimableProfiles {
+    reserved {
+      id
+      withHandle
+      source
+      expiry
+    }
+    canMintProfileWithFreeTextHandle
+  }
+}
