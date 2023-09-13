@@ -1,8 +1,8 @@
+import { BurnProfileRequest, CreateBurnProfileTypedDataDocument } from '../../graphql-v1/generated';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
-import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
-import { BurnProfileRequest, CreateBurnProfileTypedDataDocument } from '../../graphql-v1/generated';
+import { getAddressFromSigner } from '../ethers.service';
 import { lensHub } from '../lens-hub';
 
 const createBurnProfileTypedData = async (request: BurnProfileRequest) => {
@@ -26,25 +26,9 @@ export const burnProfile = async () => {
   console.log('set profile image uri normal: address', address);
 
   await login(address);
+  console.log('burn profile: ', PROFILE_ID);
 
-  const result = await createBurnProfileTypedData({
-    profileId,
-  });
-  console.log('burn profile', result);
-
-  const typedData = result.typedData;
-  console.log('burn profile: typedData', typedData);
-
-  const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('burn profile: signature', signature);
-
-  const { v, r, s } = splitSignature(signature);
-  const tx = lensHub.burnWithSig(typedData.value.tokenId, {
-    v,
-    r,
-    s,
-    deadline: typedData.value.deadline,
-  });
+  const tx = await lensHub.burn(profileId);
 
   console.log('burn profile: tx hash', tx.hash);
 };
