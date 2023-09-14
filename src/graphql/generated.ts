@@ -20,6 +20,11 @@ export type Scalars = {
   CreateHandle: any;
   Cursor: any;
   DateTime: any;
+  EncryptableDateTime: any;
+  EncryptableMarkdown: any;
+  EncryptableString: any;
+  EncryptableTxHash: any;
+  EncryptableURI: any;
   EncryptedPath: any;
   EncryptedValue: any;
   Ens: any;
@@ -150,7 +155,7 @@ export type ArticleMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content: Scalars['Markdown'];
+  content: Scalars['EncryptableMarkdown'];
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -196,7 +201,7 @@ export type AudioMetadataV3 = {
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
   audio: PublicationMetadataMediaAudio;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -287,7 +292,7 @@ export type CheckingInMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   geographic?: Maybe<GeoLocation>;
@@ -295,7 +300,7 @@ export type CheckingInMetadataV3 = {
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
   locale?: Maybe<Scalars['Locale']>;
-  location: Scalars['String'];
+  location: Scalars['EncryptableString'];
   mainContentFocus: PublicationCheckingInMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
@@ -352,6 +357,7 @@ export type Comment = {
   createdAt: Scalars['DateTime'];
   firstComment?: Maybe<Comment>;
   id: Scalars['PublicationId'];
+  /** Indicates whether the publication is encrypted or not. If `true` then values such as `EncryptableURI`, `EncryptableDateTime`, `EncryptableMarkdown`, and `EncryptableString` are to be considered encrypted and dealt with accordingly. */
   isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
@@ -1135,6 +1141,7 @@ export type DismissRecommendedProfilesRequest = {
   dismiss: Array<Scalars['ProfileId']>;
 };
 
+<<<<<<< HEAD
 export type DoesFollowRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   followers: Scalars['ProfileId'];
@@ -1148,6 +1155,8 @@ export type DoesFollowResult = {
   status: OptimisticStatusResult;
 };
 
+=======
+>>>>>>> 3f80e6a (fix: handle link unlink etc)
 /** The eip 712 typed data domain */
 export type Eip712TypedDataDomain = {
   __typename?: 'EIP712TypedDataDomain';
@@ -1175,9 +1184,9 @@ export type EmbedMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
-  embed: Scalars['URL'];
+  embed: Scalars['EncryptableURI'];
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
   hideFromFeed: Scalars['Boolean'];
@@ -1187,6 +1196,24 @@ export type EmbedMetadataV3 = {
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
+};
+
+export type EncryptableAudioSet = {
+  __typename?: 'EncryptableAudioSet';
+  audio?: Maybe<Audio>;
+  rawURI: Scalars['EncryptableURI'];
+};
+
+export type EncryptableImageSet = {
+  __typename?: 'EncryptableImageSet';
+  image?: Maybe<Image>;
+  rawURI: Scalars['EncryptableURI'];
+};
+
+export type EncryptableVideoSet = {
+  __typename?: 'EncryptableVideoSet';
+  rawURI: Scalars['EncryptableURI'];
+  video?: Maybe<Video>;
 };
 
 export type EncryptedMedia = {
@@ -1232,21 +1259,21 @@ export type EventMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
-  endsAt: Scalars['DateTime'];
+  endsAt: Scalars['EncryptableDateTime'];
   geographic?: Maybe<GeoLocation>;
   globalReach: Scalars['Boolean'];
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
-  links?: Maybe<Array<Scalars['URL']>>;
+  links?: Maybe<Array<Scalars['EncryptableURI']>>;
   locale?: Maybe<Scalars['Locale']>;
-  location: Scalars['String'];
+  location: Scalars['EncryptableString'];
   mainContentFocus: PublicationEventMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
-  startsAt: Scalars['DateTime'];
+  startsAt: Scalars['EncryptableDateTime'];
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
@@ -1515,7 +1542,7 @@ export type GeoLocation = {
 };
 
 export type HandleLinkToProfileRequest = {
-  handleId: Scalars['TokenId'];
+  handle: Scalars['Handle'];
 };
 
 export type HandleResult = {
@@ -1524,7 +1551,7 @@ export type HandleResult = {
 };
 
 export type HandleUnlinkFromProfileRequest = {
-  handleId: Scalars['TokenId'];
+  handle: Scalars['Handle'];
 };
 
 export type HelRequest = {
@@ -1568,7 +1595,7 @@ export type ImageMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -1882,7 +1909,7 @@ export type LinkMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -1892,7 +1919,7 @@ export type LinkMetadataV3 = {
   mainContentFocus: PublicationLinkMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
-  sharingLink: Scalars['URL'];
+  sharingLink: Scalars['EncryptableURI'];
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
@@ -1901,21 +1928,21 @@ export type LiveStreamMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  checkLiveAPI?: Maybe<Scalars['URL']>;
-  content?: Maybe<Scalars['Markdown']>;
+  checkLiveAPI?: Maybe<Scalars['EncryptableURI']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
-  endsAt?: Maybe<Scalars['DateTime']>;
+  endsAt?: Maybe<Scalars['EncryptableDateTime']>;
   globalReach: Scalars['Boolean'];
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
-  liveURL: Scalars['URL'];
+  liveURL: Scalars['EncryptableURI'];
   locale?: Maybe<Scalars['Locale']>;
   mainContentFocus: PublicationLiveStreamMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
-  playbackURL: Scalars['URL'];
+  playbackURL: Scalars['EncryptableURI'];
   rawURI: Scalars['URI'];
-  startsAt: Scalars['DateTime'];
+  startsAt: Scalars['EncryptableDateTime'];
   tags?: Maybe<Array<Scalars['String']>>;
   title?: Maybe<Scalars['String']>;
 };
@@ -1941,7 +1968,7 @@ export type MintMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -1950,7 +1977,7 @@ export type MintMetadataV3 = {
   locale?: Maybe<Scalars['Locale']>;
   mainContentFocus: PublicationMintMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
-  mintLink: Scalars['URL'];
+  mintLink: Scalars['EncryptableURI'];
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
 };
@@ -1959,6 +1986,7 @@ export type Mirror = {
   __typename?: 'Mirror';
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
+  /** Indicates whether the publication is encrypted or not. If `true` then values such as `EncryptableURI`, `EncryptableDateTime`, `EncryptableMarkdown`, and `EncryptableString` are to be considered encrypted and dealt with accordingly. */
   isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   mirrorOf: MirrorablePublication;
@@ -2174,10 +2202,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   ach?: Maybe<Scalars['Void']>;
   actOnOpenAction: LensProfileManagerRelayResult;
-  addProfileInterests: Scalars['Void'];
-  addPublicationBookmark: Scalars['Void'];
-  addPublicationNotInterested: Scalars['Void'];
-  addReaction: Scalars['Void'];
+  addProfileInterests?: Maybe<Scalars['Void']>;
+  addPublicationBookmark?: Maybe<Scalars['Void']>;
+  addPublicationNotInterested?: Maybe<Scalars['Void']>;
+  addReaction?: Maybe<Scalars['Void']>;
   authenticate: AuthenticationResult;
   block: LensProfileManagerRelayResult;
   broadcastOnMomoka: BroadcastMomokaResult;
@@ -2207,7 +2235,7 @@ export type Mutation = {
   createUnblockProfilesTypedData: CreateUnblockProfilesBroadcastItemResult;
   createUnfollowTypedData: CreateUnfollowBroadcastItemResult;
   deleteNftGallery?: Maybe<Scalars['Void']>;
-  dismissRecommendedProfiles: Scalars['Void'];
+  dismissRecommendedProfiles?: Maybe<Scalars['Void']>;
   dss?: Maybe<Scalars['Void']>;
   follow: LensProfileManagerRelayResult;
   gci?: Maybe<Scalars['Void']>;
@@ -2216,7 +2244,7 @@ export type Mutation = {
   handleLinkToProfile: LensProfileManagerRelayResult;
   handleUnlinkFromProfile: LensProfileManagerRelayResult;
   hel?: Maybe<Scalars['Void']>;
-  hidePublication: Scalars['Void'];
+  hidePublication?: Maybe<Scalars['Void']>;
   idKitPhoneVerifyWebhook: IdKitPhoneVerifyWebhookResultStatusType;
   in?: Maybe<Scalars['Void']>;
   inviteProfile?: Maybe<Scalars['Void']>;
@@ -2232,14 +2260,14 @@ export type Mutation = {
   quoteOnchain: LensProfileManagerRelayResult;
   refresh: AuthenticationResult;
   refreshPublicationMetadata: RefreshPublicationMetadataResult;
-  removeProfileInterests: Scalars['Void'];
-  removePublicationBookmark: Scalars['Void'];
-  removeReaction: Scalars['Void'];
-  reportPublication: Scalars['Void'];
+  removeProfileInterests?: Maybe<Scalars['Void']>;
+  removePublicationBookmark?: Maybe<Scalars['Void']>;
+  removeReaction?: Maybe<Scalars['Void']>;
+  reportPublication?: Maybe<Scalars['Void']>;
   setFollowModule: LensProfileManagerRelayResult;
   setProfileMetadata: LensProfileManagerRelayResult;
   unblock: LensProfileManagerRelayResult;
-  undoPublicationNotInterested: Scalars['Void'];
+  undoPublicationNotInterested?: Maybe<Scalars['Void']>;
   unfollow: LensProfileManagerRelayResult;
   updateNftGalleryInfo?: Maybe<Scalars['Void']>;
   updateNftGalleryItems?: Maybe<Scalars['Void']>;
@@ -3215,6 +3243,7 @@ export type Post = {
   by: Profile;
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
+  /** Indicates whether the publication is encrypted or not. If `true` then values such as `EncryptableURI`, `EncryptableDateTime`, `EncryptableMarkdown`, and `EncryptableString` are to be considered encrypted and dealt with accordingly. */
   isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
@@ -3716,23 +3745,23 @@ export enum PublicationMetadataMainFocusType {
 
 export type PublicationMetadataMediaAudio = {
   __typename?: 'PublicationMetadataMediaAudio';
-  artist?: Maybe<Scalars['String']>;
-  cover?: Maybe<ImageSet>;
-  credits?: Maybe<Scalars['String']>;
+  artist?: Maybe<Scalars['EncryptableString']>;
+  cover?: Maybe<EncryptableImageSet>;
+  credits?: Maybe<Scalars['EncryptableString']>;
   duration?: Maybe<Scalars['Int']>;
-  genre?: Maybe<Scalars['String']>;
-  item: AudioSet;
+  genre?: Maybe<Scalars['EncryptableString']>;
+  item: EncryptableAudioSet;
   license?: Maybe<PublicationMetadataLicenseType>;
-  lyrics?: Maybe<Scalars['String']>;
-  recordLabel?: Maybe<Scalars['String']>;
+  lyrics?: Maybe<Scalars['EncryptableString']>;
+  recordLabel?: Maybe<Scalars['EncryptableString']>;
   type: AudioMimeType;
 };
 
 export type PublicationMetadataMediaImage = {
   __typename?: 'PublicationMetadataMediaImage';
   /** Alternative text for the image */
-  altTag?: Maybe<Scalars['String']>;
-  item: ImageSet;
+  altTag?: Maybe<Scalars['EncryptableString']>;
+  item: EncryptableImageSet;
   license?: Maybe<PublicationMetadataLicenseType>;
   type: ImageMimeType;
 };
@@ -3740,10 +3769,10 @@ export type PublicationMetadataMediaImage = {
 export type PublicationMetadataMediaVideo = {
   __typename?: 'PublicationMetadataMediaVideo';
   /** Alternative text for the video */
-  altTag?: Maybe<Scalars['String']>;
-  cover?: Maybe<ImageSet>;
+  altTag?: Maybe<Scalars['EncryptableString']>;
+  cover?: Maybe<EncryptableImageSet>;
   duration?: Maybe<Scalars['Int']>;
-  item: VideoSet;
+  item: EncryptableVideoSet;
   license?: Maybe<PublicationMetadataLicenseType>;
   type: VideoMimeType;
 };
@@ -3918,7 +3947,7 @@ export enum PublicationReportingSpamSubreason {
 }
 
 export type PublicationRequest = {
-  for?: InputMaybe<Scalars['PublicationId']>;
+  id?: InputMaybe<Scalars['PublicationId']>;
   txHash?: InputMaybe<Scalars['TxHash']>;
 };
 
@@ -4082,7 +4111,10 @@ export type Query = {
   cur: Array<Scalars['String']>;
   /** Get all enabled currencies */
   currencies: PaginatedCurrenciesResult;
+<<<<<<< HEAD
   doesFollow: PaginatedDoesFollowResult;
+=======
+>>>>>>> 3f80e6a (fix: handle link unlink etc)
   exploreProfiles: PaginatedProfileResult;
   explorePublications: PaginatedExplorePublicationResult;
   feed: PaginatedFeedResult;
@@ -4169,11 +4201,6 @@ export type QueryCurArgs = {
 
 export type QueryCurrenciesArgs = {
   request: PaginatedOffsetRequest;
-};
-
-
-export type QueryDoesFollowArgs = {
-  request: DoesFollowRequest;
 };
 
 
@@ -4456,6 +4483,7 @@ export type Quote = {
   by: Profile;
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
+  /** Indicates whether the publication is encrypted or not. If `true` then values such as `EncryptableURI`, `EncryptableDateTime`, `EncryptableMarkdown`, and `EncryptableString` are to be considered encrypted and dealt with accordingly. */
   isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
@@ -4719,18 +4747,18 @@ export type SpaceMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
   hideFromFeed: Scalars['Boolean'];
   id: Scalars['String'];
-  link: Scalars['URL'];
+  link: Scalars['EncryptableURI'];
   locale?: Maybe<Scalars['Locale']>;
   mainContentFocus: PublicationSpaceMetadataV3MainFocusType;
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
-  startsAt: Scalars['DateTime'];
+  startsAt: Scalars['EncryptableDateTime'];
   tags?: Maybe<Array<Scalars['String']>>;
   title: Scalars['String'];
 };
@@ -4745,7 +4773,7 @@ export type StoryMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   asset: PublicationMetadataAttachment;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -4821,7 +4849,7 @@ export type TextOnlyMetadataV3 = {
   __typename?: 'TextOnlyMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content: Scalars['Markdown'];
+  content: Scalars['EncryptableMarkdown'];
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -4840,7 +4868,7 @@ export type ThreeDMetadataV3 = {
   assets: Array<ThreeDMetadataV3Asset>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -4857,8 +4885,8 @@ export type ThreeDMetadataV3Asset = {
   __typename?: 'ThreeDMetadataV3Asset';
   format: Scalars['String'];
   license?: Maybe<PublicationMetadataLicenseType>;
-  playerURL: Scalars['URL'];
-  uri: Scalars['URI'];
+  playerURL: Scalars['EncryptableURI'];
+  uri: Scalars['EncryptableURI'];
   zipPath?: Maybe<Scalars['String']>;
 };
 
@@ -4868,7 +4896,7 @@ export type TransactionMetadataV3 = {
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
   chainId: Scalars['ChainId'];
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -4879,7 +4907,7 @@ export type TransactionMetadataV3 = {
   marketplace?: Maybe<MarketplaceMetadata>;
   rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
-  txHash: Scalars['TxHash'];
+  txHash: Scalars['EncryptableTxHash'];
   type: PublicationTransactionMetadataType;
 };
 
@@ -4994,7 +5022,7 @@ export type VideoMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataAttachment>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
-  content?: Maybe<Scalars['Markdown']>;
+  content?: Maybe<Scalars['EncryptableMarkdown']>;
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   globalReach: Scalars['Boolean'];
@@ -5105,7 +5133,7 @@ export type AddPublicationBookmarkMutationVariables = Exact<{
 }>;
 
 
-export type AddPublicationBookmarkMutation = { __typename?: 'Mutation', addPublicationBookmark: any };
+export type AddPublicationBookmarkMutation = { __typename?: 'Mutation', addPublicationBookmark?: any | null };
 
 export type ProfileBookmarksQueryVariables = Exact<{
   request: ProfileBookmarksRequest;
@@ -5119,7 +5147,7 @@ export type RemovePublicationBookmarkMutationVariables = Exact<{
 }>;
 
 
-export type RemovePublicationBookmarkMutation = { __typename?: 'Mutation', removePublicationBookmark: any };
+export type RemovePublicationBookmarkMutation = { __typename?: 'Mutation', removePublicationBookmark?: any | null };
 
 export type BroadcastOnchainMutationVariables = Exact<{
   request: BroadcastRequest;
@@ -5186,6 +5214,7 @@ export type FeedQueryVariables = Exact<{
 
 export type FeedQuery = { __typename?: 'Query', feed: { __typename?: 'PaginatedFeedResult', items: Array<{ __typename?: 'FeedItem', id: string }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
 
+<<<<<<< HEAD
 export type DoesFollowQueryVariables = Exact<{
   request: DoesFollowRequest;
 }>;
@@ -5193,6 +5222,8 @@ export type DoesFollowQueryVariables = Exact<{
 
 export type DoesFollowQuery = { __typename?: 'Query', doesFollow: { __typename?: 'PaginatedDoesFollowResult', items: Array<{ __typename?: 'DoesFollowResult', followerProfileId: any, status: { __typename?: 'OptimisticStatusResult', value: boolean, isFinalisedOnchain: boolean } }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
 
+=======
+>>>>>>> 3f80e6a (fix: handle link unlink etc)
 export type CreateFollowTypedDataMutationVariables = Exact<{
   request: FollowRequest;
 }>;
@@ -5419,14 +5450,14 @@ export type AddPublicationNotInterestedMutationVariables = Exact<{
 }>;
 
 
-export type AddPublicationNotInterestedMutation = { __typename?: 'Mutation', addPublicationNotInterested: any };
+export type AddPublicationNotInterestedMutation = { __typename?: 'Mutation', addPublicationNotInterested?: any | null };
 
 export type UndoPublicationNotInterestedMutationVariables = Exact<{
   request: PublicationNotInterestedRequest;
 }>;
 
 
-export type UndoPublicationNotInterestedMutation = { __typename?: 'Mutation', undoPublicationNotInterested: any };
+export type UndoPublicationNotInterestedMutation = { __typename?: 'Mutation', undoPublicationNotInterested?: any | null };
 
 export type NotificationsQueryVariables = Exact<{
   request: NotificationRequest;
@@ -5489,7 +5520,7 @@ export type AddProfileInterestsMutationVariables = Exact<{
 }>;
 
 
-export type AddProfileInterestsMutation = { __typename?: 'Mutation', addProfileInterests: any };
+export type AddProfileInterestsMutation = { __typename?: 'Mutation', addProfileInterests?: any | null };
 
 export type CreateBlockProfilesTypedDataMutationVariables = Exact<{
   request: BlockRequest;
@@ -5517,7 +5548,7 @@ export type DismissRecommendedProfilesMutationVariables = Exact<{
 }>;
 
 
-export type DismissRecommendedProfilesMutation = { __typename?: 'Mutation', dismissRecommendedProfiles: any };
+export type DismissRecommendedProfilesMutation = { __typename?: 'Mutation', dismissRecommendedProfiles?: any | null };
 
 type FollowModuleFields_FeeFollowModuleSettings_Fragment = { __typename?: 'FeeFollowModuleSettings', recipient: any, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, amount: { __typename?: 'Amount', value: string, asset: { __typename?: 'Erc20', name: string, symbol: string, decimals: number, contract: { __typename?: 'NetworkAddress', address: any, chainId: any } } } };
 
@@ -5581,7 +5612,7 @@ export type RemoveProfileInterestsMutationVariables = Exact<{
 }>;
 
 
-export type RemoveProfileInterestsMutation = { __typename?: 'Mutation', removeProfileInterests: any };
+export type RemoveProfileInterestsMutation = { __typename?: 'Mutation', removeProfileInterests?: any | null };
 
 export type CreateOnchainSetProfileMetadataTypedDataMutationVariables = Exact<{
   request: OnchainSetProfileMetadataRequest;
@@ -5651,7 +5682,7 @@ export type HidePublicationMutationVariables = Exact<{
 }>;
 
 
-export type HidePublicationMutation = { __typename?: 'Mutation', hidePublication: any };
+export type HidePublicationMutation = { __typename?: 'Mutation', hidePublication?: any | null };
 
 export type CreateLegacyCollectTypedDataMutationVariables = Exact<{
   request: LegacyCollectRequest;
@@ -5827,14 +5858,14 @@ export type AddReactionMutationVariables = Exact<{
 }>;
 
 
-export type AddReactionMutation = { __typename?: 'Mutation', addReaction: any };
+export type AddReactionMutation = { __typename?: 'Mutation', addReaction?: any | null };
 
 export type RemoveReactionMutationVariables = Exact<{
   request: ReactionRequest;
 }>;
 
 
-export type RemoveReactionMutation = { __typename?: 'Mutation', removeReaction: any };
+export type RemoveReactionMutation = { __typename?: 'Mutation', removeReaction?: any | null };
 
 export type WhoReactedPublicationQueryVariables = Exact<{
   request: WhoReactedPublicationRequest;
@@ -5848,7 +5879,7 @@ export type ReportPublicationMutationVariables = Exact<{
 }>;
 
 
-export type ReportPublicationMutation = { __typename?: 'Mutation', reportPublication: any };
+export type ReportPublicationMutation = { __typename?: 'Mutation', reportPublication?: any | null };
 
 export type FollowRevenuesQueryVariables = Exact<{
   request: FollowRevenueRequest;
@@ -5922,7 +5953,10 @@ export const ExploreProfilesDocument = {"kind":"Document","definitions":[{"kind"
 export const ExplorePublicationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ExplorePublications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ExplorePublicationRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"explorePublications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PostFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"QuoteFields"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...PostFieldsFragmentDoc.definitions,...PublicationOperationFieldsFragmentDoc.definitions,...MetadataV1FieldsFragmentDoc.definitions,...MetadataV2FieldsFragmentDoc.definitions,...ReferenceModuleFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...QuoteFieldsFragmentDoc.definitions,...PrimaryPublicationIdFragmentDoc.definitions]} as unknown as DocumentNode<ExplorePublicationsQuery, ExplorePublicationsQueryVariables>;
 export const FeedHighlightsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"FeedHighlights"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FeedHighlightsRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"feedHighlights"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]} as unknown as DocumentNode<FeedHighlightsQuery, FeedHighlightsQueryVariables>;
 export const FeedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Feed"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FeedRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"feed"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}}]} as unknown as DocumentNode<FeedQuery, FeedQueryVariables>;
+<<<<<<< HEAD
 export const DoesFollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"DoesFollow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DoesFollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"doesFollow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"followerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}}]} as unknown as DocumentNode<DoesFollowQuery, DoesFollowQueryVariables>;
+=======
+>>>>>>> 3f80e6a (fix: handle link unlink etc)
 export const CreateFollowTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateFollowTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createFollowTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Follow"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"followerProfileId"}},{"kind":"Field","name":{"kind":"Name","value":"idsOfProfilesToFollow"}},{"kind":"Field","name":{"kind":"Name","value":"followTokenIds"}},{"kind":"Field","name":{"kind":"Name","value":"datas"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateFollowTypedDataMutation, CreateFollowTypedDataMutationVariables>;
 export const FollowDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Follow"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowLensManagerRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"follow"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<FollowMutation, FollowMutationVariables>;
 export const FollowersDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Followers"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"FollowersRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"followers"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<FollowersQuery, FollowersQueryVariables>;

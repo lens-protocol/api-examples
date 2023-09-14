@@ -36,6 +36,6 @@ export const waitUntilComplete = async (input: QueryTxIdToTxHashArgs) => {
 
 (async () => {
   if (explicitStart(__filename)) {
-    await testTransaction();
+    // await testTransaction();
   }
 })();

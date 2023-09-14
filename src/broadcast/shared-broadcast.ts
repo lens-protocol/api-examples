@@ -6,6 +6,7 @@ import {
 } from '../graphql/generated';
 
 export const broadcastOnchainRequest = async (request: BroadcastRequest) => {
+  console.log('using gasless broadcast..');
   const result = await apolloClient.mutate({
     mutation: BroadcastOnchainDocument,
     variables: {

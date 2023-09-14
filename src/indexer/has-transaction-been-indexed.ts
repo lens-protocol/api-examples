@@ -49,6 +49,6 @@ export const waitUntilComplete = async (input: { txHash: string } | { txId: stri
 
 (async () => {
   if (explicitStart(__filename)) {
-    await testTransaction();
+    //await testTransaction();
   }
 })();

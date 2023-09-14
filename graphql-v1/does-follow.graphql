@@ -1,4 +1,4 @@
-query doesFollow($request: DoesFollowRequest!) {
+query doesFollow($request: FollowRequest!) {
   doesFollow(request: $request) {
     followerAddress
     profileId

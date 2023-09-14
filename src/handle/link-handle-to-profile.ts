@@ -28,7 +28,7 @@ export const link = async () => {
   await login(address);
 
   const { id, typedData } = await createHandleLinkToProfileTypedData({
-    handleId: '0x443e20e50db22e9d9b71d12d2d6e67a50096909698e387edd5a38f71707fb1d4',
+    handle: 'wagmi.test',
   });
   console.log('link handle to profile:: result', { id, typedData });
 

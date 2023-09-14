@@ -26,7 +26,7 @@ export const unlinkHandleFromProfileManager = async () => {
   await login(address);
 
   const result = await unlinkHandleFromProfile({
-    handleId: '0x443e20e50db22e9d9b71d12d2d6e67a50096909698e387edd5a38f71707fb1d4',
+    handle: 'wagmi.test',
   });
   console.log('unlink handle from profile lens profile manager: result', result);
   await waitUntilLensManagerTransactionIsComplete(result, 'unlinkHandleFromProfile');
