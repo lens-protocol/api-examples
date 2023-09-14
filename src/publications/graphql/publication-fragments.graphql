@@ -53,7 +53,6 @@ fragment PostFields on Post {
     id
   }
   isHidden
-  isEncrypted
   momoka {
     proof
   }
@@ -91,7 +90,6 @@ fragment QuoteFields on Quote {
     id
   }
   isHidden
-  isEncrypted
   momoka {
     proof
   }
@@ -133,7 +131,6 @@ fragment MirrorFields on Mirror {
     id
   }
   isHidden
-  isEncrypted
   momoka {
     proof
   }
@@ -150,7 +147,6 @@ fragment CommentFields on Comment {
     id
   }
   isHidden
-  isEncrypted
   momoka {
     proof
   }
