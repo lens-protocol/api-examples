@@ -41,7 +41,7 @@ export const enableLensProfileManager = async () => {
     // changeManagers: [
     //   {
     //     action: ChangeProfileManagerActionType.Add,
-    //      address: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+    //     address: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
     //   },
     // ],
   });
