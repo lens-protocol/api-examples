@@ -67,7 +67,7 @@ export const quoteOnMomoka = async () => {
 
   const request: MomokaQuoteRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    quoteOn: "0x07-0x04-DA-967942cb"
+    quoteOn: "0x19-0x09-DA-b837b7e3"
   };
 
   // hard coded to make the code example clearer

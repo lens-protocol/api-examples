@@ -1,7 +1,7 @@
 // @ts-ignore
 import omitDeep from 'omit-deep';
 
-export const prettyJSON = (message: string, obj: string) => {
+export const prettyJSON = (message: string, obj: unknown) => {
   console.log(message, JSON.stringify(obj, null, 2));
 };
 

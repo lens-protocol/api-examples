@@ -46,7 +46,7 @@ export const commentOnMomokaLensProfileManager = async () => {
 
   const request: MomokaCommentRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    commentOn: "0x0a-0x01-DA-18b862fe"
+    commentOn: "0x19-0x09-DA-b837b7e3",
 
   };
 

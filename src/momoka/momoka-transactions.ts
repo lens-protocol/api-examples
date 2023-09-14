@@ -1,5 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { MomokaTransactionsDocument } from '../graphql/generated';
+import { prettyJSON } from '../helpers';
 
 (async function () {
   const result = await apolloClient.query({
@@ -7,5 +8,5 @@ import { MomokaTransactionsDocument } from '../graphql/generated';
     variables: { request: {} },
   });
 
-  console.log(`momoka transactions: result: ${result.data.momokaTransactions.items}`);
+  prettyJSON(`momoka transactions: result: `, result.data.momokaTransactions.items);
 })();

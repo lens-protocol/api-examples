@@ -1,8 +1,8 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { createMomokaPost } from '../broadcast/broadcast-momoka-post-example';
 import { getAddressFromSigner } from '../ethers.service';
 import { MomokaTransactionDocument } from '../graphql/generated';
+import { postOnMomoka } from '../publications/post-momoka';
 
 (async function () {
   const address = getAddressFromSigner();
@@ -10,14 +10,24 @@ import { MomokaTransactionDocument } from '../graphql/generated';
 
   await login(address);
 
-  const momokaId = await createMomokaPost();
+  const post = await postOnMomoka();
+
+  if (!post) {
+    console.error('post on momoka broadcast: failed');
+    return;
+  }
 
   const result = await apolloClient.query({
     query: MomokaTransactionDocument,
-    variables: { request: { id: momokaId } },
+    variables: { request: { id: post.proof.replace('ar://', '') } },
   });
 
+  if (!result.data.momokaTransaction) {
+    console.error('momoka transaction by momoka id: failed');
+    return;
+  }
+
   console.log(
-    `momoka transaction publication id: result: ${result.data.momokaTransaction?.publicationId}`
+    `momoka transaction publication id: result: ${result.data.momokaTransaction.publicationId}`
   );
 })();
