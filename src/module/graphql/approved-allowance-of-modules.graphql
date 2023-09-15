@@ -1,0 +1,10 @@
+query approvedModuleAllowanceAmount($request: ApprovedModuleAllowanceAmountRequest!) {
+  approvedModuleAllowanceAmount(request: $request) {
+    allowance
+    moduleContract {
+      address
+      chainId
+    }
+    moduleName
+  }
+}

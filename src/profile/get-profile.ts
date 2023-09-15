@@ -2,7 +2,6 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-// import { ProfileDocument, SingleProfileQueryRequest } from '../../graphql-v1/generated';
 import { ProfileDocument, ProfileRequest } from '../graphql/generated';
 
 const getProfileRequest = async (request: ProfileRequest) => {

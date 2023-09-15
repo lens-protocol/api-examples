@@ -1,7 +1,0 @@
-query doesFollow($request: FollowRequest!) {
-  doesFollow(request: $request) {
-    followerAddress
-    profileId
-    follows
-  }
-}

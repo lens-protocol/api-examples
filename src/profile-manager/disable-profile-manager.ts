@@ -1,62 +1,82 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
+import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
+import { PROFILE_ID, USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
-  CreateSetDispatcherTypedDataDocument,
-  SetDispatcherRequest,
-} from '../../graphql-v1/generated';
+  ChangeProfileManagersRequest,
+  CreateChangeProfileManagersTypedDataDocument,
+} from '../graphql/generated';
 import { lensHub } from '../lens-hub';
 
-const disableDispatcherWithTypedData = async (request: SetDispatcherRequest) => {
+import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
+
+export const createChangeProfileManagersTypedData = async (
+  request: ChangeProfileManagersRequest
+) => {
   const result = await apolloClient.mutate({
-    mutation: CreateSetDispatcherTypedDataDocument,
+    mutation: CreateChangeProfileManagersTypedDataDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.createSetDispatcherTypedData;
+  return result.data!.createChangeProfileManagersTypedData;
 };
 
-export const disableDispatcher = async () => {
+export const disableLensProfileManager = async () => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
   const address = getAddressFromSigner();
-  console.log('disable dispatcher: address', address);
+  console.log('change profile manager: address', address);
 
   await login(address);
 
-  const result = await disableDispatcherWithTypedData({
-    profileId,
-    enable: false,
+  const { id, typedData } = await createChangeProfileManagersTypedData({
+    approveLensManager: false,
+    // leave it blank if you want to use the lens API manager!
+    // changeManagers: [
+    //   {
+    //     action: ChangeProfileManagerActionType.Add,
+    //     address: '0xEEA0C1f5ab0159dba749Dc0BAee462E5e293daaF',
+    //   },
+    // ],
   });
-  console.log('disable dispatcher: disableDispatcherWithTypedData', result);
+  console.log('change profile manager:', { id, typedData });
 
-  const typedData = result.typedData;
-  console.log('disable dispatcher: typedData', typedData);
+  console.log('change profile manager: typedData', typedData);
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
-  console.log('disable dispatcher: signature', signature);
+  console.log('change profile manager: signature', signature);
 
-  const { v, r, s } = splitSignature(signature);
+  if (USE_GASLESS) {
+    const broadcastResult = await broadcastOnchainRequest({ id, signature });
 
-  const tx = await lensHub.setDispatcherWithSig({
-    profileId: typedData.value.profileId,
-    dispatcher: typedData.value.dispatcher,
-    sig: {
-      v,
-      r,
-      s,
-      deadline: typedData.value.deadline,
-    },
-  });
-  console.log('disable dispatcher: tx hash', tx.hash);
+    await waitUntilBroadcastTransactionIsComplete(broadcastResult, 'change profile manager');
+  } else {
+    const { v, r, s } = splitSignature(signature);
+
+    const tx = await lensHub.changeDelegatedExecutorsConfigWithSig(
+      typedData.value.delegatorProfileId,
+      typedData.value.delegatedExecutors,
+      typedData.value.approvals,
+      typedData.value.configNumber,
+      typedData.value.switchToGivenConfig,
+      {
+        signer: address,
+        v,
+        r,
+        s,
+        deadline: typedData.value.deadline,
+      }
+    );
+    console.log('change profile manager: tx hash', tx.hash);
+  }
 };
 
 (async () => {
-  await disableDispatcher();
+  await disableLensProfileManager();
 })();

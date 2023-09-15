@@ -2,11 +2,10 @@ import { apolloClient } from '../apollo-client';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, sendTx } from '../ethers.service';
 import {
-  CollectModules,
   GenerateModuleCurrencyApprovalDataDocument,
   GenerateModuleCurrencyApprovalDataRequest,
-} from '../../graphql-v1/generated';
-import { enabledCurrencies } from './enabled-modules-currencies';
+  OpenActionModuleType,
+} from '../graphql/generated';
 
 const getModuleApprovalData = async (request: GenerateModuleCurrencyApprovalDataRequest) => {
   const result = await apolloClient.query({
@@ -23,12 +22,11 @@ export const approveModule = async () => {
   const address = getAddressFromSigner();
   console.log('approve module: address', address);
 
-  const currencies = await enabledCurrencies();
-
   const generateModuleCurrencyApprovalData = await getModuleApprovalData({
-    currency: currencies.map((c: any) => c.address)[0],
-    value: '10',
-    collectModule: CollectModules.FeeCollectModule,
+    allowance: '1000',
+    module: {
+      openActionModule: OpenActionModuleType.SimpleCollectOpenActionModule,
+    },
   });
   console.log('approve module: result', generateModuleCurrencyApprovalData);
 
