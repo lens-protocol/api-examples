@@ -6,7 +6,7 @@ const getOwnedHandles = async () => {
     query: OwnedHandlesDocument,
     variables: {
       request: {
-        address: '0x088C3152A5Ad1892236b312f18405Df3586Aca87',
+        for: '0x088C3152A5Ad1892236b312f18405Df3586Aca87',
       },
     },
   });

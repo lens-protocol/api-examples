@@ -41,7 +41,7 @@ export const login = async (address = getAddressFromSigner()) => {
   console.log('login: profileId', PROFILE_ID);
 
   // we request a challenge from the server
-  const challengeResponse = await generateChallenge({ address, profileId: PROFILE_ID });
+  const challengeResponse = await generateChallenge({ for: PROFILE_ID, signedBy: address });
 
   // sign the text with the wallet
   const signature = await signText(challengeResponse.text);

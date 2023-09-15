@@ -9,7 +9,7 @@ const getProfileAlreadyInvited = async () => {
     query: ProfileAlreadyInvitedDocument,
     variables: {
       request: {
-        address: '0x54be3a794282c030b15e43ae2bb182e14c409c5e',
+        for: '0x54be3a794282c030b15e43ae2bb182e14c409c5e',
       },
     },
   });

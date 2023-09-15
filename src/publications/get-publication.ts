@@ -20,7 +20,7 @@ export const getPublication = async () => {
   await login(address);
 
   const result = await getPublicationRequest({
-    id: knownPostId,
+    forId: knownPostId,
   });
   console.log('publication: result', result);
 

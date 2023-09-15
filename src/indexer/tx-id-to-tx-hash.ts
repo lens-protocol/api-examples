@@ -6,7 +6,7 @@ const txIdToTxHashRequest = async (request: QueryTxIdToTxHashArgs) => {
   const result = await apolloClient.query({
     query: TxIdToTxHashDocument,
     variables: {
-      txId: request.txId,
+      for: request.for,
     },
     fetchPolicy: 'network-only',
   });

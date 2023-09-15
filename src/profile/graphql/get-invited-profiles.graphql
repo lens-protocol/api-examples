@@ -1,6 +1,6 @@
 query GetInvitedProfiles {
   invitedProfiles {
-    invited
+    by
     profileMinted {
       createdAt
     }

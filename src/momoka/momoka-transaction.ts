@@ -19,7 +19,7 @@ import { postOnMomoka } from '../publications/post-momoka';
 
   const result = await apolloClient.query({
     query: MomokaTransactionDocument,
-    variables: { request: { id: post.proof.replace('ar://', '') } },
+    variables: { request: { for: post.proof.replace('ar://', '') } },
   });
 
   if (!result.data.momokaTransaction) {

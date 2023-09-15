@@ -18,7 +18,7 @@ const hasTxBeenIndexed = async (request: LensTransactionStatusRequest) => {
   return result.data.lensTransactionStatus;
 };
 
-export const waitUntilComplete = async (input: { txHash: string } | { txId: string }) => {
+export const waitUntilComplete = async (input: { forTxHash: string } | { forTxId: string }) => {
   while (true) {
     const response = await hasTxBeenIndexed(input);
 

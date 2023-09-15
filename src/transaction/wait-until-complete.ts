@@ -14,7 +14,7 @@ export async function waitUntilBroadcastTransactionIsComplete(
   }
 
   console.log(`${actionToBroadcast}: poll until indexed`);
-  const indexedResult = await waitUntilComplete({ txId: broadcastResult.txId });
+  const indexedResult = await waitUntilComplete({ forTxId: broadcastResult.txId });
   console.log(`${actionToBroadcast}: has been indexed`, indexedResult);
 
   console.log(`${actionToBroadcast}: complete`);
@@ -32,7 +32,7 @@ export async function waitUntilLensManagerTransactionIsComplete(
   }
 
   console.log(`${result}: poll until indexed`);
-  const indexedResult = await waitUntilComplete({ txId: result.txId });
+  const indexedResult = await waitUntilComplete({ forTxId: result.txId });
   console.log(`${result}: has been indexed`, indexedResult);
 
   console.log(`${result}: complete`);
