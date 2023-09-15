@@ -1,15 +1,9 @@
 query DoesFollow($request: DoesFollowRequest!) {
   doesFollow(request: $request) {
-    items {
-      followerProfileId
-      status {
-        value
-        isFinalisedOnchain
-      }
-    }
-    pageInfo {
-      prev
-      next
+    followerProfileId
+    status {
+      isFinalisedOnchain
+      value
     }
   }
 }
