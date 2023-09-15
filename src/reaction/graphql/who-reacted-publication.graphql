@@ -3,15 +3,17 @@
 query WhoReactedPublication($request: WhoReactedPublicationRequest!) {
   whoReactedPublication(request: $request) {
     items {
-      ...ProfileFields
+      profile {
+        ...ProfileFields
+      }
+      reactions {
+        reaction
+        reactionAt
+      }
     }
     pageInfo {
       prev
       next
-    }
-    reactions {
-      reaction
-      reactionAt
     }
   }
 }
