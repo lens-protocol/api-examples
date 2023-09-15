@@ -18,7 +18,7 @@ const searchRequest = async (request: PublicationSearchRequest) => {
 
 export const search = async () => {
   const result = await searchRequest({
-    query: 'lens',
+    query: 'content',
     where: {
       publicationTypes: [PublicationType.Quote, PublicationType.Post, PublicationType.Comment],
     },
