@@ -16,7 +16,6 @@ const getProfilesManaged = async (address: string) => {
   return result.data.profilesManaged;
 };
 
-// currently does not work due to postgres syntax error
 const profilesManaged = async () => {
   const address = getAddressFromSigner();
 
