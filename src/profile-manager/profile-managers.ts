@@ -1,17 +1,28 @@
 import { apolloClient } from '../apollo-client';
+import { PROFILE_ID } from '../config';
 import { ProfileManagersDocument } from '../graphql/generated';
 
-(async function () {
-  const ADDRESS = '0x54be3a794282c030b15e43ae2bb182e14c409c5e';
-
+const getProfilesManagers = async () => {
   const result = await apolloClient.query({
     query: ProfileManagersDocument,
     variables: {
       request: {
-        for: ADDRESS,
+        for: PROFILE_ID,
       },
     },
   });
 
-  console.log(`profile managers result (${ADDRESS}): ${result.data.profileManagers.items}`);
+  return result.data.profileManagers;
+};
+
+const profilesManagers = async () => {
+  const result = await getProfilesManagers();
+
+  console.log(`profiles managed: result`, result);
+
+  return result;
+};
+
+(async function () {
+  await profilesManagers();
 })();
