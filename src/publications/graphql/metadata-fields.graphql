@@ -135,6 +135,9 @@ fragment EventMetadataV3Fields on EventMetadataV3 {
   contentWarning
   tags
   locale
+
+  startsAt
+  endsAt
 }
 
 fragment ImageMetadataV3Fields on ImageMetadataV3 {
@@ -165,6 +168,9 @@ fragment LiveStreamMetadataV3Fields on LiveStreamMetadataV3 {
   contentWarning
   tags
   locale
+
+  startsAt
+  optionalEndsAt
 }
 
 fragment MintMetadataV3Fields on MintMetadataV3 {
