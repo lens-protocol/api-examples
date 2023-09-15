@@ -24,20 +24,31 @@
 #   }
 # }
 
-fragment MetadataV2Fields on PublicationMetadataV2 {
-  name
-  description
-  content
-  attributes {
-    displayType
-    traitType
-    value
-  }
+fragment LegacyPublicationMetadataFields on LegacyPublicationMetadata {
   locale
   tags
-  contentWarning
   mainContentFocus
-  animationUrl
+  contentWarning
+  content
+  marketplace {
+    name
+    description
+    attributes {
+      displayType
+      traitType
+      value
+    }
+    animationUrl
+    image {
+      rawURI
+      optimized {
+        url
+        mimeType
+        width
+        height
+      }
+    }
+  }
   encryptedWith {
     encryptionKey
     encryptedFields {
@@ -52,37 +63,4 @@ fragment MetadataV2Fields on PublicationMetadataV2 {
       externalUrl
     }
   }
-  image {
-    rawURI
-    image {
-      url
-      mimeType
-      width
-      height
-    }
-  }
-}
-
-fragment MetadataV1Fields on PublicationMetadataV1 {
-  version
-  metadata_id
-  appId
-  name
-  description
-  content
-  attributes {
-    displayType
-    traitType
-    value
-  }
-  image {
-    rawURI
-    image {
-      url
-      mimeType
-      width
-      height
-    }
-  }
-  animationUrl
 }

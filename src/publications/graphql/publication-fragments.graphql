@@ -71,12 +71,8 @@ fragment PostFields on Post {
     ...PublicationOperationFields
   }
   metadata {
-    ... on PublicationMetadataV1 {
-      ...MetadataV1Fields
-    }
-
-    ... on PublicationMetadataV2 {
-      ...MetadataV2Fields
+    ... on LegacyPublicationMetadata {
+      ...LegacyPublicationMetadataFields
     }
   }
   referenceModule {
@@ -112,12 +108,8 @@ fragment QuoteFields on Quote {
     ...PrimaryPublicationId
   }
   metadata {
-    ... on PublicationMetadataV1 {
-      ...MetadataV1Fields
-    }
-
-    ... on PublicationMetadataV2 {
-      ...MetadataV2Fields
+    ... on LegacyPublicationMetadata {
+      ...LegacyPublicationMetadataFields
     }
   }
   referenceModule {
@@ -165,12 +157,8 @@ fragment CommentFields on Comment {
     ...PublicationOperationFields
   }
   metadata {
-    ... on PublicationMetadataV1 {
-      ...MetadataV1Fields
-    }
-
-    ... on PublicationMetadataV2 {
-      ...MetadataV2Fields
+    ... on LegacyPublicationMetadata {
+      ...LegacyPublicationMetadataFields
     }
   }
   root {
