@@ -6,9 +6,7 @@ import {
 } from '../graphql/generated';
 import { knownPostId } from '../known-common-input-constants';
 
-export const profilePublicationsRevenueRequest = async (
-  request: RevenueFromPublicationsRequest
-) => {
+export const revenueFromPublicationsRequest = async (request: RevenueFromPublicationsRequest) => {
   const result = await apolloClient.query({
     query: RevenueFromPublicationsDocument,
     variables: {
@@ -19,8 +17,8 @@ export const profilePublicationsRevenueRequest = async (
   return result.data.revenueFromPublications;
 };
 
-export const profilePublicationsRevenue = async () => {
-  const result = await profilePublicationsRevenueRequest({
+export const revenueFromPublications = async () => {
+  const result = await revenueFromPublicationsRequest({
     for: knownPostId,
     where: {
       fromCollects: true,
@@ -33,5 +31,5 @@ export const profilePublicationsRevenue = async () => {
 };
 
 (async () => {
-  await profilePublicationsRevenue();
+  await revenueFromPublications();
 })();

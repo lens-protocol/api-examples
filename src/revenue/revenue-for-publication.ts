@@ -2,7 +2,7 @@ import { apolloClient } from '../apollo-client';
 import { PublicationRevenueRequest, RevenueForPublicationDocument } from '../graphql/generated';
 import { knownPostId } from '../known-common-input-constants';
 
-export const publicationRevenueRequest = async (request: PublicationRevenueRequest) => {
+export const revenueForPublicationRequest = async (request: PublicationRevenueRequest) => {
   const result = await apolloClient.query({
     query: RevenueForPublicationDocument,
     variables: {
@@ -13,8 +13,8 @@ export const publicationRevenueRequest = async (request: PublicationRevenueReque
   return result.data.revenueForPublication;
 };
 
-export const publicationRevenue = async () => {
-  const result = await publicationRevenueRequest({
+export const revenueForPublication = async () => {
+  const result = await revenueForPublicationRequest({
     for: knownPostId,
   });
   console.log('publication revenue: result', result);
@@ -23,5 +23,5 @@ export const publicationRevenue = async () => {
 };
 
 (async () => {
-  await publicationRevenue();
+  await revenueForPublication();
 })();
