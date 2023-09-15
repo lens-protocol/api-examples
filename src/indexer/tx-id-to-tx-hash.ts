@@ -5,37 +5,23 @@ import { QueryTxIdToTxHashArgs, TxIdToTxHashDocument } from '../graphql/generate
 const txIdToTxHashRequest = async (request: QueryTxIdToTxHashArgs) => {
   const result = await apolloClient.query({
     query: TxIdToTxHashDocument,
-    variables: {
-      for: request.for,
-    },
+    variables: request,
     fetchPolicy: 'network-only',
   });
 
   return result.data.txIdToTxHash;
 };
 
-export const waitUntilComplete = async (input: QueryTxIdToTxHashArgs) => {
-  while (true) {
-    const txHash = await txIdToTxHashRequest(input);
+const txIdToTxHash = async () => {
+  const result = await txIdToTxHashRequest({
+    for: '41e86c8e-6cb0-417f-b359-ae681194394a',
+  });
 
-    if (!txHash) {
-      break;
-    }
-
-    console.log('pool until indexed: result', txHash);
-    if (txHash) {
-      console.log('txHash', txHash);
-      return txHash;
-    }
-
-    console.log('pool until indexed: sleep for 1500 milliseconds then try again');
-    // sleep for before trying again
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-  }
+  console.log('txIdToTxHash result:', result);
 };
 
 (async () => {
   if (explicitStart(__filename)) {
-    // await testTransaction();
+    await txIdToTxHash();
   }
 })();

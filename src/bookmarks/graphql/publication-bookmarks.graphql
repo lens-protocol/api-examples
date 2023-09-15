@@ -1,5 +1,5 @@
-query ProfileBookmarks($request: ProfileBookmarksRequest!) {
-  profileBookmarks(request: $request) {
+query PublicationBookmarks($request: PublicationBookmarksRequest!) {
+  publicationBookmarks(request: $request) {
     items {
       ... on Post {
         ...PostFields

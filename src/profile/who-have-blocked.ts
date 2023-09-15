@@ -2,8 +2,6 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { getAddressFromSigner } from '../ethers.service';
 import { WhoHaveBlockedDocument } from '../graphql/generated';
-import { knownProfileId } from '../known-common-input-constants';
-import { block } from './block';
 
 const getWhoHaveBlocked = async () => {
   const result = await apolloClient.query({
@@ -21,8 +19,6 @@ const whoHaveBlocked = async () => {
   const address = getAddressFromSigner();
 
   await login(address);
-
-  await block([knownProfileId]);
 
   const result = await getWhoHaveBlocked();
 
