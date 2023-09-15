@@ -25,7 +25,7 @@ const invitedProfiles = async () => {
 
   const invitedProfiles = await getInvitedProfiles();
 
-  console.log(`invitedProfiles: ${invitedProfiles} profiles`);
+  console.log('invitedProfiles: profiles', invitedProfiles);
 };
 
 (async function () {
