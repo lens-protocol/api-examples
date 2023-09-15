@@ -36,7 +36,7 @@ export const createProfile = async () => {
   }
 
   console.log(`${result}: poll until indexed`);
-  const indexedResult = await waitUntilComplete({ txId: result.txId });
+  const indexedResult = await waitUntilComplete({ forTxId: result.txId });
   console.log(`${result}: has been indexed`, indexedResult);
 
   console.log(`${result}: complete`);

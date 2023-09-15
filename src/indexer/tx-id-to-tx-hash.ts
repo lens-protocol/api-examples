@@ -14,7 +14,7 @@ const txIdToTxHashRequest = async (request: QueryTxIdToTxHashArgs) => {
 
 const txIdToTxHash = async () => {
   const result = await txIdToTxHashRequest({
-    txId: '41e86c8e-6cb0-417f-b359-ae681194394a',
+    for: '41e86c8e-6cb0-417f-b359-ae681194394a',
   });
 
   console.log('txIdToTxHash result:', result);

@@ -97,7 +97,7 @@ export type ActedNotification = {
 };
 
 export type AlreadyInvitedCheckRequest = {
-  address: Scalars['EvmAddress'];
+  for: Scalars['EvmAddress'];
 };
 
 export type Amount = {
@@ -266,9 +266,9 @@ export type CanDecryptResponse = {
 
 export type ChallengeRequest = {
   /** The profile ID to initiate a challenge */
-  address: Scalars['EvmAddress'];
-  /** The profile ID to initiate a challenge */
-  profileId: Scalars['ProfileId'];
+  for: Scalars['ProfileId'];
+  /** The Ethereum address that will sign the challenge */
+  signedBy: Scalars['EvmAddress'];
 };
 
 export type ChangeProfileManager = {
@@ -1656,7 +1656,7 @@ export type InviteRequest = {
 
 export type InvitedResult = {
   __typename?: 'InvitedResult';
-  invited: Scalars['EvmAddress'];
+  by: Scalars['EvmAddress'];
   profileMinted?: Maybe<Profile>;
   when: Scalars['DateTime'];
 };
@@ -1912,9 +1912,9 @@ export type LensTransactionResult = {
 
 export type LensTransactionStatusRequest = {
   /** Transaction hash for retrieving transaction status */
-  txHash?: InputMaybe<Scalars['TxHash']>;
+  forTxHash?: InputMaybe<Scalars['TxHash']>;
   /** Transaction ID for retrieving transaction status when using the broadcaster */
-  txId?: InputMaybe<Scalars['TxId']>;
+  forTxId?: InputMaybe<Scalars['TxId']>;
 };
 
 export enum LensTransactionStatusType {
@@ -2141,7 +2141,7 @@ export type MomokaTransaction = MomokaCommentTransaction | MomokaMirrorTransacti
 
 export type MomokaTransactionRequest = {
   /** The momoka transaction id or internal publication id */
-  id: Scalars['String'];
+  for: Scalars['String'];
 };
 
 export type MomokaTransactionsRequest = {
@@ -2687,10 +2687,10 @@ export type MutualFollowersRequest = {
 export type MutualNftCollectionsRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
-  /** Profile id of the second user */
-  viewingProfileId: Scalars['ProfileId'];
   /** Profile id of the first user */
-  yourProfileId: Scalars['ProfileId'];
+  observer: Scalars['ProfileId'];
+  /** Profile id of the second user */
+  viewing: Scalars['ProfileId'];
 };
 
 export type MutualPoapsQueryRequest = {
@@ -2752,13 +2752,13 @@ export enum NftCollectionOwnersOrder {
 
 /** NFT collection owners request */
 export type NftCollectionOwnersRequest = {
-  /** The contract address */
-  address: Scalars['EvmAddress'];
+  /** The profile id to use when ordering by followers */
+  by?: InputMaybe<Scalars['ProfileId']>;
   /** The chain id */
   chainId: Scalars['ChainId'];
   cursor?: InputMaybe<Scalars['Cursor']>;
-  /** The profile id to use when ordering by followers */
-  for?: InputMaybe<Scalars['ProfileId']>;
+  /** The contract address */
+  for: Scalars['EvmAddress'];
   limit?: InputMaybe<LimitType>;
   /** The ordering of Nft collection owners */
   order?: InputMaybe<NftCollectionOwnersOrder>;
@@ -3035,9 +3035,9 @@ export type OrCondition = {
 };
 
 export type OwnedHandlesRequest = {
-  /** The Ethereum address for which to retrieve owned handles */
-  address: Scalars['EvmAddress'];
   cursor?: InputMaybe<Scalars['Cursor']>;
+  /** The Ethereum address for which to retrieve owned handles */
+  for: Scalars['EvmAddress'];
   limit?: InputMaybe<LimitType>;
 };
 
@@ -3539,9 +3539,9 @@ export type ProfileRecommendationsRequest = {
 
 export type ProfileRequest = {
   /** The handle for profile you want to fetch */
-  handle?: InputMaybe<Scalars['Handle']>;
+  forHandle?: InputMaybe<Scalars['Handle']>;
   /** The profile you want to fetch */
-  profileId?: InputMaybe<Scalars['ProfileId']>;
+  forProfileId?: InputMaybe<Scalars['ProfileId']>;
 };
 
 export type ProfileSearchRequest = {
@@ -3608,9 +3608,9 @@ export type ProfileStatsReactionArgs = {
 };
 
 export type ProfilesManagedRequest = {
-  /** The Ethereum address for which to retrieve managed profiles */
-  address: Scalars['EvmAddress'];
   cursor?: InputMaybe<Scalars['Cursor']>;
+  /** The Ethereum address for which to retrieve managed profiles */
+  for: Scalars['EvmAddress'];
   limit?: InputMaybe<LimitType>;
 };
 
@@ -3923,8 +3923,8 @@ export enum PublicationReportingSpamSubreason {
 }
 
 export type PublicationRequest = {
-  id?: InputMaybe<Scalars['PublicationId']>;
-  txHash?: InputMaybe<Scalars['TxHash']>;
+  forId?: InputMaybe<Scalars['PublicationId']>;
+  forTxHash?: InputMaybe<Scalars['TxHash']>;
 };
 
 export type PublicationRevenue = {
@@ -4397,7 +4397,7 @@ export type QuerySupportedReferenceModulesArgs = {
 
 
 export type QueryTxIdToTxHashArgs = {
-  txId: Scalars['TxId'];
+  for: Scalars['TxId'];
 };
 
 
@@ -5266,7 +5266,7 @@ export type PingQueryVariables = Exact<{ [key: string]: never; }>;
 export type PingQuery = { __typename?: 'Query', ping: string };
 
 export type TxIdToTxHashQueryVariables = Exact<{
-  txId: Scalars['TxId'];
+  for: Scalars['TxId'];
 }>;
 
 
@@ -5525,7 +5525,7 @@ export type FollowModuleFieldsFragment = FollowModuleFields_FeeFollowModuleSetti
 export type GetInvitedProfilesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetInvitedProfilesQuery = { __typename?: 'Query', invitedProfiles: Array<{ __typename?: 'InvitedResult', invited: any, when: any, profileMinted?: { __typename?: 'Profile', createdAt: any } | null }> };
+export type GetInvitedProfilesQuery = { __typename?: 'Query', invitedProfiles: Array<{ __typename?: 'InvitedResult', by: any, when: any, profileMinted?: { __typename?: 'Profile', createdAt: any } | null }> };
 
 export type ProfileQueryVariables = Exact<{
   request: ProfileRequest;
@@ -6032,7 +6032,7 @@ export const OwnedHandlesDocument = {"kind":"Document","definitions":[{"kind":"O
 export const CreateHandleUnlinkFromProfileTypedDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateHandleUnlinkFromProfileTypedData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleUnlinkFromProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createHandleUnlinkFromProfileTypedData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"typedData"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"types"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"Unlink"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"type"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"domain"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}},{"kind":"Field","name":{"kind":"Name","value":"version"}},{"kind":"Field","name":{"kind":"Name","value":"verifyingContract"}}]}},{"kind":"Field","name":{"kind":"Name","value":"value"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"nonce"}},{"kind":"Field","name":{"kind":"Name","value":"deadline"}},{"kind":"Field","name":{"kind":"Name","value":"profileId"}},{"kind":"Field","name":{"kind":"Name","value":"handleId"}}]}}]}}]}}]}}]} as unknown as DocumentNode<CreateHandleUnlinkFromProfileTypedDataMutation, CreateHandleUnlinkFromProfileTypedDataMutationVariables>;
 export const HandleUnlinkFromProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"HandleUnlinkFromProfile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HandleUnlinkFromProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"handleUnlinkFromProfile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<HandleUnlinkFromProfileMutation, HandleUnlinkFromProfileMutationVariables>;
 export const PingDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ping"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"ping"}}]}}]} as unknown as DocumentNode<PingQuery, PingQueryVariables>;
-export const TxIdToTxHashDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TxIdToTxHash"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"txId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TxId"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txIdToTxHash"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"txId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"txId"}}}]}]}}]} as unknown as DocumentNode<TxIdToTxHashQuery, TxIdToTxHashQueryVariables>;
+export const TxIdToTxHashDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"TxIdToTxHash"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"for"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"TxId"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txIdToTxHash"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"for"},"value":{"kind":"Variable","name":{"kind":"Name","value":"for"}}}]}]}}]} as unknown as DocumentNode<TxIdToTxHashQuery, TxIdToTxHashQueryVariables>;
 export const GenerateModuleCurrencyApprovalDataDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"generateModuleCurrencyApprovalData"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"GenerateModuleCurrencyApprovalDataRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"generateModuleCurrencyApprovalData"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"to"}},{"kind":"Field","name":{"kind":"Name","value":"from"}},{"kind":"Field","name":{"kind":"Name","value":"data"}}]}}]}}]} as unknown as DocumentNode<GenerateModuleCurrencyApprovalDataQuery, GenerateModuleCurrencyApprovalDataQueryVariables>;
 export const ApprovedModuleAllowanceAmountDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"approvedModuleAllowanceAmount"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ApprovedModuleAllowanceAmountRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approvedModuleAllowanceAmount"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"allowance"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"asset"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Erc20"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}}]}},{"kind":"Field","name":{"kind":"Name","value":"decimals"}},{"kind":"Field","name":{"kind":"Name","value":"symbol"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleContract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}}]}},{"kind":"Field","name":{"kind":"Name","value":"moduleName"}}]}}]}}]} as unknown as DocumentNode<ApprovedModuleAllowanceAmountQuery, ApprovedModuleAllowanceAmountQueryVariables>;
 export const EnabledCurrenciesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"EnabledCurrencies"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginatedOffsetRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currencies"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"symbol"}},{"kind":"Field","name":{"kind":"Name","value":"decimals"}},{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}}]} as unknown as DocumentNode<EnabledCurrenciesQuery, EnabledCurrenciesQueryVariables>;
@@ -6067,7 +6067,7 @@ export const CreateBlockProfilesTypedDataDocument = {"kind":"Document","definiti
 export const BlockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Block"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BlockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"block"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BlockMutation, BlockMutationVariables>;
 export const CreateProfileWithHandleDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateProfileWithHandle"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProfileWithHandleRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createProfileWithHandle"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateProfileWithHandleErrorResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<CreateProfileWithHandleMutation, CreateProfileWithHandleMutationVariables>;
 export const DismissRecommendedProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DismissRecommendedProfiles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"DismissRecommendedProfilesRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"dismissRecommendedProfiles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<DismissRecommendedProfilesMutation, DismissRecommendedProfilesMutationVariables>;
-export const GetInvitedProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetInvitedProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"invitedProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"invited"}},{"kind":"Field","name":{"kind":"Name","value":"profileMinted"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"when"}}]}}]}}]} as unknown as DocumentNode<GetInvitedProfilesQuery, GetInvitedProfilesQueryVariables>;
+export const GetInvitedProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetInvitedProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"invitedProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"by"}},{"kind":"Field","name":{"kind":"Name","value":"profileMinted"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}},{"kind":"Field","name":{"kind":"Name","value":"when"}}]}}]}}]} as unknown as DocumentNode<GetInvitedProfilesQuery, GetInvitedProfilesQueryVariables>;
 export const ProfileDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Profile"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profile"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<ProfileQuery, ProfileQueryVariables>;
 export const ProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Profiles"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfilesRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profiles"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"next"}},{"kind":"Field","name":{"kind":"Name","value":"prev"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<ProfilesQuery, ProfilesQueryVariables>;
 export const ProfileActionHistoryDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ProfileActionHistory"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ProfileActionHistoryRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"profileActionHistory"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]} as unknown as DocumentNode<ProfileActionHistoryQuery, ProfileActionHistoryQueryVariables>;

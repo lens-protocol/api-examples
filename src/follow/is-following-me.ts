@@ -22,7 +22,7 @@ export const doesFollow = async () => {
   await login(address);
 
   const result = await isFollowingMeRequest({
-    profileId: knownProfileId,
+    forProfileId: knownProfileId,
   });
   console.log('does follow: result', result);
 

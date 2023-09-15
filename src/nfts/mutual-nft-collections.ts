@@ -16,8 +16,8 @@ const getMutualNftCollections = async (request: MutualNftCollectionsRequest) => 
 
 export const usersNfts = async () => {
   const mutualNftCollections = await getMutualNftCollections({
-    viewingProfileId: knownProfileId,
-    yourProfileId: PROFILE_ID,
+    viewing: knownProfileId,
+    observer: PROFILE_ID,
   });
 
   console.log(`mutual nft collections: ${mutualNftCollections.length}`);

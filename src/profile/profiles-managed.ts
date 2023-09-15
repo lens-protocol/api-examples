@@ -7,7 +7,7 @@ const getProfilesManaged = async (address: string) => {
     query: ProfilesManagedDocument,
     variables: {
       request: {
-        address,
+        for: address
       },
     },
   });
