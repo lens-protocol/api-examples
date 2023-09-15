@@ -2,11 +2,11 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { ProfileBookmarksDocument, ProfileBookmarksRequest } from '../graphql/generated';
+import { PublicationBookmarksDocument, PublicationBookmarksRequest } from '../graphql/generated';
 
-const publicationsProfileBookmarks = (request: ProfileBookmarksRequest) => {
+const publicationsProfileBookmarks = (request: PublicationBookmarksRequest) => {
   return apolloClient.query({
-    query: ProfileBookmarksDocument,
+    query: PublicationBookmarksDocument,
     variables: {
       request,
     },
