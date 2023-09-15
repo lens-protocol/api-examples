@@ -2,7 +2,7 @@ fragment ImageSetFields on ImageSet {
   rawURI
   optimized {
     url
-    # mimeType
+    mimeType
     width
     height
   }
@@ -17,7 +17,7 @@ fragment MediaFields on LegacyMediaItem {
       rawURI
       optimized {
         url
-        # mimeType
+        mimeType
       }
     }
   }
@@ -34,7 +34,7 @@ fragment MediaFields on LegacyMediaItem {
       rawURI
       optimized {
         url
-        # mimeType
+        mimeType
       }
     }
   }
