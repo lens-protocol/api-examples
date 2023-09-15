@@ -1,0 +1,5 @@
+mutation RefreshPublicationMetadata($request: RefreshPublicationMetadataRequest!) {
+  refreshPublicationMetadata(request: $request) {
+    result
+  }
+}
