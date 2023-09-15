@@ -24,7 +24,9 @@ query NftCollections($request: NftCollectionsRequest!) {
 
 query NftGalleries($request: NftGalleriesRequest!) {
   nftGalleries(request: $request) {
-    name
+    items {
+      name
+    }
   }
 }
 

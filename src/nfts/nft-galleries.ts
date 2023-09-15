@@ -19,7 +19,7 @@ export const nftCollections = async () => {
     for: PROFILE_ID,
   });
 
-  console.log(`nft galleries: ${nftGalleries.length}`);
+  console.log(`nft galleries: ${nftGalleries.items.length}`);
 
   return nftGalleries;
 };
