@@ -25,7 +25,13 @@ query Nfts($request: NftsRequest!) {
         externalURL
         name
         image {
-          rawURI
+          raw {
+            uri
+          }
+          optimized {
+            uri
+            mimeType
+          }
         }
         animationUrl
         attributes {
