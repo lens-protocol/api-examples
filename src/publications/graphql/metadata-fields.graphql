@@ -1,7 +1,10 @@
 fragment ImageSetFields on ImageSet {
-  rawURI
+  raw {
+    uri
+    mimeType
+  }
   optimized {
-    url
+    uri
     mimeType
     width
     height
@@ -14,9 +17,12 @@ fragment MediaFields on LegacyMediaItem {
       ...ImageSetFields
     }
     audio {
-      rawURI
+      raw {
+        uri
+        mimeType
+      }
       optimized {
-        url
+        uri
         mimeType
       }
     }
@@ -31,9 +37,12 @@ fragment MediaFields on LegacyMediaItem {
       ...ImageSetFields
     }
     video {
-      rawURI
+      raw {
+        uri
+        mimeType
+      }
       optimized {
-        url
+        uri
         mimeType
       }
     }
@@ -59,9 +68,12 @@ fragment LegacyPublicationMetadataFields on LegacyPublicationMetadata {
     }
     animationUrl
     image {
-      rawURI
+      raw {
+        uri
+        mimeType
+      }
       optimized {
-        url
+        uri
         mimeType
         width
         height
