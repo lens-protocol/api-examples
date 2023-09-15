@@ -1,35 +1,54 @@
-# fragment MediaFields on LegacyMediaItem {
-#   ... on LegacyVideoItem {
-#     rawURI
-#     video {
-#       url
-#       mimeType
-#     }
-#   }
-#   ... on LegacyAudioItem {
-#     rawURI
-#     audio {
-#       url
-#       mimeType
-#     }
-#   }
-#   ... on LegacyImageItem {
-#     rawURI
-#     image {
-#       url
-#       mimeType
-#       width
-#       height
-#     }
-#   }
-# }
+fragment ImageSetFields on ImageSet {
+  rawURI
+  optimized {
+    url
+    # mimeType
+    width
+    height
+  }
+}
+
+fragment MediaFields on LegacyMediaItem {
+  ... on LegacyAudioItem {
+    cover {
+      ...ImageSetFields
+    }
+    audio {
+      rawURI
+      optimized {
+        url
+        # mimeType
+      }
+    }
+  }
+  ... on LegacyImageItem {
+    image {
+      ...ImageSetFields
+    }
+  }
+  ... on LegacyVideoItem {
+    cover {
+      ...ImageSetFields
+    }
+    video {
+      rawURI
+      optimized {
+        url
+        # mimeType
+      }
+    }
+  }
+}
 
 fragment LegacyPublicationMetadataFields on LegacyPublicationMetadata {
   locale
   tags
   mainContentFocus
   contentWarning
-  content
+  conditionalContent
+  conditionalMedia {
+    ...MediaFields
+  }
   marketplace {
     name
     description
@@ -62,5 +81,224 @@ fragment LegacyPublicationMetadataFields on LegacyPublicationMetadata {
       animationUrl
       externalUrl
     }
+  }
+}
+
+fragment PublicationMetadataV3AttributeFields on PublicationMetadataV3Attribute {
+  key
+  value
+}
+
+fragment ArticleMetadataV3Fields on ArticleMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment AudioMetadataV3Fields on AudioMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment CheckingInMetadataV3Fields on CheckingInMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  contentWarning
+  tags
+  locale
+}
+
+fragment EmbedMetadataV3Fields on EmbedMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment EventMetadataV3Fields on EventMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  contentWarning
+  tags
+  locale
+}
+
+fragment ImageMetadataV3Fields on ImageMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment LinkMetadataV3Fields on LinkMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment LiveStreamMetadataV3Fields on LiveStreamMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment MintMetadataV3Fields on MintMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment SpaceMetadataV3Fields on SpaceMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment StoryMetadataV3Fields on StoryMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment TextOnlyMetadataV3Fields on TextOnlyMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment ThreeDMetadataV3Fields on ThreeDMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment TransactionMetadataV3Fields on TransactionMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment VideoMetadataV3Fields on VideoMetadataV3 {
+  attributes {
+    ...PublicationMetadataV3AttributeFields
+  }
+  optionalContent
+  contentWarning
+  tags
+  locale
+}
+
+fragment AnyPublicationMetadataFields on PublicationMetadata {
+  ... on LegacyPublicationMetadata {
+    ...LegacyPublicationMetadataFields
+  }
+
+  ... on ArticleMetadataV3 {
+    ...ArticleMetadataV3Fields
+  }
+
+  ... on AudioMetadataV3 {
+    ...AudioMetadataV3Fields
+  }
+
+  ... on CheckingInMetadataV3 {
+    ...CheckingInMetadataV3Fields
+  }
+
+  ... on EmbedMetadataV3 {
+    ...EmbedMetadataV3Fields
+  }
+
+  ... on EventMetadataV3 {
+    ...EventMetadataV3Fields
+  }
+
+  ... on ImageMetadataV3 {
+    ...ImageMetadataV3Fields
+  }
+
+  ... on LinkMetadataV3 {
+    ...LinkMetadataV3Fields
+  }
+
+  ... on LiveStreamMetadataV3 {
+    ...LiveStreamMetadataV3Fields
+  }
+
+  ... on MintMetadataV3 {
+    ...MintMetadataV3Fields
+  }
+
+  ... on SpaceMetadataV3 {
+    ...SpaceMetadataV3Fields
+  }
+
+  ... on StoryMetadataV3 {
+    ...StoryMetadataV3Fields
+  }
+
+  ... on TextOnlyMetadataV3 {
+    ...TextOnlyMetadataV3Fields
+  }
+
+  ... on ThreeDMetadataV3 {
+    ...ThreeDMetadataV3Fields
+  }
+
+  ... on TransactionMetadataV3 {
+    ...TransactionMetadataV3Fields
+  }
+
+  ... on VideoMetadataV3 {
+    ...VideoMetadataV3Fields
   }
 }
