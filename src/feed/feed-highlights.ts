@@ -9,7 +9,7 @@ const getFeedHighlights = async (request: FeedHighlightsRequest) => {
     },
   });
 
-  return result.data.feedHighlights.items;
+  return result.data.feedHighlights;
 };
 
 export const feedHighlights = async () => {
@@ -19,7 +19,7 @@ export const feedHighlights = async () => {
     },
   });
 
-  console.log(`feed highlights: ${feedHighlights.length}`);
+  console.log(`feed highlights: ${feedHighlights}`);
 
   return feedHighlights;
 };

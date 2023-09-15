@@ -3,5 +3,9 @@ query ProfilesManaged($request: ProfilesManagedRequest!) {
     items {
       ...ProfileFields
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

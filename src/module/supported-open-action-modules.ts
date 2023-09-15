@@ -9,14 +9,14 @@ const getSupportedOpenActionModules = async () => {
     },
   });
 
-  return result.data.supportedOpenActionModules.items;
+  return result.data.supportedOpenActionModules;
 };
 
 // This currently does not work due to postgres syntax error
 const supportedOpenActionModules = async () => {
   const result = await getSupportedOpenActionModules();
 
-  console.log(`supported open action modules: ${result.length}`);
+  console.log('supported open action modules:', result);
 
   return result;
 };

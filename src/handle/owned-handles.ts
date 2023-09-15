@@ -11,7 +11,7 @@ const getOwnedHandles = async () => {
     },
   });
 
-  return result.data.ownedHandles.items;
+  return result.data.ownedHandles;
 };
 
 const ownedHandles = async () => {

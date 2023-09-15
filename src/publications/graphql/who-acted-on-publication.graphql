@@ -3,5 +3,9 @@ query WhoActedOnPublication($request: WhoActedOnPublicationRequest!) {
     items {
       ...ProfileFields
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

@@ -9,7 +9,7 @@ const getNftCollections = async (request: NftCollectionsRequest) => {
     },
   });
 
-  return result.data.nftCollections.items;
+  return result.data.nftCollections;
 };
 
 export const nftCollections = async () => {
@@ -17,7 +17,7 @@ export const nftCollections = async () => {
     forAddress: '0x54be3a794282c030b15e43ae2bb182e14c409c5e',
   });
 
-  console.log(`nft collections: ${nftCollections.length}`);
+  console.log(`nft collections: ${nftCollections}`);
 
   return nftCollections;
 };

@@ -1,5 +1,4 @@
 import { apolloClient } from '../apollo-client';
-import { explicitStart } from '../config';
 import { CurrenciesDocument } from '../graphql/generated';
 
 export const getCurrencies = async () => {
@@ -10,7 +9,7 @@ export const getCurrencies = async () => {
     },
   });
 
-  return result.data.currencies.items;
+  return result.data.currencies;
 };
 
 export const currencies = async () => {

@@ -11,7 +11,7 @@ const mutualFollowersRequest = async (request: MutualFollowersRequest) => {
     },
   });
 
-  return result.data.mutualFollowers.items;
+  return result.data.mutualFollowers;
 };
 
 export const mutualFollowers = async () => {

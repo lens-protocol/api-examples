@@ -11,7 +11,7 @@ const getWhoHaveBlocked = async () => {
     },
   });
 
-  return result.data.whoHaveBlocked.items;
+  return result.data.whoHaveBlocked;
 };
 
 // currently does not work due to postgres syntax error
@@ -22,7 +22,7 @@ const whoHaveBlocked = async () => {
 
   const result = await getWhoHaveBlocked();
 
-  console.log(`blocked profiles: ${result}`);
+  console.log('blocked profiles:', result);
 
   return result;
 };

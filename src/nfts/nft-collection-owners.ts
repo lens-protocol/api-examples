@@ -9,7 +9,7 @@ const getNftCollectionOwners = async (request: NftCollectionOwnersRequest) => {
     },
   });
 
-  return result.data.nftCollectionOwners.items;
+  return result.data.nftCollectionOwners;
 };
 
 // Currently not working with sql error: syntax error at or near \"(\
@@ -19,7 +19,7 @@ export const nftCollectionOwners = async () => {
     chainId: 80001,
   });
 
-  console.log(`nft collection owners: ${nftCollectionOwners.length}`);
+  console.log(`nft collection owners: ${nftCollectionOwners}`);
 
   return nftCollectionOwners;
 };

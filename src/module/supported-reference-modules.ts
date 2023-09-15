@@ -6,14 +6,14 @@ const getSupportedReferenceModules = async () => {
     query: SupportedReferenceModulesDocument,
   });
 
-  return result.data.supportedReferenceModules.items;
+  return result.data.supportedReferenceModules;
 };
 
 // This currently does not work due to postgres syntax error
 const supportedReferenceModules = async () => {
   const result = await getSupportedReferenceModules();
 
-  console.log(`supported reference modules: ${result.length}`);
+  console.log('supported reference modules', result);
 
   return result;
 };

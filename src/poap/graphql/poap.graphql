@@ -9,6 +9,10 @@ query PoapHolders($request: PoapHoldersQueryRequest!) {
     items {
       id
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }
 
@@ -16,6 +20,10 @@ query MutualPoaps($request: MutualPoapsQueryRequest!) {
   mutualPoaps(request: $request) {
     items {
       id
+    }
+    pageInfo {
+      prev
+      next
     }
   }
 }

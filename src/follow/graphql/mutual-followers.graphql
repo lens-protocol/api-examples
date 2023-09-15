@@ -3,5 +3,9 @@ query MutualFollowers($request: MutualFollowersRequest!) {
     items {
       id
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

@@ -9,7 +9,7 @@ const getPoapHolders = async (request: PoapHoldersQueryRequest) => {
     },
   });
 
-  return result.data.poapHolders.items;
+  return result.data.poapHolders;
 };
 
 const poapEvent = async () => {

@@ -12,5 +12,9 @@ query SupportedReferenceModules($request: SupportedModulesRequest!) {
         }
       }
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

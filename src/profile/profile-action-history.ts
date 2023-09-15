@@ -12,7 +12,7 @@ const getProfileActionHistory = async () => {
     },
   });
 
-  return result.data.profileActionHistory.items;
+  return result.data.profileActionHistory;
 };
 
 export const profileActionHistory = async () => {
@@ -28,7 +28,7 @@ export const profileActionHistory = async () => {
 
   const profileActionHistory = await getProfileActionHistory();
 
-  console.log(`profile action history: ${profileActionHistory.length}`);
+  console.log(`profile action history: ${profileActionHistory}`);
 
   return profileActionHistory;
 };

@@ -11,7 +11,7 @@ const getMutualPoaps = async (request: MutualPoapsQueryRequest) => {
     },
   });
 
-  return result.data.mutualPoaps.items;
+  return result.data.mutualPoaps;
 };
 
 const mutualPoaps = async () => {

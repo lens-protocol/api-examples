@@ -33,5 +33,9 @@ query ProfileManagers($request: ProfileManagersRequest!) {
     items {
       address
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

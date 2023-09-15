@@ -3,6 +3,10 @@ query MutualNftCollections($request: MutualNftCollectionsRequest!) {
     items {
       name
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }
 
@@ -10,6 +14,10 @@ query NftCollectionOwners($request: NftCollectionOwnersRequest!) {
   nftCollectionOwners(request: $request) {
     items {
       id
+    }
+    pageInfo {
+      prev
+      next
     }
   }
 }
@@ -19,6 +27,10 @@ query NftCollections($request: NftCollectionsRequest!) {
     items {
       name
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }
 
@@ -26,6 +38,10 @@ query NftGalleries($request: NftGalleriesRequest!) {
   nftGalleries(request: $request) {
     items {
       name
+    }
+    pageInfo {
+      prev
+      next
     }
   }
 }

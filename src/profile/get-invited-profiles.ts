@@ -1,8 +1,8 @@
 import { apolloClient } from '../apollo-client';
-import { PROFILE_ID } from '../config';
 import { login } from '../authentication/login';
-import { GetInvitedProfilesDocument } from '../graphql/generated';
+import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { GetInvitedProfilesDocument } from '../graphql/generated';
 
 const getInvitedProfiles = async () => {
   const res = await apolloClient.query({
@@ -25,7 +25,7 @@ const invitedProfiles = async () => {
 
   const invitedProfiles = await getInvitedProfiles();
 
-  console.log(`invitedProfiles: ${invitedProfiles.length} profiles`);
+  console.log(`invitedProfiles: ${invitedProfiles} profiles`);
 };
 
 (async function () {

@@ -3,5 +3,9 @@ query ProfileActionHistory($request: ProfileActionHistoryRequest!) {
     items {
       id
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

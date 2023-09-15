@@ -7,12 +7,13 @@ const getProfilesManaged = async (address: string) => {
     query: ProfilesManagedDocument,
     variables: {
       request: {
-        for: address
+        for: address,
+        includeOwned: true,
       },
     },
   });
 
-  return result.data.profilesManaged.items;
+  return result.data.profilesManaged;
 };
 
 // currently does not work due to postgres syntax error
@@ -21,7 +22,7 @@ const profilesManaged = async () => {
 
   const result = await getProfilesManaged(address);
 
-  console.log(`profiles managed: result: ${result}`);
+  console.log(`profiles managed: result`, result);
 
   return result;
 };

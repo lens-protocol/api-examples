@@ -3,5 +3,9 @@ query WhoHaveBlocked($request: WhoHaveBlockedRequest!) {
     items {
       ...ProfileFields
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

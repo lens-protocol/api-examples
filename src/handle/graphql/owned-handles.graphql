@@ -3,5 +3,9 @@ query OwnedHandles($request: OwnedHandlesRequest!) {
     items {
       handle
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

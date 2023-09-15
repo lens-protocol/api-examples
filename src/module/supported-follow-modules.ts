@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { SupportedFollowModulesDocument, SupportedModulesRequest } from '../graphql/generated';
+import { SupportedFollowModulesDocument } from '../graphql/generated';
 
 const getSupportedFollowModules = async () => {
   const result = await apolloClient.query({
@@ -9,14 +9,14 @@ const getSupportedFollowModules = async () => {
     },
   });
 
-  return result.data.supportedFollowModules.items;
+  return result.data.supportedFollowModules;
 };
 
 // This currently does not work due to postgres syntax error
 const supportedFollowModules = async () => {
   const result = await getSupportedFollowModules();
 
-  console.log(`supported follow modules: ${result.length}`);
+  console.log('supported follow modules:', result);
 
   return result;
 };

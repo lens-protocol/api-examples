@@ -12,5 +12,9 @@ query SupportedOpenActionCollectModules($request: SupportedModulesRequest!) {
         }
       }
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

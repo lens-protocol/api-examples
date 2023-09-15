@@ -8,5 +8,9 @@ query FeedHighlights($request: FeedHighlightsRequest!) {
         id
       }
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }

@@ -3,5 +3,9 @@ query Currencies($request: PaginatedOffsetRequest!) {
     items {
       name
     }
+    pageInfo {
+      prev
+      next
+    }
   }
 }
