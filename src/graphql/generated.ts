@@ -1520,7 +1520,7 @@ export type GdmRequest = {
 };
 
 export type GenerateModuleCurrencyApprovalDataRequest = {
-  allowance: Scalars['EvmAddress'];
+  allowance: AmountInput;
   module: ModuleCurrencyApproval;
 };
 

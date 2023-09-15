@@ -1,4 +1,5 @@
 import { apolloClient } from '../apollo-client';
+import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, sendTx } from '../ethers.service';
 import {
@@ -22,8 +23,13 @@ export const approveModule = async () => {
   const address = getAddressFromSigner();
   console.log('approve module: address', address);
 
+  await login(address);
+
   const generateModuleCurrencyApprovalData = await getModuleApprovalData({
-    allowance: '1000',
+    allowance: {
+      currency: '0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889',
+      value: '1000',
+    },
     module: {
       openActionModule: OpenActionModuleType.SimpleCollectOpenActionModule,
     },
