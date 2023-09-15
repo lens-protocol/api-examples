@@ -1,6 +1,18 @@
 query approvedModuleAllowanceAmount($request: ApprovedModuleAllowanceAmountRequest!) {
   approvedModuleAllowanceAmount(request: $request) {
-    allowance
+    allowance {
+      value
+      asset {
+        ... on Erc20 {
+          contract {
+            address
+            chainId
+          }
+          decimals
+          symbol
+        }
+      }
+    }
     moduleContract {
       address
       chainId
