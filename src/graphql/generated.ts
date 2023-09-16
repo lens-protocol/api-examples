@@ -346,8 +346,6 @@ export enum CollectOpenActionModuleType {
   LegacyRevertCollectModule = 'LegacyRevertCollectModule',
   LegacySimpleCollectModule = 'LegacySimpleCollectModule',
   LegacyTimedFeeCollectModule = 'LegacyTimedFeeCollectModule',
-  MultirecipientFeeCollectOpenActionModule = 'MultirecipientFeeCollectOpenActionModule',
-  SimpleCollectOpenActionModule = 'SimpleCollectOpenActionModule',
   UnknownOpenActionModule = 'UnknownOpenActionModule'
 }
 
@@ -3098,6 +3096,12 @@ export type PaginatedFeedResult = {
   pageInfo: PaginatedResultInfo;
 };
 
+export type PaginatedForYouResult = {
+  __typename?: 'PaginatedForYouResult';
+  items: Array<PublicationForYou>;
+  pageInfo: PaginatedResultInfo;
+};
+
 export type PaginatedHandlesResult = {
   __typename?: 'PaginatedHandlesResult';
   items: Array<HandleResult>;
@@ -3708,6 +3712,14 @@ export enum PublicationContentWarningType {
   Spoiler = 'SPOILER'
 }
 
+export type PublicationForYou = Post | Quote;
+
+export type PublicationForYouRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  for?: InputMaybe<Scalars['ProfileId']>;
+  limit?: InputMaybe<LimitType>;
+};
+
 export type PublicationMarketplaceMetadataAttribute = {
   __typename?: 'PublicationMarketplaceMetadataAttribute';
   displayType?: Maybe<MarketplaceMetadataAttributeDisplayType>;
@@ -4093,6 +4105,7 @@ export type Query = {
   followRevenues: FollowRevenueResult;
   followers: PaginatedProfileResult;
   following: PaginatedProfileResult;
+  forYou: PaginatedForYouResult;
   gct: Array<Scalars['String']>;
   gdm: Array<Scalars['URL']>;
   generateModuleCurrencyApprovalData: GenerateModuleCurrencyApprovalResult;
@@ -4211,6 +4224,11 @@ export type QueryFollowersArgs = {
 
 export type QueryFollowingArgs = {
   request: FollowingRequest;
+};
+
+
+export type QueryForYouArgs = {
+  request: PublicationForYouRequest;
 };
 
 
@@ -5129,6 +5147,11 @@ export type BroadcastOnMomokaMutationVariables = Exact<{
 
 export type BroadcastOnMomokaMutation = { __typename?: 'Mutation', broadcastOnMomoka: { __typename?: 'CreateMomokaPublicationResult', id: any, proof: any, momokaId: any } | { __typename: 'RelayError', reason: RelayErrorReasonType } };
 
+export type UserSigNoncesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserSigNoncesQuery = { __typename?: 'Query', userSigNonces: { __typename?: 'UserSigNonces', lensHubOnchainSigNonce: any, lensTokenHandleRegistryOnchainSigNonce: any } };
+
 export type ClaimableProfilesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -6027,6 +6050,7 @@ export const PublicationBookmarksDocument = {"kind":"Document","definitions":[{"
 export const RemovePublicationBookmarkDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RemovePublicationBookmark"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PublicationBookmarkRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"removePublicationBookmark"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<RemovePublicationBookmarkMutation, RemovePublicationBookmarkMutationVariables>;
 export const BroadcastOnchainDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnchain"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnchain"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnchainMutation, BroadcastOnchainMutationVariables>;
 export const BroadcastOnMomokaDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"BroadcastOnMomoka"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"BroadcastRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"broadcastOnMomoka"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"CreateMomokaPublicationResult"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"proof"}},{"kind":"Field","name":{"kind":"Name","value":"momokaId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"__typename"}},{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<BroadcastOnMomokaMutation, BroadcastOnMomokaMutationVariables>;
+export const UserSigNoncesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"UserSigNonces"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userSigNonces"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"lensHubOnchainSigNonce"}},{"kind":"Field","name":{"kind":"Name","value":"lensTokenHandleRegistryOnchainSigNonce"}}]}}]}}]} as unknown as DocumentNode<UserSigNoncesQuery, UserSigNoncesQueryVariables>;
 export const ClaimableProfilesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ClaimableProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"claimableProfiles"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reserved"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"withHandle"}},{"kind":"Field","name":{"kind":"Name","value":"source"}},{"kind":"Field","name":{"kind":"Name","value":"expiry"}}]}},{"kind":"Field","name":{"kind":"Name","value":"canMintProfileWithFreeTextHandle"}}]}}]}}]} as unknown as DocumentNode<ClaimableProfilesQuery, ClaimableProfilesQueryVariables>;
 export const ClaimableStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ClaimableStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"claimableStatus"}}]}}]} as unknown as DocumentNode<ClaimableStatusQuery, ClaimableStatusQueryVariables>;
 export const CurrenciesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Currencies"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginatedOffsetRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currencies"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}}]} as unknown as DocumentNode<CurrenciesQuery, CurrenciesQueryVariables>;
@@ -6242,6 +6266,10 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
     "ProfilePicture": [
       "ImageSet",
       "NftImage"
+    ],
+    "PublicationForYou": [
+      "Post",
+      "Quote"
     ],
     "PublicationMetadata": [
       "ArticleMetadataV3",

@@ -1,5 +1,3 @@
-#import "../../profile/graphql/profile-fields-fragment.graphql"
-
 query WhoReactedPublication($request: WhoReactedPublicationRequest!) {
   whoReactedPublication(request: $request) {
     items {

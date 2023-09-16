@@ -1,0 +1,6 @@
+query UserSigNonces {
+  userSigNonces {
+    lensHubOnchainSigNonce
+    lensTokenHandleRegistryOnchainSigNonce
+  }
+}
