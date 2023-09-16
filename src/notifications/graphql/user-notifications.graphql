@@ -37,6 +37,33 @@ query Notifications($request: NotificationRequest!) {
       }
       ... on MirrorNotification {
         id
+        mirrors {
+          mirrorId
+          mirroredAt
+          profile {
+            id
+            handle
+          }
+        }
+        publication {
+          ... on Post {
+            id
+          }
+          ... on Comment {
+            id
+            by {
+              id
+              handle
+            }
+          }
+          ... on Quote {
+            id
+            by {
+              id
+              handle
+            }
+          }
+        }
       }
       ... on QuoteNotification {
         id
@@ -46,12 +73,73 @@ query Notifications($request: NotificationRequest!) {
       }
       ... on ActedNotification {
         id
+        actions {
+          profile {
+            handle
+            id
+          }
+          action {
+            ... on KnownCollectOpenActionResult {
+              type
+            }
+            ... on UnknownOpenActionResult {
+              address
+            }
+          }
+          actedAt
+        }
+        publication {
+          ... on Post {
+            id
+            by {
+              id
+              handle
+            }
+          }
+          ... on Comment {
+            id
+            by {
+              id
+              handle
+            }
+          }
+          ... on Mirror {
+            id
+          }
+        }
       }
       ... on FollowNotification {
         id
+        followers {
+          id
+          handle
+        }
       }
       ... on MentionNotification {
         id
+        publication {
+          ... on Post {
+            id
+            by {
+              id
+              handle
+            }
+          }
+          ... on Comment {
+            id
+            by {
+              id
+              handle
+            }
+          }
+          ... on Quote {
+            id
+            by {
+              id
+              handle
+            }
+          }
+        }
       }
     }
     pageInfo {

@@ -1,3 +1,4 @@
+import util from 'util';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
@@ -28,7 +29,7 @@ export const notifications = async () => {
 
   const result = await getNotifications({});
 
-  console.log('notifications: result', result);
+  console.log('notifications: result', util.inspect(result, { showHidden: false, depth: null }));
 
   return result;
 };
