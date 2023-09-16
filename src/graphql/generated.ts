@@ -346,6 +346,8 @@ export enum CollectOpenActionModuleType {
   LegacyRevertCollectModule = 'LegacyRevertCollectModule',
   LegacySimpleCollectModule = 'LegacySimpleCollectModule',
   LegacyTimedFeeCollectModule = 'LegacyTimedFeeCollectModule',
+  MultirecipientFeeCollectOpenActionModule = 'MultirecipientFeeCollectOpenActionModule',
+  SimpleCollectOpenActionModule = 'SimpleCollectOpenActionModule',
   UnknownOpenActionModule = 'UnknownOpenActionModule'
 }
 
@@ -1335,7 +1337,6 @@ export type ExplorePublicationRequest = {
 };
 
 export enum ExplorePublicationType {
-  Comment = 'COMMENT',
   Post = 'POST',
   Quote = 'QUOTE'
 }
@@ -3097,12 +3098,6 @@ export type PaginatedFeedResult = {
   pageInfo: PaginatedResultInfo;
 };
 
-export type PaginatedForYouResult = {
-  __typename?: 'PaginatedForYouResult';
-  items: Array<PublicationForYou>;
-  pageInfo: PaginatedResultInfo;
-};
-
 export type PaginatedHandlesResult = {
   __typename?: 'PaginatedHandlesResult';
   items: Array<HandleResult>;
@@ -3713,14 +3708,6 @@ export enum PublicationContentWarningType {
   Spoiler = 'SPOILER'
 }
 
-export type PublicationForYou = Post | Quote;
-
-export type PublicationForYouRequest = {
-  cursor?: InputMaybe<Scalars['Cursor']>;
-  for?: InputMaybe<Scalars['ProfileId']>;
-  limit?: InputMaybe<LimitType>;
-};
-
 export type PublicationMarketplaceMetadataAttribute = {
   __typename?: 'PublicationMarketplaceMetadataAttribute';
   displayType?: Maybe<MarketplaceMetadataAttributeDisplayType>;
@@ -4106,7 +4093,6 @@ export type Query = {
   followRevenues: FollowRevenueResult;
   followers: PaginatedProfileResult;
   following: PaginatedProfileResult;
-  forYou: PaginatedForYouResult;
   gct: Array<Scalars['String']>;
   gdm: Array<Scalars['URL']>;
   generateModuleCurrencyApprovalData: GenerateModuleCurrencyApprovalResult;
@@ -4225,11 +4211,6 @@ export type QueryFollowersArgs = {
 
 export type QueryFollowingArgs = {
   request: FollowingRequest;
-};
-
-
-export type QueryForYouArgs = {
-  request: PublicationForYouRequest;
 };
 
 
@@ -5664,13 +5645,6 @@ export type CanDecryptPublicationQueryVariables = Exact<{
 
 export type CanDecryptPublicationQuery = { __typename?: 'Query', publication?: { __typename?: 'Comment', operations: { __typename?: 'PublicationOperations', canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } } } | { __typename?: 'Mirror' } | { __typename?: 'Post', operations: { __typename?: 'PublicationOperations', canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } } } | { __typename?: 'Quote', operations: { __typename?: 'PublicationOperations', canDecrypt: { __typename?: 'CanDecryptResponse', result: boolean, reasons?: Array<DecryptFailReasonType> | null, extraDetails?: string | null } } } | null };
 
-export type ForYouQueryVariables = Exact<{
-  request: PublicationForYouRequest;
-}>;
-
-
-export type ForYouQuery = { __typename?: 'Query', forYou: { __typename?: 'PaginatedForYouResult', items: Array<{ __typename?: 'Post', id: any } | { __typename?: 'Quote', id: any }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
-
 export type PublicationQueryVariables = Exact<{
   request: PublicationRequest;
 }>;
@@ -6125,7 +6099,6 @@ export const CreateUnblockProfilesTypedDataDocument = {"kind":"Document","defini
 export const UnblockDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Unblock"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UnblockRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"unblock"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RelaySuccess"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"txId"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"LensProfileManagerRelayError"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"reason"}}]}}]}}]}}]} as unknown as DocumentNode<UnblockMutation, UnblockMutationVariables>;
 export const WhoHaveBlockedDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"WhoHaveBlocked"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"WhoHaveBlockedRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"whoHaveBlocked"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"ProfileFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...ProfileFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...FollowModuleFieldsFragmentDoc.definitions,...AmountFieldsFragmentDoc.definitions,...Erc20FieldsFragmentDoc.definitions]} as unknown as DocumentNode<WhoHaveBlockedQuery, WhoHaveBlockedQueryVariables>;
 export const CanDecryptPublicationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CanDecryptPublication"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PublicationRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"publication"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"canDecrypt"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"reasons"}},{"kind":"Field","name":{"kind":"Name","value":"extraDetails"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Comment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"canDecrypt"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"reasons"}},{"kind":"Field","name":{"kind":"Name","value":"extraDetails"}}]}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"canDecrypt"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"result"}},{"kind":"Field","name":{"kind":"Name","value":"reasons"}},{"kind":"Field","name":{"kind":"Name","value":"extraDetails"}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<CanDecryptPublicationQuery, CanDecryptPublicationQueryVariables>;
-export const ForYouDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ForYou"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PublicationForYouRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"forYou"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}}]} as unknown as DocumentNode<ForYouQuery, ForYouQueryVariables>;
 export const PublicationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Publication"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PublicationRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"publication"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PostFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Comment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommentFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Mirror"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MirrorFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"QuoteFields"}}]}}]}}]}},...PostFieldsFragmentDoc.definitions,...PublicationOperationFieldsFragmentDoc.definitions,...AnyPublicationMetadataFieldsFragmentDoc.definitions,...LegacyPublicationMetadataFieldsFragmentDoc.definitions,...MediaFieldsFragmentDoc.definitions,...ImageSetFieldsFragmentDoc.definitions,...ArticleMetadataV3FieldsFragmentDoc.definitions,...PublicationMetadataV3AttributeFieldsFragmentDoc.definitions,...AudioMetadataV3FieldsFragmentDoc.definitions,...CheckingInMetadataV3FieldsFragmentDoc.definitions,...EmbedMetadataV3FieldsFragmentDoc.definitions,...EventMetadataV3FieldsFragmentDoc.definitions,...ImageMetadataV3FieldsFragmentDoc.definitions,...LinkMetadataV3FieldsFragmentDoc.definitions,...LiveStreamMetadataV3FieldsFragmentDoc.definitions,...MintMetadataV3FieldsFragmentDoc.definitions,...SpaceMetadataV3FieldsFragmentDoc.definitions,...StoryMetadataV3FieldsFragmentDoc.definitions,...TextOnlyMetadataV3FieldsFragmentDoc.definitions,...ThreeDMetadataV3FieldsFragmentDoc.definitions,...TransactionMetadataV3FieldsFragmentDoc.definitions,...VideoMetadataV3FieldsFragmentDoc.definitions,...ReferenceModuleFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...CommentFieldsFragmentDoc.definitions,...PrimaryPublicationIdFragmentDoc.definitions,...MirrorFieldsFragmentDoc.definitions,...QuoteFieldsFragmentDoc.definitions]} as unknown as DocumentNode<PublicationQuery, PublicationQueryVariables>;
 export const PublicationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Publications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PublicationsRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"publications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PostFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Comment"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CommentFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Mirror"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MirrorFields"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Quote"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"QuoteFields"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}}]}},...PostFieldsFragmentDoc.definitions,...PublicationOperationFieldsFragmentDoc.definitions,...AnyPublicationMetadataFieldsFragmentDoc.definitions,...LegacyPublicationMetadataFieldsFragmentDoc.definitions,...MediaFieldsFragmentDoc.definitions,...ImageSetFieldsFragmentDoc.definitions,...ArticleMetadataV3FieldsFragmentDoc.definitions,...PublicationMetadataV3AttributeFieldsFragmentDoc.definitions,...AudioMetadataV3FieldsFragmentDoc.definitions,...CheckingInMetadataV3FieldsFragmentDoc.definitions,...EmbedMetadataV3FieldsFragmentDoc.definitions,...EventMetadataV3FieldsFragmentDoc.definitions,...ImageMetadataV3FieldsFragmentDoc.definitions,...LinkMetadataV3FieldsFragmentDoc.definitions,...LiveStreamMetadataV3FieldsFragmentDoc.definitions,...MintMetadataV3FieldsFragmentDoc.definitions,...SpaceMetadataV3FieldsFragmentDoc.definitions,...StoryMetadataV3FieldsFragmentDoc.definitions,...TextOnlyMetadataV3FieldsFragmentDoc.definitions,...ThreeDMetadataV3FieldsFragmentDoc.definitions,...TransactionMetadataV3FieldsFragmentDoc.definitions,...VideoMetadataV3FieldsFragmentDoc.definitions,...ReferenceModuleFieldsFragmentDoc.definitions,...NetworkAddressFieldsFragmentDoc.definitions,...CommentFieldsFragmentDoc.definitions,...PrimaryPublicationIdFragmentDoc.definitions,...MirrorFieldsFragmentDoc.definitions,...QuoteFieldsFragmentDoc.definitions]} as unknown as DocumentNode<PublicationsQuery, PublicationsQueryVariables>;
 export const HidePublicationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"HidePublication"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"HidePublicationRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"hidePublication"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<HidePublicationMutation, HidePublicationMutationVariables>;
@@ -6269,10 +6242,6 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
     "ProfilePicture": [
       "ImageSet",
       "NftImage"
-    ],
-    "PublicationForYou": [
-      "Post",
-      "Quote"
     ],
     "PublicationMetadata": [
       "ArticleMetadataV3",
