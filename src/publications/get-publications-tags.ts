@@ -13,7 +13,11 @@ const getPublicationsTagsRequest = async (request: PublicationsTagsRequest) => {
 };
 
 export const getPublicationsTags = async () => {
-  const result = await getPublicationsTagsRequest({});
+  const result = await getPublicationsTagsRequest({
+    where: {
+      publishedOn: [],
+    },
+  });
   console.log('publications tags: result', result);
 
   return result;
