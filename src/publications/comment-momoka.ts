@@ -67,7 +67,7 @@ export const commentOnMomoka = async () => {
 
   const request: MomokaCommentRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    commentOn: "0x19-0x09-DA-ac07a9b9"
+    commentOn: "0x04-0x01-DA-d0d9f4b4"
   };
 
   // hard coded to make the code example clearer

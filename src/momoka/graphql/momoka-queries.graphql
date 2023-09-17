@@ -15,16 +15,33 @@ query MomokaSummary {
 query MomokaTransaction($request: MomokaTransactionRequest!) {
   momokaTransaction(request: $request) {
     ... on MomokaPostTransaction {
-      publicationId
+      publication {
+        id
+      }
     }
     ... on MomokaCommentTransaction {
-      publicationId
+      publication {
+        id
+      }
+      commentOn {
+        ...PrimaryPublicationFields
+      }
     }
     ... on MomokaMirrorTransaction {
-      publicationId
+      publication {
+        id
+      }
+      mirrorOn {
+        ...PrimaryPublicationFields
+      }
     }
     ... on MomokaQuoteTransaction {
-      publicationId
+      publication {
+        id
+      }
+      quoteOn {
+        ...PrimaryPublicationFields
+      }
     }
   }
 }
@@ -33,16 +50,33 @@ query MomokaTransactions($request: MomokaTransactionsRequest!) {
   momokaTransactions(request: $request) {
     items {
       ... on MomokaPostTransaction {
-        publicationId
+        publication {
+          id
+        }
       }
       ... on MomokaCommentTransaction {
-        publicationId
+        publication {
+          id
+        }
+        commentOn {
+          ...PrimaryPublicationFields
+        }
       }
       ... on MomokaMirrorTransaction {
-        publicationId
+        publication {
+          id
+        }
+        mirrorOn {
+          ...PrimaryPublicationFields
+        }
       }
       ... on MomokaQuoteTransaction {
-        publicationId
+        publication {
+          id
+        }
+        quoteOn {
+          ...PrimaryPublicationFields
+        }
       }
     }
     pageInfo {

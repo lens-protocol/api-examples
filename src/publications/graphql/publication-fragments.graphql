@@ -2,7 +2,7 @@
 #import "../../module/graphql/reference-module-fields.graphql"
 #import "./metadata-fields.graphql"
 
-fragment PrimaryPublicationId on PrimaryPublication {
+fragment PrimaryPublicationFields on PrimaryPublication {
   ... on Comment {
     id
   }
@@ -17,7 +17,6 @@ fragment PrimaryPublicationId on PrimaryPublication {
 }
 
 fragment PublicationOperationFields on PublicationOperations {
-  id
   isNotInterested
   hasBookmarked
   hasReported
@@ -102,8 +101,8 @@ fragment QuoteFields on Quote {
     ...PublicationOperationFields
   }
 
-  quotedOn {
-    ...PrimaryPublicationId
+  quoteOn {
+    ...PrimaryPublicationFields
   }
   metadata {
     ...AnyPublicationMetadataFields
@@ -124,8 +123,8 @@ fragment MirrorFields on Mirror {
   }
   txHash
   createdAt
-  mirrorOf {
-    ...PrimaryPublicationId
+  mirrorOn {
+    ...PrimaryPublicationFields
   }
 }
 
@@ -156,14 +155,14 @@ fragment CommentFields on Comment {
     ...AnyPublicationMetadataFields
   }
   root {
-    ...PrimaryPublicationId
+    ...PrimaryPublicationFields
   }
   commentOn {
-    ...PrimaryPublicationId
+    ...PrimaryPublicationFields
   }
 
   firstComment {
-    ...PrimaryPublicationId
+    ...PrimaryPublicationFields
   }
 
   referenceModule {

@@ -161,6 +161,7 @@ mutation CreateMomokaMirrorTypedData($request: MomokaMirrorRequest!) {
       }
       value {
         nonce
+        metadataURI
         deadline
         profileId
         pointedProfileId
