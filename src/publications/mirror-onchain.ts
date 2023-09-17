@@ -1,3 +1,4 @@
+import util from 'util';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
@@ -33,12 +34,16 @@ const mirrorOnChain = async () => {
   // TODO! in docs make sure we talk about onchain referrals
   const request: OnchainMirrorRequest = {
     mirrorOn: knownPostId,
+    metadataURI: 'ipfs://324324',
   };
 
   const { id, typedData } = await createOnchainMirrorTypedData(request);
   console.log('mirror onchain: result', { id, typedData });
 
-  console.log('mirror onchain: typedData', typedData);
+  console.log(
+    'mirror onchain: typedData',
+    util.inspect(typedData, { showHidden: false, depth: null })
+  );
 
   const signature = await signedTypeData(typedData.domain, typedData.types, typedData.value);
   console.log('mirror onchain: signature', signature);
@@ -53,6 +58,7 @@ const mirrorOnChain = async () => {
     const tx = await lensHub.mirrorWithSig(
       {
         profileId: typedData.value.profileId,
+        metadataURI: typedData.value.metadataURI,
         pointedProfileId: typedData.value.pointedProfileId,
         pointedPubId: typedData.value.pointedPubId,
         referrerProfileIds: typedData.value.referrerProfileIds,

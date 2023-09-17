@@ -1,5 +1,11 @@
+import {
+  ContractTransaction,
+  ContractInterface,
+  BytesLike as Arrayish,
+  BigNumber,
+  BigNumberish,
+} from 'ethers';
 import { EthersContractContextV5 } from 'ethereum-abi-types-generator';
-import { BytesLike as Arrayish, BigNumber, BigNumberish, ContractTransaction } from 'ethers';
 
 export type ContractContext = EthersContractContextV5<
   LensHub,
@@ -253,6 +259,7 @@ export interface PublicationResponse {
 }
 export interface MirrorParamsRequest {
   profileId: BigNumberish;
+  metadataURI: string;
   pointedProfileId: BigNumberish;
   pointedPubId: BigNumberish;
   referrerProfileIds: BigNumberish[];

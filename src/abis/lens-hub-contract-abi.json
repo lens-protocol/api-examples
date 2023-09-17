@@ -1777,6 +1777,11 @@
             "type": "uint256"
           },
           {
+            "internalType": "string",
+            "name": "metadataURI",
+            "type": "string"
+          },
+          {
             "internalType": "uint256",
             "name": "pointedProfileId",
             "type": "uint256"
@@ -1826,6 +1831,11 @@
             "internalType": "uint256",
             "name": "profileId",
             "type": "uint256"
+          },
+          {
+            "internalType": "string",
+            "name": "metadataURI",
+            "type": "string"
           },
           {
             "internalType": "uint256",

@@ -158,6 +158,7 @@ mutation CreateOnchainMirrorTypedData($request: OnchainMirrorRequest!) {
         nonce
         deadline
         profileId
+        metadataURI
         pointedProfileId
         pointedPubId
         referrerProfileIds
