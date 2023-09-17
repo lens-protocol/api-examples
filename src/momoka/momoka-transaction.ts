@@ -28,6 +28,6 @@ import { postOnMomoka } from '../publications/post-momoka';
   }
 
   console.log(
-    `momoka transaction publication id: result: ${result.data.momokaTransaction.publicationId}`
+    `momoka transaction publication id: result: ${result.data.momokaTransaction.publication.id}`
   );
 })();
