@@ -40,7 +40,7 @@ export const mirrorOnMomokaLensProfileManager = async () => {
   console.log('mirror momoka: ipfs result', ipfsResult);
 
   const request: MomokaMirrorRequest = {
-    mirrorOf: knownMomokaPostId,
+    mirrorOn: knownMomokaPostId,
   };
 
   const result = await createMirrorOnMomoka(request);
