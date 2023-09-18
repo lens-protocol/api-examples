@@ -1,13 +1,11 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { broadcastOnMomokaRequest } from '../broadcast/shared-broadcast';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
+import { CreateMomokaMirrorTypedDataDocument, MomokaMirrorRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
-import {
-  CreateMomokaMirrorTypedDataDocument,
-  MomokaMirrorRequest,
-} from '../graphql/generated';
-import { broadcastOnMomokaRequest } from '../broadcast/shared-broadcast';
+import { knownMomokaPostId } from '../known-common-input-constants';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 export const createMomokaMirrorTypedData = async (request: MomokaMirrorRequest) => {
@@ -34,9 +32,7 @@ export const signCreateMomokaMirrorTypedData = async (request: MomokaMirrorReque
   return { result, signature };
 };
 
-const createMirrorOnMomoka = async (
-  momokaMirrorRequest: MomokaMirrorRequest,
-) => {
+const createMirrorOnMomoka = async (momokaMirrorRequest: MomokaMirrorRequest) => {
   const signedResult = await signCreateMomokaMirrorTypedData(momokaMirrorRequest);
   console.log('create momoka mirror via broadcast: signedResult', signedResult);
 
@@ -66,7 +62,7 @@ export const mirrorOnMomoka = async () => {
   console.log('mirror momoka: ipfs result', ipfsResult);
 
   const request: MomokaMirrorRequest = {
-    mirrorOn: "0x04-0x01-DA-d0d9f4b4"
+    mirrorOn: knownMomokaPostId,
   };
 
   // hard coded to make the code example clearer

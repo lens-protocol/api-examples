@@ -1,13 +1,11 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { broadcastOnMomokaRequest } from '../broadcast/shared-broadcast';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
+import { CreateMomokaQuoteTypedDataDocument, MomokaQuoteRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
-import {
-  CreateMomokaQuoteTypedDataDocument,
-  MomokaQuoteRequest,
-} from '../graphql/generated';
-import { broadcastOnMomokaRequest } from '../broadcast/shared-broadcast';
+import { knownMomokaPostId } from '../known-common-input-constants';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 export const createMomokaQuoteTypedData = async (request: MomokaQuoteRequest) => {
@@ -34,9 +32,7 @@ export const signCreateMomokaQuoteTypedData = async (request: MomokaQuoteRequest
   return { result, signature };
 };
 
-const createQuoteOnMomoka = async (
-  momokaQuoteRequest: MomokaQuoteRequest,
-) => {
+const createQuoteOnMomoka = async (momokaQuoteRequest: MomokaQuoteRequest) => {
   const signedResult = await signCreateMomokaQuoteTypedData(momokaQuoteRequest);
   console.log('create momoka quote via broadcast: signedResult', signedResult);
 
@@ -67,7 +63,7 @@ export const quoteOnMomoka = async () => {
 
   const request: MomokaQuoteRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    quoteOn: "0x04-0x01-DA-d0d9f4b4"
+    quoteOn: knownMomokaPostId,
   };
 
   // hard coded to make the code example clearer

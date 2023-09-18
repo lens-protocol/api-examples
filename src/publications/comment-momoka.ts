@@ -1,13 +1,11 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { broadcastOnMomokaRequest } from '../broadcast/shared-broadcast';
 import { explicitStart } from '../config';
 import { getAddressFromSigner, signedTypeData } from '../ethers.service';
+import { CreateMomokaCommentTypedDataDocument, MomokaCommentRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
-import {
-  CreateMomokaCommentTypedDataDocument,
-  MomokaCommentRequest,
-} from '../graphql/generated';
-import { broadcastOnMomokaRequest } from '../broadcast/shared-broadcast';
+import { knownMomokaPostId } from '../known-common-input-constants';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 export const createMomokaCommentTypedData = async (request: MomokaCommentRequest) => {
@@ -34,9 +32,7 @@ export const signCreateMomokaCommentTypedData = async (request: MomokaCommentReq
   return { result, signature };
 };
 
-const createCommentOnMomoka = async (
-  momokaCommentRequest: MomokaCommentRequest,
-) => {
+const createCommentOnMomoka = async (momokaCommentRequest: MomokaCommentRequest) => {
   const signedResult = await signCreateMomokaCommentTypedData(momokaCommentRequest);
   console.log('create momoka comment via broadcast: signedResult', signedResult);
 
@@ -67,7 +63,7 @@ export const commentOnMomoka = async () => {
 
   const request: MomokaCommentRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    commentOn: "0x04-0x01-DA-d0d9f4b4"
+    commentOn: knownMomokaPostId,
   };
 
   // hard coded to make the code example clearer

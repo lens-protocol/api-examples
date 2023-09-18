@@ -2,12 +2,9 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { CommentOnMomokaDocument, MomokaCommentRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
-import {
-  MomokaCommentRequest,
-  CommentOnMomokaDocument,
-} from '../graphql/generated';
-import { PublicationMetadataSchema } from '@lens-protocol/metadata';
+import { knownMomokaPostId } from '../known-common-input-constants';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 const createMomokaCommentWithLensManager = async (request: MomokaCommentRequest) => {
@@ -21,9 +18,7 @@ const createMomokaCommentWithLensManager = async (request: MomokaCommentRequest)
   return result.data!.commentOnMomoka;
 };
 
-const createCommentOnMomoka = async (
-  createMomokaCommentRequest: MomokaCommentRequest,
-) => {
+const createCommentOnMomoka = async (createMomokaCommentRequest: MomokaCommentRequest) => {
   const dispatcherResult = await createMomokaCommentWithLensManager(createMomokaCommentRequest);
 
   console.log(
@@ -46,8 +41,7 @@ export const commentOnMomokaLensProfileManager = async () => {
 
   const request: MomokaCommentRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    commentOn: "0x04-0x01-DA-d0d9f4b4",
-
+    commentOn: knownMomokaPostId,
   };
 
   const result = await createCommentOnMomoka(request);

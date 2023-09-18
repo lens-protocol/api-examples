@@ -2,11 +2,9 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { MirrorOnMomokaDocument, MomokaMirrorRequest } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
-import {
-  MomokaMirrorRequest,
-  MirrorOnMomokaDocument,
-} from '../graphql/generated';
+import { knownMomokaPostId } from '../known-common-input-constants';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 const createMomokaMirrorWithLensManager = async (request: MomokaMirrorRequest) => {
@@ -20,9 +18,7 @@ const createMomokaMirrorWithLensManager = async (request: MomokaMirrorRequest) =
   return result.data!.mirrorOnMomoka;
 };
 
-const createMirrorOnMomoka = async (
-  createMomokaMirrorRequest: MomokaMirrorRequest,
-) => {
+const createMirrorOnMomoka = async (createMomokaMirrorRequest: MomokaMirrorRequest) => {
   const dispatcherResult = await createMomokaMirrorWithLensManager(createMomokaMirrorRequest);
 
   console.log(
@@ -44,8 +40,7 @@ export const mirrorOnMomokaLensProfileManager = async () => {
   console.log('mirror momoka: ipfs result', ipfsResult);
 
   const request: MomokaMirrorRequest = {
-    mirrorOn: "0x19-0x09-DA-b837b7e3",
-
+    mirrorOf: knownMomokaPostId,
   };
 
   const result = await createMirrorOnMomoka(request);

@@ -2,12 +2,9 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
+import { MomokaQuoteRequest, QuoteOnMomokaDocument } from '../graphql/generated';
 import { uploadIpfs } from '../ipfs';
-import {
-  MomokaQuoteRequest,
-  QuoteOnMomokaDocument,
-} from '../graphql/generated';
-import { PublicationMetadataSchema } from '@lens-protocol/metadata';
+import { knownMomokaPostId } from '../known-common-input-constants';
 import { publicationMetadataTextOnly } from './helpers/publication-metadata-mocks';
 
 const createMomokaQuoteWithLensManager = async (request: MomokaQuoteRequest) => {
@@ -21,9 +18,7 @@ const createMomokaQuoteWithLensManager = async (request: MomokaQuoteRequest) => 
   return result.data!.quoteOnMomoka;
 };
 
-const createQuoteOnMomoka = async (
-  createMomokaQuoteRequest: MomokaQuoteRequest,
-) => {
+const createQuoteOnMomoka = async (createMomokaQuoteRequest: MomokaQuoteRequest) => {
   const dispatcherResult = await createMomokaQuoteWithLensManager(createMomokaQuoteRequest);
 
   console.log(
@@ -46,8 +41,7 @@ export const quoteOnMomokaLensProfileManager = async () => {
 
   const request: MomokaQuoteRequest = {
     contentURI: `ipfs://${ipfsResult.path}`,
-    quoteOn: "0x19-0x09-DA-b837b7e3",
-
+    quoteOn: knownMomokaPostId,
   };
 
   const result = await createQuoteOnMomoka(request);
