@@ -1,8 +1,8 @@
 #import "../../common/graphql/common.graphql"
 #import "../../publications/graphql/publication-fragments.graphql"
 
-query RevenueForPublication($request: PublicationRevenueRequest!) {
-  revenueForPublication(request: $request) {
+query RevenueFromPublication($request: PublicationRevenueRequest!) {
+  revenueFromPublication(request: $request) {
     publication {
       ... on Post {
         ...PostFields
