@@ -2,6 +2,46 @@ query Feed($request: FeedRequest!) {
   feed(request: $request) {
     items {
       id
+      root {
+        ... on Post {
+          __typename
+          id
+        }
+
+        ... on Quote {
+          __typename
+          id
+        }
+
+        ... on Comment {
+          __typename
+          id
+        }
+      }
+      mirrors {
+        __typename
+        id
+      }
+      acted {
+        by {
+          id
+        }
+        action {
+          __typename
+        }
+        actedAt
+      }
+      reactions {
+        by {
+          id
+        }
+        reaction
+        createdAt
+      }
+      comments {
+        __typename
+        id
+      }
     }
     pageInfo {
       prev

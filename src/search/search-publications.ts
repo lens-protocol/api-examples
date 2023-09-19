@@ -19,9 +19,8 @@ const searchRequest = async (request: PublicationSearchRequest) => {
 export const search = async () => {
   const result = await searchRequest({
     query: 'content',
-    where: {
-      publicationTypes: [PublicationType.Quote, PublicationType.Post, PublicationType.Comment],
-    },
+    // TODO: Fix to where being not required
+    where: {},
   });
   console.log('search publications: result', result);
 

@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import {
-  ExploreProfileOrderBy,
   ExploreProfilesDocument,
+  ExploreProfilesOrderByType,
   ExploreProfilesRequest,
 } from '../graphql/generated';
 
@@ -19,7 +19,7 @@ export const exploreProfiles = async (request: ExploreProfilesRequest) => {
 
 export const explore = async () => {
   const result = await exploreProfiles({
-    orderBy: ExploreProfileOrderBy.MostFollowers,
+    orderBy: ExploreProfilesOrderByType.MostFollowers,
   });
 
   console.log('explore: result', result);

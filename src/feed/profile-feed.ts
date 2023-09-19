@@ -27,9 +27,7 @@ export const profileFeed = async () => {
   await login(address);
 
   const result = await getProfileFeedRequest({});
-  console.log('profile feed: result', result);
-
-  return result;
+  console.log('profile feed: result', JSON.stringify(result, null, 2));
 };
 
 (async () => {
