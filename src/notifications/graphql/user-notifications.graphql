@@ -74,7 +74,7 @@ query Notifications($request: NotificationRequest!) {
       ... on ActedNotification {
         id
         actions {
-          profile {
+          by {
             handle
             id
           }

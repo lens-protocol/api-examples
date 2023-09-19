@@ -28,7 +28,7 @@ export const refreshPublicationMetadata = async () => {
     for: knownPostId,
   });
 
-  console.log('delete publication: success');
+  console.log('refresh publication: success');
 };
 
 (async () => {

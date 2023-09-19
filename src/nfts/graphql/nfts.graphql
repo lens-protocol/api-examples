@@ -49,3 +49,11 @@ query NftGalleries($request: NftGalleriesRequest!) {
 mutation CreateNftGallery($request: NftGalleryCreateRequest!) {
   createNftGallery(request: $request)
 }
+
+mutation UpdateNftGalleryInfo($request: NftGalleryUpdateInfoRequest!) {
+  updateNftGalleryInfo(request: $request)
+}
+
+mutation DeleteNftGallery($request: NftGalleryDeleteRequest!) {
+  deleteNftGallery(request: $request)
+}

@@ -1,18 +1,22 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
+import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { CreateNftGalleryDocument } from '../graphql/generated';
+import {
+  CreateNftGalleryDocument,
+  DeleteNftGalleryDocument,
+  UpdateNftGalleryInfoDocument,
+} from '../graphql/generated';
 
-// This does not work due to postgres syntax error
 const createNftGallery = async () => {
-  await apolloClient.mutate({
+  const res = await apolloClient.mutate({
     mutation: CreateNftGalleryDocument,
     variables: {
       request: {
         name: 'Test test',
         items: [
           {
-            tokenId: 1,
+            tokenId: '1',
             contract: {
               address: '0x54be3a794282c030b15e43ae2bb182e14c409c5e',
               chainId: 80001,
@@ -22,15 +26,48 @@ const createNftGallery = async () => {
       },
     },
   });
+
+  return res.data?.createNftGallery;
+};
+
+const updateNftGalleryInfo = async (nftGalleryId: string, name: string) => {
+  await apolloClient.mutate({
+    mutation: UpdateNftGalleryInfoDocument,
+    variables: {
+      request: {
+        name,
+        galleryId: nftGalleryId,
+      },
+    },
+  });
+};
+
+const deleteNftGallery = async (nftGalleryId: string) => {
+  await apolloClient.mutate({
+    mutation: DeleteNftGalleryDocument,
+    variables: {
+      request: {
+        galleryId: nftGalleryId,
+      },
+    },
+  });
 };
 
 const nftGalleryOperations = async () => {
   const address = getAddressFromSigner();
-  console.log('add bookmark: address', address);
+  console.log('nft gallery operations: address', address);
+
+  if (!PROFILE_ID) {
+    throw new Error('Must define PROFILE_ID in the .env to run this');
+  }
 
   await login(address);
 
-  await createNftGallery();
+  const nftGalleryId = await createNftGallery();
+
+  await updateNftGalleryInfo(nftGalleryId, 'Test test 2');
+
+  await deleteNftGallery(nftGalleryId);
 };
 
 (async function () {

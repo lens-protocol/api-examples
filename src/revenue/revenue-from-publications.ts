@@ -20,10 +20,6 @@ export const revenueFromPublicationsRequest = async (request: RevenueFromPublica
 export const revenueFromPublications = async () => {
   const result = await revenueFromPublicationsRequest({
     for: knownPostId,
-    where: {
-      fromCollects: true,
-      publicationTypes: [PublicationType.Post, PublicationType.Quote, PublicationType.Comment],
-    },
   });
   console.log('publications profile revenues: result', result);
 

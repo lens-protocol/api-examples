@@ -1,4 +1,5 @@
 import { apolloClient } from '../apollo-client';
+import { PROFILE_ID } from '../config';
 import { FeedHighlightsDocument, FeedHighlightsRequest } from '../graphql/generated';
 
 const getFeedHighlights = async (request: FeedHighlightsRequest) => {
@@ -15,11 +16,11 @@ const getFeedHighlights = async (request: FeedHighlightsRequest) => {
 export const feedHighlights = async () => {
   const feedHighlights = await getFeedHighlights({
     where: {
-      for: '0x01',
+      for: PROFILE_ID || '0x01',
     },
   });
 
-  console.log(`feed highlights: ${feedHighlights}`);
+  console.log(`feed highlights: ${feedHighlights.items}`);
 
   return feedHighlights;
 };
