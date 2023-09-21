@@ -54,8 +54,8 @@ fragment LegacyPublicationMetadataFields on LegacyPublicationMetadata {
   tags
   mainContentFocus
   contentWarning
-  conditionalContent
-  conditionalMedia {
+  content
+  media {
     ...MediaFields
   }
   marketplace {
@@ -101,6 +101,104 @@ fragment PublicationMetadataV3AttributeFields on PublicationMetadataV3Attribute 
   value
 }
 
+fragment AudioFields on Audio {
+  uri
+  mimeType
+}
+
+fragment ImageFields on Image {
+  uri
+  mimeType
+}
+
+fragment VideoFields on Video {
+  uri
+  mimeType
+}
+
+fragment EncryptableAudioFields on EncryptableAudio {
+  uri
+  mimeType
+}
+
+fragment EncryptableImageFields on EncryptableImage {
+  uri
+  mimeType
+}
+
+fragment EncryptableVideoFields on EncryptableVideo {
+  uri
+  mimeType
+}
+
+fragment EncryptableAudioSetFields on EncryptableAudioSet {
+  raw {
+    ...EncryptableAudioFields
+  }
+  optimized {
+    ...AudioFields
+  }
+}
+
+fragment EncryptableImageSetFields on EncryptableImageSet {
+  raw {
+    ...EncryptableImageFields
+  }
+  optimized {
+    ...ImageFields
+  }
+}
+
+fragment EncryptableVideoSetFields on EncryptableVideoSet {
+  raw {
+    ...EncryptableVideoFields
+  }
+  optimized {
+    ...VideoFields
+  }
+}
+
+fragment PublicationMetadataMediaAudioFields on PublicationMetadataMediaAudio {
+  audio {
+    ...EncryptableAudioSetFields
+  }
+
+  cover {
+    ...EncryptableImageSetFields
+  }
+
+  duration
+  license
+  credits
+  artist
+  genre
+  recordLabel
+  lyrics
+}
+
+fragment PublicationMetadataMediaImageFields on PublicationMetadataMediaImage {
+  image {
+    ...EncryptableImageSetFields
+  }
+
+  license
+  altTag
+}
+
+fragment PublicationMetadataMediaVideoFields on PublicationMetadataMediaVideo {
+  video {
+    ...EncryptableVideoSetFields
+  }
+
+  cover {
+    ...EncryptableImageSetFields
+  }
+
+  duration
+  license
+  altTag
+}
+
 fragment ArticleMetadataV3Fields on ArticleMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
@@ -115,7 +213,10 @@ fragment AudioMetadataV3Fields on AudioMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  asset {
+    ...PublicationMetadataMediaAudioFields
+  }
+  content
   contentWarning
   tags
   locale
@@ -134,7 +235,7 @@ fragment EmbedMetadataV3Fields on EmbedMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
@@ -156,7 +257,10 @@ fragment ImageMetadataV3Fields on ImageMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  asset {
+    ...PublicationMetadataMediaImageFields
+  }
+  content
   contentWarning
   tags
   locale
@@ -166,7 +270,7 @@ fragment LinkMetadataV3Fields on LinkMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
@@ -176,20 +280,20 @@ fragment LiveStreamMetadataV3Fields on LiveStreamMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
 
   startsAt
-  optionalEndsAt
+  endsAt
 }
 
 fragment MintMetadataV3Fields on MintMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
@@ -199,7 +303,7 @@ fragment SpaceMetadataV3Fields on SpaceMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
@@ -209,7 +313,20 @@ fragment StoryMetadataV3Fields on StoryMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  asset {
+    ... on PublicationMetadataMediaAudio {
+      ...PublicationMetadataMediaAudioFields
+    }
+
+    ... on PublicationMetadataMediaImage {
+      ...PublicationMetadataMediaImageFields
+    }
+
+    ... on PublicationMetadataMediaVideo {
+      ...PublicationMetadataMediaVideoFields
+    }
+  }
+  content
   contentWarning
   tags
   locale
@@ -229,7 +346,7 @@ fragment ThreeDMetadataV3Fields on ThreeDMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
@@ -239,7 +356,7 @@ fragment TransactionMetadataV3Fields on TransactionMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  content
   contentWarning
   tags
   locale
@@ -249,7 +366,10 @@ fragment VideoMetadataV3Fields on VideoMetadataV3 {
   attributes {
     ...PublicationMetadataV3AttributeFields
   }
-  optionalContent
+  asset {
+    ...PublicationMetadataMediaVideoFields
+  }
+  content
   contentWarning
   tags
   locale
