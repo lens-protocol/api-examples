@@ -55,8 +55,6 @@ export type Scalars = {
   Void: any;
 };
 
-export type AccessCondition = AndCondition | CollectCondition | EoaOwnershipCondition | Erc20OwnershipCondition | FollowCondition | NftOwnershipCondition | OrCondition | ProfileOwnershipCondition;
-
 export type ActOnOpenActionInput = {
   multirecipientCollectOpenAction?: InputMaybe<Scalars['Boolean']>;
   simpleCollectOpenAction?: InputMaybe<Scalars['Boolean']>;
@@ -115,7 +113,7 @@ export type AmountInput = {
 
 export type AndCondition = {
   __typename?: 'AndCondition';
-  criteria: Array<AccessCondition>;
+  criteria: Array<ThirdTierCondition>;
 };
 
 export type AnyPublication = Comment | Mirror | Post | Quote;
@@ -270,6 +268,7 @@ export type ChangeProfileManagersRequest = {
 
 export type CheckingInMetadataV3 = {
   __typename?: 'CheckingInMetadataV3';
+  address?: Maybe<PhysicalAddress>;
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataMedia>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1259,6 +1258,7 @@ export type Erc20OwnershipCondition = {
 
 export type EventMetadataV3 = {
   __typename?: 'EventMetadataV3';
+  address?: Maybe<PhysicalAddress>;
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataMedia>>;
   attributes?: Maybe<Array<PublicationMetadataV3Attribute>>;
@@ -1505,8 +1505,11 @@ export type GenerateModuleCurrencyApprovalResult = {
 
 export type GeoLocation = {
   __typename?: 'GeoLocation';
+  /** `null` when `rawURI` is encrypted */
   latitude?: Maybe<Scalars['Float']>;
+  /** `null` when `rawURI` is encrypted */
   longitude?: Maybe<Scalars['Float']>;
+  /** The raw Geo URI of the location. If encrypted `latitude` and `longitude` will be `null` */
   rawURI: Scalars['EncryptableURI'];
 };
 
@@ -1680,6 +1683,8 @@ export type LegacyFeeCollectModuleSettings = {
   __typename?: 'LegacyFeeCollectModuleSettings';
   /** The collect module amount info */
   amount: Amount;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** Follower only */
   followerOnly: Scalars['Boolean'];
@@ -1691,6 +1696,8 @@ export type LegacyFeeCollectModuleSettings = {
 
 export type LegacyFreeCollectModuleSettings = {
   __typename?: 'LegacyFreeCollectModuleSettings';
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** Follower only */
   followerOnly: Scalars['Boolean'];
@@ -1709,6 +1716,8 @@ export type LegacyLimitedFeeCollectModuleSettings = {
   amount: Amount;
   /** The collect module limit. */
   collectLimit?: Maybe<Scalars['String']>;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** Follower only */
   followerOnly: Scalars['Boolean'];
@@ -1724,6 +1733,8 @@ export type LegacyLimitedTimedFeeCollectModuleSettings = {
   amount: Amount;
   /** The collect module limit */
   collectLimit?: Maybe<Scalars['String']>;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The collect module end timestamp */
   endTimestamp: Scalars['DateTime'];
@@ -1743,6 +1754,8 @@ export type LegacyMultirecipientFeeCollectModuleSettings = {
   amount: Amount;
   /** The maximum number of collects for this publication. */
   collectLimit?: Maybe<Scalars['String']>;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The end timestamp after which collecting is impossible. */
   endsAt?: Maybe<Scalars['DateTime']>;
@@ -1756,6 +1769,7 @@ export type LegacyMultirecipientFeeCollectModuleSettings = {
 
 export type LegacyPublicationMetadata = {
   __typename?: 'LegacyPublicationMetadata';
+  appId?: Maybe<Scalars['AppId']>;
   /**
    * Always defined with `mainContentFocus` value(s): `ARTICLE`, `LINK`, `TEXT_ONLY`.
    * Empty string if not set.
@@ -1765,6 +1779,7 @@ export type LegacyPublicationMetadata = {
   content: Scalars['EncryptableMarkdown'];
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataV2Encryption>;
+  id: Scalars['String'];
   locale: Scalars['Locale'];
   /** This is provided for backwards compatibility with legacy v1 and v2 publications. For new publications the nature of the content is explicit in their type. With new publications you SHOULD use __typename to discriminate specific fields. */
   mainContentFocus: LegacyPublicationMetadataMainFocusType;
@@ -1777,6 +1792,7 @@ export type LegacyPublicationMetadata = {
    * - Optional otherwise.
    */
   media?: Maybe<Array<LegacyMediaItem>>;
+  rawURI: Scalars['URI'];
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
@@ -1801,6 +1817,8 @@ export type LegacySimpleCollectModuleSettings = {
   amount: Amount;
   /** The maximum number of collects for this publication. */
   collectLimit?: Maybe<Scalars['String']>;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The end timestamp after which collecting is impossible. */
   endsAt?: Maybe<Scalars['DateTime']>;
@@ -1816,6 +1834,8 @@ export type LegacyTimedFeeCollectModuleSettings = {
   __typename?: 'LegacyTimedFeeCollectModuleSettings';
   /** The collect module amount info */
   amount: Amount;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The collect module end timestamp */
   endTimestamp: Scalars['DateTime'];
@@ -1968,6 +1988,7 @@ export type MintMetadataV3 = {
 
 export type Mirror = {
   __typename?: 'Mirror';
+  by: Profile;
   createdAt: Scalars['DateTime'];
   id: Scalars['PublicationId'];
   isHidden: Scalars['Boolean'];
@@ -2162,6 +2183,8 @@ export type MultirecipientFeeCollectOpenActionSettings = {
   amount: Amount;
   /** The maximum number of collects for this publication. */
   collectLimit?: Maybe<Scalars['String']>;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The end timestamp after which collecting is impossible. */
   endsAt?: Maybe<Scalars['DateTime']>;
@@ -2912,7 +2935,7 @@ export type OptimisticStatusResult = {
 
 export type OrCondition = {
   __typename?: 'OrCondition';
-  criteria: Array<AccessCondition>;
+  criteria: Array<ThirdTierCondition>;
 };
 
 export type OwnedHandlesRequest = {
@@ -3073,6 +3096,22 @@ export type PaginatedWhoReactedResult = {
   __typename?: 'PaginatedWhoReactedResult';
   items: Array<ProfileWhoReactedResult>;
   pageInfo: PaginatedResultInfo;
+};
+
+export type PhysicalAddress = {
+  __typename?: 'PhysicalAddress';
+  /** The country name component. */
+  country: Scalars['EncryptableString'];
+  /** The full mailing address formatted for display. */
+  formatted?: Maybe<Scalars['EncryptableString']>;
+  /** The city or locality. */
+  locality: Scalars['EncryptableString'];
+  /** The zip or postal code. */
+  postalCode?: Maybe<Scalars['EncryptableString']>;
+  /** The state or region. */
+  region?: Maybe<Scalars['EncryptableString']>;
+  /** The street address including house number, street name, P.O. Box, apartment or unit number and extended multi-line address information. */
+  streetAddress?: Maybe<Scalars['EncryptableString']>;
 };
 
 /** The POAP Event result */
@@ -3690,7 +3729,7 @@ export type PublicationMetadataV2EncryptedFields = {
 
 export type PublicationMetadataV2Encryption = {
   __typename?: 'PublicationMetadataV2Encryption';
-  accessCondition: AccessCondition;
+  accessCondition: RootCondition;
   encryptedFields: PublicationMetadataV2EncryptedFields;
   encryptionKey: Scalars['ContentEncryptionKey'];
 };
@@ -3703,7 +3742,7 @@ export type PublicationMetadataV3Attribute = {
 
 export type PublicationMetadataV3LitEncryption = {
   __typename?: 'PublicationMetadataV3LitEncryption';
-  accessCondition: AccessCondition;
+  accessCondition: RootCondition;
   encryptedPaths: Array<Scalars['EncryptedPath']>;
   encryptionKey: Scalars['ContentEncryptionKey'];
 };
@@ -3811,7 +3850,7 @@ export type PublicationSearchRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
   query: Scalars['String'];
-  where: PublicationSearchWhere;
+  where?: InputMaybe<PublicationSearchWhere>;
 };
 
 export type PublicationSearchWhere = {
@@ -3873,18 +3912,14 @@ export type PublicationValidateMetadataResult = {
 
 export enum PublicationsOrderByType {
   CommentOfQueryRanking = 'COMMENT_OF_QUERY_RANKING',
-  Latest = 'LATEST',
-  TopCollectedOpenAction = 'TOP_COLLECTED_OPEN_ACTION',
-  TopCommented = 'TOP_COMMENTED',
-  TopMirrored = 'TOP_MIRRORED',
-  TopQuoted = 'TOP_QUOTED'
+  Latest = 'LATEST'
 }
 
 export type PublicationsRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
   orderBy?: InputMaybe<PublicationsOrderByType>;
-  where?: InputMaybe<PublicationsWhere>;
+  where: PublicationsWhere;
 };
 
 export type PublicationsTagsRequest = {
@@ -4094,7 +4129,7 @@ export type QueryNftsArgs = {
 
 
 export type QueryNotificationsArgs = {
-  request: NotificationRequest;
+  request?: InputMaybe<NotificationRequest>;
 };
 
 
@@ -4164,7 +4199,7 @@ export type QueryPublicationArgs = {
 
 
 export type QueryPublicationBookmarksArgs = {
-  request: PublicationBookmarksRequest;
+  request?: InputMaybe<PublicationBookmarksRequest>;
 };
 
 
@@ -4174,7 +4209,7 @@ export type QueryPublicationsArgs = {
 
 
 export type QueryPublicationsTagsArgs = {
-  request: PublicationsTagsRequest;
+  request?: InputMaybe<PublicationsTagsRequest>;
 };
 
 
@@ -4446,6 +4481,8 @@ export type RevenueAggregate = {
 
 export type RevenueFromPublicationRequest = {
   for: Scalars['PublicationId'];
+  /** Will return revenue for publications made on any of the provided app ids. Will include all apps if omitted */
+  publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
 };
 
 export type RevenueFromPublicationsRequest = {
@@ -4461,6 +4498,13 @@ export type RevertFollowModuleSettings = {
   __typename?: 'RevertFollowModuleSettings';
   contract: NetworkAddress;
 };
+
+export type RootCondition = {
+  __typename?: 'RootCondition';
+  criteria: Array<SecondTierCondition>;
+};
+
+export type SecondTierCondition = AndCondition | CollectCondition | EoaOwnershipCondition | Erc20OwnershipCondition | FollowCondition | NftOwnershipCondition | OrCondition | ProfileOwnershipCondition;
 
 export type SensitiveReasonInput = {
   reason: PublicationReportingReason;
@@ -4493,6 +4537,8 @@ export type SimpleCollectOpenActionSettings = {
   amount: Amount;
   /** The maximum number of collects for this publication. */
   collectLimit?: Maybe<Scalars['String']>;
+  /** The collect nft address - only deployed on first collect */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The end timestamp after which collecting is impossible. */
   endsAt?: Maybe<Scalars['DateTime']>;
@@ -4620,6 +4666,8 @@ export type TextOnlyMetadataV3 = {
   tags?: Maybe<Array<Scalars['String']>>;
 };
 
+export type ThirdTierCondition = CollectCondition | EoaOwnershipCondition | Erc20OwnershipCondition | FollowCondition | NftOwnershipCondition | ProfileOwnershipCondition;
+
 export type ThreeDMetadataV3 = {
   __typename?: 'ThreeDMetadataV3';
   appId?: Maybe<Scalars['AppId']>;
@@ -4715,6 +4763,8 @@ export type UnknownOpenActionModuleInput = {
 
 export type UnknownOpenActionModuleSettings = {
   __typename?: 'UnknownOpenActionModuleSettings';
+  /** The collect nft address - only deployed on first collect and if its a collectable open action */
+  collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
   /** The data used to setup the module which you can decode with your known ABI  */
   openActionModuleReturnData?: Maybe<Scalars['BlockchainData']>;
@@ -5972,16 +6022,6 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
       }
       const result: PossibleTypesResultData = {
   "possibleTypes": {
-    "AccessCondition": [
-      "AndCondition",
-      "CollectCondition",
-      "EoaOwnershipCondition",
-      "Erc20OwnershipCondition",
-      "FollowCondition",
-      "NftOwnershipCondition",
-      "OrCondition",
-      "ProfileOwnershipCondition"
-    ],
     "AnyPublication": [
       "Comment",
       "Mirror",
@@ -6112,9 +6152,27 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
       "RelayError",
       "RelaySuccess"
     ],
+    "SecondTierCondition": [
+      "AndCondition",
+      "CollectCondition",
+      "EoaOwnershipCondition",
+      "Erc20OwnershipCondition",
+      "FollowCondition",
+      "NftOwnershipCondition",
+      "OrCondition",
+      "ProfileOwnershipCondition"
+    ],
     "SupportedModule": [
       "KnownSupportedModule",
       "UnknownSupportedModule"
+    ],
+    "ThirdTierCondition": [
+      "CollectCondition",
+      "EoaOwnershipCondition",
+      "Erc20OwnershipCondition",
+      "FollowCondition",
+      "NftOwnershipCondition",
+      "ProfileOwnershipCondition"
     ]
   }
 };
