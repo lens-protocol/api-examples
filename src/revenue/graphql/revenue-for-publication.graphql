@@ -1,7 +1,4 @@
-#import "../../common/graphql/common.graphql"
-#import "../../publications/graphql/publication-fragments.graphql"
-
-query RevenueFromPublication($request: PublicationRevenueRequest!) {
+query RevenueFromPublication($request: RevenueFromPublicationRequest!) {
   revenueFromPublication(request: $request) {
     publication {
       ... on Post {
@@ -20,7 +17,6 @@ query RevenueFromPublication($request: PublicationRevenueRequest!) {
         ...QuoteFields
       }
     }
-
     revenue {
       total {
         ...AmountFields

@@ -1,7 +1,7 @@
 query MutualNftCollections($request: MutualNftCollectionsRequest!) {
   mutualNftCollections(request: $request) {
     items {
-      name
+        ...NftCollectionFields
     }
     pageInfo {
       prev
@@ -13,7 +13,7 @@ query MutualNftCollections($request: MutualNftCollectionsRequest!) {
 query NftCollectionOwners($request: NftCollectionOwnersRequest!) {
   nftCollectionOwners(request: $request) {
     items {
-      id
+      ...ProfileFields
     }
     pageInfo {
       prev
@@ -25,7 +25,7 @@ query NftCollectionOwners($request: NftCollectionOwnersRequest!) {
 query NftCollections($request: NftCollectionsRequest!) {
   nftCollections(request: $request) {
     items {
-      name
+      ...NftCollectionFields
     }
     pageInfo {
       prev
@@ -34,26 +34,18 @@ query NftCollections($request: NftCollectionsRequest!) {
   }
 }
 
-query NftGalleries($request: NftGalleriesRequest!) {
-  nftGalleries(request: $request) {
+query PopularNftCollections($request: PopularNftCollectionsRequest!) {
+  popularNftCollections(request: $request) {
     items {
-      name
+      collection {
+        ...NftCollectionFields
+      }
+      totalOwners
     }
     pageInfo {
       prev
       next
     }
   }
-}
 
-mutation CreateNftGallery($request: NftGalleryCreateRequest!) {
-  createNftGallery(request: $request)
-}
-
-mutation UpdateNftGalleryInfo($request: NftGalleryUpdateInfoRequest!) {
-  updateNftGalleryInfo(request: $request)
-}
-
-mutation DeleteNftGallery($request: NftGalleryDeleteRequest!) {
-  deleteNftGallery(request: $request)
 }
