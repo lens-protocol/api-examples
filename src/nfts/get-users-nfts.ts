@@ -24,6 +24,8 @@ export const usersNfts = async () => {
   // - If you are using mainnet this endpoint will only allow you to query `ethereum mainnet (chainId: 1)` and `polygon mainnet (chainId: 137)`
   const result = await getUsersNfts({
     where: {
+      // forProfileId: PROFILE_ID,
+      // query: 'Bored Ape'
       forAddress: '0x54be3a794282c030b15e43ae2bb182e14c409c5e',
       chainIds: [80001],
     },

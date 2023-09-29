@@ -2,7 +2,6 @@ import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
 import { NftGalleriesDocument, NftGalleriesRequest } from '../graphql/generated';
 
-// Currently not working: "Expected Iterable, but did not find one for field \"Query.nftGalleries\".
 const getNftGalleries = async (request: NftGalleriesRequest) => {
   const result = await apolloClient.query({
     query: NftGalleriesDocument,
@@ -14,7 +13,7 @@ const getNftGalleries = async (request: NftGalleriesRequest) => {
   return result.data.nftGalleries;
 };
 
-export const nftCollections = async () => {
+export const nftGalleries = async () => {
   const nftGalleries = await getNftGalleries({
     for: PROFILE_ID,
   });
@@ -25,5 +24,5 @@ export const nftCollections = async () => {
 };
 
 (async () => {
-  await nftCollections();
+  await nftGalleries();
 })();

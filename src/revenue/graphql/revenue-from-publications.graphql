@@ -1,6 +1,3 @@
-#import "../../common/graphql/common.graphql"
-#import "../../publications/graphql/publication-fragments.graphql"
-
 query RevenueFromPublications($request: RevenueFromPublicationsRequest!) {
   revenueFromPublications(request: $request) {
     items {
@@ -26,6 +23,10 @@ query RevenueFromPublications($request: RevenueFromPublicationsRequest!) {
           ...AmountFields
         }
       }
+    }
+    pageInfo {
+      prev
+      next
     }
   }
 }

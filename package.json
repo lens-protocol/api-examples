@@ -82,6 +82,7 @@
     "poap:mutual-poaps": "env-cmd -f .env ts-node ./src/poap/mutual-poaps",
     "nfts:nft-collection-owners": "env-cmd -f .env ts-node ./src/nfts/nft-collection-owners",
     "nfts:nft-collections": "env-cmd -f .env ts-node ./src/nfts/nft-collections",
+    "nfts:popular-nft-collections": "env-cmd -f .env ts-node ./src/nfts/popular-nft-collections.ts",
     "nfts:nft-galleries": "env-cmd -f .env ts-node ./src/nfts/nft-galleries",
     "profile:profile-action-history": "env-cmd -f .env ts-node ./src/profile/profile-action-history",
     "profile:profile-already-invited": "env-cmd -f .env ts-node ./src/profile/profile-already-invited",

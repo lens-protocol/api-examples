@@ -1,6 +1,5 @@
 import { apolloClient } from '../apollo-client';
 import {
-  PublicationType,
   RevenueFromPublicationsDocument,
   RevenueFromPublicationsRequest,
 } from '../graphql/generated';

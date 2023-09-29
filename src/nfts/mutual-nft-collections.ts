@@ -14,17 +14,17 @@ const getMutualNftCollections = async (request: MutualNftCollectionsRequest) => 
   return result.data.mutualNftCollections;
 };
 
-export const usersNfts = async () => {
+export const mutualNftCollections = async () => {
   const mutualNftCollections = await getMutualNftCollections({
     viewing: knownProfileId,
     observer: PROFILE_ID,
   });
 
-  console.log(`mutual nft collections: ${mutualNftCollections}`);
+  console.log(`mutual nft collections: ${JSON.stringify(mutualNftCollections)}`);
 
   return mutualNftCollections;
 };
 
 (async () => {
-  await usersNfts();
+  await mutualNftCollections();
 })();
