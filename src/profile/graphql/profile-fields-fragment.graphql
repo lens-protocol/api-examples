@@ -73,6 +73,9 @@ fragment ProfileFields on Profile {
   }
   metadata {
     bio
+    attributes {
+      ...MetadataAttributeFields
+    }
   }
   followModule {
     ...FollowModuleFields
