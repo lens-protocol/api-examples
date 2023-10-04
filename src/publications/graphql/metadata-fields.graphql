@@ -11,94 +11,28 @@ fragment ImageSetFields on ImageSet {
   }
 }
 
-fragment MediaFields on LegacyMediaItem {
-  ... on LegacyAudioItem {
-    cover {
-      ...ImageSetFields
-    }
-    audio {
-      raw {
-        uri
-        mimeType
-      }
-      optimized {
-        uri
-        mimeType
-      }
-    }
+fragment MetadataAttributeFields on MetadataAttribute {
+  __typename
+  ... on MetadataBooleanAttribute {
+    key
+    value
   }
-  ... on LegacyImageItem {
-    image {
-      ...ImageSetFields
-    }
+  ... on MetadataDateAttribute {
+    key
+    value
   }
-  ... on LegacyVideoItem {
-    cover {
-      ...ImageSetFields
-    }
-    video {
-      raw {
-        uri
-        mimeType
-      }
-      optimized {
-        uri
-        mimeType
-      }
-    }
+  ... on MetadataNumberAttribute {
+    key
+    value
   }
-}
-
-fragment LegacyPublicationMetadataFields on LegacyPublicationMetadata {
-  locale
-  tags
-  mainContentFocus
-  contentWarning
-  content
-  media {
-    ...MediaFields
+  ... on MetadataJSONAttribute {
+    key
+    value
   }
-  marketplace {
-    name
-    description
-    attributes {
-      displayType
-      traitType
-      value
-    }
-    animationUrl
-    image {
-      raw {
-        uri
-        mimeType
-      }
-      optimized {
-        uri
-        mimeType
-        width
-        height
-      }
-    }
+  ... on MetadataStringAttribute {
+    key
+    value
   }
-  encryptedWith {
-    encryptionKey
-    encryptedFields {
-      content
-      image
-      media {
-        uri
-        mimeType
-        cover
-      }
-      animationUrl
-      externalUrl
-    }
-  }
-}
-
-fragment PublicationMetadataV3AttributeFields on PublicationMetadataV3Attribute {
-  key
-  value
 }
 
 fragment AudioFields on Audio {
@@ -167,6 +101,10 @@ fragment PublicationMetadataMediaAudioFields on PublicationMetadataMediaAudio {
     ...EncryptableImageSetFields
   }
 
+  attributes {
+    ...MetadataAttributeFields
+  }
+
   duration
   license
   credits
@@ -179,6 +117,10 @@ fragment PublicationMetadataMediaAudioFields on PublicationMetadataMediaAudio {
 fragment PublicationMetadataMediaImageFields on PublicationMetadataMediaImage {
   image {
     ...EncryptableImageSetFields
+  }
+
+  attributes {
+    ...MetadataAttributeFields
   }
 
   license
@@ -194,6 +136,10 @@ fragment PublicationMetadataMediaVideoFields on PublicationMetadataMediaVideo {
     ...EncryptableImageSetFields
   }
 
+  attributes {
+    ...MetadataAttributeFields
+  }
+
   duration
   license
   altTag
@@ -201,7 +147,7 @@ fragment PublicationMetadataMediaVideoFields on PublicationMetadataMediaVideo {
 
 fragment ArticleMetadataV3Fields on ArticleMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -211,7 +157,7 @@ fragment ArticleMetadataV3Fields on ArticleMetadataV3 {
 
 fragment AudioMetadataV3Fields on AudioMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   asset {
     ...PublicationMetadataMediaAudioFields
@@ -224,7 +170,7 @@ fragment AudioMetadataV3Fields on AudioMetadataV3 {
 
 fragment CheckingInMetadataV3Fields on CheckingInMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   contentWarning
   tags
@@ -233,7 +179,7 @@ fragment CheckingInMetadataV3Fields on CheckingInMetadataV3 {
 
 fragment EmbedMetadataV3Fields on EmbedMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -243,7 +189,7 @@ fragment EmbedMetadataV3Fields on EmbedMetadataV3 {
 
 fragment EventMetadataV3Fields on EventMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   contentWarning
   tags
@@ -255,7 +201,7 @@ fragment EventMetadataV3Fields on EventMetadataV3 {
 
 fragment ImageMetadataV3Fields on ImageMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   asset {
     ...PublicationMetadataMediaImageFields
@@ -268,7 +214,7 @@ fragment ImageMetadataV3Fields on ImageMetadataV3 {
 
 fragment LinkMetadataV3Fields on LinkMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -278,7 +224,7 @@ fragment LinkMetadataV3Fields on LinkMetadataV3 {
 
 fragment LiveStreamMetadataV3Fields on LiveStreamMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -291,7 +237,7 @@ fragment LiveStreamMetadataV3Fields on LiveStreamMetadataV3 {
 
 fragment MintMetadataV3Fields on MintMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -301,7 +247,7 @@ fragment MintMetadataV3Fields on MintMetadataV3 {
 
 fragment SpaceMetadataV3Fields on SpaceMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -311,7 +257,7 @@ fragment SpaceMetadataV3Fields on SpaceMetadataV3 {
 
 fragment StoryMetadataV3Fields on StoryMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   asset {
     ... on PublicationMetadataMediaAudio {
@@ -334,7 +280,7 @@ fragment StoryMetadataV3Fields on StoryMetadataV3 {
 
 fragment TextOnlyMetadataV3Fields on TextOnlyMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -344,7 +290,7 @@ fragment TextOnlyMetadataV3Fields on TextOnlyMetadataV3 {
 
 fragment ThreeDMetadataV3Fields on ThreeDMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -354,7 +300,7 @@ fragment ThreeDMetadataV3Fields on ThreeDMetadataV3 {
 
 fragment TransactionMetadataV3Fields on TransactionMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   content
   contentWarning
@@ -364,7 +310,7 @@ fragment TransactionMetadataV3Fields on TransactionMetadataV3 {
 
 fragment VideoMetadataV3Fields on VideoMetadataV3 {
   attributes {
-    ...PublicationMetadataV3AttributeFields
+    ...MetadataAttributeFields
   }
   asset {
     ...PublicationMetadataMediaVideoFields
@@ -376,10 +322,6 @@ fragment VideoMetadataV3Fields on VideoMetadataV3 {
 }
 
 fragment AnyPublicationMetadataFields on PublicationMetadata {
-  ... on LegacyPublicationMetadata {
-    ...LegacyPublicationMetadataFields
-  }
-
   ... on ArticleMetadataV3 {
     ...ArticleMetadataV3Fields
   }
