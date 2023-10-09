@@ -1,0 +1,9 @@
+mutation SetDefaultProfile($request: SetDefaultProfileRequest!) {
+  setDefaultProfile(request: $request)
+}
+
+query GetDefaultProfile($request: DefaultProfileRequest!) {
+  defaultProfile(request: $request) {
+    ...ProfileFields
+  }
+}

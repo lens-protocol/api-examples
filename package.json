@@ -37,6 +37,8 @@
     "profile:create-profile-with-handle": "env-cmd -f .env ts-node ./src/profile/create-profile-with-handle",
     "profile:set-profile-metadata": "env-cmd -f .env ts-node ./src/profile/set-profile-metadata",
     "profile:set-profile-metadata-lens-profile-manager": "env-cmd -f .env ts-node ./src/profile/set-profile-metadata-lens-profile-manager",
+    "profile:get-default-profile": "env-cmd -f .env ts-node ./src/profile/get-default-profile",
+    "profile:set-default-profile": "env-cmd -f .env ts-node ./src/profile/set-default-profile",
     "profile-manager:enable-lens-manager": "env-cmd -f .env ts-node ./src/profile-manager/enable-profile-manager",
     "profile:profiles-managed": "env-cmd -f .env ts-node ./src/profile/profiles-managed",
     "profile-manager:profile-managers": "env-cmd -f .env ts-node ./src/profile-manager/profile-managers",
