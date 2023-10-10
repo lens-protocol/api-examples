@@ -72,6 +72,7 @@
     "publications:get-publications-tags": "env-cmd -f .env ts-node ./src/publications/get-publications-tags",
     "publications:who-collected-publication": "env-cmd -f .env ts-node ./src/publications/who-collected-publication",
     "publications:hide-publication": "env-cmd -f .env ts-node ./src/publications/hide-publication",
+    "publications:new-momoka-transaction": "env-cmd -f .env ts-node ./src/publications/new-momoka-transaction",
     "currencies:get-currencies": "env-cmd -f .env ts-node ./src/currencies/currencies",
     "nfts:mutual-nft-collections": "env-cmd -f .env ts-node ./src/nfts/mutual-nft-collections",
     "follow:mutual-followers": "env-cmd -f .env ts-node ./src/follow/mutual-followers",
@@ -158,7 +159,9 @@
     "@types/node": "^17.0.21",
     "@types/uuid": "^8.3.4",
     "env-cmd": "^10.1.0",
+    "subscriptions-transport-ws": "^0.11.0",
     "ts-node": "^10.7.0",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "ws": "^8.14.2"
   }
 }

@@ -37,6 +37,7 @@ export const PK = getParamOrExit('PK');
 export const MUMBAI_RPC_URL = getParamOrExit('MUMBAI_RPC_URL');
 
 export const LENS_API = getParamOrExit('LENS_API');
+export const LENS_API_WEBSOCKET = getParam('LENS_API_WEBSOCKET');
 
 export const LENS_HUB_ABI = JSON.parse(fileLensHub);
 

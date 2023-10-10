@@ -5,12 +5,18 @@ import {
   from,
   HttpLink,
   InMemoryCache,
+  split,
 } from '@apollo/client/core';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import WebSocket from 'ws';
 import { onError } from '@apollo/client/link/error';
 import fetch from 'cross-fetch';
 import { print } from 'graphql/language/printer';
-import { LENS_API, ORIGIN } from './config';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
+import { LENS_API, LENS_API_WEBSOCKET, ORIGIN } from './config';
 import { getAuthenticationToken } from './state';
+
+import { getMainDefinition } from '@apollo/client/utilities';
 
 const defaultOptions: DefaultOptions = {
   watchQuery: {
@@ -22,6 +28,12 @@ const defaultOptions: DefaultOptions = {
     errorPolicy: 'all',
   },
 };
+
+const wsLink = LENS_API_WEBSOCKET
+  ? new WebSocketLink(
+      new SubscriptionClient(LENS_API_WEBSOCKET, { lazy: true, reconnect: true }, WebSocket)
+    )
+  : null;
 
 const httpLink = new HttpLink({
   uri: LENS_API,
@@ -62,8 +74,19 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
+const splitLink = wsLink
+  ? split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return definition.kind === 'OperationDefinition' && definition.operation === 'subscription';
+      },
+      wsLink,
+      httpLink
+    )
+  : httpLink;
+
 export const apolloClient = new ApolloClient({
-  link: from([errorLink, authLink, httpLink]),
+  link: from([errorLink, authLink, splitLink]),
   cache: new InMemoryCache(),
   defaultOptions: defaultOptions,
 });
