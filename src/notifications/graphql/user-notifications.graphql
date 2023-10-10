@@ -1,146 +1,156 @@
 #import "../../publications/graphql/publication-fragments.graphql"
 
-query Notifications($request: NotificationRequest!) {
-  notifications(request: $request) {
-    items {
-      ... on ReactionNotification {
-        id
-        publication {
-          ... on Post {
-            ...PostFields
-          }
+fragment NotificationFields on Notification {
+  ... on ReactionNotification {
+    id
+    publication {
+      ... on Post {
+        ...PostFields
+      }
 
-          ... on Comment {
-            ...CommentFields
-          }
+      ... on Comment {
+        ...CommentFields
+      }
 
-          ... on Quote {
-            ...QuoteFields
-          }
-        }
-        reactions {
-          profile {
-            id
-            handle
-          }
-          reactions {
-            reactedAt
-            reaction
-          }
-        }
+      ... on Quote {
+        ...QuoteFields
       }
-      ... on CommentNotification {
+    }
+    reactions {
+      profile {
         id
-        comment {
-          ...CommentFields
-        }
+        handle
       }
-      ... on MirrorNotification {
-        id
-        mirrors {
-          mirrorId
-          mirroredAt
-          profile {
-            id
-            handle
-          }
-        }
-        publication {
-          ... on Post {
-            id
-          }
-          ... on Comment {
-            id
-            by {
-              id
-              handle
-            }
-          }
-          ... on Quote {
-            id
-            by {
-              id
-              handle
-            }
-          }
-        }
+      reactions {
+        reactedAt
+        reaction
       }
-      ... on QuoteNotification {
+    }
+  }
+  ... on CommentNotification {
+    id
+    comment {
+      ...CommentFields
+    }
+  }
+  ... on MirrorNotification {
+    id
+    mirrors {
+      mirrorId
+      mirroredAt
+      profile {
         id
-        quote {
-          ...QuoteFields
-        }
+        handle
       }
-      ... on ActedNotification {
+    }
+    publication {
+      ... on Post {
         id
-        actions {
-          by {
-            handle
-            id
-          }
-          action {
-            ... on KnownCollectOpenActionResult {
-              type
-            }
-            ... on UnknownOpenActionResult {
-              address
-            }
-          }
-          actedAt
-        }
-        publication {
-          ... on Post {
-            id
-            by {
-              id
-              handle
-            }
-          }
-          ... on Comment {
-            id
-            by {
-              id
-              handle
-            }
-          }
-          ... on Mirror {
-            id
-          }
-        }
       }
-      ... on FollowNotification {
+      ... on Comment {
         id
-        followers {
+        by {
           id
           handle
         }
       }
-      ... on MentionNotification {
+      ... on Quote {
         id
-        publication {
-          ... on Post {
-            id
-            by {
-              id
-              handle
-            }
-          }
-          ... on Comment {
-            id
-            by {
-              id
-              handle
-            }
-          }
-          ... on Quote {
-            id
-            by {
-              id
-              handle
-            }
-          }
+        by {
+          id
+          handle
         }
       }
+    }
+  }
+  ... on QuoteNotification {
+    id
+    quote {
+      ...QuoteFields
+    }
+  }
+  ... on ActedNotification {
+    id
+    actions {
+      by {
+        handle
+        id
+      }
+      action {
+        ... on KnownCollectOpenActionResult {
+          type
+        }
+        ... on UnknownOpenActionResult {
+          address
+        }
+      }
+      actedAt
+    }
+    publication {
+      ... on Post {
+        id
+        by {
+          id
+          handle
+        }
+      }
+      ... on Comment {
+        id
+        by {
+          id
+          handle
+        }
+      }
+      ... on Mirror {
+        id
+      }
+    }
+  }
+  ... on FollowNotification {
+    id
+    followers {
+      id
+      handle
+    }
+  }
+  ... on MentionNotification {
+    id
+    publication {
+      ... on Post {
+        id
+        by {
+          id
+          handle
+        }
+      }
+      ... on Comment {
+        id
+        by {
+          id
+          handle
+        }
+      }
+      ... on Quote {
+        id
+        by {
+          id
+          handle
+        }
+      }
+    }
+  }
+}
+
+subscription NotificationsSubscription($for: ProfileId!) {
+  newNotification(for: $for) {
+    ...NotificationFields
+  }
+}
+
+query Notifications($request: NotificationRequest!) {
+  notifications(request: $request) {
+    items {
+      ...NotificationFields
     }
     pageInfo {
       prev

@@ -60,3 +60,5 @@ export const USE_GASLESS = getParam('USE_GASLESS') === 'true';
 export const ORIGIN = USE_GASLESS
   ? getParamOrExit('ORIGIN', 'You must supply the ORIGIN env var when USE_GASLESS is enabled')
   : getParam('ORIGIN');
+
+export const POST_ID = getParam('POST_ID');

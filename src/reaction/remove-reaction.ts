@@ -1,6 +1,6 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
-import { PROFILE_ID } from '../config';
+import { POST_ID, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
   PublicationReactionType,
@@ -33,7 +33,7 @@ export const removeReaction = async () => {
 
   await removeReactionRequest({
     reaction: PublicationReactionType.Upvote,
-    for: knownPostId,
+    for: POST_ID || knownPostId,
   });
 
   console.log('remove reaction: success');
