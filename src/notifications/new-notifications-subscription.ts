@@ -21,4 +21,4 @@ if (!PROFILE_ID) {
   throw new Error('Must define PROFILE_ID in the .env to run this');
 }
 
-newNotificationsSubscription('0xba');
+newNotificationsSubscription(PROFILE_ID);

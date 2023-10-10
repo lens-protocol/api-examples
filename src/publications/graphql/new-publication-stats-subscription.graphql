@@ -1,0 +1,11 @@
+subscription NewPublicationStats($for: PublicationId!) {
+  newPublicationStats(for: $for) {
+    comments
+    mirrors
+    quotes
+    upvotes: reactions(request: { type: UPVOTE })
+    downvotes: reactions(request: { type: DOWNVOTE })
+    bookmarks
+    id
+  }
+}
