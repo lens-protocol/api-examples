@@ -1,0 +1,3 @@
+mutation RevokeAuthentication($authorizationId: UUID!) {
+  revokeAuthentication(request: { authorizationId: $authorizationId })
+}
