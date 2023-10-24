@@ -142,7 +142,7 @@ fragment NotificationFields on Notification {
 }
 
 subscription NotificationsSubscription($for: ProfileId!) {
-  newNotification(request: {for: $for}) {
+  newNotification(for: $for) {
     ...NotificationFields
   }
 }

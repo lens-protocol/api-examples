@@ -1,5 +1,5 @@
 subscription NewPublicationStats($for: PublicationId!) {
-  newPublicationStats(request: {for: $for}) {
+  newPublicationStats(for: $for) {
     comments
     mirrors
     quotes
