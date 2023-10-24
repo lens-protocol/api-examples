@@ -19,7 +19,9 @@ fragment NotificationFields on Notification {
     reactions {
       profile {
         id
-        handle
+        handle {
+          ...HandleInfo
+        }
       }
       reactions {
         reactedAt
@@ -40,7 +42,9 @@ fragment NotificationFields on Notification {
       mirroredAt
       profile {
         id
-        handle
+        handle {
+          ...HandleInfo
+        }
       }
     }
     publication {
@@ -51,14 +55,18 @@ fragment NotificationFields on Notification {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
       ... on Quote {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
     }
@@ -73,7 +81,9 @@ fragment NotificationFields on Notification {
     id
     actions {
       by {
-        handle
+        handle {
+          ...HandleInfo
+        }
         id
       }
       action {
@@ -91,14 +101,18 @@ fragment NotificationFields on Notification {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
       ... on Comment {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
       ... on Mirror {
@@ -110,7 +124,9 @@ fragment NotificationFields on Notification {
     id
     followers {
       id
-      handle
+      handle {
+        ...HandleInfo
+      }
     }
   }
   ... on MentionNotification {
@@ -120,21 +136,27 @@ fragment NotificationFields on Notification {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
       ... on Comment {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
       ... on Quote {
         id
         by {
           id
-          handle
+          handle {
+            ...HandleInfo
+          }
         }
       }
     }

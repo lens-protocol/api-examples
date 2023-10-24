@@ -4,21 +4,21 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
-  CreateHandleLinkToProfileTypedDataDocument,
-  HandleLinkToProfileRequest,
+  CreateLinkHandleToProfileTypedDataDocument,
+  LinkHandleToProfileRequest,
 } from '../graphql/generated';
 import { lensTokenHandleRegistry } from '../lens-token-handle-registry';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
-const createHandleLinkToProfileTypedData = async (request: HandleLinkToProfileRequest) => {
+const createLinkHandleToProfileTypedData = async (request: LinkHandleToProfileRequest) => {
   const result = await apolloClient.mutate({
-    mutation: CreateHandleLinkToProfileTypedDataDocument,
+    mutation: CreateLinkHandleToProfileTypedDataDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.createHandleLinkToProfileTypedData;
+  return result.data!.createLinkHandleToProfileTypedData;
 };
 
 export const link = async () => {
@@ -27,8 +27,8 @@ export const link = async () => {
 
   await login(address);
 
-  const { id, typedData } = await createHandleLinkToProfileTypedData({
-    handle: 'wagmi.test',
+  const { id, typedData } = await createLinkHandleToProfileTypedData({
+    handle: 'test/wagmi',
   });
   console.log('link handle to profile:: result', { id, typedData });
 
