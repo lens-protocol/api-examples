@@ -1,12 +1,31 @@
 #import "../../common/graphql/common.graphql"
 #import "./follow-module-fragment.graphql"
 
+fragment HandleInfo on HandleInfo {
+  __typename
+  id
+  fullHandle
+  namespace
+  localName
+  suggestedFormatted {
+    full
+    localName
+  }
+  linkedTo {
+    contract {
+      ...NetworkAddressFields
+    }
+    nftTokenId
+  }
+  ownedBy
+}
+
 fragment ProfileFields on Profile {
   id
   ownedBy {
     ...NetworkAddressFields
   }
-  lensManager
+  signless
   sponsor
   txHash
   createdAt
@@ -80,5 +99,7 @@ fragment ProfileFields on Profile {
   followModule {
     ...FollowModuleFields
   }
-  handle
+  handle {
+    ...HandleInfo
+  }
 }

@@ -4,21 +4,21 @@ import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
 import { USE_GASLESS } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
-  CreateHandleUnlinkFromProfileTypedDataDocument,
-  HandleUnlinkFromProfileRequest,
+  CreateUnlinkHandleFromProfileTypedDataDocument,
+  UnlinkHandleFromProfileRequest,
 } from '../graphql/generated';
 import { lensTokenHandleRegistry } from '../lens-token-handle-registry';
 import { waitUntilBroadcastTransactionIsComplete } from '../transaction/wait-until-complete';
 
-const createHandleUnlinkFromProfileTypedData = async (request: HandleUnlinkFromProfileRequest) => {
+const createUnlinkHandleFromProfileTypedData = async (request: UnlinkHandleFromProfileRequest) => {
   const result = await apolloClient.mutate({
-    mutation: CreateHandleUnlinkFromProfileTypedDataDocument,
+    mutation: CreateUnlinkHandleFromProfileTypedDataDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.createHandleUnlinkFromProfileTypedData;
+  return result.data!.createUnlinkHandleFromProfileTypedData;
 };
 
 export const unlink = async () => {
@@ -27,8 +27,8 @@ export const unlink = async () => {
 
   await login(address);
 
-  const { id, typedData } = await createHandleUnlinkFromProfileTypedData({
-    handle: 'wagmi.test',
+  const { id, typedData } = await createUnlinkHandleFromProfileTypedData({
+    handle: 'test/wagmi',
   });
   console.log('unlink handle from profile: result', { id, typedData });
 

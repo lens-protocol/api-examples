@@ -36,7 +36,7 @@ export const disableLensProfileManager = async () => {
   await login(address);
 
   const { id, typedData } = await createChangeProfileManagersTypedData({
-    approveLensManager: false,
+    approveSignless: false,
     // leave it blank if you want to use the lens API manager!
     // changeManagers: [
     //   {

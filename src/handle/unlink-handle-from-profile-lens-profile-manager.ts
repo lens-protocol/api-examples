@@ -3,20 +3,20 @@ import { login } from '../authentication/login';
 import { explicitStart } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
 import {
-  HandleUnlinkFromProfileDocument,
-  HandleUnlinkFromProfileRequest,
+  UnlinkHandleFromProfileDocument,
+  UnlinkHandleFromProfileRequest,
 } from '../graphql/generated';
 import { waitUntilLensManagerTransactionIsComplete } from '../transaction/wait-until-complete';
 
-const unlinkHandleFromProfile = async (request: HandleUnlinkFromProfileRequest) => {
+const unlinkHandleFromProfile = async (request: UnlinkHandleFromProfileRequest) => {
   const result = await apolloClient.mutate({
-    mutation: HandleUnlinkFromProfileDocument,
+    mutation: UnlinkHandleFromProfileDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.handleUnlinkFromProfile;
+  return result.data!.unlinkHandleFromProfile;
 };
 
 export const unlinkHandleFromProfileManager = async () => {
@@ -26,7 +26,7 @@ export const unlinkHandleFromProfileManager = async () => {
   await login(address);
 
   const result = await unlinkHandleFromProfile({
-    handle: 'wagmi.test',
+    handle: 'test/wagmi',
   });
   console.log('unlink handle from profile lens profile manager: result', result);
   await waitUntilLensManagerTransactionIsComplete(result, 'unlinkHandleFromProfile');
