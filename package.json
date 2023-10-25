@@ -30,6 +30,7 @@
     "follow:followers": "env-cmd -f .env ts-node ./src/follow/followers",
     "follow:is-following-me": "env-cmd -f .env ts-node ./src/follow/is-following-me",
     "follow:is-followed-by-me": "env-cmd -f .env ts-node ./src/follow/is-followed-by-me",
+    "follow:follow-status": "env-cmd -f .env ts-node ./src/follow/follow-status",
     "profile:block": "env-cmd -f .env ts-node ./src/profile/block",
     "profile:block-lens-profile-manager": "env-cmd -f .env ts-node ./src/profile/block-lens-profile-manager",
     "profile:burn": "env-cmd -f .env ts-node ./src/profile/burn-profile",

@@ -1,0 +1,10 @@
+query FollowStatusBulk($request: FollowStatusBulkRequest!) {
+  followStatusBulk(request: $request) {
+    follower
+    profileId
+    status {
+      value
+      isFinalisedOnchain
+    }
+  }
+}

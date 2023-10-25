@@ -1,9 +1,0 @@
-query DoesFollow($request: DoesFollowRequest!) {
-  doesFollow(request: $request) {
-    followerProfileId
-    status {
-      isFinalisedOnchain
-      value
-    }
-  }
-}
