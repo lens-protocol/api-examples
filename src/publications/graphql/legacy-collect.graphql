@@ -11,22 +11,21 @@ mutation CreateLegacyCollectTypedData($request: LegacyCollectRequest!) {
       }
 
       types {
-        Act {
+        CollectLegacy {
           name
           type
         }
       }
 
       value {
-        actionModuleAddress
-        actionModuleData
-        actorProfileId
         deadline
         nonce
-        publicationActedId
-        publicationActedProfileId
-        referrerProfileIds
-        referrerPubIds
+        publicationCollectedId
+        publicationCollectedProfileId
+        referrerProfileId
+        referrerPubId
+        collectModuleData
+        collectorProfileId
       }
     }
   }
