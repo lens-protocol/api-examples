@@ -1,7 +1,7 @@
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { broadcastOnchainRequest } from '../broadcast/shared-broadcast';
-import { USE_GASLESS, explicitStart } from '../config';
+import { USE_GASLESS, explicitStart, POST_ID } from '../config';
 import { getAddressFromSigner, signedTypeData, splitSignature } from '../ethers.service';
 import {
   ActOnOpenActionRequest,
@@ -28,7 +28,7 @@ export const actOn = async () => {
   await login(address);
 
   const { id, typedData } = await createActOnOpenActionTypedData({
-    for: '0x03-0x4b',
+    for: POST_ID || '0x03-0x4b',
     actOn: {
       simpleCollectOpenAction: true,
     },
