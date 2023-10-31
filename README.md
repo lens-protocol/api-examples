@@ -4,7 +4,7 @@ This repo has running code which you can execute to help you understand how to i
 
 Lens API is beta at the moment and can change without warning!
 
-Full documentation is available at [https://docs.lens.dev/docs/introduction](https://docs.lens.dev/docs/introduction).
+Full documentation is available at [https://docs.lens.xyz/v2/docs/introduction](https://docs.lens.xyz/v2/docs/introduction).
 
 ## Setup
 
@@ -14,7 +14,7 @@ for the scripts to run you need to create a `.env` (or copy the template `cp .en
 PK=YOUR_PK
 MUMBAI_RPC_URL=https://rpc-mumbai.matic.today
 PROFILE_ID=PROFILE_ID
-LENS_API=https://api-mumbai.lens.dev/
+LENS_API=https://api-v2-mumbai.lens.dev/
 LENS_HUB_CONTRACT=0xC1E77eE73403B8a7478884915aA599932A677870
 LENS_PERIPHERY_CONTRACT=0xc3a1fabd7f8d290f7b0C45AA88af6e9c9E267843
 INFURA_PROJECT_ID=YOUR_INFURA_PROJECT_ID
