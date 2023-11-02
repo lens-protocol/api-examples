@@ -19,7 +19,7 @@ export const followers = async () => {
     throw new Error('Must define PROFILE_ID in the .env to run this');
   }
 
-  const result = await followersRequest({ profileId });
+  const result = await followersRequest({ of: profileId });
   console.log('followers: result', result);
 
   return result;

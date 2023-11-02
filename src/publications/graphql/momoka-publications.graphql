@@ -1,0 +1,188 @@
+mutation CreateMomokaPostTypedData($request: MomokaPostRequest!) {
+  createMomokaPostTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Post {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        contentURI
+        actionModules
+        actionModulesInitDatas
+        referenceModule
+        referenceModuleInitData
+      }
+    }
+  }
+}
+
+mutation PostOnMomoka($request: MomokaPostRequest!) {
+  postOnMomoka(request: $request) {
+    ... on CreateMomokaPublicationResult {
+      id
+      proof
+      momokaId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
+
+mutation CreateMomokaCommentTypedData($request: MomokaCommentRequest!) {
+  createMomokaCommentTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Comment {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        actionModules
+        actionModulesInitDatas
+        contentURI
+        deadline
+        nonce
+        pointedProfileId
+        pointedPubId
+        profileId
+        referenceModule
+        referenceModuleData
+        referenceModuleInitData
+        referrerProfileIds
+        referrerPubIds
+      }
+    }
+  }
+}
+
+
+mutation CommentOnMomoka($request: MomokaCommentRequest!) {
+  commentOnMomoka(request: $request) {
+    ... on CreateMomokaPublicationResult {
+      id
+      proof
+      momokaId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
+
+mutation CreateMomokaQuoteTypedData($request: MomokaQuoteRequest!) {
+  createMomokaQuoteTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Quote {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        contentURI
+        pointedProfileId
+        pointedPubId
+        referrerProfileIds
+        referrerPubIds
+        actionModules
+        actionModulesInitDatas
+        referenceModule
+        referenceModuleData
+        referenceModuleInitData
+      }
+    }
+  }
+}
+
+
+mutation QuoteOnMomoka($request: MomokaQuoteRequest!) {
+  quoteOnMomoka(request: $request) {
+    ... on CreateMomokaPublicationResult {
+      id
+      proof
+      momokaId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
+
+mutation CreateMomokaMirrorTypedData($request: MomokaMirrorRequest!) {
+  createMomokaMirrorTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Mirror {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        metadataURI
+        deadline
+        profileId
+        pointedProfileId
+        pointedPubId
+        referrerProfileIds
+        referrerPubIds
+        referenceModuleData
+      }
+    }
+  }
+}
+
+mutation MirrorOnMomoka($request: MomokaMirrorRequest!) {
+  mirrorOnMomoka(request: $request) {
+    ... on CreateMomokaPublicationResult {
+      id
+      proof
+      momokaId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

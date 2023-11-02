@@ -1,3 +1,0 @@
-mutation hidePublication($request: HidePublicationRequest!) {
-  hidePublication(request: $request)
-}

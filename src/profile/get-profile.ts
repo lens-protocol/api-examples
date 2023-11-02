@@ -2,9 +2,9 @@ import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { ProfileDocument, SingleProfileQueryRequest } from '../graphql/generated';
+import { ProfileDocument, ProfileRequest } from '../graphql/generated';
 
-const getProfileRequest = async (request: SingleProfileQueryRequest) => {
+const getProfileRequest = async (request: ProfileRequest) => {
   const result = await apolloClient.query({
     query: ProfileDocument,
     variables: {
@@ -15,7 +15,7 @@ const getProfileRequest = async (request: SingleProfileQueryRequest) => {
   return result.data.profile;
 };
 
-export const profile = async (request?: SingleProfileQueryRequest) => {
+export const profile = async (request?: ProfileRequest) => {
   const profileId = PROFILE_ID;
   if (!profileId) {
     throw new Error('Must define PROFILE_ID in the .env to run this');
@@ -27,7 +27,7 @@ export const profile = async (request?: SingleProfileQueryRequest) => {
   await login(address);
 
   if (!request) {
-    request = { profileId: '0x09' };
+    request = { forProfileId: PROFILE_ID };
   }
 
   const profile = await getProfileRequest(request);

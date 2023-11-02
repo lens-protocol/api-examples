@@ -1,0 +1,22 @@
+fragment NetworkAddressFields on NetworkAddress {
+  address
+  chainId
+}
+
+fragment Erc20Fields on Asset {
+  ... on Erc20 {
+    name
+    symbol
+    decimals
+    contract {
+      ...NetworkAddressFields
+    }
+  }
+}
+
+fragment AmountFields on Amount {
+  asset {
+    ...Erc20Fields
+  }
+  value
+}

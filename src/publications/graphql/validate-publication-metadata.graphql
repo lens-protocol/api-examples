@@ -1,0 +1,6 @@
+query ValidatePublicationMetadata($request: ValidatePublicationMetadataRequest!) {
+  validatePublicationMetadata(request: $request) {
+    reason
+    valid
+  }
+}

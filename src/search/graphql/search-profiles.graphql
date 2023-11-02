@@ -1,0 +1,13 @@
+#import "../../profile/graphql/profile-fields-fragment.graphql"
+
+query SearchProfiles($request: ProfileSearchRequest!) {
+  searchProfiles(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

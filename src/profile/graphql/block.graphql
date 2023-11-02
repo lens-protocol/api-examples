@@ -1,0 +1,39 @@
+mutation CreateBlockProfilesTypedData($request: BlockRequest!) {
+  createBlockProfilesTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      value {
+        nonce
+        deadline
+        byProfileId
+        idsOfProfilesToSetBlockStatus
+        blockStatus
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      types {
+        SetBlockStatus {
+          name
+          type
+        }
+      }
+    }
+  }
+}
+
+mutation Block($request: BlockRequest!) {
+  block(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

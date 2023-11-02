@@ -1,0 +1,33 @@
+query CanDecryptPublication($request: PublicationRequest!) {
+  publication(request: $request) {
+    ... on Post {
+      operations {
+        canDecrypt {
+          result
+          reasons
+          extraDetails
+        }
+      }
+    }
+
+    ... on Comment {
+      operations {
+        canDecrypt {
+          result
+          reasons
+          extraDetails
+        }
+      }
+    }
+
+    ... on Quote {
+      operations {
+        canDecrypt {
+          result
+          reasons
+          extraDetails
+        }
+      }
+    }
+  }
+}

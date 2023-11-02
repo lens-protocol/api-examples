@@ -1,0 +1,17 @@
+query WhoReactedPublication($request: WhoReactedPublicationRequest!) {
+  whoReactedPublication(request: $request) {
+    items {
+      profile {
+        ...ProfileFields
+      }
+      reactions {
+        reaction
+        reactionAt
+      }
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

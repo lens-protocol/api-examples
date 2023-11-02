@@ -1,12 +1,8 @@
 import { apolloClient } from '../apollo-client';
 import { PROFILE_ID } from '../config';
-import {
-  PublicationsDocument,
-  PublicationsQueryRequest,
-  PublicationTypes,
-} from '../graphql/generated';
+import { PublicationsDocument, PublicationsRequest } from '../graphql/generated';
 
-const getPublicationsRequest = async (request: PublicationsQueryRequest) => {
+const getPublicationsRequest = async (request: PublicationsRequest) => {
   const result = await apolloClient.query({
     query: PublicationsDocument,
     variables: {
@@ -24,8 +20,11 @@ export const getPublications = async () => {
   }
 
   const result = await getPublicationsRequest({
-    profileId,
-    publicationTypes: [PublicationTypes.Post, PublicationTypes.Comment, PublicationTypes.Mirror],
+    where: {
+      from: [profileId],
+    },
+    // profileId,
+    // publicationTypes: [PublicationTypes.Post, PublicationTypes.Comment, PublicationTypes.Mirror],
   });
   console.log('publications: result', result.items);
 

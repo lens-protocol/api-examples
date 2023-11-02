@@ -1,7 +1,10 @@
 import { apolloClient } from '../apollo-client';
-import { PublicationDocument, PublicationQueryRequest } from '../graphql/generated';
+import { login } from '../authentication/login';
+import { getAddressFromSigner } from '../ethers.service';
+import { PublicationDocument, PublicationRequest } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
-const getPublicationRequest = async (request: PublicationQueryRequest) => {
+const getPublicationRequest = async (request: PublicationRequest) => {
   const result = await apolloClient.query({
     query: PublicationDocument,
     variables: {
@@ -13,7 +16,12 @@ const getPublicationRequest = async (request: PublicationQueryRequest) => {
 };
 
 export const getPublication = async () => {
-  const result = await getPublicationRequest({ publicationId: '0x0f-0x01' });
+  const address = getAddressFromSigner();
+  await login(address);
+
+  const result = await getPublicationRequest({
+    forId: knownPostId,
+  });
   console.log('publication: result', result);
 
   return result;

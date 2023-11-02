@@ -1,0 +1,87 @@
+query MomokaSubmitters {
+  momokaSubmitters {
+    items {
+      address
+    }
+  }
+}
+
+query MomokaSummary {
+  momokaSummary {
+    totalTransactions
+  }
+}
+
+query MomokaTransaction($request: MomokaTransactionRequest!) {
+  momokaTransaction(request: $request) {
+    ... on MomokaPostTransaction {
+      publication {
+        id
+      }
+    }
+    ... on MomokaCommentTransaction {
+      publication {
+        id
+      }
+      commentOn {
+        ...PrimaryPublicationFields
+      }
+    }
+    ... on MomokaMirrorTransaction {
+      publication {
+        id
+      }
+      mirrorOn {
+        ...PrimaryPublicationFields
+      }
+    }
+    ... on MomokaQuoteTransaction {
+      publication {
+        id
+      }
+      quoteOn {
+        ...PrimaryPublicationFields
+      }
+    }
+  }
+}
+
+query MomokaTransactions($request: MomokaTransactionsRequest!) {
+  momokaTransactions(request: $request) {
+    items {
+      ... on MomokaPostTransaction {
+        publication {
+          id
+        }
+      }
+      ... on MomokaCommentTransaction {
+        publication {
+          id
+        }
+        commentOn {
+          ...PrimaryPublicationFields
+        }
+      }
+      ... on MomokaMirrorTransaction {
+        publication {
+          id
+        }
+        mirrorOn {
+          ...PrimaryPublicationFields
+        }
+      }
+      ... on MomokaQuoteTransaction {
+        publication {
+          id
+        }
+        quoteOn {
+          ...PrimaryPublicationFields
+        }
+      }
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

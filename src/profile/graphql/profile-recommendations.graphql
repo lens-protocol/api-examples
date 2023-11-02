@@ -1,0 +1,13 @@
+#import "./profile-fields-fragment.graphql"
+
+query ProfileRecommendations($request: ProfileRecommendationsRequest!) {
+  profileRecommendations(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

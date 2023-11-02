@@ -7,6 +7,7 @@ import {
   ReportPublicationDocument,
   ReportPublicationRequest,
 } from '../graphql/generated';
+import { knownPostId } from '../known-common-input-constants';
 
 const reportPublicationRequest = async (request: ReportPublicationRequest) => {
   const result = await apolloClient.mutate({
@@ -26,7 +27,7 @@ export const reportPublication = async () => {
   await login(address);
 
   await reportPublicationRequest({
-    publicationId: '0x0f-0x01',
+    for: knownPostId,
     reason: {
       sensitiveReason: {
         reason: PublicationReportingReason.Sensitive,

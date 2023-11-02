@@ -1,13 +1,29 @@
 import { apolloClient } from '../apollo-client';
-import { BroadcastDocument, BroadcastRequest } from '../graphql/generated';
+import {
+  BroadcastOnMomokaDocument,
+  BroadcastOnchainDocument,
+  BroadcastRequest,
+} from '../graphql/generated';
 
-export const broadcastRequest = async (request: BroadcastRequest) => {
+export const broadcastOnchainRequest = async (request: BroadcastRequest) => {
+  console.log('using gasless broadcast..');
   const result = await apolloClient.mutate({
-    mutation: BroadcastDocument,
+    mutation: BroadcastOnchainDocument,
     variables: {
       request,
     },
   });
 
-  return result.data!.broadcast;
+  return result.data!.broadcastOnchain;
+};
+
+export const broadcastOnMomokaRequest = async (request: BroadcastRequest) => {
+  const result = await apolloClient.mutate({
+    mutation: BroadcastOnMomokaDocument,
+    variables: {
+      request,
+    },
+  });
+
+  return result.data!.broadcastOnMomoka;
 };

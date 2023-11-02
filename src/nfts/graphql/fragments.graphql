@@ -1,0 +1,65 @@
+fragment NftMetadataAttributeFields on PublicationMarketplaceMetadataAttribute {
+    displayType
+    traitType
+    value
+}
+
+fragment NftMetadataFields on NftMetadata {
+    name
+    description
+    animationUrl
+    attributes {
+        ...NftMetadataAttributeFields
+    }
+    externalURL
+    image {
+        ...ImageSetFields
+    }
+}
+
+fragment NftCollectionFields on NftCollection {
+    name
+    symbol
+    contract {
+        ...NetworkAddressFields
+    }
+    contractType
+    baseUri
+    verified
+}
+
+fragment NftOwnerFields on Owner {
+    address
+    amount
+}
+
+fragment NftFields on Nft {
+    collection {
+        name
+        symbol
+    }
+    tokenId
+    contentURI
+    contract {
+        ...NetworkAddressFields,
+    }
+    contractType
+    metadata {
+        ...NftMetadataFields
+    }
+    owner {
+        ...NftOwnerFields
+    }
+    totalSupply
+}
+
+fragment NftGalleryFields on NftGallery {
+    name
+    owner
+    items {
+        ...NftFields
+    }
+    id
+    createdAt
+    updatedAt
+}

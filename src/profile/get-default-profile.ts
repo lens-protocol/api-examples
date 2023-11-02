@@ -1,28 +1,42 @@
 import { apolloClient } from '../apollo-client';
+import { login } from '../authentication/login';
+import { explicitStart, PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import { DefaultProfileDocument, DefaultProfileRequest } from '../graphql/generated';
+import { GetDefaultProfileDocument } from '../graphql/generated';
 
-const getDefaultProfileRequest = async (request: DefaultProfileRequest) => {
+const getDefaultProfileRequest = async (address: string) => {
   const result = await apolloClient.query({
-    query: DefaultProfileDocument,
+    query: GetDefaultProfileDocument,
     variables: {
-      request,
+      request: {
+        for: address,
+      },
     },
   });
 
   return result.data.defaultProfile;
 };
 
-export const getDefaultProfile = async () => {
-  const ethereumAddress = getAddressFromSigner();
-  console.log('get default profile: address', ethereumAddress);
+export const defaultProfile = async (ownerAddress?: string) => {
+  const profileId = PROFILE_ID;
+  if (!profileId) {
+    throw new Error('Must define PROFILE_ID in the .env to run this');
+  }
 
-  const result = await getDefaultProfileRequest({ ethereumAddress });
-  console.log('profiles: result', result);
+  const address = ownerAddress || getAddressFromSigner();
+  console.log('get default profile: address', address);
 
-  return result;
+  await login(address);
+
+  const defaultProfile = await getDefaultProfileRequest(address);
+
+  console.log('get default profile: result', defaultProfile);
+
+  return defaultProfile;
 };
 
 (async () => {
-  await getDefaultProfile();
+  if (explicitStart(__filename)) {
+    await defaultProfile();
+  }
 })();

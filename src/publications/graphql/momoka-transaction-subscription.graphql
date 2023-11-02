@@ -1,0 +1,35 @@
+subscription NewMomokaTransaction {
+  newMomokaTransaction {
+    ... on MomokaPostTransaction {
+      publication {
+        id
+      }
+    }
+    ... on MomokaCommentTransaction {
+      publication {
+        id
+      }
+      commentOn {
+        ...PrimaryPublicationFields
+      }
+    }
+
+    ... on MomokaMirrorTransaction {
+      publication {
+        id
+      }
+      mirrorOn {
+        ...PrimaryPublicationFields
+      }
+    }
+
+    ... on MomokaQuoteTransaction {
+      publication {
+        id
+      }
+      quoteOn {
+        ...PrimaryPublicationFields
+      }
+    }
+  }
+}

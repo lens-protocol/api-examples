@@ -1,0 +1,183 @@
+mutation CreateOnchainPostTypedData($request: OnchainPostRequest!) {
+  createOnchainPostTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Post {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        contentURI
+        actionModules
+        actionModulesInitDatas
+        referenceModule
+        referenceModuleInitData
+      }
+    }
+  }
+}
+
+mutation PostOnchain($request: OnchainPostRequest!) {
+  postOnchain(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
+
+mutation CreateOnchainQuoteTypedData($request: OnchainQuoteRequest!) {
+  createOnchainQuoteTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Quote {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        contentURI
+        pointedProfileId
+        pointedPubId
+        referrerProfileIds
+        referrerPubIds
+        referenceModuleData
+        actionModules
+        actionModulesInitDatas
+        referenceModule
+        referenceModuleInitData
+      }
+    }
+  }
+}
+
+mutation QuoteOnchain($request: OnchainQuoteRequest!) {
+  quoteOnchain(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
+
+mutation CreateOnchainCommentTypedData($request: OnchainCommentRequest!) {
+  createOnchainCommentTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      types {
+        Comment {
+          name
+          type
+        }
+      }
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      value {
+        nonce
+        deadline
+        profileId
+        contentURI
+        pointedProfileId
+        pointedPubId
+        referrerProfileIds
+        referrerPubIds
+        referenceModuleData
+        actionModules
+        actionModulesInitDatas
+        referenceModule
+        referenceModuleInitData
+      }
+    }
+  }
+}
+
+mutation CommentOnchain($request: OnchainCommentRequest!) {
+  commentOnchain(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}
+
+mutation CreateOnchainMirrorTypedData($request: OnchainMirrorRequest!) {
+  createOnchainMirrorTypedData(request: $request) {
+    id
+    expiresAt
+    typedData {
+      domain {
+        name
+        chainId
+        version
+        verifyingContract
+      }
+      types {
+        Mirror {
+          name
+          type
+        }
+      }
+      value {
+        nonce
+        metadataURI
+        deadline
+        profileId
+        metadataURI
+        pointedProfileId
+        pointedPubId
+        referrerProfileIds
+        referrerPubIds
+        referenceModuleData
+      }
+    }
+  }
+}
+
+mutation MirrorOnchain($request: OnchainMirrorRequest!) {
+  mirrorOnchain(request: $request) {
+    ... on RelaySuccess {
+      txHash
+      txId
+    }
+    ... on LensProfileManagerRelayError {
+      reason
+    }
+  }
+}

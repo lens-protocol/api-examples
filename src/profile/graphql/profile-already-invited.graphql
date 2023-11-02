@@ -1,0 +1,3 @@
+query ProfileAlreadyInvited($request: AlreadyInvitedCheckRequest!) {
+  profileAlreadyInvited(request: $request)
+}

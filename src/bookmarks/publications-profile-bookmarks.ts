@@ -1,20 +1,19 @@
+import util from 'util';
 import { apolloClient } from '../apollo-client';
 import { login } from '../authentication/login';
 import { PROFILE_ID } from '../config';
 import { getAddressFromSigner } from '../ethers.service';
-import {
-  PublicationSortCriteria,
-  PublicationsProfileBookmarkedQueryRequest,
-  PublicationsProfileBookmarksDocument,
-} from '../graphql/generated';
+import { PublicationBookmarksDocument, PublicationBookmarksRequest } from '../graphql/generated';
 
-const publicationsProfileBookmarks = (request: PublicationsProfileBookmarkedQueryRequest) => {
-  return apolloClient.query({
-    query: PublicationsProfileBookmarksDocument,
+const publicationsProfileBookmarks = async (request: PublicationBookmarksRequest) => {
+  const result = await apolloClient.query({
+    query: PublicationBookmarksDocument,
     variables: {
       request,
     },
   });
+
+  return result.data!.publicationBookmarks;
 };
 
 export const bookmarks = async () => {
@@ -28,13 +27,11 @@ export const bookmarks = async () => {
 
   await login(address);
 
-  const result = await publicationsProfileBookmarks({
-    profileId,
-  });
+  const result = await publicationsProfileBookmarks({});
 
-  console.log('bookmarks: result', result.data);
+  console.log('bookmarks: result', util.inspect(result, { showHidden: false, depth: null }));
 
-  return result.data;
+  return result;
 };
 
 (async () => {

@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { explicitStart } from '../config';
+import { PROFILE_ID, explicitStart } from '../config';
 import { getAddressFromSigner, signText } from '../ethers.service';
 import {
   AuthenticateDocument,
@@ -38,14 +38,15 @@ export const login = async (address = getAddressFromSigner()) => {
   }
 
   console.log('login: address', address);
+  console.log('login: profileId', PROFILE_ID);
 
   // we request a challenge from the server
-  const challengeResponse = await generateChallenge({ address });
+  const challengeResponse = await generateChallenge({ for: PROFILE_ID, signedBy: address });
 
   // sign the text with the wallet
   const signature = await signText(challengeResponse.text);
 
-  const authenticatedResult = await authenticate({ address, signature });
+  const authenticatedResult = await authenticate({ id: challengeResponse.id, signature });
   console.log('login: result', authenticatedResult);
   setAuthenticationToken(authenticatedResult.accessToken);
 

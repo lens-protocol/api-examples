@@ -1,0 +1,51 @@
+query MutualNftCollections($request: MutualNftCollectionsRequest!) {
+  mutualNftCollections(request: $request) {
+    items {
+        ...NftCollectionFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
+
+query NftCollectionOwners($request: NftCollectionOwnersRequest!) {
+  nftCollectionOwners(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
+
+query NftCollections($request: NftCollectionsRequest!) {
+  nftCollections(request: $request) {
+    items {
+      ...NftCollectionFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}
+
+query PopularNftCollections($request: PopularNftCollectionsRequest!) {
+  popularNftCollections(request: $request) {
+    items {
+      collection {
+        ...NftCollectionFields
+      }
+      totalOwners
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+
+}

@@ -1,6 +1,0 @@
-query followerNftOwnedTokenIds($request: FollowerNftOwnedTokenIdsRequest!) {
-  followerNftOwnedTokenIds(request: $request) {
-    followerNftAddress
-    tokensIds
-  }
-}

@@ -1,0 +1,11 @@
+query Nfts($request: NftsRequest!) {
+  nfts(request: $request) {
+    items {
+      ...NftFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

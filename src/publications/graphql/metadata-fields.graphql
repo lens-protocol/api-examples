@@ -1,0 +1,367 @@
+fragment ImageSetFields on ImageSet {
+  raw {
+    uri
+    mimeType
+  }
+  optimized {
+    uri
+    mimeType
+    width
+    height
+  }
+}
+
+fragment MetadataAttributeFields on MetadataAttribute {
+  __typename
+  type
+  key
+  value
+}
+
+fragment AudioFields on Audio {
+  uri
+  mimeType
+}
+
+fragment ImageFields on Image {
+  uri
+  mimeType
+}
+
+fragment VideoFields on Video {
+  uri
+  mimeType
+}
+
+fragment EncryptableAudioFields on EncryptableAudio {
+  uri
+  mimeType
+}
+
+fragment EncryptableImageFields on EncryptableImage {
+  uri
+  mimeType
+}
+
+fragment EncryptableVideoFields on EncryptableVideo {
+  uri
+  mimeType
+}
+
+fragment EncryptableAudioSetFields on EncryptableAudioSet {
+  raw {
+    ...EncryptableAudioFields
+  }
+  optimized {
+    ...AudioFields
+  }
+}
+
+fragment EncryptableImageSetFields on EncryptableImageSet {
+  raw {
+    ...EncryptableImageFields
+  }
+  optimized {
+    ...ImageFields
+  }
+}
+
+fragment EncryptableVideoSetFields on EncryptableVideoSet {
+  raw {
+    ...EncryptableVideoFields
+  }
+  optimized {
+    ...VideoFields
+  }
+}
+
+fragment PublicationMetadataMediaAudioFields on PublicationMetadataMediaAudio {
+  audio {
+    ...EncryptableAudioSetFields
+  }
+
+  cover {
+    ...EncryptableImageSetFields
+  }
+
+  attributes {
+    ...MetadataAttributeFields
+  }
+
+  duration
+  license
+  credits
+  artist
+  genre
+  recordLabel
+  lyrics
+}
+
+fragment PublicationMetadataMediaImageFields on PublicationMetadataMediaImage {
+  image {
+    ...EncryptableImageSetFields
+  }
+
+  attributes {
+    ...MetadataAttributeFields
+  }
+
+  license
+  altTag
+}
+
+fragment PublicationMetadataMediaVideoFields on PublicationMetadataMediaVideo {
+  video {
+    ...EncryptableVideoSetFields
+  }
+
+  cover {
+    ...EncryptableImageSetFields
+  }
+
+  attributes {
+    ...MetadataAttributeFields
+  }
+
+  duration
+  license
+  altTag
+}
+
+fragment ArticleMetadataV3Fields on ArticleMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment AudioMetadataV3Fields on AudioMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  asset {
+    ...PublicationMetadataMediaAudioFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment CheckingInMetadataV3Fields on CheckingInMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  contentWarning
+  tags
+  locale
+}
+
+fragment EmbedMetadataV3Fields on EmbedMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment EventMetadataV3Fields on EventMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  contentWarning
+  tags
+  locale
+
+  startsAt
+  endsAt
+}
+
+fragment ImageMetadataV3Fields on ImageMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  asset {
+    ...PublicationMetadataMediaImageFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment LinkMetadataV3Fields on LinkMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment LiveStreamMetadataV3Fields on LiveStreamMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+
+  startsAt
+  endsAt
+}
+
+fragment MintMetadataV3Fields on MintMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment SpaceMetadataV3Fields on SpaceMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment StoryMetadataV3Fields on StoryMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  asset {
+    ... on PublicationMetadataMediaAudio {
+      ...PublicationMetadataMediaAudioFields
+    }
+
+    ... on PublicationMetadataMediaImage {
+      ...PublicationMetadataMediaImageFields
+    }
+
+    ... on PublicationMetadataMediaVideo {
+      ...PublicationMetadataMediaVideoFields
+    }
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment TextOnlyMetadataV3Fields on TextOnlyMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment ThreeDMetadataV3Fields on ThreeDMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment TransactionMetadataV3Fields on TransactionMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment VideoMetadataV3Fields on VideoMetadataV3 {
+  attributes {
+    ...MetadataAttributeFields
+  }
+  asset {
+    ...PublicationMetadataMediaVideoFields
+  }
+  content
+  contentWarning
+  tags
+  locale
+}
+
+fragment AnyPublicationMetadataFields on PublicationMetadata {
+  ... on ArticleMetadataV3 {
+    ...ArticleMetadataV3Fields
+  }
+
+  ... on AudioMetadataV3 {
+    ...AudioMetadataV3Fields
+  }
+
+  ... on CheckingInMetadataV3 {
+    ...CheckingInMetadataV3Fields
+  }
+
+  ... on EmbedMetadataV3 {
+    ...EmbedMetadataV3Fields
+  }
+
+  ... on EventMetadataV3 {
+    ...EventMetadataV3Fields
+  }
+
+  ... on ImageMetadataV3 {
+    ...ImageMetadataV3Fields
+  }
+
+  ... on LinkMetadataV3 {
+    ...LinkMetadataV3Fields
+  }
+
+  ... on LiveStreamMetadataV3 {
+    ...LiveStreamMetadataV3Fields
+  }
+
+  ... on MintMetadataV3 {
+    ...MintMetadataV3Fields
+  }
+
+  ... on SpaceMetadataV3 {
+    ...SpaceMetadataV3Fields
+  }
+
+  ... on StoryMetadataV3 {
+    ...StoryMetadataV3Fields
+  }
+
+  ... on TextOnlyMetadataV3 {
+    ...TextOnlyMetadataV3Fields
+  }
+
+  ... on ThreeDMetadataV3 {
+    ...ThreeDMetadataV3Fields
+  }
+
+  ... on TransactionMetadataV3 {
+    ...TransactionMetadataV3Fields
+  }
+
+  ... on VideoMetadataV3 {
+    ...VideoMetadataV3Fields
+  }
+}

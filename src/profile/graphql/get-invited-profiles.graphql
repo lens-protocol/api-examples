@@ -1,0 +1,9 @@
+query GetInvitedProfiles {
+  invitedProfiles {
+    by
+    profileMinted {
+      createdAt
+    }
+    when
+  }
+}

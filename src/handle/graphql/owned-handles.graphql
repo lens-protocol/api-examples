@@ -1,0 +1,11 @@
+query OwnedHandles($request: OwnedHandlesRequest!) {
+  ownedHandles(request: $request) {
+    items {
+      ...HandleInfo
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

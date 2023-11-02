@@ -1,0 +1,31 @@
+query NftGalleries($request: NftGalleriesRequest!) {
+    nftGalleries(request: $request) {
+        items {
+            ...NftGalleryFields
+        }
+        pageInfo {
+            prev
+            next
+        }
+    }
+}
+
+mutation CreateNftGallery($request: NftGalleryCreateRequest!) {
+    createNftGallery(request: $request)
+}
+
+mutation UpdateNftGalleryInfo($request: NftGalleryUpdateInfoRequest!) {
+    updateNftGalleryInfo(request: $request)
+}
+
+mutation UpdateNftGalleryOrder($request: NftGalleryUpdateItemOrderRequest!) {
+    updateNftGalleryOrder(request: $request)
+}
+
+mutation UpdateNftGalleryItems($request: NftGalleryUpdateItemsRequest!) {
+    updateNftGalleryItems(request: $request)
+}
+
+mutation DeleteNftGallery($request: NftGalleryDeleteRequest!) {
+    deleteNftGallery(request: $request)
+}

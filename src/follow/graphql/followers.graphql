@@ -1,0 +1,13 @@
+#import "../../profile/graphql/profile-fields-fragment.graphql"
+
+query Followers($request: FollowersRequest!) {
+  followers(request: $request) {
+    items {
+      ...ProfileFields
+    }
+    pageInfo {
+      prev
+      next
+    }
+  }
+}

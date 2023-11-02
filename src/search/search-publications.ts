@@ -1,11 +1,11 @@
 import { apolloClient } from '../apollo-client';
 import {
+  PublicationSearchRequest,
+  PublicationType,
   SearchPublicationsDocument,
-  SearchQueryRequest,
-  SearchRequestTypes,
 } from '../graphql/generated';
 
-const searchRequest = async (request: SearchQueryRequest) => {
+const searchRequest = async (request: PublicationSearchRequest) => {
   const result = await apolloClient.query({
     query: SearchPublicationsDocument,
     variables: {
@@ -13,13 +13,14 @@ const searchRequest = async (request: SearchQueryRequest) => {
     },
   });
 
-  return result.data.search;
+  return result.data.searchPublications;
 };
 
 export const search = async () => {
   const result = await searchRequest({
-    query: 'lens',
-    type: SearchRequestTypes.Publication,
+    query: 'content',
+    // TODO: Fix to where being not required
+    where: {},
   });
   console.log('search publications: result', result);
 

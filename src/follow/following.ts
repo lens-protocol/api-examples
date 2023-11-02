@@ -1,5 +1,5 @@
 import { apolloClient } from '../apollo-client';
-import { getAddressFromSigner } from '../ethers.service';
+import { PROFILE_ID } from '../config';
 import { FollowingDocument, FollowingRequest } from '../graphql/generated';
 
 const followingRequest = async (request: FollowingRequest) => {
@@ -14,10 +14,12 @@ const followingRequest = async (request: FollowingRequest) => {
 };
 
 export const following = async () => {
-  const address = getAddressFromSigner();
-  console.log('following: address', address);
+  const profileId = PROFILE_ID;
+  console.log('following: ProfileId', profileId);
 
-  const result = await followingRequest({ address });
+  const result = await followingRequest({
+    for: profileId,
+  });
   console.log('following: result', result);
 
   return result;
