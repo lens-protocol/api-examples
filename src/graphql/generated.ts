@@ -382,7 +382,7 @@ export type Comment = {
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
-  openActionModules?: Maybe<Array<OpenActionModule>>;
+  openActionModules: Array<OpenActionModule>;
   operations: PublicationOperations;
   profilesMentioned: Array<ProfileMentioned>;
   publishedOn?: Maybe<App>;
@@ -1328,6 +1328,8 @@ export type EventMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataMedia>>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  /** Optional content. Empty if not set. */
+  content: Scalars['EncryptableMarkdown'];
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   endsAt: Scalars['EncryptableDateTime'];
@@ -1341,6 +1343,8 @@ export type EventMetadataV3 = {
   rawURI: Scalars['URI'];
   startsAt: Scalars['EncryptableDateTime'];
   tags?: Maybe<Array<Scalars['String']>>;
+  /** The optional title of the event. Empty if not set. */
+  title: Scalars['String'];
 };
 
 /** Possible sort criteria for exploring profiles */
@@ -1366,7 +1370,7 @@ export type ExploreProfilesRequest = {
 
 export type ExploreProfilesWhere = {
   /** Array of custom filters for exploring profiles */
-  customFilters?: InputMaybe<Array<CustomFiltersType>>;
+  customFilters?: Array<CustomFiltersType>;
   /** Filter profiles created since the specified timestamp */
   since?: InputMaybe<Scalars['UnixTimestamp']>;
 };
@@ -1605,7 +1609,7 @@ export type GetProfileMetadataArgs = {
   /** The app id to query the profile's metadata */
   appId?: InputMaybe<Scalars['AppId']>;
   /** If true, will fallback to global profile metadata, if there is no metadata set for that specific app id */
-  useFallback?: InputMaybe<Scalars['Boolean']>;
+  useFallback?: Scalars['Boolean'];
 };
 
 export type HandleInfo = {
@@ -1697,11 +1701,11 @@ export type ImageSetTransformedArgs = {
 
 export type ImageTransform = {
   /** Set the transformed image's height */
-  height?: InputMaybe<Scalars['ImageSizeTransform']>;
+  height?: Scalars['ImageSizeTransform'];
   /** Set if you want to keep the image's original aspect ratio. True by default. If explicitly set to false, the image will stretch based on the width and height values. */
-  keepAspectRatio?: InputMaybe<Scalars['Boolean']>;
+  keepAspectRatio?: Scalars['Boolean'];
   /** Set the transformed image's width */
-  width?: InputMaybe<Scalars['ImageSizeTransform']>;
+  width?: Scalars['ImageSizeTransform'];
 };
 
 export type InternalAddCuratedTagRequest = {
@@ -1794,6 +1798,8 @@ export type InviteRequest = {
 
 export type InvitedResult = {
   __typename?: 'InvitedResult';
+  addressInvited: Scalars['EvmAddress'];
+  /** @deprecated Profiles hand out invites on Lens V2 so this is unnecessary information. Will always be the dead address. */
   by: Scalars['EvmAddress'];
   profileMinted?: Maybe<Profile>;
   when: Scalars['DateTime'];
@@ -2363,7 +2369,7 @@ export type MultirecipientFeeCollectModuleInput = {
   endsAt?: InputMaybe<Scalars['DateTime']>;
   followerOnly: Scalars['Boolean'];
   recipients: Array<RecipientDataInput>;
-  referralFee?: InputMaybe<Scalars['Float']>;
+  referralFee?: Scalars['Float'];
 };
 
 export type MultirecipientFeeCollectOpenActionSettings = {
@@ -3404,13 +3410,13 @@ export type PoapEvent = {
   eventUrl?: Maybe<Scalars['URL']>;
   expiryDate?: Maybe<Scalars['DateTime']>;
   fancyId?: Maybe<Scalars['String']>;
-  fromAdmin?: Maybe<Scalars['Boolean']>;
+  fromAdmin: Scalars['Boolean'];
   id: Scalars['PoapEventId'];
   imageUrl?: Maybe<Scalars['URL']>;
   name?: Maybe<Scalars['String']>;
-  privateEvent?: Maybe<Scalars['Boolean']>;
+  privateEvent: Scalars['Boolean'];
   startDate?: Maybe<Scalars['DateTime']>;
-  virtualEvent?: Maybe<Scalars['Boolean']>;
+  virtualEvent: Scalars['Boolean'];
   year?: Maybe<Scalars['Int']>;
 };
 
@@ -3460,7 +3466,7 @@ export type PopularNftCollectionsRequest = {
   /** Include only verified collections */
   onlyVerified?: InputMaybe<Scalars['Boolean']>;
   /** The ordering of Nft collection owners. Defaults to Total Lens Profile owners */
-  orderBy?: InputMaybe<PopularNftCollectionsOrder>;
+  orderBy?: PopularNftCollectionsOrder;
 };
 
 export type Post = {
@@ -3473,7 +3479,7 @@ export type Post = {
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
-  openActionModules?: Maybe<Array<OpenActionModule>>;
+  openActionModules: Array<OpenActionModule>;
   operations: PublicationOperations;
   profilesMentioned: Array<ProfileMentioned>;
   publishedOn?: Maybe<App>;
@@ -3742,12 +3748,12 @@ export type ProfileReactionResult = {
 export type ProfileRecommendationsRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   /** Disable machine learning recommendations (default: false) */
-  disableML?: InputMaybe<Scalars['Boolean']>;
+  disableML?: Scalars['Boolean'];
   /** Filter based on a specific profile ID */
   for: Scalars['ProfileId'];
   limit?: InputMaybe<LimitType>;
   /** Shuffle the recommendations (default: false) */
-  shuffle?: InputMaybe<Scalars['Boolean']>;
+  shuffle?: Scalars['Boolean'];
 };
 
 export type ProfileRequest = {
@@ -3837,6 +3843,7 @@ export type ProfilesManagedRequest = {
 export type ProfilesManagedResult = {
   __typename?: 'ProfilesManagedResult';
   address: Scalars['EvmAddress'];
+  isLensManager: Scalars['Boolean'];
 };
 
 export type ProfilesRequest = {
@@ -4221,6 +4228,7 @@ export type PublicationsWhere = {
 export type Query = {
   __typename?: 'Query';
   approvedAuthentications: PaginatedApprovedAuthenticationResult;
+  /** note here if your using a wallet JWT token it will get the allowance of the public proxy contract if its supported if not throw as profiles act not wallets */
   approvedModuleAllowanceAmount: Array<ApprovedAllowanceAmountResult>;
   canClaim: Array<CanClaimResult>;
   challenge: AuthChallengeResult;
@@ -4239,6 +4247,7 @@ export type Query = {
   followStatusBulk: Array<FollowStatusBulkResult>;
   followers: PaginatedProfileResult;
   following: PaginatedProfileResult;
+  /** note here if your using a wallet JWT token it will approve to the public proxy contract if its supported if not throw as profiles act not wallets */
   generateModuleCurrencyApprovalData: GenerateModuleCurrencyApprovalResult;
   internalAllowedDomains: Array<Scalars['URI']>;
   internalClaimStatus?: Maybe<Scalars['Void']>;
@@ -4630,7 +4639,7 @@ export type Quote = {
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
-  openActionModules?: Maybe<Array<OpenActionModule>>;
+  openActionModules: Array<OpenActionModule>;
   operations: PublicationOperations;
   profilesMentioned: Array<ProfileMentioned>;
   publishedOn?: Maybe<App>;
@@ -4769,16 +4778,6 @@ export enum RelayRoleKey {
   LensManager_8 = 'LENS_MANAGER_8',
   LensManager_9 = 'LENS_MANAGER_9',
   LensManager_10 = 'LENS_MANAGER_10',
-  LensManager_11 = 'LENS_MANAGER_11',
-  LensManager_12 = 'LENS_MANAGER_12',
-  LensManager_13 = 'LENS_MANAGER_13',
-  LensManager_14 = 'LENS_MANAGER_14',
-  LensManager_15 = 'LENS_MANAGER_15',
-  LensManager_16 = 'LENS_MANAGER_16',
-  LensManager_17 = 'LENS_MANAGER_17',
-  LensManager_18 = 'LENS_MANAGER_18',
-  LensManager_19 = 'LENS_MANAGER_19',
-  LensManager_20 = 'LENS_MANAGER_20',
   WithSig_1 = 'WITH_SIG_1',
   WithSig_2 = 'WITH_SIG_2',
   WithSig_3 = 'WITH_SIG_3',
@@ -4889,7 +4888,7 @@ export type SimpleCollectOpenActionModuleInput = {
   endsAt?: InputMaybe<Scalars['DateTime']>;
   followerOnly: Scalars['Boolean'];
   recipient?: InputMaybe<Scalars['EvmAddress']>;
-  referralFee?: InputMaybe<Scalars['Float']>;
+  referralFee?: Scalars['Float'];
 };
 
 export type SimpleCollectOpenActionSettings = {
@@ -5001,7 +5000,7 @@ export type SupportedModule = KnownSupportedModule | UnknownSupportedModule;
 
 export type SupportedModulesRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
-  includeUnknown?: InputMaybe<Scalars['Boolean']>;
+  includeUnknown?: Scalars['Boolean'];
   limit?: InputMaybe<LimitType>;
 };
 
@@ -5284,6 +5283,11 @@ export type WorldcoinPhoneVerifyWebhookRequest = {
   signalType: WorldcoinPhoneVerifyType;
 };
 
+export type ApprovedAuthenticationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ApprovedAuthenticationsQuery = { __typename?: 'Query', approvedAuthentications: { __typename?: 'PaginatedApprovedAuthenticationResult', items: Array<{ __typename?: 'ApprovedAuthentication', authorizationId: any }> } };
+
 export type AuthenticateMutationVariables = Exact<{
   request: SignedAuthChallenge;
 }>;
@@ -5297,6 +5301,11 @@ export type ChallengeQueryVariables = Exact<{
 
 
 export type ChallengeQuery = { __typename?: 'Query', challenge: { __typename?: 'AuthChallengeResult', id: any, text: string } };
+
+export type CurrentSessionQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CurrentSessionQuery = { __typename?: 'Query', currentSession: { __typename?: 'ApprovedAuthentication', authorizationId: any } };
 
 export type RefreshMutationVariables = Exact<{
   request: RefreshRequest;
@@ -6380,8 +6389,10 @@ export const AmountFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind"
 export const FollowModuleFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FollowModuleFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FollowModule"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FeeFollowModuleSettings"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AmountFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recipient"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RevertFollowModuleSettings"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UnknownFollowModuleSettings"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"followModuleReturnData"}}]}}]}}]} as unknown as DocumentNode<FollowModuleFieldsFragment, unknown>;
 export const ProfileFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"ownedBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"signless"}},{"kind":"Field","name":{"kind":"Name","value":"sponsor"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"stats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"followers"}},{"kind":"Field","name":{"kind":"Name","value":"following"}},{"kind":"Field","name":{"kind":"Name","value":"comments"}},{"kind":"Field","name":{"kind":"Name","value":"posts"}},{"kind":"Field","name":{"kind":"Name","value":"mirrors"}},{"kind":"Field","name":{"kind":"Name","value":"quotes"}},{"kind":"Field","name":{"kind":"Name","value":"publications"}},{"kind":"Field","name":{"kind":"Name","value":"reactions"}},{"kind":"Field","name":{"kind":"Name","value":"countOpenActions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isBlockedByMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isFollowedByMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isFollowingMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}},{"kind":"Field","name":{"kind":"Name","value":"canBlock"}},{"kind":"Field","name":{"kind":"Name","value":"canUnblock"}},{"kind":"Field","name":{"kind":"Name","value":"canFollow"}},{"kind":"Field","name":{"kind":"Name","value":"canUnfollow"}}]}},{"kind":"Field","name":{"kind":"Name","value":"interests"}},{"kind":"Field","name":{"kind":"Name","value":"guardian"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"protected"}},{"kind":"Field","name":{"kind":"Name","value":"cooldownEndsOn"}}]}},{"kind":"Field","name":{"kind":"Name","value":"invitedBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"invitesLeft"}},{"kind":"Field","name":{"kind":"Name","value":"onchainIdentity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"proofOfHumanity"}},{"kind":"Field","name":{"kind":"Name","value":"ens"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sybilDotOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verified"}},{"kind":"Field","name":{"kind":"Name","value":"source"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"twitter"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"handle"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"worldcoin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isHuman"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"followNftAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}}]}},{"kind":"Field","name":{"kind":"Name","value":"metadata"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"attributes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetadataAttributeFields"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"followModule"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FollowModuleFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"handle"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"HandleInfo"}}]}}]}}]} as unknown as DocumentNode<ProfileFieldsFragment, unknown>;
 export const MirrorFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MirrorFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Mirror"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"publishedOn"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isHidden"}},{"kind":"Field","name":{"kind":"Name","value":"momoka"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"proof"}}]}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"mirrorOn"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PrimaryPublicationFields"}}]}}]}}]} as unknown as DocumentNode<MirrorFieldsFragment, unknown>;
+export const ApprovedAuthenticationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ApprovedAuthentications"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approvedAuthentications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"limit"},"value":{"kind":"EnumValue","value":"Ten"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authorizationId"}}]}}]}}]}}]} as unknown as DocumentNode<ApprovedAuthenticationsQuery, ApprovedAuthenticationsQueryVariables>;
 export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignedAuthChallenge"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
 export const ChallengeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Challenge"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChallengeRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"challenge"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]} as unknown as DocumentNode<ChallengeQuery, ChallengeQueryVariables>;
+export const CurrentSessionDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"CurrentSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"currentSession"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authorizationId"}}]}}]}}]} as unknown as DocumentNode<CurrentSessionQuery, CurrentSessionQueryVariables>;
 export const RefreshDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Refresh"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refresh"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
 export const RevokeAuthenticationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RevokeAuthentication"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"authorizationId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UUID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"revokeAuthentication"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"authorizationId"},"value":{"kind":"Variable","name":{"kind":"Name","value":"authorizationId"}}}]}}]}]}}]} as unknown as DocumentNode<RevokeAuthenticationMutation, RevokeAuthenticationMutationVariables>;
 export const VerifyDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Verify"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"VerifyRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verify"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}]}]}}]} as unknown as DocumentNode<VerifyQuery, VerifyQueryVariables>;

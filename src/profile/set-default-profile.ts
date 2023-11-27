@@ -9,7 +9,7 @@ export const setDefaultProfileRequest = async (defaultProfileId: string) => {
     mutation: SetDefaultProfileDocument,
     variables: {
       request: {
-        defaultProfileId,
+        profileId: defaultProfileId,
       },
     },
   });

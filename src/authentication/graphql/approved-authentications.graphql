@@ -1,0 +1,7 @@
+query ApprovedAuthentications {
+  approvedAuthentications(request: { limit: Ten }) {
+    items {
+      authorizationId
+    }
+  }
+}
