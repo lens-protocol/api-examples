@@ -20,7 +20,7 @@ export const usersNfts = async () => {
 
   await login(address);
 
-  // - If you are using testnet this endpoint will only allow you to query `ethereum kovan (chainId: 42)` and `polygon Mumbai (chainId: 80001)`
+  // - If you are using testnet this endpoint will only allow you to query `ethereum kovan (chainId: 42)` and `polygon Amoy (chainId: 80002)`
   // - If you are using mainnet this endpoint will only allow you to query `ethereum mainnet (chainId: 1)` and `polygon mainnet (chainId: 137)`
   const result = await getUsersNfts({
     where: {

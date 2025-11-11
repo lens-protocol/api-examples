@@ -11,6 +11,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  ABIJson: any;
   AppId: any;
   BlockchainData: any;
   BroadcastId: any;
@@ -108,11 +109,19 @@ export type AlreadyInvitedCheckRequest = {
 
 export type Amount = {
   __typename?: 'Amount';
+  /** This is the total value of the amount in the fiat currency */
+  asFiat?: Maybe<FiatAmount>;
   /** The asset */
   asset: Asset;
+  /** This is the most recent snapshotted 1:1 conversion rate between the asset and the requested fiat currency */
   rate?: Maybe<FiatAmount>;
   /** Floating point number as string (e.g. 42.009837). It could have the entire precision of the Asset or be truncated to the last significant decimal. */
   value: Scalars['String'];
+};
+
+
+export type AmountAsFiatArgs = {
+  request: RateRequest;
 };
 
 
@@ -231,6 +240,8 @@ export type AuthenticationResult = {
   __typename?: 'AuthenticationResult';
   /** The access token */
   accessToken: Scalars['Jwt'];
+  /** The identity token */
+  identityToken: Scalars['Jwt'];
   /** The refresh token */
   refreshToken: Scalars['Jwt'];
 };
@@ -337,10 +348,23 @@ export type ClaimProfileWithHandleRequest = {
 
 export type ClaimProfileWithHandleResult = ClaimProfileWithHandleErrorResult | RelaySuccess;
 
+export type ClaimTokensRequest = {
+  for: ClaimableTokenType;
+};
+
 export type ClaimableProfilesResult = {
   __typename?: 'ClaimableProfilesResult';
   canMintProfileWithFreeTextHandle: Scalars['Boolean'];
   reserved: Array<ReservedClaimable>;
+};
+
+export enum ClaimableTokenType {
+  Bonsai = 'BONSAI'
+}
+
+export type ClaimableTokensResult = {
+  __typename?: 'ClaimableTokensResult';
+  bonsai: Amount;
 };
 
 export type CollectActionModuleInput = {
@@ -377,12 +401,14 @@ export type Comment = {
   createdAt: Scalars['DateTime'];
   firstComment?: Maybe<Comment>;
   hashtagsMentioned: Array<Scalars['String']>;
+  /** Signifies whether this comment has been hidden by the author of its parent publication */
+  hiddenByAuthor: Scalars['Boolean'];
   id: Scalars['PublicationId'];
   isEncrypted: Scalars['Boolean'];
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
-  openActionModules?: Maybe<Array<OpenActionModule>>;
+  openActionModules: Array<OpenActionModule>;
   operations: PublicationOperations;
   profilesMentioned: Array<ProfileMentioned>;
   publishedOn?: Maybe<App>;
@@ -564,6 +590,61 @@ export type CreateFollowEip712TypedDataValue = {
   followerProfileId: Scalars['ProfileId'];
   idsOfProfilesToFollow: Array<Scalars['ProfileId']>;
   nonce: Scalars['Nonce'];
+};
+
+export type CreateFrameEip712TypedData = {
+  __typename?: 'CreateFrameEIP712TypedData';
+  /** The typed data domain */
+  domain: Eip712TypedDataDomain;
+  /** The types */
+  types: CreateFrameEip712TypedDataTypes;
+  /** The values */
+  value: CreateFrameEip712TypedDataValue;
+};
+
+export type CreateFrameEip712TypedDataInput = {
+  /** The typed data domain */
+  domain: Eip712TypedDataDomainInput;
+  /** The types */
+  types: CreateFrameEip712TypedDataTypesInput;
+  /** The values */
+  value: CreateFrameEip712TypedDataValueInput;
+};
+
+export type CreateFrameEip712TypedDataTypes = {
+  __typename?: 'CreateFrameEIP712TypedDataTypes';
+  FrameData: Array<Eip712TypedDataField>;
+};
+
+export type CreateFrameEip712TypedDataTypesInput = {
+  FrameData: Array<Eip712TypedDataFieldInput>;
+};
+
+export type CreateFrameEip712TypedDataValue = {
+  __typename?: 'CreateFrameEIP712TypedDataValue';
+  actionResponse: Scalars['String'];
+  buttonIndex: Scalars['Int'];
+  deadline: Scalars['UnixTimestamp'];
+  inputText: Scalars['String'];
+  profileId: Scalars['ProfileId'];
+  pubId: Scalars['PublicationId'];
+  /** The EIP-721 spec version, must be 1.0.0 */
+  specVersion: Scalars['String'];
+  state: Scalars['String'];
+  url: Scalars['URI'];
+};
+
+export type CreateFrameEip712TypedDataValueInput = {
+  actionResponse: Scalars['String'];
+  buttonIndex: Scalars['Int'];
+  deadline: Scalars['UnixTimestamp'];
+  inputText: Scalars['String'];
+  profileId: Scalars['ProfileId'];
+  pubId: Scalars['PublicationId'];
+  /** The EIP-721 spec version, must be 1.0.0 */
+  specVersion: Scalars['String'];
+  state: Scalars['String'];
+  url: Scalars['URI'];
 };
 
 export type CreateLegacyCollectBroadcastItemResult = {
@@ -1201,8 +1282,38 @@ export type DegreesOfSeparationReferenceModuleSettings = {
   type: ReferenceModuleType;
 };
 
+export type DidReactOnPublicationPublicationIdAndProfileId = {
+  profileId: Scalars['ProfileId'];
+  publicationId: Scalars['PublicationId'];
+};
+
+export type DidReactOnPublicationRequest = {
+  for: Array<DidReactOnPublicationPublicationIdAndProfileId>;
+  where?: InputMaybe<WhoReactedPublicationWhere>;
+};
+
+export type DidReactOnPublicationResult = {
+  __typename?: 'DidReactOnPublicationResult';
+  profileId: Scalars['ProfileId'];
+  publicationId: Scalars['PublicationId'];
+  result: Scalars['Boolean'];
+};
+
 export type DismissRecommendedProfilesRequest = {
   dismiss: Array<Scalars['ProfileId']>;
+};
+
+export type DisputedReport = {
+  __typename?: 'DisputedReport';
+  createdAt: Scalars['DateTime'];
+  disputeReason: Scalars['String'];
+  disputer: Profile;
+  reportAdditionalInfo: Scalars['String'];
+  reportReason: Scalars['String'];
+  reportSubreason: Scalars['String'];
+  reportedProfile: Profile;
+  reportedPublication?: Maybe<PrimaryPublication>;
+  reporter: Profile;
 };
 
 /** The eip 712 typed data domain */
@@ -1218,9 +1329,27 @@ export type Eip712TypedDataDomain = {
   version: Scalars['String'];
 };
 
+export type Eip712TypedDataDomainInput = {
+  /** The chainId */
+  chainId: Scalars['ChainId'];
+  /** The name of the typed data domain */
+  name: Scalars['String'];
+  /** The verifying contract */
+  verifyingContract: Scalars['EvmAddress'];
+  /** The version */
+  version: Scalars['String'];
+};
+
 /** The eip 712 typed data field */
 export type Eip712TypedDataField = {
   __typename?: 'EIP712TypedDataField';
+  /** The name of the typed data field */
+  name: Scalars['String'];
+  /** The type of the typed data field */
+  type: Scalars['String'];
+};
+
+export type Eip712TypedDataFieldInput = {
   /** The name of the typed data field */
   name: Scalars['String'];
   /** The type of the typed data field */
@@ -1328,6 +1457,8 @@ export type EventMetadataV3 = {
   appId?: Maybe<Scalars['AppId']>;
   attachments?: Maybe<Array<PublicationMetadataMedia>>;
   attributes?: Maybe<Array<MetadataAttribute>>;
+  /** Optional content. Empty if not set. */
+  content: Scalars['EncryptableMarkdown'];
   contentWarning?: Maybe<PublicationContentWarningType>;
   encryptedWith?: Maybe<PublicationMetadataEncryptionStrategy>;
   endsAt: Scalars['EncryptableDateTime'];
@@ -1341,6 +1472,8 @@ export type EventMetadataV3 = {
   rawURI: Scalars['URI'];
   startsAt: Scalars['EncryptableDateTime'];
   tags?: Maybe<Array<Scalars['String']>>;
+  /** The optional title of the event. Empty if not set. */
+  title: Scalars['String'];
 };
 
 /** Possible sort criteria for exploring profiles */
@@ -1391,7 +1524,8 @@ export enum ExplorePublicationsOrderByType {
   TopCollectedOpenAction = 'TOP_COLLECTED_OPEN_ACTION',
   TopCommented = 'TOP_COMMENTED',
   TopMirrored = 'TOP_MIRRORED',
-  TopQuoted = 'TOP_QUOTED'
+  TopQuoted = 'TOP_QUOTED',
+  TopReacted = 'TOP_REACTED'
 }
 
 export type ExplorePublicationsWhere = {
@@ -1459,6 +1593,7 @@ export type FeedRequest = {
 };
 
 export type FeedWhere = {
+  customFilters?: InputMaybe<Array<CustomFiltersType>>;
   feedEventItemTypes?: InputMaybe<Array<FeedEventItemType>>;
   for?: InputMaybe<Scalars['ProfileId']>;
   metadata?: InputMaybe<PublicationMetadataFilters>;
@@ -1492,7 +1627,7 @@ export type FollowLensManager = {
   profileId: Scalars['ProfileId'];
 };
 
-/** The lens manager will only support FREE follow modules, if you want your unknown module allowed to be signless please contact us */
+/** The lens manager will only support follow modules which are verified here - https://github.com/lens-protocol/verified-modules/blob/master/follow-modules.json */
 export type FollowLensManagerModuleRedeemInput = {
   unknownFollowModule?: InputMaybe<UnknownFollowModuleRedeemInput>;
 };
@@ -1533,6 +1668,12 @@ export type FollowOnlyReferenceModuleSettings = {
   type: ReferenceModuleType;
 };
 
+export type FollowPaidAction = {
+  __typename?: 'FollowPaidAction';
+  followed: Profile;
+  latestActed: Array<LatestActed>;
+};
+
 export type FollowRequest = {
   follow: Array<Follow>;
 };
@@ -1566,13 +1707,67 @@ export type FollowersRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
   of: Scalars['ProfileId'];
+  /** The order by which to sort the profiles - note if your looking at your own followers it always be DESC */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
 };
 
 export type FollowingRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   for: Scalars['ProfileId'];
   limit?: InputMaybe<LimitType>;
+  /** The order by which to sort the profiles - note if your looking at your own following it always be DESC */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
 };
+
+export type FrameEip712Request = {
+  actionResponse: Scalars['String'];
+  buttonIndex: Scalars['Int'];
+  deadline: Scalars['UnixTimestamp'];
+  inputText: Scalars['String'];
+  profileId: Scalars['ProfileId'];
+  pubId: Scalars['PublicationId'];
+  /** The EIP-721 spec version, must be 1.0.0 */
+  specVersion: Scalars['String'];
+  state: Scalars['String'];
+  url: Scalars['URI'];
+};
+
+export type FrameLensManagerEip712Request = {
+  actionResponse: Scalars['String'];
+  buttonIndex: Scalars['Int'];
+  inputText: Scalars['String'];
+  profileId: Scalars['ProfileId'];
+  pubId: Scalars['PublicationId'];
+  /** The EIP-721 spec version, must be 1.0.0 */
+  specVersion: Scalars['String'];
+  state: Scalars['String'];
+  url: Scalars['URI'];
+};
+
+export type FrameLensManagerSignatureResult = {
+  __typename?: 'FrameLensManagerSignatureResult';
+  /** The signature */
+  signature: Scalars['Signature'];
+  /** The typed data signed */
+  signedTypedData: CreateFrameEip712TypedData;
+};
+
+export type FrameVerifySignature = {
+  /** The identity token */
+  identityToken: Scalars['Jwt'];
+  /** The signature */
+  signature: Scalars['Signature'];
+  /** The typed data signed */
+  signedTypedData: CreateFrameEip712TypedDataInput;
+};
+
+export enum FrameVerifySignatureResult {
+  DeadlineExpired = 'DEADLINE_EXPIRED',
+  IdentityCannotUseProfile = 'IDENTITY_CANNOT_USE_PROFILE',
+  IdentityUnauthorized = 'IDENTITY_UNAUTHORIZED',
+  SignerAddressCannotUseProfile = 'SIGNER_ADDRESS_CANNOT_USE_PROFILE',
+  Verified = 'VERIFIED'
+}
 
 export type FraudReasonInput = {
   reason: PublicationReportingReason;
@@ -1601,6 +1796,18 @@ export type GeoLocation = {
   rawURI: Scalars['EncryptableURI'];
 };
 
+export type GetModuleMetadataResult = {
+  __typename?: 'GetModuleMetadataResult';
+  metadata: ModuleMetadata;
+  moduleType: ModuleType;
+  /** True if the module can be signedless and use lens manager without a signature */
+  signlessApproved: Scalars['Boolean'];
+  /** True if the module can be sponsored through gasless so the user does not need to pay for gas */
+  sponsoredApproved: Scalars['Boolean'];
+  /** True if the module is deemed as safe */
+  verified: Scalars['Boolean'];
+};
+
 export type GetProfileMetadataArgs = {
   /** The app id to query the profile's metadata */
   appId?: InputMaybe<Scalars['AppId']>;
@@ -1608,10 +1815,17 @@ export type GetProfileMetadataArgs = {
   useFallback?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type HandleGuardianResult = {
+  __typename?: 'HandleGuardianResult';
+  cooldownEndsOn?: Maybe<Scalars['DateTime']>;
+  protected: Scalars['Boolean'];
+};
+
 export type HandleInfo = {
   __typename?: 'HandleInfo';
   /** The full handle - namespace/localname */
   fullHandle: Scalars['Handle'];
+  guardian: HandleGuardianResult;
   /** The handle nft token id */
   id: Scalars['TokenId'];
   /** If null its not linked to anything */
@@ -1633,8 +1847,36 @@ export type HandleLinkedTo = {
   nftTokenId: Scalars['TokenId'];
 };
 
+export type HandleToAddressRequest = {
+  /** The full handle - namespace/localname */
+  handle: Scalars['Handle'];
+};
+
+export enum HiddenCommentsType {
+  HiddenOnly = 'HIDDEN_ONLY',
+  Hide = 'HIDE',
+  Show = 'SHOW'
+}
+
+export type HideCommentRequest = {
+  /** The comment to hide. It has to be under a publication made by the user making the request. If already hidden, nothing will happen. */
+  for: Scalars['PublicationId'];
+};
+
+export type HideManagedProfileRequest = {
+  /** The profile to hide */
+  profileId: Scalars['ProfileId'];
+};
+
 export type HidePublicationRequest = {
   for: Scalars['PublicationId'];
+};
+
+export type IphResult = {
+  __typename?: 'IPHResult';
+  h?: Maybe<Scalars['Handle']>;
+  hda: Scalars['Boolean'];
+  hs: Scalars['Boolean'];
 };
 
 export type IdKitPhoneVerifyWebhookRequest = {
@@ -1725,6 +1967,19 @@ export type InternalAllowedDomainsRequest = {
   secret: Scalars['String'];
 };
 
+export type InternalBoostProfileRequest = {
+  h?: InputMaybe<Scalars['Handle']>;
+  p?: InputMaybe<Scalars['ProfileId']>;
+  s: Scalars['Int'];
+  secret: Scalars['String'];
+};
+
+export type InternalBoostScoreRequest = {
+  h?: InputMaybe<Scalars['Handle']>;
+  p?: InputMaybe<Scalars['ProfileId']>;
+  secret: Scalars['String'];
+};
+
 export type InternalClaimRequest = {
   address: Scalars['EvmAddress'];
   freeTextHandle?: InputMaybe<Scalars['Boolean']>;
@@ -1760,6 +2015,12 @@ export type InternalInvitesRequest = {
   secret: Scalars['String'];
 };
 
+export type InternalMintHandleAndProfileRequest = {
+  a: Scalars['EvmAddress'];
+  h: Scalars['String'];
+  secret: Scalars['String'];
+};
+
 export type InternalNftIndexRequest = {
   n: Array<Nfi>;
   secret: Scalars['String'];
@@ -1767,6 +2028,11 @@ export type InternalNftIndexRequest = {
 
 export type InternalNftVerifyRequest = {
   n: Array<Nfi>;
+  secret: Scalars['String'];
+};
+
+export type InternalPaymentHandleInfoRequest = {
+  p: Scalars['String'];
   secret: Scalars['String'];
 };
 
@@ -1779,6 +2045,14 @@ export type InternalRemoveCuratedTagRequest = {
   hhh: Scalars['String'];
   secret: Scalars['String'];
   ttt: Scalars['String'];
+};
+
+export type InternalUpdateModuleOptionsRequest = {
+  i: Scalars['EvmAddress'];
+  lma?: InputMaybe<Scalars['Boolean']>;
+  secret: Scalars['String'];
+  t: ModuleType;
+  v?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type InternalUpdateProfileStatusRequest = {
@@ -1794,6 +2068,8 @@ export type InviteRequest = {
 
 export type InvitedResult = {
   __typename?: 'InvitedResult';
+  addressInvited: Scalars['EvmAddress'];
+  /** @deprecated Profiles hand out invites on Lens V2 so this is unnecessary information. Will always be the dead address. */
   by: Scalars['EvmAddress'];
   profileMinted?: Maybe<Profile>;
   when: Scalars['DateTime'];
@@ -1815,6 +2091,28 @@ export type KnownSupportedModule = {
 
 export type LastLoggedInProfileRequest = {
   for: Scalars['EvmAddress'];
+};
+
+export type LatestActed = {
+  __typename?: 'LatestActed';
+  actedAt: Scalars['DateTime'];
+  profile: Profile;
+  txHash: Scalars['TxHash'];
+};
+
+export type LatestPaidActionsFilter = {
+  openActionFilters?: InputMaybe<Array<OpenActionFilter>>;
+  openActionPublicationMetadataFilters?: InputMaybe<PublicationMetadataFilters>;
+};
+
+export type LatestPaidActionsResult = {
+  __typename?: 'LatestPaidActionsResult';
+  items: Array<PaidAction>;
+  pageInfo: PaginatedResultInfo;
+};
+
+export type LatestPaidActionsWhere = {
+  customFilters?: InputMaybe<Array<CustomFiltersType>>;
 };
 
 export type LegacyAaveFeeCollectModuleSettings = {
@@ -2022,11 +2320,6 @@ export enum LensProfileManagerRelayErrorReasonType {
 
 export type LensProfileManagerRelayResult = LensProfileManagerRelayError | RelaySuccess;
 
-export enum LensProtocolVersion {
-  V1 = 'V1',
-  V2 = 'V2'
-}
-
 export enum LensTransactionFailureType {
   MetadataError = 'METADATA_ERROR',
   Reverted = 'REVERTED'
@@ -2107,6 +2400,13 @@ export type LiveStreamMetadataV3 = {
   /** The title of the live-stream. Empty if not set. */
   title: Scalars['String'];
 };
+
+/** Managed profile visibility type */
+export enum ManagedProfileVisibility {
+  All = 'ALL',
+  HiddenOnly = 'HIDDEN_ONLY',
+  NoneHidden = 'NONE_HIDDEN'
+}
 
 export type MarketplaceMetadata = {
   __typename?: 'MarketplaceMetadata';
@@ -2194,6 +2494,58 @@ export type MirrorNotification = {
 
 export type MirrorablePublication = Comment | Post | Quote;
 
+export type ModDisputeReportRequest = {
+  reason: Scalars['String'];
+  reportedProfileId?: InputMaybe<Scalars['ProfileId']>;
+  reportedPublicationId?: InputMaybe<Scalars['PublicationId']>;
+  reporter: Scalars['ProfileId'];
+};
+
+export type ModExplorePublicationRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  limit?: InputMaybe<LimitType>;
+  orderBy: ExplorePublicationsOrderByType;
+  where?: InputMaybe<ModExplorePublicationsWhere>;
+};
+
+export enum ModExplorePublicationType {
+  Comment = 'COMMENT',
+  Post = 'POST',
+  Quote = 'QUOTE'
+}
+
+export type ModExplorePublicationsWhere = {
+  customFilters?: InputMaybe<Array<CustomFiltersType>>;
+  metadata?: InputMaybe<PublicationMetadataFilters>;
+  publicationTypes?: InputMaybe<Array<ModExplorePublicationType>>;
+  since?: InputMaybe<Scalars['UnixTimestamp']>;
+};
+
+export type ModFollowerResult = {
+  __typename?: 'ModFollowerResult';
+  createdAt: Scalars['DateTime'];
+  follower: Profile;
+  following: Profile;
+};
+
+export type ModReport = {
+  __typename?: 'ModReport';
+  additionalInfo?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  reason: Scalars['String'];
+  reportedProfile: Profile;
+  reportedPublication?: Maybe<PrimaryPublication>;
+  reporter: Profile;
+  subreason: Scalars['String'];
+};
+
+export type ModReportsRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  forProfile?: InputMaybe<Scalars['ProfileId']>;
+  forPublication?: InputMaybe<Scalars['PublicationId']>;
+  limit?: InputMaybe<LimitType>;
+};
+
 export type ModuleCurrencyApproval = {
   followModule?: InputMaybe<FollowModuleType>;
   openActionModule?: InputMaybe<OpenActionModuleType>;
@@ -2208,6 +2560,28 @@ export type ModuleInfo = {
   name: Scalars['String'];
   type: Scalars['String'];
 };
+
+export type ModuleMetadata = {
+  __typename?: 'ModuleMetadata';
+  attributes: Array<MetadataAttribute>;
+  authors: Array<Scalars['String']>;
+  description: Scalars['String'];
+  initializeCalldataABI: Scalars['ABIJson'];
+  initializeResultDataABI?: Maybe<Scalars['ABIJson']>;
+  name: Scalars['String'];
+  processCalldataABI: Scalars['ABIJson'];
+  title: Scalars['String'];
+};
+
+export type ModuleMetadataRequest = {
+  implementation: Scalars['EvmAddress'];
+};
+
+export enum ModuleType {
+  Follow = 'FOLLOW',
+  OpenAction = 'OPEN_ACTION',
+  Reference = 'REFERENCE'
+}
 
 export type MomokaCommentRequest = {
   commentOn: Scalars['PublicationId'];
@@ -2334,6 +2708,7 @@ export enum MomokaValidatorError {
   PotentialReorg = 'POTENTIAL_REORG',
   PublicationNonceInvalid = 'PUBLICATION_NONCE_INVALID',
   PublicationNoneDa = 'PUBLICATION_NONE_DA',
+  PublicationNotRecognized = 'PUBLICATION_NOT_RECOGNIZED',
   PublicationNoPointer = 'PUBLICATION_NO_POINTER',
   PublicationSignerNotAllowed = 'PUBLICATION_SIGNER_NOT_ALLOWED',
   SimulationFailed = 'SIMULATION_FAILED',
@@ -2425,23 +2800,33 @@ export type Mutation = {
   deleteNftGallery?: Maybe<Scalars['Void']>;
   dismissRecommendedProfiles?: Maybe<Scalars['Void']>;
   follow: LensProfileManagerRelayResult;
+  /** Hides a comment that exists under a publication made by the author. If already hidden, does nothing. */
+  hideComment?: Maybe<Scalars['Void']>;
+  /** Hide a managed profile from your managed profiles list. */
+  hideManagedProfile?: Maybe<Scalars['Void']>;
   hidePublication?: Maybe<Scalars['Void']>;
   idKitPhoneVerifyWebhook: IdKitPhoneVerifyWebhookResultStatusType;
   internalAddCuratedTag?: Maybe<Scalars['Void']>;
   internalAddInvites?: Maybe<Scalars['Void']>;
   internalAllowDomain?: Maybe<Scalars['Void']>;
+  internalBoostProfile: Scalars['Int'];
   internalClaim?: Maybe<Scalars['Void']>;
   internalCuratedUpdate?: Maybe<Scalars['Void']>;
+  internalMintHandleAndProfile: Scalars['TxHash'];
   internalNftIndex?: Maybe<Scalars['Void']>;
   internalNftVerify?: Maybe<Scalars['Void']>;
   internalRemoveCuratedTag?: Maybe<Scalars['Void']>;
+  internalUpdateModuleOptions?: Maybe<Scalars['Void']>;
   internalUpdateProfileStatus?: Maybe<Scalars['Void']>;
   invite?: Maybe<Scalars['Void']>;
   legacyCollect: LensProfileManagerRelayResult;
   linkHandleToProfile: LensProfileManagerRelayResult;
   mirrorOnMomoka: RelayMomokaResult;
   mirrorOnchain: LensProfileManagerRelayResult;
+  modDisputeReport?: Maybe<Scalars['Void']>;
   nftOwnershipChallenge: NftOwnershipChallengeResult;
+  peerToPeerRecommend?: Maybe<Scalars['Void']>;
+  peerToPeerUnrecommend?: Maybe<Scalars['Void']>;
   postOnMomoka: RelayMomokaResult;
   postOnchain: LensProfileManagerRelayResult;
   quoteOnMomoka: RelayMomokaResult;
@@ -2451,14 +2836,20 @@ export type Mutation = {
   removeProfileInterests?: Maybe<Scalars['Void']>;
   removePublicationBookmark?: Maybe<Scalars['Void']>;
   removeReaction?: Maybe<Scalars['Void']>;
+  reportProfile?: Maybe<Scalars['Void']>;
   reportPublication?: Maybe<Scalars['Void']>;
   revokeAuthentication?: Maybe<Scalars['Void']>;
   setDefaultProfile?: Maybe<Scalars['Void']>;
   setFollowModule: LensProfileManagerRelayResult;
   setProfileMetadata: LensProfileManagerRelayResult;
+  signFrameAction: FrameLensManagerSignatureResult;
   unblock: LensProfileManagerRelayResult;
   undoPublicationNotInterested?: Maybe<Scalars['Void']>;
   unfollow: LensProfileManagerRelayResult;
+  /** Unhides a hidden comment under a publication made by the author. If not hidden, does nothing. */
+  unhideComment?: Maybe<Scalars['Void']>;
+  /** Unhide an already hidden managed profile from your managed profiles list. */
+  unhideManagedProfile?: Maybe<Scalars['Void']>;
   unlinkHandleFromProfile: LensProfileManagerRelayResult;
   updateNftGalleryInfo?: Maybe<Scalars['Void']>;
   updateNftGalleryItems?: Maybe<Scalars['Void']>;
@@ -2667,6 +3058,16 @@ export type MutationFollowArgs = {
 };
 
 
+export type MutationHideCommentArgs = {
+  request: HideCommentRequest;
+};
+
+
+export type MutationHideManagedProfileArgs = {
+  request: HideManagedProfileRequest;
+};
+
+
 export type MutationHidePublicationArgs = {
   request: HidePublicationRequest;
 };
@@ -2692,6 +3093,11 @@ export type MutationInternalAllowDomainArgs = {
 };
 
 
+export type MutationInternalBoostProfileArgs = {
+  request: InternalBoostProfileRequest;
+};
+
+
 export type MutationInternalClaimArgs = {
   request: InternalClaimRequest;
 };
@@ -2699,6 +3105,11 @@ export type MutationInternalClaimArgs = {
 
 export type MutationInternalCuratedUpdateArgs = {
   request: InternalCuratedUpdateRequest;
+};
+
+
+export type MutationInternalMintHandleAndProfileArgs = {
+  request: InternalMintHandleAndProfileRequest;
 };
 
 
@@ -2714,6 +3125,11 @@ export type MutationInternalNftVerifyArgs = {
 
 export type MutationInternalRemoveCuratedTagArgs = {
   request: InternalRemoveCuratedTagRequest;
+};
+
+
+export type MutationInternalUpdateModuleOptionsArgs = {
+  request: InternalUpdateModuleOptionsRequest;
 };
 
 
@@ -2747,8 +3163,23 @@ export type MutationMirrorOnchainArgs = {
 };
 
 
+export type MutationModDisputeReportArgs = {
+  request: ModDisputeReportRequest;
+};
+
+
 export type MutationNftOwnershipChallengeArgs = {
   request: NftOwnershipChallengeRequest;
+};
+
+
+export type MutationPeerToPeerRecommendArgs = {
+  request: PeerToPeerRecommendRequest;
+};
+
+
+export type MutationPeerToPeerUnrecommendArgs = {
+  request: PeerToPeerRecommendRequest;
 };
 
 
@@ -2797,6 +3228,11 @@ export type MutationRemoveReactionArgs = {
 };
 
 
+export type MutationReportProfileArgs = {
+  request: ReportProfileRequest;
+};
+
+
 export type MutationReportPublicationArgs = {
   request: ReportPublicationRequest;
 };
@@ -2822,6 +3258,11 @@ export type MutationSetProfileMetadataArgs = {
 };
 
 
+export type MutationSignFrameActionArgs = {
+  request: FrameLensManagerEip712Request;
+};
+
+
 export type MutationUnblockArgs = {
   request: UnblockRequest;
 };
@@ -2834,6 +3275,16 @@ export type MutationUndoPublicationNotInterestedArgs = {
 
 export type MutationUnfollowArgs = {
   request: UnfollowRequest;
+};
+
+
+export type MutationUnhideCommentArgs = {
+  request: UnhideCommentRequest;
+};
+
+
+export type MutationUnhideManagedProfileArgs = {
+  request: UnhideManagedProfileRequest;
 };
 
 
@@ -2865,6 +3316,8 @@ export type MutualFollowersRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
   observer: Scalars['ProfileId'];
+  /** The order by which to sort the profiles */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
   viewing: Scalars['ProfileId'];
 };
 
@@ -2904,10 +3357,10 @@ export type Nfi = {
 export type Nft = {
   __typename?: 'Nft';
   collection: NftCollection;
-  contentURI: Scalars['URI'];
+  contentURI?: Maybe<Scalars['URI']>;
   contract: NetworkAddress;
   contractType: NftContractType;
-  metadata: NftMetadata;
+  metadata?: Maybe<NftMetadata>;
   owner: Owner;
   tokenId: Scalars['TokenId'];
   totalSupply: Scalars['String'];
@@ -3093,6 +3546,8 @@ export type Notification = ActedNotification | CommentNotification | FollowNotif
 
 export type NotificationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
+  /** The order by which to sort the profiles on follows, reactions, actions and mirrors */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
   where?: InputMaybe<NotificationWhere>;
 };
 
@@ -3111,6 +3566,7 @@ export type NotificationWhere = {
   highSignalFilter?: InputMaybe<Scalars['Boolean']>;
   notificationTypes?: InputMaybe<Array<NotificationType>>;
   publishedOn?: InputMaybe<Array<Scalars['AppId']>>;
+  timeBasedAggregation?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type OnchainCommentRequest = {
@@ -3190,6 +3646,12 @@ export enum OpenActionModuleType {
   UnknownOpenActionModule = 'UnknownOpenActionModule'
 }
 
+export type OpenActionPaidAction = {
+  __typename?: 'OpenActionPaidAction';
+  actedOn: PrimaryPublication;
+  latestActed: Array<LatestActed>;
+};
+
 export type OpenActionProfileActed = {
   __typename?: 'OpenActionProfileActed';
   actedAt: Scalars['DateTime'];
@@ -3235,6 +3697,12 @@ export type PaginatedCurrenciesResult = {
   pageInfo: PaginatedResultInfo;
 };
 
+export type PaginatedDisputedReports = {
+  __typename?: 'PaginatedDisputedReports';
+  items: Array<DisputedReport>;
+  pageInfo: PaginatedResultInfo;
+};
+
 export type PaginatedExplorePublicationResult = {
   __typename?: 'PaginatedExplorePublicationResult';
   items: Array<ExplorePublication>;
@@ -3256,6 +3724,24 @@ export type PaginatedFeedResult = {
 export type PaginatedHandlesResult = {
   __typename?: 'PaginatedHandlesResult';
   items: Array<HandleInfo>;
+  pageInfo: PaginatedResultInfo;
+};
+
+export type PaginatedModExplorePublicationResult = {
+  __typename?: 'PaginatedModExplorePublicationResult';
+  items: Array<PrimaryPublication>;
+  pageInfo: PaginatedResultInfo;
+};
+
+export type PaginatedModFollowersResult = {
+  __typename?: 'PaginatedModFollowersResult';
+  items: Array<ModFollowerResult>;
+  pageInfo: PaginatedResultInfo;
+};
+
+export type PaginatedModReports = {
+  __typename?: 'PaginatedModReports';
+  items: Array<ModReport>;
   pageInfo: PaginatedResultInfo;
 };
 
@@ -3349,6 +3835,11 @@ export type PaginatedPublicationsTagsResult = {
   pageInfo: PaginatedResultInfo;
 };
 
+export type PaginatedRequest = {
+  cursor?: InputMaybe<Scalars['Cursor']>;
+  limit?: InputMaybe<LimitType>;
+};
+
 /** The paginated result info */
 export type PaginatedResultInfo = {
   __typename?: 'PaginatedResultInfo';
@@ -3374,6 +3865,13 @@ export type PaginatedWhoReactedResult = {
   __typename?: 'PaginatedWhoReactedResult';
   items: Array<ProfileWhoReactedResult>;
   pageInfo: PaginatedResultInfo;
+};
+
+export type PaidAction = FollowPaidAction | OpenActionPaidAction;
+
+export type PeerToPeerRecommendRequest = {
+  /** The profile to recommend */
+  profileId: Scalars['ProfileId'];
 };
 
 export type PhysicalAddress = {
@@ -3460,7 +3958,7 @@ export type PopularNftCollectionsRequest = {
   /** Include only verified collections */
   onlyVerified?: InputMaybe<Scalars['Boolean']>;
   /** The ordering of Nft collection owners. Defaults to Total Lens Profile owners */
-  orderBy?: InputMaybe<PopularNftCollectionsOrder>;
+  orderBy?: PopularNftCollectionsOrder;
 };
 
 export type Post = {
@@ -3473,7 +3971,7 @@ export type Post = {
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
-  openActionModules?: Maybe<Array<OpenActionModule>>;
+  openActionModules: Array<OpenActionModule>;
   operations: PublicationOperations;
   profilesMentioned: Array<ProfileMentioned>;
   publishedOn?: Maybe<App>;
@@ -3520,6 +4018,8 @@ export type Profile = {
   operations: ProfileOperations;
   /** Who owns the profile */
   ownedBy: NetworkAddress;
+  /** If the profile has been recommended by the authenticated user */
+  peerToPeerRecommendedByMe: Scalars['Boolean'];
   /** If the profile has got signless enabled */
   signless: Scalars['Boolean'];
   /** If lens API will sponsor this persons for gasless experience, note they can have signless on but sponsor false which means it be rejected */
@@ -3574,6 +4074,11 @@ export enum ProfileActionHistoryType {
   Unfollow = 'UNFOLLOW',
   UnlinkHandle = 'UNLINK_HANDLE'
 }
+
+export type ProfileFraudReasonInput = {
+  reason: ProfileReportingReason;
+  subreason: ProfileReportingFraudSubreason;
+};
 
 export type ProfileGuardianResult = {
   __typename?: 'ProfileGuardianResult';
@@ -3750,6 +4255,26 @@ export type ProfileRecommendationsRequest = {
   shuffle?: InputMaybe<Scalars['Boolean']>;
 };
 
+export enum ProfileReportingFraudSubreason {
+  Impersonation = 'IMPERSONATION',
+  SomethingElse = 'SOMETHING_ELSE'
+}
+
+export enum ProfileReportingReason {
+  Fraud = 'FRAUD',
+  Spam = 'SPAM'
+}
+
+export type ProfileReportingReasonInput = {
+  fraudReason?: InputMaybe<ProfileFraudReasonInput>;
+  spamReason?: InputMaybe<ProfileSpamReasonInput>;
+};
+
+export enum ProfileReportingSpamSubreason {
+  Repetitive = 'REPETITIVE',
+  SomethingElse = 'SOMETHING_ELSE'
+}
+
 export type ProfileRequest = {
   /** The handle for profile you want to fetch - namespace/localname */
   forHandle?: InputMaybe<Scalars['Handle']>;
@@ -3760,6 +4285,8 @@ export type ProfileRequest = {
 export type ProfileSearchRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
+  /** The order by which to sort the profiles */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
   /** Query for the profile search */
   query: Scalars['String'];
   /** Filtering criteria for profile search */
@@ -3771,6 +4298,11 @@ export type ProfileSearchWhere = {
   customFilters?: InputMaybe<Array<CustomFiltersType>>;
 };
 
+export type ProfileSpamReasonInput = {
+  reason: ProfileReportingReason;
+  subreason: ProfileReportingSpamSubreason;
+};
+
 /** The Profile Stats */
 export type ProfileStats = {
   __typename?: 'ProfileStats';
@@ -3779,6 +4311,8 @@ export type ProfileStats = {
   followers: Scalars['Int'];
   following: Scalars['Int'];
   id: Scalars['ProfileId'];
+  /** The profile classifier score of this profile relative to others on Lens. It is a % out of 100. */
+  lensClassifierScore?: Maybe<Scalars['Float']>;
   mirrors: Scalars['Int'];
   posts: Scalars['Int'];
   publications: Scalars['Int'];
@@ -3810,6 +4344,7 @@ export type ProfileStatsReactionsArgs = {
 export type ProfileStatsArg = {
   customFilters?: InputMaybe<Array<CustomFiltersType>>;
   forApps?: InputMaybe<Array<Scalars['AppId']>>;
+  hiddenComments?: InputMaybe<HiddenCommentsType>;
 };
 
 export type ProfileStatsCountOpenActionArgs = {
@@ -3830,6 +4365,7 @@ export type ProfilesManagedRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   /** The Ethereum address for which to retrieve managed profiles */
   for: Scalars['EvmAddress'];
+  hiddenFilter?: InputMaybe<ManagedProfileVisibility>;
   includeOwned?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<LimitType>;
 };
@@ -3837,11 +4373,19 @@ export type ProfilesManagedRequest = {
 export type ProfilesManagedResult = {
   __typename?: 'ProfilesManagedResult';
   address: Scalars['EvmAddress'];
+  isLensManager: Scalars['Boolean'];
 };
+
+export enum ProfilesOrderBy {
+  Default = 'DEFAULT',
+  ProfileClassifier = 'PROFILE_CLASSIFIER'
+}
 
 export type ProfilesRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
+  /** The order by which to sort the profiles */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
   /** The where clause to use to filter on what you are looking for */
   where: ProfilesRequestWhere;
 };
@@ -3876,6 +4420,8 @@ export type PublicationBookmarksWhere = {
 };
 
 export type PublicationCommentOn = {
+  /** You can use this enum to show, hide or show only hidden comments */
+  hiddenComments?: InputMaybe<HiddenCommentsType>;
   id: Scalars['PublicationId'];
   ranking?: InputMaybe<PublicationCommentOnRanking>;
 };
@@ -3955,6 +4501,7 @@ export enum PublicationMetadataLicenseType {
 export type PublicationMetadataLitEncryption = {
   __typename?: 'PublicationMetadataLitEncryption';
   accessCondition: RootCondition;
+  accessControlContract: NetworkAddress;
   encryptedPaths: Array<Scalars['EncryptedPath']>;
   encryptionKey: Scalars['ContentEncryptionKey'];
 };
@@ -4089,6 +4636,7 @@ export enum PublicationReportingIllegalSubreason {
   AnimalAbuse = 'ANIMAL_ABUSE',
   DirectThreat = 'DIRECT_THREAT',
   HumanAbuse = 'HUMAN_ABUSE',
+  IntEllEctualProperty = 'INTEllECTUAL_PROPERTY',
   ThreatIndividual = 'THREAT_INDIVIDUAL',
   Violence = 'VIOLENCE'
 }
@@ -4138,6 +4686,7 @@ export type PublicationSearchWhere = {
   customFilters?: InputMaybe<Array<CustomFiltersType>>;
   metadata?: InputMaybe<PublicationMetadataFilters>;
   publicationTypes?: InputMaybe<Array<SearchPublicationType>>;
+  withOpenActions?: InputMaybe<Array<OpenActionFilter>>;
 };
 
 export type PublicationStats = {
@@ -4167,6 +4716,7 @@ export type PublicationStatsCountOpenActionArgs = {
 
 export type PublicationStatsInput = {
   customFilters?: InputMaybe<Array<CustomFiltersType>>;
+  hiddenComments?: InputMaybe<HiddenCommentsType>;
   /** Filter the returned stats on apps and 1 of the following filters: tags, contentWarning, mainContentFocus, locale */
   metadata?: InputMaybe<PublicationMetadataFilters>;
 };
@@ -4221,16 +4771,21 @@ export type PublicationsWhere = {
 export type Query = {
   __typename?: 'Query';
   approvedAuthentications: PaginatedApprovedAuthenticationResult;
+  /** note here if your using a wallet JWT token it will get the allowance of the public proxy contract if its supported if not throw as profiles act not wallets */
   approvedModuleAllowanceAmount: Array<ApprovedAllowanceAmountResult>;
   canClaim: Array<CanClaimResult>;
   challenge: AuthChallengeResult;
+  claimTokens: LensProfileManagerRelayResult;
   claimableProfiles: ClaimableProfilesResult;
   claimableStatus: ClaimProfileStatusType;
+  claimableTokens: ClaimableTokensResult;
+  createFrameTypedData: CreateFrameEip712TypedData;
   /** Get all enabled currencies */
   currencies: PaginatedCurrenciesResult;
   currentSession: ApprovedAuthentication;
   /** Get the default profile for a given EvmAddress. If no default is explicitly set, you will get the oldest profile owned by the address. */
   defaultProfile?: Maybe<Profile>;
+  didReactOnPublication: Array<DidReactOnPublicationResult>;
   exploreProfiles: PaginatedProfileResult;
   explorePublications: PaginatedExplorePublicationResult;
   feed: PaginatedFeedResult;
@@ -4239,18 +4794,29 @@ export type Query = {
   followStatusBulk: Array<FollowStatusBulkResult>;
   followers: PaginatedProfileResult;
   following: PaginatedProfileResult;
+  generateLensAPIRelayAddress: Scalars['EvmAddress'];
+  /** note here if your using a wallet JWT token it will approve to the public proxy contract if its supported if not throw as profiles act not wallets */
   generateModuleCurrencyApprovalData: GenerateModuleCurrencyApprovalResult;
+  handleToAddress?: Maybe<Scalars['EvmAddress']>;
   internalAllowedDomains: Array<Scalars['URI']>;
+  internalBoostScore?: Maybe<Scalars['Int']>;
   internalClaimStatus?: Maybe<Scalars['Void']>;
   internalCuratedHandles: Array<Scalars['String']>;
   internalCuratedTags: Array<Scalars['String']>;
   internalInvites: Scalars['Int'];
+  internalPaymentHandleInfo?: Maybe<IphResult>;
   internalProfileStatus: PrfResult;
   invitedProfiles: Array<InvitedResult>;
   lastLoggedInProfile?: Maybe<Profile>;
+  latestPaidActions: LatestPaidActionsResult;
   lensAPIOwnedEOAs: Array<Scalars['EvmAddress']>;
-  lensProtocolVersion: LensProtocolVersion;
+  lensProtocolVersion: Scalars['String'];
   lensTransactionStatus?: Maybe<LensTransactionResult>;
+  modDisputedReports: PaginatedDisputedReports;
+  modExplorePublications: PaginatedModExplorePublicationResult;
+  modFollowers: PaginatedModFollowersResult;
+  modLatestReports: PaginatedModReports;
+  moduleMetadata?: Maybe<GetModuleMetadataResult>;
   momokaSubmitters: MomokaSubmittersResult;
   momokaSummary: MomokaSummaryResult;
   momokaTransaction?: Maybe<MomokaTransaction>;
@@ -4296,9 +4862,11 @@ export type Query = {
   supportedOpenActionModules: PaginatedSupportedModules;
   supportedReferenceModules: PaginatedSupportedModules;
   txIdToTxHash?: Maybe<Scalars['TxHash']>;
+  userRateLimit: UserCurrentRateLimitResult;
   userSigNonces: UserSigNonces;
   validatePublicationMetadata: PublicationValidateMetadataResult;
   verify: Scalars['Boolean'];
+  verifyFrameSignature: FrameVerifySignatureResult;
   whoActedOnPublication: PaginatedProfileResult;
   /** The list of profiles that the logged in profile has blocked */
   whoHaveBlocked: PaginatedProfileResult;
@@ -4326,6 +4894,16 @@ export type QueryChallengeArgs = {
 };
 
 
+export type QueryClaimTokensArgs = {
+  request: ClaimTokensRequest;
+};
+
+
+export type QueryCreateFrameTypedDataArgs = {
+  request: FrameEip712Request;
+};
+
+
 export type QueryCurrenciesArgs = {
   request: PaginatedOffsetRequest;
 };
@@ -4333,6 +4911,11 @@ export type QueryCurrenciesArgs = {
 
 export type QueryDefaultProfileArgs = {
   request: DefaultProfileRequest;
+};
+
+
+export type QueryDidReactOnPublicationArgs = {
+  request: DidReactOnPublicationRequest;
 };
 
 
@@ -4381,8 +4964,18 @@ export type QueryGenerateModuleCurrencyApprovalDataArgs = {
 };
 
 
+export type QueryHandleToAddressArgs = {
+  request: HandleToAddressRequest;
+};
+
+
 export type QueryInternalAllowedDomainsArgs = {
   request: InternalAllowedDomainsRequest;
+};
+
+
+export type QueryInternalBoostScoreArgs = {
+  request: InternalBoostScoreRequest;
 };
 
 
@@ -4406,6 +4999,11 @@ export type QueryInternalInvitesArgs = {
 };
 
 
+export type QueryInternalPaymentHandleInfoArgs = {
+  request: InternalPaymentHandleInfoRequest;
+};
+
+
 export type QueryInternalProfileStatusArgs = {
   request: InternalProfileStatusRequest;
 };
@@ -4416,8 +5014,40 @@ export type QueryLastLoggedInProfileArgs = {
 };
 
 
+export type QueryLatestPaidActionsArgs = {
+  filter?: InputMaybe<LatestPaidActionsFilter>;
+  request?: InputMaybe<PaginatedRequest>;
+  where?: InputMaybe<LatestPaidActionsWhere>;
+};
+
+
 export type QueryLensTransactionStatusArgs = {
   request: LensTransactionStatusRequest;
+};
+
+
+export type QueryModDisputedReportsArgs = {
+  request: PaginatedRequest;
+};
+
+
+export type QueryModExplorePublicationsArgs = {
+  request: ModExplorePublicationRequest;
+};
+
+
+export type QueryModFollowersArgs = {
+  request: PaginatedRequest;
+};
+
+
+export type QueryModLatestReportsArgs = {
+  request: ModReportsRequest;
+};
+
+
+export type QueryModuleMetadataArgs = {
+  request: ModuleMetadataRequest;
 };
 
 
@@ -4596,6 +5226,11 @@ export type QueryTxIdToTxHashArgs = {
 };
 
 
+export type QueryUserRateLimitArgs = {
+  request: UserCurrentRateLimitRequest;
+};
+
+
 export type QueryValidatePublicationMetadataArgs = {
   request: ValidatePublicationMetadataRequest;
 };
@@ -4603,6 +5238,11 @@ export type QueryValidatePublicationMetadataArgs = {
 
 export type QueryVerifyArgs = {
   request: VerifyRequest;
+};
+
+
+export type QueryVerifyFrameSignatureArgs = {
+  request: FrameVerifySignature;
 };
 
 
@@ -4630,7 +5270,7 @@ export type Quote = {
   isHidden: Scalars['Boolean'];
   metadata: PublicationMetadata;
   momoka?: Maybe<MomokaInfo>;
-  openActionModules?: Maybe<Array<OpenActionModule>>;
+  openActionModules: Array<OpenActionModule>;
   operations: PublicationOperations;
   profilesMentioned: Array<ProfileMentioned>;
   publishedOn?: Maybe<App>;
@@ -4676,6 +5316,8 @@ export type ReactionNotification = {
 };
 
 export type ReactionRequest = {
+  /** The ID of the app that the reaction was made from. */
+  app?: InputMaybe<Scalars['AppId']>;
   for: Scalars['PublicationId'];
   reaction: PublicationReactionType;
 };
@@ -4759,6 +5401,17 @@ export type RelayResult = RelayError | RelaySuccess;
 
 export enum RelayRoleKey {
   CreateProfile = 'CREATE_PROFILE',
+  CreateProfileWithHandleUsingCredits_1 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_1',
+  CreateProfileWithHandleUsingCredits_2 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_2',
+  CreateProfileWithHandleUsingCredits_3 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_3',
+  CreateProfileWithHandleUsingCredits_4 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_4',
+  CreateProfileWithHandleUsingCredits_5 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_5',
+  CreateProfileWithHandleUsingCredits_6 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_6',
+  CreateProfileWithHandleUsingCredits_7 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_7',
+  CreateProfileWithHandleUsingCredits_8 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_8',
+  CreateProfileWithHandleUsingCredits_9 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_9',
+  CreateProfileWithHandleUsingCredits_10 = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_10',
+  CreateProfileWithHandleUsingCreditsUnderCharLimit = 'CREATE_PROFILE_WITH_HANDLE_USING_CREDITS_UNDER_CHAR_LIMIT',
   LensManager_1 = 'LENS_MANAGER_1',
   LensManager_2 = 'LENS_MANAGER_2',
   LensManager_3 = 'LENS_MANAGER_3',
@@ -4779,6 +5432,16 @@ export enum RelayRoleKey {
   LensManager_18 = 'LENS_MANAGER_18',
   LensManager_19 = 'LENS_MANAGER_19',
   LensManager_20 = 'LENS_MANAGER_20',
+  LensManager_21 = 'LENS_MANAGER_21',
+  LensManager_22 = 'LENS_MANAGER_22',
+  LensManager_23 = 'LENS_MANAGER_23',
+  LensManager_24 = 'LENS_MANAGER_24',
+  LensManager_25 = 'LENS_MANAGER_25',
+  LensManager_26 = 'LENS_MANAGER_26',
+  LensManager_27 = 'LENS_MANAGER_27',
+  LensManager_28 = 'LENS_MANAGER_28',
+  LensManager_29 = 'LENS_MANAGER_29',
+  LensManager_30 = 'LENS_MANAGER_30',
   WithSig_1 = 'WITH_SIG_1',
   WithSig_2 = 'WITH_SIG_2',
   WithSig_3 = 'WITH_SIG_3',
@@ -4788,13 +5451,29 @@ export enum RelayRoleKey {
   WithSig_7 = 'WITH_SIG_7',
   WithSig_8 = 'WITH_SIG_8',
   WithSig_9 = 'WITH_SIG_9',
-  WithSig_10 = 'WITH_SIG_10'
+  WithSig_10 = 'WITH_SIG_10',
+  WithSig_11 = 'WITH_SIG_11',
+  WithSig_12 = 'WITH_SIG_12',
+  WithSig_13 = 'WITH_SIG_13',
+  WithSig_14 = 'WITH_SIG_14',
+  WithSig_15 = 'WITH_SIG_15',
+  WithSig_16 = 'WITH_SIG_16',
+  WithSig_17 = 'WITH_SIG_17',
+  WithSig_18 = 'WITH_SIG_18',
+  WithSig_19 = 'WITH_SIG_19',
+  WithSig_20 = 'WITH_SIG_20'
 }
 
 export type RelaySuccess = {
   __typename?: 'RelaySuccess';
   txHash?: Maybe<Scalars['TxHash']>;
   txId: Scalars['TxId'];
+};
+
+export type ReportProfileRequest = {
+  additionalComments?: InputMaybe<Scalars['String']>;
+  for: Scalars['ProfileId'];
+  reason: ProfileReportingReasonInput;
 };
 
 export type ReportPublicationRequest = {
@@ -5003,6 +5682,7 @@ export type SupportedModulesRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   includeUnknown?: InputMaybe<Scalars['Boolean']>;
   limit?: InputMaybe<LimitType>;
+  onlyVerified?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type SybilDotOrgIdentity = {
@@ -5116,6 +5796,16 @@ export type UnfollowRequest = {
   unfollow: Array<Scalars['ProfileId']>;
 };
 
+export type UnhideCommentRequest = {
+  /** The comment to unhide. It has to be under a publication made by the user making the request. If already visible, nothing will happen. */
+  for: Scalars['PublicationId'];
+};
+
+export type UnhideManagedProfileRequest = {
+  /** The profile to unhide */
+  profileId: Scalars['ProfileId'];
+};
+
 export type UnknownFollowModuleInput = {
   address: Scalars['EvmAddress'];
   data: Scalars['BlockchainData'];
@@ -5129,9 +5819,22 @@ export type UnknownFollowModuleRedeemInput = {
 export type UnknownFollowModuleSettings = {
   __typename?: 'UnknownFollowModuleSettings';
   contract: NetworkAddress;
-  /** The data used to setup the module which you can decode with your known ABI  */
+  /**
+   * The data used to setup the module which you can decode with your known ABI
+   * @deprecated Use initializeResultData instead
+   */
   followModuleReturnData?: Maybe<Scalars['BlockchainData']>;
+  /** The data used to setup the module */
+  initializeCalldata?: Maybe<Scalars['BlockchainData']>;
+  /** The data returned from the init module */
+  initializeResultData?: Maybe<Scalars['BlockchainData']>;
+  /** True if the module can be signedless and use lens manager without a signature */
+  signlessApproved: Scalars['Boolean'];
+  /** True if the module can be sponsored through gasless so the user does not need to pay for gas */
+  sponsoredApproved: Scalars['Boolean'];
   type: FollowModuleType;
+  /** True if the module is deemed as safe */
+  verified: Scalars['Boolean'];
 };
 
 export type UnknownOpenActionActRedeemInput = {
@@ -5149,9 +5852,22 @@ export type UnknownOpenActionModuleSettings = {
   /** The collect nft address - only deployed on first collect and if its a collectable open action */
   collectNft?: Maybe<Scalars['EvmAddress']>;
   contract: NetworkAddress;
-  /** The data used to setup the module which you can decode with your known ABI  */
+  /** The data used to setup the module */
+  initializeCalldata?: Maybe<Scalars['BlockchainData']>;
+  /** The data returned from the init module */
+  initializeResultData?: Maybe<Scalars['BlockchainData']>;
+  /**
+   * The data returned from the init module
+   * @deprecated Use initializeResultData instead
+   */
   openActionModuleReturnData?: Maybe<Scalars['BlockchainData']>;
+  /** True if the module can be signedless and use lens manager without a signature */
+  signlessApproved: Scalars['Boolean'];
+  /** True if the module can be sponsored through gasless so the user does not need to pay for gas */
+  sponsoredApproved: Scalars['Boolean'];
   type: OpenActionModuleType;
+  /** True if the module is deemed as safe */
+  verified: Scalars['Boolean'];
 };
 
 export type UnknownOpenActionResult = {
@@ -5169,9 +5885,22 @@ export type UnknownReferenceModuleInput = {
 export type UnknownReferenceModuleSettings = {
   __typename?: 'UnknownReferenceModuleSettings';
   contract: NetworkAddress;
-  /** The data used to setup the module which you can decode with your known ABI  */
+  /** The data used to setup the module */
+  initializeCalldata?: Maybe<Scalars['BlockchainData']>;
+  /** The data returned from the init module */
+  initializeResultData?: Maybe<Scalars['BlockchainData']>;
+  /**
+   * The data used to setup the module which you can decode with your known ABI
+   * @deprecated Use initializeResultData instead
+   */
   referenceModuleReturnData?: Maybe<Scalars['BlockchainData']>;
+  /** True if the module can be signedless and use lens manager without a signature */
+  signlessApproved: Scalars['Boolean'];
+  /** True if the module can be sponsored through gasless so the user does not need to pay for gas */
+  sponsoredApproved: Scalars['Boolean'];
   type: ReferenceModuleType;
+  /** True if the module is deemed as safe */
+  verified: Scalars['Boolean'];
 };
 
 export type UnknownSupportedModule = {
@@ -5183,6 +5912,27 @@ export type UnknownSupportedModule = {
 export type UnlinkHandleFromProfileRequest = {
   /** The full handle - namespace/localname */
   handle: Scalars['Handle'];
+};
+
+export type UserCurrentRateLimit = {
+  __typename?: 'UserCurrentRateLimit';
+  dayAllowance: Scalars['Int'];
+  dayAllowanceLeft: Scalars['Int'];
+  dayAllowanceUsed: Scalars['Int'];
+  hourAllowance: Scalars['Int'];
+  hourAllowanceLeft: Scalars['Int'];
+  hourAllowanceUsed: Scalars['Int'];
+};
+
+export type UserCurrentRateLimitRequest = {
+  profileId?: InputMaybe<Scalars['ProfileId']>;
+  userAddress: Scalars['EvmAddress'];
+};
+
+export type UserCurrentRateLimitResult = {
+  __typename?: 'UserCurrentRateLimitResult';
+  momoka: UserCurrentRateLimit;
+  onchain: UserCurrentRateLimit;
 };
 
 export type UserPoapsQueryRequest = {
@@ -5205,7 +5955,9 @@ export type ValidatePublicationMetadataRequest = {
 
 export type VerifyRequest = {
   /** The access token to verify */
-  accessToken: Scalars['Jwt'];
+  accessToken?: InputMaybe<Scalars['Jwt']>;
+  /** The identity token to verify */
+  identityToken?: InputMaybe<Scalars['Jwt']>;
 };
 
 export type Video = {
@@ -5244,6 +5996,8 @@ export type WhoActedOnPublicationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   limit?: InputMaybe<LimitType>;
   on: Scalars['PublicationId'];
+  /** The order by which to sort the profiles */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
   where?: InputMaybe<WhoActedOnPublicationWhere>;
 };
 
@@ -5260,6 +6014,8 @@ export type WhoReactedPublicationRequest = {
   cursor?: InputMaybe<Scalars['Cursor']>;
   for: Scalars['PublicationId'];
   limit?: InputMaybe<LimitType>;
+  /** The order by which to sort the profiles */
+  orderBy?: InputMaybe<ProfilesOrderBy>;
   where?: InputMaybe<WhoReactedPublicationWhere>;
 };
 
@@ -5283,6 +6039,13 @@ export type WorldcoinPhoneVerifyWebhookRequest = {
   signal: Scalars['EvmAddress'];
   signalType: WorldcoinPhoneVerifyType;
 };
+
+export type ApprovedAuthenticationsQueryVariables = Exact<{
+  request: ApprovedAuthenticationRequest;
+}>;
+
+
+export type ApprovedAuthenticationsQuery = { __typename?: 'Query', approvedAuthentications: { __typename?: 'PaginatedApprovedAuthenticationResult', pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null }, items: Array<{ __typename?: 'ApprovedAuthentication', authorizationId: any, browser?: string | null, device?: string | null, os?: string | null, origin?: any | null, expiresAt: any, createdAt: any, updatedAt: any }> } };
 
 export type AuthenticateMutationVariables = Exact<{
   request: SignedAuthChallenge;
@@ -5634,16 +6397,16 @@ export type NftCollectionFieldsFragment = { __typename?: 'NftCollection', name: 
 
 export type NftOwnerFieldsFragment = { __typename?: 'Owner', address: any, amount: string };
 
-export type NftFieldsFragment = { __typename?: 'Nft', tokenId: any, contentURI: any, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null }, owner: { __typename?: 'Owner', address: any, amount: string } };
+export type NftFieldsFragment = { __typename?: 'Nft', tokenId: any, contentURI?: any | null, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata?: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null } | null, owner: { __typename?: 'Owner', address: any, amount: string } };
 
-export type NftGalleryFieldsFragment = { __typename?: 'NftGallery', name: any, owner: any, id: any, createdAt: any, updatedAt: any, items: Array<{ __typename?: 'Nft', tokenId: any, contentURI: any, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null }, owner: { __typename?: 'Owner', address: any, amount: string } }> };
+export type NftGalleryFieldsFragment = { __typename?: 'NftGallery', name: any, owner: any, id: any, createdAt: any, updatedAt: any, items: Array<{ __typename?: 'Nft', tokenId: any, contentURI?: any | null, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata?: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null } | null, owner: { __typename?: 'Owner', address: any, amount: string } }> };
 
 export type NftsQueryVariables = Exact<{
   request: NftsRequest;
 }>;
 
 
-export type NftsQuery = { __typename?: 'Query', nfts: { __typename?: 'PaginatedNftsResult', items: Array<{ __typename?: 'Nft', tokenId: any, contentURI: any, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null }, owner: { __typename?: 'Owner', address: any, amount: string } }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
+export type NftsQuery = { __typename?: 'Query', nfts: { __typename?: 'PaginatedNftsResult', items: Array<{ __typename?: 'Nft', tokenId: any, contentURI?: any | null, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata?: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null } | null, owner: { __typename?: 'Owner', address: any, amount: string } }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
 
 export type MutualNftCollectionsQueryVariables = Exact<{
   request: MutualNftCollectionsRequest;
@@ -5678,7 +6441,7 @@ export type NftGalleriesQueryVariables = Exact<{
 }>;
 
 
-export type NftGalleriesQuery = { __typename?: 'Query', nftGalleries: { __typename?: 'PaginatedNftGalleriesResult', items: Array<{ __typename?: 'NftGallery', name: any, owner: any, id: any, createdAt: any, updatedAt: any, items: Array<{ __typename?: 'Nft', tokenId: any, contentURI: any, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null }, owner: { __typename?: 'Owner', address: any, amount: string } }> }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
+export type NftGalleriesQuery = { __typename?: 'Query', nftGalleries: { __typename?: 'PaginatedNftGalleriesResult', items: Array<{ __typename?: 'NftGallery', name: any, owner: any, id: any, createdAt: any, updatedAt: any, items: Array<{ __typename?: 'Nft', tokenId: any, contentURI?: any | null, contractType: NftContractType, totalSupply: string, collection: { __typename?: 'NftCollection', name: string, symbol: string }, contract: { __typename?: 'NetworkAddress', address: any, chainId: any }, metadata?: { __typename?: 'NftMetadata', name?: string | null, description?: any | null, animationUrl?: any | null, externalURL?: any | null, attributes?: Array<{ __typename?: 'PublicationMarketplaceMetadataAttribute', displayType?: MarketplaceMetadataAttributeDisplayType | null, traitType?: string | null, value?: string | null }> | null, image?: { __typename?: 'ImageSet', raw: { __typename?: 'Image', uri: any, mimeType?: any | null }, optimized?: { __typename?: 'Image', uri: any, mimeType?: any | null, width?: number | null, height?: number | null } | null } | null } | null, owner: { __typename?: 'Owner', address: any, amount: string } }> }>, pageInfo: { __typename?: 'PaginatedResultInfo', prev?: any | null, next?: any | null } } };
 
 export type CreateNftGalleryMutationVariables = Exact<{
   request: NftGalleryCreateRequest;
@@ -6380,6 +7143,7 @@ export const AmountFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind"
 export const FollowModuleFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"FollowModuleFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FollowModule"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"FeeFollowModuleSettings"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"amount"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"AmountFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"recipient"}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"RevertFollowModuleSettings"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}}]}},{"kind":"InlineFragment","typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"UnknownFollowModuleSettings"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"contract"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"followModuleReturnData"}}]}}]}}]} as unknown as DocumentNode<FollowModuleFieldsFragment, unknown>;
 export const ProfileFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ProfileFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Profile"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"ownedBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"NetworkAddressFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"signless"}},{"kind":"Field","name":{"kind":"Name","value":"sponsor"}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"stats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"followers"}},{"kind":"Field","name":{"kind":"Name","value":"following"}},{"kind":"Field","name":{"kind":"Name","value":"comments"}},{"kind":"Field","name":{"kind":"Name","value":"posts"}},{"kind":"Field","name":{"kind":"Name","value":"mirrors"}},{"kind":"Field","name":{"kind":"Name","value":"quotes"}},{"kind":"Field","name":{"kind":"Name","value":"publications"}},{"kind":"Field","name":{"kind":"Name","value":"reactions"}},{"kind":"Field","name":{"kind":"Name","value":"countOpenActions"}}]}},{"kind":"Field","name":{"kind":"Name","value":"operations"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"isBlockedByMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isFollowedByMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isFollowingMe"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"isFinalisedOnchain"}}]}},{"kind":"Field","name":{"kind":"Name","value":"canBlock"}},{"kind":"Field","name":{"kind":"Name","value":"canUnblock"}},{"kind":"Field","name":{"kind":"Name","value":"canFollow"}},{"kind":"Field","name":{"kind":"Name","value":"canUnfollow"}}]}},{"kind":"Field","name":{"kind":"Name","value":"interests"}},{"kind":"Field","name":{"kind":"Name","value":"guardian"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"protected"}},{"kind":"Field","name":{"kind":"Name","value":"cooldownEndsOn"}}]}},{"kind":"Field","name":{"kind":"Name","value":"invitedBy"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"invitesLeft"}},{"kind":"Field","name":{"kind":"Name","value":"onchainIdentity"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"proofOfHumanity"}},{"kind":"Field","name":{"kind":"Name","value":"ens"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"sybilDotOrg"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"verified"}},{"kind":"Field","name":{"kind":"Name","value":"source"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"twitter"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"handle"}}]}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"worldcoin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"isHuman"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"followNftAddress"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"address"}},{"kind":"Field","name":{"kind":"Name","value":"chainId"}}]}},{"kind":"Field","name":{"kind":"Name","value":"metadata"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"attributes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"MetadataAttributeFields"}}]}}]}},{"kind":"Field","name":{"kind":"Name","value":"followModule"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"FollowModuleFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"handle"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"HandleInfo"}}]}}]}}]} as unknown as DocumentNode<ProfileFieldsFragment, unknown>;
 export const MirrorFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"MirrorFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Mirror"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"publishedOn"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"isHidden"}},{"kind":"Field","name":{"kind":"Name","value":"momoka"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"proof"}}]}},{"kind":"Field","name":{"kind":"Name","value":"txHash"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"mirrorOn"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"PrimaryPublicationFields"}}]}}]}}]} as unknown as DocumentNode<MirrorFieldsFragment, unknown>;
+export const ApprovedAuthenticationsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ApprovedAuthentications"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ApprovedAuthenticationRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"approvedAuthentications"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"pageInfo"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"prev"}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}},{"kind":"Field","name":{"kind":"Name","value":"items"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authorizationId"}},{"kind":"Field","name":{"kind":"Name","value":"browser"}},{"kind":"Field","name":{"kind":"Name","value":"device"}},{"kind":"Field","name":{"kind":"Name","value":"os"}},{"kind":"Field","name":{"kind":"Name","value":"origin"}},{"kind":"Field","name":{"kind":"Name","value":"expiresAt"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]}}]} as unknown as DocumentNode<ApprovedAuthenticationsQuery, ApprovedAuthenticationsQueryVariables>;
 export const AuthenticateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Authenticate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"SignedAuthChallenge"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"authenticate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<AuthenticateMutation, AuthenticateMutationVariables>;
 export const ChallengeDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Challenge"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ChallengeRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"challenge"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"text"}}]}}]}}]} as unknown as DocumentNode<ChallengeQuery, ChallengeQueryVariables>;
 export const RefreshDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"Refresh"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"request"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"RefreshRequest"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"refresh"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"request"},"value":{"kind":"Variable","name":{"kind":"Name","value":"request"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"accessToken"}},{"kind":"Field","name":{"kind":"Name","value":"refreshToken"}}]}}]}}]} as unknown as DocumentNode<RefreshMutation, RefreshMutationVariables>;
@@ -6600,6 +7364,10 @@ export const LensTransactionStatusDocument = {"kind":"Document","definitions":[{
     "OpenActionResult": [
       "KnownCollectOpenActionResult",
       "UnknownOpenActionResult"
+    ],
+    "PaidAction": [
+      "FollowPaidAction",
+      "OpenActionPaidAction"
     ],
     "PrimaryPublication": [
       "Comment",

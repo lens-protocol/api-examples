@@ -8,9 +8,7 @@ export const setDefaultProfileRequest = async (defaultProfileId: string) => {
   const result = await apolloClient.mutate({
     mutation: SetDefaultProfileDocument,
     variables: {
-      request: {
-        defaultProfileId,
-      },
+      request: { profileId: defaultProfileId },
     },
   });
 

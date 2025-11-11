@@ -1,5 +1,4 @@
-# schema: 'https://api-v2-mumbai.lens.dev/graphql'
-schema: 'http://localhost:4000/'
+schema: 'https://api-v2-amoy.lens.dev/graphql'
 documents: './src/**/*.graphql'
 generates:
   ./src/graphql/generated.ts:
